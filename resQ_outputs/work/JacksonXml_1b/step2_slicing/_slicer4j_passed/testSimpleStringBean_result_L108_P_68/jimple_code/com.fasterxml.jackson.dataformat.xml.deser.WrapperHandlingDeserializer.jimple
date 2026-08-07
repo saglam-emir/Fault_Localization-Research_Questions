@@ -1,0 +1,311 @@
+public class com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer extends com.fasterxml.jackson.databind.deser.std.DelegatingDeserializer
+{
+    private static final long serialVersionUID;
+    protected final java.util.Set _namesToWrap;
+    protected final com.fasterxml.jackson.databind.JavaType _type;
+
+    public void <init>(com.fasterxml.jackson.databind.deser.BeanDeserializerBase)
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this;
+        com.fasterxml.jackson.databind.deser.BeanDeserializerBase delegate;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        delegate := @parameter0: com.fasterxml.jackson.databind.deser.BeanDeserializerBase;
+
+        specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: void <init>(com.fasterxml.jackson.databind.deser.BeanDeserializerBase,java.util.Set)>(delegate, null);
+
+        return;
+    }
+
+    public void <init>(com.fasterxml.jackson.databind.deser.BeanDeserializerBase, java.util.Set)
+    {
+        com.fasterxml.jackson.databind.deser.BeanDeserializerBase delegate;
+        java.util.Set namesToWrap;
+        com.fasterxml.jackson.databind.JavaType $stack3;
+        com.fasterxml.jackson.databind.JsonDeserializer $r0;
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        delegate := @parameter0: com.fasterxml.jackson.databind.deser.BeanDeserializerBase;
+
+        namesToWrap := @parameter1: java.util.Set;
+
+        $r0 = (com.fasterxml.jackson.databind.JsonDeserializer) delegate;
+
+        specialinvoke this.<com.fasterxml.jackson.databind.deser.std.DelegatingDeserializer: void <init>(com.fasterxml.jackson.databind.JsonDeserializer)>($r0);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: java.util.Set _namesToWrap> = namesToWrap;
+
+        $stack3 = virtualinvoke delegate.<com.fasterxml.jackson.databind.deser.BeanDeserializerBase: com.fasterxml.jackson.databind.JavaType getValueType()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: com.fasterxml.jackson.databind.JavaType _type> = $stack3;
+
+        return;
+    }
+
+    protected com.fasterxml.jackson.databind.JsonDeserializer newDelegatingInstance(com.fasterxml.jackson.databind.JsonDeserializer)
+    {
+        java.lang.IllegalStateException $stack2;
+        com.fasterxml.jackson.databind.JsonDeserializer newDelegatee0;
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        newDelegatee0 := @parameter0: com.fasterxml.jackson.databind.JsonDeserializer;
+
+        $stack2 = new java.lang.IllegalStateException;
+
+        specialinvoke $stack2.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Internal error: should never get called");
+
+        throw $stack2;
+    }
+
+    public com.fasterxml.jackson.databind.JsonDeserializer createContextual(com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.BeanProperty) throws com.fasterxml.jackson.databind.JsonMappingException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this, $u1;
+        java.util.HashSet unwrappedNames, $u0;
+        com.fasterxml.jackson.databind.JavaType $stack10, $stack18;
+        java.lang.String $stack21;
+        com.fasterxml.jackson.databind.JsonDeserializer $stack11, $stack12, $r0, $r1;
+        boolean $stack19, $stack15;
+        com.fasterxml.jackson.databind.DeserializationContext ctxt;
+        java.util.Iterator $stack14;
+        com.fasterxml.jackson.databind.PropertyName $stack20, $stack27;
+        com.fasterxml.jackson.databind.BeanProperty property;
+        com.fasterxml.jackson.databind.deser.BeanDeserializerBase $stack13;
+        java.lang.Object $stack17;
+        com.fasterxml.jackson.databind.deser.SettableBeanProperty prop;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        ctxt := @parameter0: com.fasterxml.jackson.databind.DeserializationContext;
+
+        property := @parameter1: com.fasterxml.jackson.databind.BeanProperty;
+
+        $stack11 = this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: com.fasterxml.jackson.databind.JsonDeserializer _delegatee>;
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: com.fasterxml.jackson.databind.JavaType _type>;
+
+        $stack12 = virtualinvoke ctxt.<com.fasterxml.jackson.databind.DeserializationContext: com.fasterxml.jackson.databind.JsonDeserializer handleSecondaryContextualization(com.fasterxml.jackson.databind.JsonDeserializer,com.fasterxml.jackson.databind.BeanProperty,com.fasterxml.jackson.databind.JavaType)>($stack11, property, $stack10);
+
+        $stack13 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: com.fasterxml.jackson.databind.deser.BeanDeserializerBase _verifyDeserType(com.fasterxml.jackson.databind.JsonDeserializer)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<com.fasterxml.jackson.databind.deser.BeanDeserializerBase: java.util.Iterator properties()>();
+
+        unwrappedNames = null;
+
+     label1:
+        $stack15 = interfaceinvoke $stack14.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack15 == 0 goto label5;
+
+        $stack17 = interfaceinvoke $stack14.<java.util.Iterator: java.lang.Object next()>();
+
+        prop = (com.fasterxml.jackson.databind.deser.SettableBeanProperty) $stack17;
+
+        $stack18 = virtualinvoke prop.<com.fasterxml.jackson.databind.deser.SettableBeanProperty: com.fasterxml.jackson.databind.JavaType getType()>();
+
+        $stack19 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.TypeUtil: boolean isIndexedType(com.fasterxml.jackson.databind.JavaType)>($stack18);
+
+        if $stack19 != 0 goto label2;
+
+        goto label1;
+
+     label2:
+        $stack20 = virtualinvoke prop.<com.fasterxml.jackson.databind.deser.SettableBeanProperty: com.fasterxml.jackson.databind.PropertyName getWrapperName()>();
+
+        if $stack20 == null goto label3;
+
+        $stack27 = <com.fasterxml.jackson.databind.PropertyName: com.fasterxml.jackson.databind.PropertyName NO_NAME>;
+
+        if $stack20 == $stack27 goto label3;
+
+        goto label1;
+
+     label3:
+        if unwrappedNames != null goto label4;
+
+        $u0 = new java.util.HashSet;
+
+        specialinvoke $u0.<java.util.HashSet: void <init>()>();
+
+        unwrappedNames = $u0;
+
+     label4:
+        $stack21 = virtualinvoke prop.<com.fasterxml.jackson.databind.deser.SettableBeanProperty: java.lang.String getName()>();
+
+        virtualinvoke unwrappedNames.<java.util.HashSet: boolean add(java.lang.Object)>($stack21);
+
+        goto label1;
+
+     label5:
+        if unwrappedNames != null goto label6;
+
+        $r0 = (com.fasterxml.jackson.databind.JsonDeserializer) $stack13;
+
+        return $r0;
+
+     label6:
+        $u1 = new com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        specialinvoke $u1.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: void <init>(com.fasterxml.jackson.databind.deser.BeanDeserializerBase,java.util.Set)>($stack13, unwrappedNames);
+
+        $r1 = (com.fasterxml.jackson.databind.JsonDeserializer) $u1;
+
+        return $r1;
+    }
+
+    public java.lang.Object deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext) throws java.io.IOException
+    {
+        com.fasterxml.jackson.databind.DeserializationContext ctxt;
+        com.fasterxml.jackson.core.JsonParser jp;
+        java.lang.Object $stack4;
+        com.fasterxml.jackson.databind.JsonDeserializer $stack3;
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        jp := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        ctxt := @parameter1: com.fasterxml.jackson.databind.DeserializationContext;
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: void _configureParser(com.fasterxml.jackson.core.JsonParser)>(jp);
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: com.fasterxml.jackson.databind.JsonDeserializer _delegatee>;
+
+        $stack4 = virtualinvoke $stack3.<com.fasterxml.jackson.databind.JsonDeserializer: java.lang.Object deserialize(com.fasterxml.jackson.core.JsonParser,com.fasterxml.jackson.databind.DeserializationContext)>(jp, ctxt);
+
+        return $stack4;
+    }
+
+    public java.lang.Object deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, java.lang.Object) throws java.io.IOException
+    {
+        com.fasterxml.jackson.databind.DeserializationContext ctxt;
+        com.fasterxml.jackson.core.JsonParser jp;
+        java.lang.Object intoValue, $stack5;
+        com.fasterxml.jackson.databind.JsonDeserializer $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        jp := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        ctxt := @parameter1: com.fasterxml.jackson.databind.DeserializationContext;
+
+        intoValue := @parameter2: java.lang.Object;
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: void _configureParser(com.fasterxml.jackson.core.JsonParser)>(jp);
+
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: com.fasterxml.jackson.databind.JsonDeserializer _delegatee>;
+
+        $stack5 = virtualinvoke $stack4.<com.fasterxml.jackson.databind.JsonDeserializer: java.lang.Object deserialize(com.fasterxml.jackson.core.JsonParser,com.fasterxml.jackson.databind.DeserializationContext,java.lang.Object)>(jp, ctxt, intoValue);
+
+        return $stack5;
+    }
+
+    public java.lang.Object deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer) throws java.io.IOException
+    {
+        com.fasterxml.jackson.databind.DeserializationContext ctxt;
+        com.fasterxml.jackson.core.JsonParser jp;
+        com.fasterxml.jackson.databind.jsontype.TypeDeserializer typeDeserializer;
+        java.lang.Object $stack5;
+        com.fasterxml.jackson.databind.JsonDeserializer $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        jp := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        ctxt := @parameter1: com.fasterxml.jackson.databind.DeserializationContext;
+
+        typeDeserializer := @parameter2: com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: void _configureParser(com.fasterxml.jackson.core.JsonParser)>(jp);
+
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: com.fasterxml.jackson.databind.JsonDeserializer _delegatee>;
+
+        $stack5 = virtualinvoke $stack4.<com.fasterxml.jackson.databind.JsonDeserializer: java.lang.Object deserializeWithType(com.fasterxml.jackson.core.JsonParser,com.fasterxml.jackson.databind.DeserializationContext,com.fasterxml.jackson.databind.jsontype.TypeDeserializer)>(jp, ctxt, typeDeserializer);
+
+        return $stack5;
+    }
+
+    protected final void _configureParser(com.fasterxml.jackson.core.JsonParser) throws java.io.IOException
+    {
+        com.fasterxml.jackson.core.JsonParser jp;
+        java.util.Set $stack3;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this;
+        boolean $stack2;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        jp := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        $stack2 = jp instanceof com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        if $stack2 == 0 goto label1;
+
+        $stack4 = (com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser) jp;
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: java.util.Set _namesToWrap>;
+
+        virtualinvoke $stack4.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: void addVirtualWrapping(java.util.Set)>($stack3);
+
+     label1:
+        return;
+    }
+
+    protected com.fasterxml.jackson.databind.deser.BeanDeserializerBase _verifyDeserType(com.fasterxml.jackson.databind.JsonDeserializer)
+    {
+        java.lang.IllegalArgumentException $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer this;
+        com.fasterxml.jackson.databind.deser.BeanDeserializerBase $stack3;
+        java.lang.StringBuilder $stack5, $stack6, $stack9;
+        java.lang.Class $stack7;
+        java.lang.String $stack8, $stack10;
+        com.fasterxml.jackson.databind.JsonDeserializer deser;
+        boolean $stack2;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer;
+
+        deser := @parameter0: com.fasterxml.jackson.databind.JsonDeserializer;
+
+        $stack2 = deser instanceof com.fasterxml.jackson.databind.deser.BeanDeserializerBase;
+
+        if $stack2 != 0 goto label1;
+
+        $stack4 = new java.lang.IllegalArgumentException;
+
+        $stack5 = new java.lang.StringBuilder;
+
+        specialinvoke $stack5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Can not change delegate to be of type ");
+
+        $stack7 = virtualinvoke deser.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.Class: java.lang.String getName()>();
+
+        $stack9 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack8);
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack4.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($stack10);
+
+        throw $stack4;
+
+     label1:
+        $stack3 = (com.fasterxml.jackson.databind.deser.BeanDeserializerBase) deser;
+
+        return $stack3;
+    }
+
+    public static void <clinit>()
+    {
+        <com.fasterxml.jackson.dataformat.xml.deser.WrapperHandlingDeserializer: long serialVersionUID> = 1L;
+
+        return;
+    }
+}

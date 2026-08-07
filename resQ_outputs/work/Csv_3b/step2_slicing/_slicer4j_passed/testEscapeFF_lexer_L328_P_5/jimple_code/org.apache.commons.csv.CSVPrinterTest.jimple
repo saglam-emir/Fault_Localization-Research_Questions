@@ -1,0 +1,1560 @@
+public class org.apache.commons.csv.CSVPrinterTest extends java.lang.Object
+{
+    java.lang.String recordSeparator;
+
+    public void <init>()
+    {
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.lang.String $stack2;
+        org.apache.commons.csv.CSVFormat $stack1;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $stack1 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.commons.csv.CSVFormat: java.lang.String getRecordSeparator()>();
+
+        this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator> = $stack2;
+
+        return;
+    }
+
+    public static java.lang.String printable(java.lang.String)
+    {
+        char $stack7;
+        int $stack5, i, $i0, $i1, $i2;
+        java.lang.StringBuilder $stack8, $stack9, $u0;
+        java.lang.String s, $stack6;
+
+        s := @parameter0: java.lang.String;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        i = 0;
+
+     label1:
+        $stack5 = virtualinvoke s.<java.lang.String: int length()>();
+
+        if i >= $stack5 goto label5;
+
+        $stack7 = virtualinvoke s.<java.lang.String: char charAt(int)>(i);
+
+        $i0 = (int) $stack7;
+
+        if $i0 <= 32 goto label2;
+
+        $i1 = (int) $stack7;
+
+        if $i1 < 128 goto label3;
+
+     label2:
+        $stack8 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(");
+
+        $i2 = (int) $stack7;
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i2);
+
+        virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        goto label4;
+
+     label3:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack7);
+
+     label4:
+        i = i + 1;
+
+        goto label1;
+
+     label5:
+        $stack6 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack6;
+    }
+
+    public void doOneRandom(org.apache.commons.csv.CSVFormat) throws java.lang.Exception
+    {
+        java.lang.Object[] $stack25;
+        java.util.Random $stack11;
+        java.lang.String[] $stack24, line;
+        org.apache.commons.csv.CSVFormat format;
+        int $stack12, nLines, $stack13, nCol, i, j;
+        org.apache.commons.csv.CSVParser $stack17;
+        java.lang.String $stack16, $stack21, $stack23, $stack30;
+        java.io.StringWriter $stack14;
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.util.List $stack18;
+        java.lang.StringBuilder $stack19, $stack20, $stack22;
+        java.lang.String[][] lines;
+        org.apache.commons.csv.CSVPrinter $stack15;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        format := @parameter0: org.apache.commons.csv.CSVFormat;
+
+        $stack11 = new java.util.Random;
+
+        specialinvoke $stack11.<java.util.Random: void <init>()>();
+
+        $stack12 = virtualinvoke $stack11.<java.util.Random: int nextInt(int)>(4);
+
+        nLines = $stack12 + 1;
+
+        $stack13 = virtualinvoke $stack11.<java.util.Random: int nextInt(int)>(3);
+
+        nCol = $stack13 + 1;
+
+        lines = newarray (java.lang.String[])[nLines];
+
+        i = 0;
+
+     label1:
+        if i >= nLines goto label4;
+
+        line = newarray (java.lang.String)[nCol];
+
+        lines[i] = line;
+
+        j = 0;
+
+     label2:
+        if j >= nCol goto label3;
+
+        $stack30 = virtualinvoke this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String randStr()>();
+
+        line[j] = $stack30;
+
+        j = j + 1;
+
+        goto label2;
+
+     label3:
+        i = i + 1;
+
+        goto label1;
+
+     label4:
+        $stack14 = new java.io.StringWriter;
+
+        specialinvoke $stack14.<java.io.StringWriter: void <init>()>();
+
+        $stack15 = new org.apache.commons.csv.CSVPrinter;
+
+        specialinvoke $stack15.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack14, format);
+
+        j = 0;
+
+     label5:
+        if j >= nLines goto label6;
+
+        $stack24 = lines[j];
+
+        $stack25 = (java.lang.Object[]) $stack24;
+
+        virtualinvoke $stack15.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack25);
+
+        j = j + 1;
+
+        goto label5;
+
+     label6:
+        virtualinvoke $stack15.<org.apache.commons.csv.CSVPrinter: void flush()>();
+
+        virtualinvoke $stack15.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        $stack16 = virtualinvoke $stack14.<java.io.StringWriter: java.lang.String toString()>();
+
+        $stack17 = new org.apache.commons.csv.CSVParser;
+
+        specialinvoke $stack17.<org.apache.commons.csv.CSVParser: void <init>(java.lang.String,org.apache.commons.csv.CSVFormat)>($stack16, format);
+
+        $stack18 = virtualinvoke $stack17.<org.apache.commons.csv.CSVParser: java.util.List getRecords()>();
+
+        $stack19 = new java.lang.StringBuilder;
+
+        specialinvoke $stack19.<java.lang.StringBuilder: void <init>()>();
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Printer output :");
+
+        $stack21 = staticinvoke <org.apache.commons.csv.CSVPrinterTest: java.lang.String printable(java.lang.String)>($stack16);
+
+        $stack22 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.apache.commons.csv.Utils: void compare(java.lang.String,java.lang.String[][],java.util.List)>($stack23, lines, $stack18);
+
+        return;
+    }
+
+    public void doRandom(org.apache.commons.csv.CSVFormat, int) throws java.lang.Exception
+    {
+        org.apache.commons.csv.CSVFormat format;
+        int iter, i;
+        org.apache.commons.csv.CSVPrinterTest this;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        format := @parameter0: org.apache.commons.csv.CSVFormat;
+
+        iter := @parameter1: int;
+
+        i = 0;
+
+     label1:
+        if i >= iter goto label2;
+
+        virtualinvoke this.<org.apache.commons.csv.CSVPrinterTest: void doOneRandom(org.apache.commons.csv.CSVFormat)>(format);
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        return;
+    }
+
+    public java.lang.String randStr()
+    {
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.util.Random $stack7;
+        char ch;
+        int $stack8, $stack10, $stack16, i;
+        char[] buf;
+        java.lang.String $stack9;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack7 = new java.util.Random;
+
+        specialinvoke $stack7.<java.util.Random: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.util.Random: int nextInt(int)>(20);
+
+        buf = newarray (char)[$stack8];
+
+        i = 0;
+
+     label01:
+        if i >= $stack8 goto label13;
+
+        $stack10 = virtualinvoke $stack7.<java.util.Random: int nextInt(int)>(20);
+
+        tableswitch($stack10)
+        {
+            case 0: goto label02;
+            case 1: goto label03;
+            case 2: goto label04;
+            case 3: goto label05;
+            case 4: goto label06;
+            case 5: goto label07;
+            case 6: goto label08;
+            case 7: goto label09;
+            case 8: goto label10;
+            default: goto label11;
+        };
+
+     label02:
+        ch = 13;
+
+        goto label12;
+
+     label03:
+        ch = 10;
+
+        goto label12;
+
+     label04:
+        ch = 9;
+
+        goto label12;
+
+     label05:
+        ch = 12;
+
+        goto label12;
+
+     label06:
+        ch = 32;
+
+        goto label12;
+
+     label07:
+        ch = 44;
+
+        goto label12;
+
+     label08:
+        ch = 34;
+
+        goto label12;
+
+     label09:
+        ch = 39;
+
+        goto label12;
+
+     label10:
+        ch = 92;
+
+        goto label12;
+
+     label11:
+        $stack16 = virtualinvoke $stack7.<java.util.Random: int nextInt(int)>(300);
+
+        ch = (char) $stack16;
+
+     label12:
+        buf[i] = ch;
+
+        i = i + 1;
+
+        goto label01;
+
+     label13:
+        $stack9 = new java.lang.String;
+
+        specialinvoke $stack9.<java.lang.String: void <init>(char[])>(buf);
+
+        return $stack9;
+    }
+
+    public void testDisabledComment() throws java.io.IOException
+    {
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.lang.String $stack7;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printComment(java.lang.String)>("This is a comment");
+
+        $stack7 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>("", $stack7);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testExcelPrintAllArrayOfArrays() throws java.io.IOException
+    {
+        java.lang.String[] $stack7, $stack8;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.String $stack11, $stack14, $stack16, $stack17;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.lang.StringBuilder $stack9, $stack10, $stack12, $stack13, $stack15;
+        java.lang.String[][] $stack6;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat EXCEL>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.String[])[2];
+
+        $stack7 = newarray (java.lang.String)[2];
+
+        $stack7[0] = "r1c1";
+
+        $stack7[1] = "r1c2";
+
+        $stack6[0] = $stack7;
+
+        $stack8 = newarray (java.lang.String)[2];
+
+        $stack8[0] = "r2c1";
+
+        $stack8[1] = "r2c2";
+
+        $stack6[1] = $stack8;
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecords(java.lang.Object[])>($stack6);
+
+        $stack9 = new java.lang.StringBuilder;
+
+        specialinvoke $stack9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("r1c1,r1c2");
+
+        $stack11 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("r2c1,r2c2");
+
+        $stack14 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack17 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack16, $stack17);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testExcelPrintAllArrayOfLists() throws java.io.IOException
+    {
+        java.util.List[] $stack6;
+        java.lang.String[] $stack7, $stack10;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.String $stack15, $stack18, $stack20, $stack21;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.util.List $stack9, $stack12;
+        java.lang.StringBuilder $stack13, $stack14, $stack16, $stack17, $stack19;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat EXCEL>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.util.List)[2];
+
+        $stack7 = newarray (java.lang.String)[2];
+
+        $stack7[0] = "r1c1";
+
+        $stack7[1] = "r1c2";
+
+        $stack9 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack7);
+
+        $stack6[0] = $stack9;
+
+        $stack10 = newarray (java.lang.String)[2];
+
+        $stack10[0] = "r2c1";
+
+        $stack10[1] = "r2c2";
+
+        $stack12 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack10);
+
+        $stack6[1] = $stack12;
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecords(java.lang.Object[])>($stack6);
+
+        $stack13 = new java.lang.StringBuilder;
+
+        specialinvoke $stack13.<java.lang.StringBuilder: void <init>()>();
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("r1c1,r1c2");
+
+        $stack15 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack16 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("r2c1,r2c2");
+
+        $stack18 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack19 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack18);
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack21 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack20, $stack21);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testExcelPrintAllIterableOfArrays() throws java.io.IOException
+    {
+        java.lang.String[] $stack7, $stack8;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.String $stack12, $stack15, $stack17, $stack18;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.util.List $stack9;
+        java.lang.StringBuilder $stack10, $stack11, $stack13, $stack14, $stack16;
+        java.lang.String[][] $stack6;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat EXCEL>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.String[])[2];
+
+        $stack7 = newarray (java.lang.String)[2];
+
+        $stack7[0] = "r1c1";
+
+        $stack7[1] = "r1c2";
+
+        $stack6[0] = $stack7;
+
+        $stack8 = newarray (java.lang.String)[2];
+
+        $stack8[0] = "r2c1";
+
+        $stack8[1] = "r2c2";
+
+        $stack6[1] = $stack8;
+
+        $stack9 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack6);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecords(java.lang.Iterable)>($stack9);
+
+        $stack10 = new java.lang.StringBuilder;
+
+        specialinvoke $stack10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("r1c1,r1c2");
+
+        $stack12 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("r2c1,r2c2");
+
+        $stack15 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack16 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack15);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack18 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack17, $stack18);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testExcelPrintAllIterableOfLists() throws java.io.IOException
+    {
+        java.util.List[] $stack6;
+        java.lang.String[] $stack7, $stack10;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.String $stack16, $stack19, $stack21, $stack22;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.util.List $stack9, $stack12, $stack13;
+        java.lang.StringBuilder $stack14, $stack15, $stack17, $stack18, $stack20;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat EXCEL>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.util.List)[2];
+
+        $stack7 = newarray (java.lang.String)[2];
+
+        $stack7[0] = "r1c1";
+
+        $stack7[1] = "r1c2";
+
+        $stack9 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack7);
+
+        $stack6[0] = $stack9;
+
+        $stack10 = newarray (java.lang.String)[2];
+
+        $stack10[0] = "r2c1";
+
+        $stack10[1] = "r2c2";
+
+        $stack12 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack10);
+
+        $stack6[1] = $stack12;
+
+        $stack13 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>($stack6);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecords(java.lang.Iterable)>($stack13);
+
+        $stack14 = new java.lang.StringBuilder;
+
+        specialinvoke $stack14.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("r1c1,r1c2");
+
+        $stack16 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack17 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack16);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("r2c1,r2c2");
+
+        $stack19 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack20 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack19);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack22 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack21, $stack22);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testExcelPrinter1() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat EXCEL>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a";
+
+        $stack6[1] = "b";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("a,b");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testExcelPrinter2() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat EXCEL>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a,b";
+
+        $stack6[1] = "b";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"a,b\",b");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testJdbcPrinter() throws java.io.IOException, java.lang.ClassNotFoundException, java.sql.SQLException
+    {
+        java.lang.Throwable $stack25;
+        java.sql.Connection $stack8;
+        org.apache.commons.csv.CSVFormat $stack14;
+        java.sql.ResultSet $stack15;
+        java.lang.String $stack18, $stack21, $stack23, $stack24;
+        java.io.StringWriter $stack6;
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.sql.Statement $stack9;
+        java.lang.StringBuilder $stack16, $stack17, $stack19, $stack20, $stack22;
+        org.apache.commons.csv.CSVPrinter $stack13;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack6 = new java.io.StringWriter;
+
+        specialinvoke $stack6.<java.io.StringWriter: void <init>()>();
+
+        staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>("org.h2.Driver");
+
+        $stack8 = staticinvoke <java.sql.DriverManager: java.sql.Connection getConnection(java.lang.String,java.lang.String,java.lang.String)>("jdbc:h2:mem:my_test;", "sa", "");
+
+     label1:
+        $stack9 = interfaceinvoke $stack8.<java.sql.Connection: java.sql.Statement createStatement()>();
+
+        interfaceinvoke $stack9.<java.sql.Statement: boolean execute(java.lang.String)>("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
+
+        interfaceinvoke $stack9.<java.sql.Statement: boolean execute(java.lang.String)>("insert into TEST values(1, \'r1\')");
+
+        interfaceinvoke $stack9.<java.sql.Statement: boolean execute(java.lang.String)>("insert into TEST values(2, \'r2\')");
+
+        $stack13 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack14 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack13.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack6, $stack14);
+
+        $stack15 = interfaceinvoke $stack9.<java.sql.Statement: java.sql.ResultSet executeQuery(java.lang.String)>("select ID, NAME from TEST");
+
+        virtualinvoke $stack13.<org.apache.commons.csv.CSVPrinter: void printRecords(java.sql.ResultSet)>($stack15);
+
+        $stack16 = new java.lang.StringBuilder;
+
+        specialinvoke $stack16.<java.lang.StringBuilder: void <init>()>();
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("1,r1");
+
+        $stack18 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack19 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack18);
+
+        $stack20 = virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("2,r2");
+
+        $stack21 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack22 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack21);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack24 = virtualinvoke $stack6.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack23, $stack24);
+
+        virtualinvoke $stack13.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+     label2:
+        interfaceinvoke $stack8.<java.sql.Connection: void close()>();
+
+        goto label5;
+
+     label3:
+        $stack25 := @caughtexception;
+
+     label4:
+        interfaceinvoke $stack8.<java.sql.Connection: void close()>();
+
+        throw $stack25;
+
+     label5:
+        return;
+
+        catch java.lang.Throwable from label1 to label2 with label3;
+        catch java.lang.Throwable from label3 to label4 with label3;
+    }
+
+    public void testMultiLineComment() throws java.io.IOException
+    {
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack7;
+        org.apache.commons.csv.CSVFormat$CSVFormatBuilder $stack5, $stack6;
+        java.lang.StringBuilder $stack8, $stack9, $stack11, $stack12, $stack14;
+        java.lang.String $stack10, $stack13, $stack15, $stack16;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = staticinvoke <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat$CSVFormatBuilder newBuilder()>();
+
+        $stack6 = virtualinvoke $stack5.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat$CSVFormatBuilder withCommentStart(char)>(35);
+
+        $stack7 = virtualinvoke $stack6.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat build()>();
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack7);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printComment(java.lang.String)>("This is a comment\non multiple lines");
+
+        $stack8 = new java.lang.StringBuilder;
+
+        specialinvoke $stack8.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("# This is a comment");
+
+        $stack10 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack11 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("# on multiple lines");
+
+        $stack13 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack16 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack15, $stack16);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrinter1() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a";
+
+        $stack6[1] = "b";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("a,b");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrinter2() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a,b";
+
+        $stack6[1] = "b";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"a,b\",b");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrinter3() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a, b";
+
+        $stack6[1] = "b ";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"a, b\",\"b \"");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrinter4() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a";
+
+        $stack6[1] = "b\"c";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("a,\"b\"\"c\"");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrinter5() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a";
+
+        $stack6[1] = "b\nc";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("a,\"b\nc\"");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrinter6() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a";
+
+        $stack6[1] = "b\r\nc";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("a,\"b\r\nc\"");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrinter7() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = "a";
+
+        $stack6[1] = "b\\c";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("a,b\\c");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrintNullValues() throws java.io.IOException
+    {
+        java.lang.Object[] $stack6;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5;
+        java.lang.StringBuilder $stack7, $stack8, $stack10;
+        java.lang.String $stack9, $stack11, $stack12;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack5);
+
+        $stack6 = newarray (java.lang.Object)[3];
+
+        $stack6[0] = "a";
+
+        $stack6[1] = null;
+
+        $stack6[2] = "b";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack6);
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("a,,b");
+
+        $stack9 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack10 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack12 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack11, $stack12);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testPrintCustomNullValues() throws java.io.IOException
+    {
+        java.lang.Object[] $stack9;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack5, $stack8;
+        org.apache.commons.csv.CSVFormat$CSVFormatBuilder $stack6, $stack7;
+        java.lang.StringBuilder $stack10, $stack11, $stack13;
+        java.lang.String $stack12, $stack14, $stack15;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        $stack6 = virtualinvoke $stack5.<org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat$CSVFormatBuilder toBuilder()>();
+
+        $stack7 = virtualinvoke $stack6.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat$CSVFormatBuilder withNullToString(java.lang.String)>("NULL");
+
+        $stack8 = virtualinvoke $stack7.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat build()>();
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack8);
+
+        $stack9 = newarray (java.lang.Object)[3];
+
+        $stack9[0] = "a";
+
+        $stack9[1] = null;
+
+        $stack9[2] = "b";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack9);
+
+        $stack10 = new java.lang.StringBuilder;
+
+        specialinvoke $stack10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("a,NULL,b");
+
+        $stack12 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack15 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack14, $stack15);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testQuoteAll() throws java.io.IOException
+    {
+        java.lang.Object[] $stack9;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.Quote $stack6;
+        org.apache.commons.csv.CSVFormat $stack8;
+        org.apache.commons.csv.CSVFormat$CSVFormatBuilder $stack5, $stack7;
+        java.lang.StringBuilder $stack10, $stack11, $stack13;
+        java.lang.String $stack12, $stack14, $stack15;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = staticinvoke <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat$CSVFormatBuilder newBuilder()>();
+
+        $stack6 = <org.apache.commons.csv.Quote: org.apache.commons.csv.Quote ALL>;
+
+        $stack7 = virtualinvoke $stack5.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat$CSVFormatBuilder withQuotePolicy(org.apache.commons.csv.Quote)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat build()>();
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack8);
+
+        $stack9 = newarray (java.lang.Object)[3];
+
+        $stack9[0] = "a";
+
+        $stack9[1] = "b\nc";
+
+        $stack9[2] = "d";
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack9);
+
+        $stack10 = new java.lang.StringBuilder;
+
+        specialinvoke $stack10.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"a\",\"b\nc\",\"d\"");
+
+        $stack12 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack15 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack14, $stack15);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testQuoteNonNumeric() throws java.io.IOException
+    {
+        java.lang.Object[] $stack9;
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        java.lang.Integer $stack11;
+        org.apache.commons.csv.Quote $stack6;
+        org.apache.commons.csv.CSVFormat $stack8;
+        org.apache.commons.csv.CSVFormat$CSVFormatBuilder $stack5, $stack7;
+        java.lang.StringBuilder $stack12, $stack13, $stack15;
+        java.lang.String $stack14, $stack16, $stack17;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = staticinvoke <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat$CSVFormatBuilder newBuilder()>();
+
+        $stack6 = <org.apache.commons.csv.Quote: org.apache.commons.csv.Quote NON_NUMERIC>;
+
+        $stack7 = virtualinvoke $stack5.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat$CSVFormatBuilder withQuotePolicy(org.apache.commons.csv.Quote)>($stack6);
+
+        $stack8 = virtualinvoke $stack7.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat build()>();
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack8);
+
+        $stack9 = newarray (java.lang.Object)[3];
+
+        $stack9[0] = "a";
+
+        $stack9[1] = "b\nc";
+
+        $stack11 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(1);
+
+        $stack9[2] = $stack11;
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printRecord(java.lang.Object[])>($stack9);
+
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"a\",\"b\nc\",1");
+
+        $stack14 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack17 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack16, $stack17);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+
+    public void testRandom() throws java.lang.Exception
+    {
+        org.apache.commons.csv.CSVFormat $stack2, $stack3, $stack4;
+        org.apache.commons.csv.CSVPrinterTest this;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack2 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        virtualinvoke this.<org.apache.commons.csv.CSVPrinterTest: void doRandom(org.apache.commons.csv.CSVFormat,int)>($stack2, 10000);
+
+        $stack3 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat EXCEL>;
+
+        virtualinvoke this.<org.apache.commons.csv.CSVPrinterTest: void doRandom(org.apache.commons.csv.CSVFormat,int)>($stack3, 10000);
+
+        $stack4 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat MYSQL>;
+
+        virtualinvoke this.<org.apache.commons.csv.CSVPrinterTest: void doRandom(org.apache.commons.csv.CSVFormat,int)>($stack4, 10000);
+
+        return;
+    }
+
+    public void testSingleLineComment() throws java.io.IOException
+    {
+        java.io.StringWriter $stack3;
+        org.apache.commons.csv.CSVPrinterTest this;
+        org.apache.commons.csv.CSVFormat $stack7;
+        org.apache.commons.csv.CSVFormat$CSVFormatBuilder $stack5, $stack6;
+        java.lang.StringBuilder $stack8, $stack9, $stack11;
+        java.lang.String $stack10, $stack12, $stack13;
+        org.apache.commons.csv.CSVPrinter $stack4;
+
+        this := @this: org.apache.commons.csv.CSVPrinterTest;
+
+        $stack3 = new java.io.StringWriter;
+
+        specialinvoke $stack3.<java.io.StringWriter: void <init>()>();
+
+        $stack4 = new org.apache.commons.csv.CSVPrinter;
+
+        $stack5 = staticinvoke <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat$CSVFormatBuilder newBuilder()>();
+
+        $stack6 = virtualinvoke $stack5.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat$CSVFormatBuilder withCommentStart(char)>(35);
+
+        $stack7 = virtualinvoke $stack6.<org.apache.commons.csv.CSVFormat$CSVFormatBuilder: org.apache.commons.csv.CSVFormat build()>();
+
+        specialinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void <init>(java.lang.Appendable,org.apache.commons.csv.CSVFormat)>($stack3, $stack7);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void printComment(java.lang.String)>("This is a comment");
+
+        $stack8 = new java.lang.StringBuilder;
+
+        specialinvoke $stack8.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("# This is a comment");
+
+        $stack10 = this.<org.apache.commons.csv.CSVPrinterTest: java.lang.String recordSeparator>;
+
+        $stack11 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack13 = virtualinvoke $stack3.<java.io.StringWriter: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.Object,java.lang.Object)>($stack12, $stack13);
+
+        virtualinvoke $stack4.<org.apache.commons.csv.CSVPrinter: void close()>();
+
+        return;
+    }
+}

@@ -1,0 +1,213 @@
+public class com.fasterxml.jackson.dataformat.xml.util.StaxUtil extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.fasterxml.jackson.dataformat.xml.util.StaxUtil this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.util.StaxUtil;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.Object throwXmlAsIOException(javax.xml.stream.XMLStreamException) throws java.io.IOException
+    {
+        java.lang.Throwable $stack2, t;
+        java.lang.Error $stack7;
+        java.io.IOException $stack5;
+        java.lang.RuntimeException $stack6;
+        javax.xml.stream.XMLStreamException e;
+        boolean $stack3, $stack4;
+
+        e := @parameter0: javax.xml.stream.XMLStreamException;
+
+        t = e;
+
+     label1:
+        $stack2 = virtualinvoke t.<java.lang.Throwable: java.lang.Throwable getCause()>();
+
+        if $stack2 == null goto label2;
+
+        t = virtualinvoke t.<java.lang.Throwable: java.lang.Throwable getCause()>();
+
+        goto label1;
+
+     label2:
+        $stack3 = t instanceof java.lang.Error;
+
+        if $stack3 == 0 goto label3;
+
+        $stack7 = (java.lang.Error) t;
+
+        throw $stack7;
+
+     label3:
+        $stack4 = t instanceof java.lang.RuntimeException;
+
+        if $stack4 == 0 goto label4;
+
+        $stack6 = (java.lang.RuntimeException) t;
+
+        throw $stack6;
+
+     label4:
+        $stack5 = new java.io.IOException;
+
+        specialinvoke $stack5.<java.io.IOException: void <init>(java.lang.Throwable)>(t);
+
+        throw $stack5;
+    }
+
+    public static java.lang.String sanitizeXmlTypeName(java.lang.String)
+    {
+        int $stack20, $stack21, changes, i, $stack8, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10;
+        java.lang.String $stack9, $stack22, name;
+        boolean $stack6, $stack23, $stack30;
+        char $stack10;
+        java.lang.StringBuilder sb, $u0, $u1;
+
+        name := @parameter0: java.lang.String;
+
+        changes = 0;
+
+        $stack6 = virtualinvoke name.<java.lang.String: boolean endsWith(java.lang.String)>("[]");
+
+        if $stack6 == 0 goto label03;
+
+     label01:
+        $stack20 = virtualinvoke name.<java.lang.String: int length()>();
+
+        $stack21 = $stack20 - 2;
+
+        $stack22 = virtualinvoke name.<java.lang.String: java.lang.String substring(int,int)>(0, $stack21);
+
+        name = $stack22;
+
+        changes = changes + 1;
+
+        $stack23 = virtualinvoke $stack22.<java.lang.String: boolean endsWith(java.lang.String)>("[]");
+
+        if $stack23 != 0 goto label01;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(java.lang.String)>($stack22);
+
+        sb = $u0;
+
+        $stack30 = virtualinvoke $stack22.<java.lang.String: boolean endsWith(java.lang.String)>("s");
+
+        if $stack30 == 0 goto label02;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("es");
+
+        goto label04;
+
+     label02:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(115);
+
+        goto label04;
+
+     label03:
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>(java.lang.String)>(name);
+
+        sb = $u1;
+
+     label04:
+        i = 0;
+
+        $stack8 = virtualinvoke name.<java.lang.String: int length()>();
+
+     label05:
+        if i >= $stack8 goto label13;
+
+        $stack10 = virtualinvoke name.<java.lang.String: char charAt(int)>(i);
+
+        $i0 = (int) $stack10;
+
+        if $i0 <= 127 goto label06;
+
+        goto label12;
+
+     label06:
+        $i1 = (int) $stack10;
+
+        if $i1 < 97 goto label07;
+
+        $i2 = (int) $stack10;
+
+        if $i2 > 122 goto label07;
+
+        goto label12;
+
+     label07:
+        $i3 = (int) $stack10;
+
+        if $i3 < 65 goto label08;
+
+        $i4 = (int) $stack10;
+
+        if $i4 > 90 goto label08;
+
+        goto label12;
+
+     label08:
+        $i5 = (int) $stack10;
+
+        if $i5 < 48 goto label09;
+
+        $i6 = (int) $stack10;
+
+        if $i6 > 57 goto label09;
+
+        goto label12;
+
+     label09:
+        $i7 = (int) $stack10;
+
+        if $i7 == 95 goto label12;
+
+        $i8 = (int) $stack10;
+
+        if $i8 == 46 goto label12;
+
+        $i9 = (int) $stack10;
+
+        if $i9 != 45 goto label10;
+
+        goto label12;
+
+     label10:
+        changes = changes + 1;
+
+        $i10 = (int) $stack10;
+
+        if $i10 != 36 goto label11;
+
+        virtualinvoke sb.<java.lang.StringBuilder: void setCharAt(int,char)>(i, 46);
+
+        goto label12;
+
+     label11:
+        virtualinvoke sb.<java.lang.StringBuilder: void setCharAt(int,char)>(i, 95);
+
+     label12:
+        i = i + 1;
+
+        goto label05;
+
+     label13:
+        if changes != 0 goto label14;
+
+        return name;
+
+     label14:
+        $stack9 = virtualinvoke sb.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack9;
+    }
+}
