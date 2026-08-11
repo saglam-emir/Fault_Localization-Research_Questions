@@ -3,7 +3,7 @@
 Ground truth faulty statement(s): [('CSVFormat.java', 319), ('CSVPrinter.java', 139)]
 
 - SBFL   top rank: 92, AP: 0.0051
-- Hybrid top rank: , AP: 0.0000
+- Hybrid top rank: 3, AP: 0.0000
 
 ## Top 10 - Trace-Based SBFL
 
@@ -24,4 +24,6 @@ Ground truth faulty statement(s): [('CSVFormat.java', 319), ('CSVPrinter.java', 
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
+| 1 | 1 | CSVFormat.java:318 | 0.707107 | `public static final CSVFormat MYSQL = DEFAULT.withDelimiter(TAB).withEscape(BACKSLASH).withIgnoreEmptyLines(false)` |
+| 2 | 1 | CSVFormat.java:229 | 0.0 | `public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true,` |
 

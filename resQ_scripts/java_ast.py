@@ -104,6 +104,55 @@ def root_variable(expr: str) -> str:
     return m.group(1) if m else ""
 
 
+# Matches a local variable declaration/assignment statement, e.g.
+#   "String xml = MAPPER.writeValueAsString(...)"  -> "xml"
+#   "List<String> out = compute();"                 -> "out"
+# capturing the LHS identifier being assigned, not the type token(s) before
+# it (unlike ROOT_VARIABLE_RE, which would match the type name here).
+_DECL_OR_ASSIGN_RE = re.compile(
+    r"^\s*(?:[A-Za-z_$][\w$]*(?:<[^;=]*?>)?(?:\[\])?\s+)*([A-Za-z_$][\w$]*)\s*=[^=]"
+)
+
+
+def synthetic_exception_criterion(src_file: Path, method_name: str, fail_line: int):
+    """Fallback pool-criterion for a failing test whose OWN stack-trace line
+    is not an assertX(...) call - i.e. the bug throws an exception from
+    application code before any assertion is ever reached (no @Test(expected
+    = ...), no custom assert library, no try/catch/fail: those all still end
+    up on an assertX(...)-bearing line or a line assertion-based parsing
+    already handles; a bare exception has no assertion anywhere in its
+    causal path by construction).
+
+    Reduces the statement at `fail_line` itself to a slicing variable using
+    the same "what does the assignment target, or the statement's leftmost
+    identifier" heuristic assertion_output_expr/root_variable use for a real
+    assertion's checked expression, so Step 2 still has a real (variable,
+    line) pair to seed a backward slice from instead of skipping the test
+    entirely. Returns None if `fail_line` cannot be resolved to a usable
+    variable (e.g. a bare call with no assignment and no leading
+    identifier, or fail_line falls outside the method's own body).
+    """
+    if not src_file.exists():
+        return None
+    all_lines = src_file.read_text(encoding="utf-8", errors="replace").splitlines()
+    bounds = extract_method_body_lines(all_lines, method_name)
+    if not bounds or not (1 <= fail_line <= len(all_lines)):
+        return None
+    start, end = bounds
+    if not (start + 1 <= fail_line <= end + 1):
+        return None  # fail_line reported by the stack trace isn't inside this method's own body
+
+    stmt = all_lines[fail_line - 1].strip()
+    if not stmt or stmt in ("{", "}"):
+        return None
+
+    m = _DECL_OR_ASSIGN_RE.match(stmt)
+    variable = m.group(1) if m else root_variable(stmt)
+    if not variable:
+        return None
+    return {"assert_type": "ExceptionSite", "raw_expression": stmt, "variable": variable, "line": fail_line}
+
+
 def parse_assertions_in_method(src_file: Path, method_name: str, max_line=None):
     """Every assertX(...) call inside one test method's body, in source
     order: [{assert_type, raw_expression, variable, line}]. If `max_line` is

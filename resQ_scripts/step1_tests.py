@@ -187,9 +187,28 @@ def run(ctx):
             continue
         src_file = test_source_dir / (test_class.replace(".", "/") + ".java")
         assertions = java_ast.parse_assertions_in_method(src_file, test_method, max_line=fail_line)
+        criterion_kind = "assertion"
         if not assertions:
-            logger.warning(f"{test_case}: no assertX(...) calls found up to line {fail_line}.")
-            continue
+            # No assertX(...) call ever executed before the test's own
+            # failure line - typically an exception thrown from application
+            # code (no @Test(expected=...), custom-assert, or try/catch/fail
+            # pattern would land here; those still resolve to an
+            # assertX(...) line above). Fall back to a synthetic criterion
+            # anchored at the exception site itself, so this failing test
+            # still contributes an (Incorrect) row instead of being skipped
+            # outright. This is a methodology extension, not a correction of
+            # parse_assertions_in_method: when a real assertX(...) call
+            # exists, it is still used exclusively (this branch only runs
+            # when assertions is empty).
+            synthetic = java_ast.synthetic_exception_criterion(src_file, test_method, fail_line)
+            if not synthetic:
+                logger.warning(f"{test_case}: no assertX(...) calls found up to line {fail_line}, and no "
+                                f"usable synthetic exception-site criterion either; skipping.")
+                continue
+            logger.info(f"{test_case}: no assertX(...) call at the failure line; using the exception site "
+                        f"itself as a synthetic slicing criterion (variable={synthetic['variable']!r}).")
+            assertions = [synthetic]
+            criterion_kind = "exception_site"
         for a in assertions:
             status = "Incorrect" if a["line"] == fail_line else "Correct"
             if not a["variable"]:
@@ -198,22 +217,24 @@ def run(ctx):
             pool_rows.append({"pool_id": pool_id, "test_case": test_case, "test_class": test_class,
                                "test_method": test_method, "source_file": source_file_name, "line": a["line"],
                                "assert_type": a["assert_type"], "raw_expression": a["raw_expression"],
-                               "variable": a["variable"], "status": status})
+                               "variable": a["variable"], "status": status, "criterion_kind": criterion_kind})
 
     common.write_csv(
         ctx.step1_dir / "target_variable_pool.csv",
         ["pool_id", "test_case", "test_class", "test_method", "source_file", "line",
-         "assert_type", "raw_expression", "variable", "status"],
+         "assert_type", "raw_expression", "variable", "status", "criterion_kind"],
         pool_rows,
     )
     if not pool_rows:
-        # Legitimate outcome, not a pipeline defect: it means every failing
-        # test's own failure line was never an assertX(...) call (e.g. the
-        # bug throws an exception from application code before any
-        # assertion is reached). There is nothing to build slicing criteria
-        # from, but RQ1 (test-level counts) is still perfectly answerable,
-        # so downstream steps run on an empty pool instead of aborting the
-        # whole target - they degrade to empty slices/rankings gracefully.
+        # Legitimate outcome, not a pipeline defect: even the synthetic
+        # exception-site fallback above found nothing usable for every
+        # failing test (e.g. its failure line resolves to a bare call with
+        # no assignment and no leading identifier, or no stack-trace frame
+        # for the test method itself). There is nothing to build slicing
+        # criteria from, but RQ1 (test-level counts) is still perfectly
+        # answerable, so downstream steps run on an empty pool instead of
+        # aborting the whole target - they degrade to empty slices/rankings
+        # gracefully.
         logger.warning(
             "Target Variable Pool is empty (no failing test's own failure line coincided with an "
             "assertX(...) call - likely a non-assertion exception). Continuing with an empty pool; "

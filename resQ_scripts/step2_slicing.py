@@ -204,4 +204,20 @@ def run(ctx, test_results, target_pool):
     n_pass = len(virtual_columns) - n_fail
     logger.info(f"Step2: {len(virtual_columns)} virtual column(s) collected ({n_fail} Virtual_Fail, {n_pass} Virtual_Pass).")
 
+    # Catch a total slicing failure here, not three steps later as a 0-column
+    # slice_observation_matrix.csv someone has to notice by diffing against
+    # another target's file. If every single virtual column's slice came
+    # back empty, Slicer4J most likely only ever returned the seed criterion
+    # line itself (which the main-source filter then correctly drops, since
+    # the seed sits in test code) - a real slicing failure, distinct from
+    # the "empty Target Variable Pool" case (nothing was even attempted).
+    if virtual_columns and all(r["slice_size"] == 0 for r in virtual_columns):
+        logger.warning(
+            f"Step2: ALL {len(virtual_columns)} virtual column(s) produced an EMPTY slice after "
+            f"main-source filtering. Slicer4J likely only traced each criterion's own seed line "
+            f"(see _slicer4j_failing/*/slice.log and _slicer4j_passed/*/slice.log). Step3's slice "
+            f"matrix, Step4's hybrid ranking, and RQ2/RQ4/RQ5's hybrid columns will all be "
+            f"degenerate/empty for this target - this is a slicing failure, not a real 0% result."
+        )
+
     return {"virtual_columns": virtual_columns, "passed_variable_matches": matches}

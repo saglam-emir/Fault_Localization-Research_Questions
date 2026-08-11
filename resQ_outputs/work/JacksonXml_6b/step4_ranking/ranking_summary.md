@@ -3,7 +3,7 @@
 Ground truth faulty statement(s): [('ToXmlGenerator.java', 843), ('ToXmlGenerator.java', 844), ('ToXmlGenerator.java', 845), ('ToXmlGenerator.java', 846), ('ToXmlGenerator.java', 847), ('ToXmlGenerator.java', 848), ('ToXmlGenerator.java', 849), ('ToXmlGenerator.java', 851), ('ToXmlGenerator.java', 866), ('ToXmlGenerator.java', 867)]
 
 - SBFL   top rank: 1335, AP: 0.0000
-- Hybrid top rank: , AP: 0.0000
+- Hybrid top rank: 66, AP: 0.0000
 
 ## Top 10 - Trace-Based SBFL
 
@@ -24,4 +24,14 @@ Ground truth faulty statement(s): [('ToXmlGenerator.java', 843), ('ToXmlGenerato
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
+| 1 | 3 | JacksonXmlAnnotationIntrospector.java:34 | 0.476731 | `public JacksonXmlAnnotationIntrospector(boolean defaultUseWrapper) {` |
+| 1 | 3 | JacksonXmlModule.java:65 | 0.476731 | `context.insertAnnotationIntrospector(_constructIntrospector());` |
+| 1 | 3 | JacksonXmlModule.java:126 | 0.476731 | `return new JacksonXmlAnnotationIntrospector(_cfgDefaultUseWrapper);` |
+| 4 | 1 | JacksonXmlModule.java:75 | 0.433861 | `super.setupModule(context);` |
+| 5 | 61 | DefaultXmlPrettyPrinter.java:106 | 0.0 | `public DefaultXmlPrettyPrinter() { }` |
+| 5 | 61 | FromXmlParser.java:50 | 0.0 | `EMPTY_ELEMENT_AS_NULL(true)` |
+| 5 | 61 | FromXmlParser.java:62 | 0.0 | `int flags = 0;` |
+| 5 | 61 | FromXmlParser.java:64 | 0.0 | `if (f.enabledByDefault()) {` |
+| 5 | 61 | FromXmlParser.java:65 | 0.0 | `flags |= f.getMask();` |
+| 5 | 61 | FromXmlParser.java:68 | 0.0 | `return flags;` |
 

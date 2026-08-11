@@ -127,6 +127,17 @@ def run(ctx, ochiai_result, ground_truth_faults):
                f"Ground truth faulty statement(s): {[(f['file'], f['line']) for f in gt]}", "",
                f"- SBFL   top rank: {trace_top}, AP: {trace_ap:.4f}",
                f"- Hybrid top rank: {slice_top}, AP: {slice_ap:.4f}", ""]
+    if ochiai_result.get("slice_universe_empty"):
+        summary += ["> **WARNING**: the hybrid slice matrix's statement universe was empty for this "
+                     "target (every virtual column's dynamic slice was empty or test-code-only). The "
+                     "Hybrid numbers above reflect a slicing failure, not a genuine 0%/rank-1 result - "
+                     "see step2_slicing's log and step3_matrices/slice_matrix_status.csv.", ""]
+    if ochiai_result.get("slice_fail_side_empty"):
+        summary += ["> **WARNING**: every Virtual_Fail column covers zero statements in the slice "
+                     "universe (only passing-test slices contributed). Every statement therefore "
+                     "scores Ochiai=0.0 and ties for rank 1 - Hybrid top rank/AP above are a "
+                     "degenerate tie-break artifact, not genuine localization - see "
+                     "step3_matrices/slice_matrix_status.csv.", ""]
     for title, ranked in (("Trace-Based SBFL", trace_ranked), ("Slice-Based Hybrid", slice_ranked)):
         summary += [f"## Top 10 - {title}", "", "| Rank | Tie Size | File:Line | Ochiai | Code |",
                     "|------|----------|-----------|--------|------|"]

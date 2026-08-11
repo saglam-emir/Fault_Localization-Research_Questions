@@ -24,6 +24,37 @@ Soot's multi-threaded instrumentation pass can also intermittently throw a
 ConcurrentModificationException. `run_slicer4j_criterion` retries the whole
 slicer4j.py invocation a few times to work around that flakiness rather than
 failing the whole target on a transient Soot crash.
+
+3. `-v <name>` almost never matches a real Jimple local, regardless of how
+   correct `name` looks at the source level. Slicer4J's own CLI
+   (Slicer.java) prepends a literal "$" to every `-v` token before turning
+   it into the AccessPath it seeds the backward walk with ("writer" becomes
+   "$writer"). "$"-prefixed identifiers are Soot's OWN naming convention for
+   its synthetic stack temporaries ($stack13, $stack15, ...) - never a name
+   Soot assigns to a source-level local, debug info or not (confirmed
+   empirically: even a genuinely multi-statement-spanning local like
+   "records" never survives into Jimple by that name). The practical effect:
+   ANY `-v <source-name>` seed is unresolvable by construction, and the
+   resulting "slice" collapses to just the criterion's own line(s) - unless
+   a branch/goto also happens to sit on that exact line, in which case an
+   unrelated, unconditional control-dependence expansion (SliceMethod.slice)
+   masks the problem by pulling in a large slice anyway, for reasons that
+   have nothing to do with whether `-v` matched anything.
+
+   `run_slicer4j_criterion` detects this "trivial slice" outcome (every
+   entry in raw-slice.log sits on the criterion's own source line - i.e. no
+   real backward dependency was ever found) and retries with `-v <name>`
+   replaced by each `$stackN` token Slicer4J's own raw-slice.log shows being
+   read/written at that exact criterion statement - the actual Jimple local
+   carrying the value we asked for in source terms, extracted post-hoc
+   instead of guessed up front. Verified directly: for Csv-13's
+   `assertEquals(expected, writer.toString())`, `-v writer` returns just the
+   criterion line; `-v stack13` (the real Jimple receiver of `.toString()`)
+   additionally finds `writer`'s own allocation site. For JacksonXml-6's
+   `String xml = MAPPER.writeValueAsString(createPojo())` (an exception
+   fires mid-RHS, so `xml` is never even assigned), `-v xml` returns nothing
+   useful; `-v stack4` (the Jimple local holding `createPojo()`'s result)
+   traces the whole helper method backward into the slice.
 """
 
 import os
@@ -35,6 +66,13 @@ import common
 from context import ENCODING, SLICER4J_SCRIPT, SLICER4J_TIMEOUT_SEC, SLICER4J_MAX_ATTEMPTS, TEST_TIMEOUT_SEC
 
 _DEP_VERSION_SUFFIX_RE = re.compile(r"-[0-9][^/]*\.jar$")
+
+# Cap on how many $stackN candidates to retry per criterion once its first
+# (source-name-seeded) attempt comes back trivial - bounds the extra
+# Slicer4J invocations a single bad guess can cost.
+_JIMPLE_RETRY_MAX_CANDIDATES = 4
+
+_STACK_LOCAL_RE = re.compile(r"\$(stack\d+)")
 
 
 def get_test_source_dir(project_dir: Path, cache_dir: Path, logger) -> Path:
@@ -114,14 +152,15 @@ def build_dependency_dir(ctx) -> Path:
     return ctx.dep_dir
 
 
-def run_slicer4j_criterion(ctx, jar_path, dep_dir, class_name, line_no, variable,
-                            test_class, test_method, out_dir: Path, tag: str = ""):
-    """Run one Slicer4J backward-slicing criterion, retrying on transient
-    Soot failures. Returns the Path to a populated slice.log on success, or
-    None if every attempt failed (recorded as an empty slice, not a fatal
-    pipeline error). Every attempt's wall time and peak memory are folded
-    into ctx.metrics regardless of outcome, so RQ3's Avg_Slice_Time /
-    Peak_Memory reflect real work done, not just successful attempts.
+def _slicer4j_attempt(ctx, jar_path, dep_dir, class_name, line_no, variable,
+                       test_class, test_method, out_dir: Path, tag: str):
+    """One Slicer4J invocation for a single `-v variable`, retrying on
+    transient Soot failures (see point 2 of the module docstring). Returns
+    the Path to a populated slice.log on success, or None if every attempt
+    failed. Every attempt's wall time and peak memory are folded into
+    ctx.metrics regardless of outcome, so RQ3's Avg_Slice_Time / Peak_Memory
+    reflect real work done, not just successful attempts - this holds for
+    every candidate `run_slicer4j_criterion` tries, not just the first.
     """
     logger = ctx.logger
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -164,3 +203,103 @@ def run_slicer4j_criterion(ctx, jar_path, dep_dir, class_name, line_no, variable
                     f"{test_class}::{test_method} @ {class_name}:{line_no} var={variable}. "
                     f"stderr tail: {last_stderr[-300:]}")
     return None
+
+
+def _is_trivial_slice(raw_slice_path: Path, line_no: int) -> bool:
+    """True if raw-slice.log contains no statement outside the criterion's
+    own source line - i.e. Slicer4J's backward walk never found a real
+    dependency to expand into (see point 3 of the module docstring). Treats
+    a missing/unreadable raw-slice.log as trivial too, so callers always
+    retry rather than silently accept an ambiguous non-result.
+    """
+    if not raw_slice_path.exists():
+        return True
+    for entry in raw_slice_path.read_text(encoding=ENCODING, errors="replace").splitlines():
+        entry = entry.strip()
+        if not entry:
+            continue
+        location = entry.split(None, 1)[0]  # "fully.Qualified.Class:LINE" before the whitespace-separated columns
+        _, _, line_str = location.rpartition(":")
+        try:
+            if int(line_str) != line_no:
+                return False
+        except ValueError:
+            continue
+    return True
+
+
+def _jimple_local_candidates(raw_slice_path: Path):
+    """Distinct Soot-generated `$stackN` local names appearing in
+    raw-slice.log's Jimple statement text, in first-seen order - the only
+    names that can ever literally match a Jimple local via `-v` (see point 3
+    of the module docstring). Used to retry a trivial slice with the actual
+    operand(s) of the criterion statement instead of the unresolvable
+    source-level name that was originally guessed.
+    """
+    if not raw_slice_path.exists():
+        return []
+    text = raw_slice_path.read_text(encoding=ENCODING, errors="replace")
+    seen, out = set(), []
+    for m in _STACK_LOCAL_RE.finditer(text):
+        name = m.group(1)
+        if name not in seen:
+            seen.add(name)
+            out.append(name)
+    return out
+
+
+def run_slicer4j_criterion(ctx, jar_path, dep_dir, class_name, line_no, variable,
+                            test_class, test_method, out_dir: Path, tag: str = ""):
+    """Run one Slicer4J backward-slicing criterion. Returns the Path to a
+    populated slice.log on success, or None if every attempt failed
+    (recorded as an empty slice, not a fatal pipeline error).
+
+    First tries `variable` as given (the source-level name Step 1/Step 2
+    extracted). If that comes back trivial (see _is_trivial_slice - the
+    expected symptom when `variable` never corresponds to a real Jimple
+    local, see point 3 of the module docstring), retries with each
+    `$stackN` operand Slicer4J's own output shows being read/written at the
+    criterion statement, in turn, until one produces a real backward slice
+    or the candidates are exhausted - in which case the original (trivial)
+    result is kept and returned as-is, so callers always get *a* slice_log
+    back (possibly empty/trivial) rather than needing to handle a new kind
+    of failure.
+    """
+    logger = ctx.logger
+    slice_log = _slicer4j_attempt(ctx, jar_path, dep_dir, class_name, line_no, variable,
+                                   test_class, test_method, out_dir, tag)
+    if slice_log is None:
+        return None
+
+    raw_slice_path = out_dir / "raw-slice.log"
+    if not _is_trivial_slice(raw_slice_path, line_no):
+        return slice_log
+
+    candidates = _jimple_local_candidates(raw_slice_path)[:_JIMPLE_RETRY_MAX_CANDIDATES]
+    if not candidates:
+        logger.info(f"[{tag}] Slice for variable={variable!r} was trivial (seed line only) and no "
+                     f"$stackN candidate was found to retry with; keeping the trivial result.")
+        return slice_log
+
+    logger.info(f"[{tag}] Slice for variable={variable!r} was trivial (seed line only); retrying with "
+                f"{len(candidates)} Jimple-local candidate(s) from its own raw-slice.log: {candidates}")
+    for candidate in candidates:
+        retry_dir = out_dir / f"_retry_{candidate}"
+        retry_log = _slicer4j_attempt(ctx, jar_path, dep_dir, class_name, line_no, candidate,
+                                       test_class, test_method, retry_dir, f"{tag}_retry_{candidate}")
+        if retry_log is not None and not _is_trivial_slice(retry_dir / "raw-slice.log", line_no):
+            logger.info(f"[{tag}] Retry with -v {candidate} (Jimple local underlying variable={variable!r}) "
+                        f"produced a non-trivial slice; using it in place of the trivial result.")
+            for f in retry_dir.iterdir():
+                dest = out_dir / f.name
+                if f.is_dir():
+                    shutil.copytree(f, dest, dirs_exist_ok=True)
+                else:
+                    shutil.copy(f, dest)
+            shutil.rmtree(retry_dir, ignore_errors=True)
+            return slice_log
+        shutil.rmtree(retry_dir, ignore_errors=True)
+
+    logger.info(f"[{tag}] All {len(candidates)} candidate(s) also produced a trivial slice; "
+                f"keeping the original variable={variable!r} result.")
+    return slice_log

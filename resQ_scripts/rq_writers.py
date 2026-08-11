@@ -8,13 +8,18 @@ target's single pipeline pass, per the "run exactly once per buggy version"
 requirement.
 
 Each RQ csv lives directly under resQ_outputs/ (the task's required output
-location) and is appended to as each target finishes, so a long multi-target
-run leaves usable partial results on disk even if a later target fails.
+location) and is upserted (keyed on Project+BugID, see common.upsert_csv_row)
+as each target finishes - one row per target no matter how many times or in
+what target subset run_pipeline.py is invoked - so a long multi-target run
+leaves usable partial results on disk even if a later target fails, without
+reruns silently accumulating duplicate rows.
 """
 
 from pathlib import Path
 
 import common
+
+RQ_KEY_FIELDS = ["Project", "BugID"]  # one row per target; reruns upsert on this key, never duplicate
 
 RQ1_FIELDS = ["Project", "BugID", "Pass_TC", "Fail_TC", "Pass_Assert", "Fail_Assert"]
 RQ2_FIELDS = ["Project", "BugID", "Full_Execution_Size", "Union_Passing_Slices",
@@ -35,7 +40,7 @@ def _write_rq1(ctx, outputs_dir, test_results, target_pool, passed_variable_matc
 
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Pass_TC": pass_tc, "Fail_TC": fail_tc,
            "Pass_Assert": pass_assert, "Fail_Assert": fail_assert}
-    common.append_csv_row(outputs_dir / "rq1.csv", RQ1_FIELDS, row)
+    common.upsert_csv_row(outputs_dir / "rq1.csv", RQ1_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
 
@@ -63,7 +68,7 @@ def _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result):
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Full_Execution_Size": full_execution_size,
            "Union_Passing_Slices": len(union_pass), "Union_Failing_Slices": len(union_fail),
            "Union_All_Slices": len(union_all), "Reduction_Ratio": round(reduction_ratio, 6)}
-    common.append_csv_row(outputs_dir / "rq2.csv", RQ2_FIELDS, row)
+    common.upsert_csv_row(outputs_dir / "rq2.csv", RQ2_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
 
@@ -75,7 +80,7 @@ def _write_rq3(ctx, outputs_dir):
            "Hybrid_Time": round(m.hybrid_time_sec, 3),
            "Avg_Slice_Time": round(m.avg_slice_time_sec, 3),
            "Peak_Memory": round(m.peak_memory_kb, 1)}
-    common.append_csv_row(outputs_dir / "rq3.csv", RQ3_FIELDS, row)
+    common.upsert_csv_row(outputs_dir / "rq3.csv", RQ3_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
 
@@ -93,7 +98,7 @@ def _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_re
 
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Total_Faults": total,
            "Included_In_Slice": included, "Fault_Inclusion_Rate": round(rate, 6)}
-    common.append_csv_row(outputs_dir / "rq4.csv", RQ4_FIELDS, row)
+    common.upsert_csv_row(outputs_dir / "rq4.csv", RQ4_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
 
@@ -103,7 +108,7 @@ def _write_rq5(ctx, outputs_dir, ranking_result):
            "Hybrid_Top_Rank": ranking_result["hybrid_top_rank"],
            "SBFL_AP": round(ranking_result["sbfl_ap"], 6),
            "Hybrid_AP": round(ranking_result["hybrid_ap"], 6)}
-    common.append_csv_row(outputs_dir / "rq5.csv", RQ5_FIELDS, row)
+    common.upsert_csv_row(outputs_dir / "rq5.csv", RQ5_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
 

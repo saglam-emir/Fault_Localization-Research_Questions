@@ -213,6 +213,11 @@ def append_csv_row(path, fieldnames, row) -> None:
     only if the file does not exist yet. Used by rq_writers.py so each
     target's row is durably persisted the moment that target finishes,
     instead of buffering all 4 targets' rows in memory until the very end.
+
+    NOTE: kept for callers that genuinely want raw append. For the RQ result
+    csvs, which must hold exactly one row per (Project, BugID) no matter how
+    many times run_pipeline.py is invoked - for all targets or a single one
+    - use upsert_csv_row instead.
     """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -222,3 +227,26 @@ def append_csv_row(path, fieldnames, row) -> None:
         if is_new:
             writer.writeheader()
         writer.writerow({k: row.get(k, "") for k in fieldnames})
+
+
+def upsert_csv_row(path, fieldnames, row, key_fields) -> None:
+    """Write one row to a shared cross-target RQ csv, replacing any existing
+    row(s) whose `key_fields` match instead of duplicating them.
+
+    Re-running run_pipeline.py - for all 4 targets or just one - is a
+    supported, ordinary workflow (see its own module docstring: "python3
+    run_pipeline.py Csv_3b # just one target"). Plain append (see
+    append_csv_row) makes every rerun accumulate duplicate rows for
+    whichever targets it touched; a blind truncate-at-start would instead
+    destroy the other targets' already-recorded rows on a single-target
+    rerun. Upserting on `key_fields` keeps exactly one row per target no
+    matter how many times or in what combination the pipeline is invoked,
+    while still writing the row to disk the moment its target finishes (a
+    crash on a later target does not lose earlier targets' rows).
+    """
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    key = tuple(row.get(k) for k in key_fields)
+    kept = [r for r in read_csv(path) if tuple(r.get(k) for k in key_fields) != key]
+    kept.append(row)
+    write_csv(path, fieldnames, kept)

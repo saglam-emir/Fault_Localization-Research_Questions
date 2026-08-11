@@ -199,9 +199,47 @@ def build_slice_matrix(ctx, virtual_columns):
     if universe:
         bracket_only = {s for s in universe if common.is_bracket_only_code(_get_code(ctx, code_cache, *s))}
         universe -= bracket_only
-    if not universe:
+    universe_empty = not universe
+    if universe_empty:
         logger.warning("Step3b: slice matrix statement universe is empty (every virtual column's dynamic "
                         "slice was empty or test-code-only) - hybrid Ochiai/ranking will be trivially empty.")
+
+    # A second, more insidious degenerate case than an empty universe: the
+    # universe is non-empty (passing-side slices produced real statements),
+    # but EVERY Virtual_Fail column individually covers zero of those
+    # statements (e.g. all failing-criteria slices came back empty while
+    # passing-criteria slices did not). ochiai_score's failed_covered term
+    # is then 0 for every single statement, so every statement scores 0.0
+    # and ties for rank 1 (see build_ranking's tie logic in
+    # step4_ranking.py) - Hybrid_Top_Rank=1 in that state is a tie-break
+    # artifact of zero failing-side data, not a genuine top-1 localization,
+    # and is otherwise indistinguishable from a real hit by anyone just
+    # reading rq5.csv.
+    fail_ids = [r["virtual_test_id"] for r in virtual_columns if r["virtual_status"] == "Virtual_Fail"]
+    fail_side_empty = bool(fail_ids) and not universe_empty and all(
+        not (per_column.get(vtid, set()) & universe) for vtid in fail_ids
+    )
+    if fail_side_empty:
+        logger.warning(
+            f"Step3b: all {len(fail_ids)} Virtual_Fail column(s) cover ZERO statements in the slice "
+            f"universe (only Virtual_Pass columns contributed statements). Every Ochiai score will be "
+            f"0.0 and the entire universe will tie for rank 1 - any 'Hybrid_Top_Rank=1' this produces "
+            f"is a degenerate tie-break artifact, not a real top-1 localization."
+        )
+
+    # Written unconditionally, with a fixed schema regardless of outcome -
+    # unlike slice_statement_mapping.csv / slice_observation_matrix.csv
+    # (whose column count legitimately varies with the size of the
+    # statement universe, 0 included), this file lets any downstream tool
+    # that loops over targets check "did this target's hybrid slicing
+    # actually produce usable data?" without needing to parse a
+    # variable-width CSV or infer it from a suspiciously-perfect rank.
+    common.write_csv(
+        ctx.step3_dir / "slice_matrix_status.csv",
+        ["statement_universe_size", "is_empty", "fail_side_empty"],
+        [{"statement_universe_size": len(universe), "is_empty": universe_empty,
+          "fail_side_empty": fail_side_empty}],
+    )
 
     ordered = sorted(universe)
     sids = {stmt: f"S{i+1}" for i, stmt in enumerate(ordered)}
@@ -229,7 +267,8 @@ def build_slice_matrix(ctx, virtual_columns):
     logger.info(f"Step3b: slice matrix {len(virtual_columns)} virtual columns x {len(ordered)} statements.")
     return {
         "matrix_rows": matrix_rows, "mapping_rows": mapping_rows, "statement_universe": ordered,
-        "per_column_statements": per_column,
+        "per_column_statements": per_column, "universe_empty": universe_empty,
+        "fail_side_empty": fail_side_empty,
     }
 
 
@@ -294,4 +333,6 @@ def run(ctx, test_results, virtual_columns):
         "slice_mapping": slice_["mapping_rows"], "slice_scores": slice_scores,
         "slice_universe": slice_["statement_universe"],
         "per_column_statements": slice_["per_column_statements"],
+        "slice_universe_empty": slice_["universe_empty"],
+        "slice_fail_side_empty": slice_["fail_side_empty"],
     }

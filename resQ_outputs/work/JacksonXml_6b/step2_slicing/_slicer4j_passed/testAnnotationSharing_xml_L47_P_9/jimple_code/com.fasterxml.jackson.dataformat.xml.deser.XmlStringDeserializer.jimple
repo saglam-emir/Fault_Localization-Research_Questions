@@ -1,0 +1,198 @@
+public class com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer extends com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer
+{
+    private static final long serialVersionUID;
+
+    public void <init>()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer;
+
+        specialinvoke this.<com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer: void <init>(java.lang.Class)>(class "Ljava/lang/String;");
+
+        return;
+    }
+
+    public boolean isCachable()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer;
+
+        return 1;
+    }
+
+    public java.lang.Object getEmptyValue(com.fasterxml.jackson.databind.DeserializationContext) throws com.fasterxml.jackson.databind.JsonMappingException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer this;
+        com.fasterxml.jackson.databind.DeserializationContext ctxt;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer;
+
+        ctxt := @parameter0: com.fasterxml.jackson.databind.DeserializationContext;
+
+        return "";
+    }
+
+    public java.lang.String deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext) throws java.io.IOException
+    {
+        byte[] $stack20, $stack21;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer this;
+        com.fasterxml.jackson.core.JsonToken $stack5, $stack7, $stack8, $stack9, $stack11;
+        java.lang.String $stack10, $stack14, $stack18, $stack22, $stack24, $stack25;
+        boolean $stack6, $stack17;
+        com.fasterxml.jackson.databind.DeserializationContext ctxt;
+        com.fasterxml.jackson.core.JsonParser p;
+        com.fasterxml.jackson.core.Base64Variant $stack19;
+        java.lang.Class $stack12;
+        java.lang.Object $stack13, $stack16, $stack23;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer;
+
+        p := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        ctxt := @parameter1: com.fasterxml.jackson.databind.DeserializationContext;
+
+        $stack5 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        $stack6 = virtualinvoke p.<com.fasterxml.jackson.core.JsonParser: boolean hasToken(com.fasterxml.jackson.core.JsonToken)>($stack5);
+
+        if $stack6 == 0 goto label1;
+
+        $stack25 = virtualinvoke p.<com.fasterxml.jackson.core.JsonParser: java.lang.String getText()>();
+
+        return $stack25;
+
+     label1:
+        $stack7 = virtualinvoke p.<com.fasterxml.jackson.core.JsonParser: com.fasterxml.jackson.core.JsonToken getCurrentToken()>();
+
+        $stack8 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_ARRAY>;
+
+        if $stack7 != $stack8 goto label2;
+
+        $stack23 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer: java.lang.Object _deserializeFromArray(com.fasterxml.jackson.core.JsonParser,com.fasterxml.jackson.databind.DeserializationContext)>(p, ctxt);
+
+        $stack24 = (java.lang.String) $stack23;
+
+        return $stack24;
+
+     label2:
+        $stack9 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_EMBEDDED_OBJECT>;
+
+        if $stack7 != $stack9 goto label5;
+
+        $stack16 = virtualinvoke p.<com.fasterxml.jackson.core.JsonParser: java.lang.Object getEmbeddedObject()>();
+
+        if $stack16 != null goto label3;
+
+        return null;
+
+     label3:
+        $stack17 = $stack16 instanceof byte[];
+
+        if $stack17 == 0 goto label4;
+
+        $stack19 = virtualinvoke ctxt.<com.fasterxml.jackson.databind.DeserializationContext: com.fasterxml.jackson.core.Base64Variant getBase64Variant()>();
+
+        $stack20 = (byte[]) $stack16;
+
+        $stack21 = (byte[]) $stack20;
+
+        $stack22 = virtualinvoke $stack19.<com.fasterxml.jackson.core.Base64Variant: java.lang.String encode(byte[],boolean)>($stack21, 0);
+
+        return $stack22;
+
+     label4:
+        $stack18 = virtualinvoke $stack16.<java.lang.Object: java.lang.String toString()>();
+
+        return $stack18;
+
+     label5:
+        $stack10 = virtualinvoke p.<com.fasterxml.jackson.core.JsonParser: java.lang.String getValueAsString(java.lang.String)>(null);
+
+        if $stack10 != null goto label6;
+
+        $stack11 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_NULL>;
+
+        if $stack7 != $stack11 goto label7;
+
+     label6:
+        return $stack10;
+
+     label7:
+        $stack12 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer: java.lang.Class _valueClass>;
+
+        $stack13 = virtualinvoke ctxt.<com.fasterxml.jackson.databind.DeserializationContext: java.lang.Object handleUnexpectedToken(java.lang.Class,com.fasterxml.jackson.core.JsonParser)>($stack12, p);
+
+        $stack14 = (java.lang.String) $stack13;
+
+        return $stack14;
+    }
+
+    public java.lang.String deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer) throws java.io.IOException
+    {
+        com.fasterxml.jackson.databind.DeserializationContext ctxt;
+        com.fasterxml.jackson.core.JsonParser p;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer this;
+        com.fasterxml.jackson.databind.jsontype.TypeDeserializer typeDeserializer;
+        java.lang.String $stack4;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer;
+
+        p := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        ctxt := @parameter1: com.fasterxml.jackson.databind.DeserializationContext;
+
+        typeDeserializer := @parameter2: com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+
+        $stack4 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer: java.lang.String deserialize(com.fasterxml.jackson.core.JsonParser,com.fasterxml.jackson.databind.DeserializationContext)>(p, ctxt);
+
+        return $stack4;
+    }
+
+    public volatile java.lang.Object deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer) throws java.io.IOException
+    {
+        com.fasterxml.jackson.databind.DeserializationContext x1;
+        com.fasterxml.jackson.core.JsonParser x0;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer this;
+        com.fasterxml.jackson.databind.jsontype.TypeDeserializer x2;
+        java.lang.String $stack4;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer;
+
+        x0 := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        x1 := @parameter1: com.fasterxml.jackson.databind.DeserializationContext;
+
+        x2 := @parameter2: com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+
+        $stack4 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer: java.lang.String deserializeWithType(com.fasterxml.jackson.core.JsonParser,com.fasterxml.jackson.databind.DeserializationContext,com.fasterxml.jackson.databind.jsontype.TypeDeserializer)>(x0, x1, x2);
+
+        return $stack4;
+    }
+
+    public volatile java.lang.Object deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext) throws java.io.IOException, com.fasterxml.jackson.core.JsonProcessingException
+    {
+        com.fasterxml.jackson.databind.DeserializationContext x1;
+        com.fasterxml.jackson.core.JsonParser x0;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer this;
+        java.lang.String $stack3;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer;
+
+        x0 := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        x1 := @parameter1: com.fasterxml.jackson.databind.DeserializationContext;
+
+        $stack3 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer: java.lang.String deserialize(com.fasterxml.jackson.core.JsonParser,com.fasterxml.jackson.databind.DeserializationContext)>(x0, x1);
+
+        return $stack3;
+    }
+
+    public static void <clinit>()
+    {
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlStringDeserializer: long serialVersionUID> = 1L;
+
+        return;
+    }
+}
