@@ -1,9 +1,13 @@
 # Ranking Comparison Summary
 
-Ground truth faulty statement(s): [('CSVFormat.java', 319), ('CSVPrinter.java', 139)]
+Ground truth faulty statement(s) (diff line): [('CSVFormat.java', 319), ('CSVPrinter.java', 139)]
 
-- SBFL   top rank: 92, AP: 0.0051
-- Hybrid top rank: 3, AP: 0.0000
+Statement-line-normalized for matching (multi-line statement, first-line attribution - see ground_truth.normalize_statement_line): [('CSVFormat.java', 319, '->', 318)]
+
+Ground_Truth_Answerable: True
+
+- SBFL   top rank: 37, AP: 0.0158
+- Hybrid top rank: 1, AP: 0.5172
 
 ## Top 10 - Trace-Based SBFL
 
@@ -24,6 +28,14 @@ Ground truth faulty statement(s): [('CSVFormat.java', 319), ('CSVPrinter.java', 
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 1 | CSVFormat.java:318 | 0.707107 | `public static final CSVFormat MYSQL = DEFAULT.withDelimiter(TAB).withEscape(BACKSLASH).withIgnoreEmptyLines(false)` |
-| 2 | 1 | CSVFormat.java:229 | 0.0 | `public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true,` |
+| 1 | 1 | CSVFormat.java:318 | 1.0 | `public static final CSVFormat MYSQL = DEFAULT.withDelimiter(TAB).withEscape(BACKSLASH).withIgnoreEmptyLines(false)` |
+| 2 | 57 | CSVFormat.java:419 | 0.707107 | `final boolean allowMissingColumnNames, final boolean ignoreHeaderCase) {` |
+| 2 | 57 | CSVFormat.java:420 | 0.707107 | `this.delimiter = delimiter;` |
+| 2 | 57 | CSVFormat.java:421 | 0.707107 | `this.quoteCharacter = quoteChar;` |
+| 2 | 57 | CSVFormat.java:422 | 0.707107 | `this.quoteMode = quoteMode;` |
+| 2 | 57 | CSVFormat.java:423 | 0.707107 | `this.commentMarker = commentStart;` |
+| 2 | 57 | CSVFormat.java:424 | 0.707107 | `this.escapeCharacter = escape;` |
+| 2 | 57 | CSVFormat.java:425 | 0.707107 | `this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;` |
+| 2 | 57 | CSVFormat.java:426 | 0.707107 | `this.allowMissingColumnNames = allowMissingColumnNames;` |
+| 2 | 57 | CSVFormat.java:427 | 0.707107 | `this.ignoreEmptyLines = ignoreEmptyLines;` |
 

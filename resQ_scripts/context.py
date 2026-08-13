@@ -33,6 +33,15 @@ SLICER4J_SCRIPT = os.environ.get("SLICER4J_SCRIPT", str(Path(SLICER4J_HOME) / "s
 SLICER4J_TIMEOUT_SEC = int(os.environ.get("SLICER4J_TIMEOUT_SEC", "600"))
 SLICER4J_MAX_ATTEMPTS = int(os.environ.get("SLICER4J_MAX_ATTEMPTS", "5"))
 
+# Aliasing-widening (correction roadmap Step 4): how far back in the test
+# method's own source java_ast.find_aliasing_seed_candidates looks for a
+# local that the criterion's seed variable was handed to, and how many such
+# candidates get an extra Slicer4J criterion run and unioned in. Bounds the
+# extra Slicer4J invocations one criterion can trigger, same reasoning as
+# slicer_runner.py's own _JIMPLE_RETRY_MAX_CANDIDATES.
+ALIAS_SCAN_MAX_LINES_BACK = int(os.environ.get("ALIAS_SCAN_MAX_LINES_BACK", "15"))
+ALIAS_SCAN_MAX_CANDIDATES = int(os.environ.get("ALIAS_SCAN_MAX_CANDIDATES", "3"))
+
 TEST_TIMEOUT_SEC = int(os.environ.get("TEST_TIMEOUT_SEC", "300"))
 
 # D4J framework root, needed to locate a bug's official src patch (ground

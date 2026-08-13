@@ -28,6 +28,34 @@ definition: the bug there is disappears entirely once fixed, so there is no
 best-effort fallback, such a hunk is anchored to the last unchanged
 (context) line immediately preceding the deleted block, flagged
 `approx=True` in the returned rows.
+
+ANSWERABILITY (classify_answerability): an `approx` anchor is sometimes not
+just imprecise but genuinely dead - the whole method the anchor used to sit
+in was deleted by the fix, and the anchor line is a leftover comment/blank
+line inside what's now an empty gap, never a real statement (verified
+directly for JacksonXml-6: `writeBinary(InputStream,...)` and its two
+helpers are entirely absent from the buggy checkout; the patch's anchor
+lines 843-851/866-867 are bare comments with no bytecode, so no
+coverage/slice tool can ever report them regardless of technique). No
+line-level SBFL or slicing approach can answer that case by construction -
+scoring it the same as a genuine missed-but-findable statement (e.g.
+Csv-13's CSVFormat.java:319) silently conflates "our technique failed" with
+"there was never a line to find." classify_answerability flags exactly the
+provable version of this: an `approx` anchor that never appears in the
+trace matrix's statement universe - i.e. it did not execute in ANY test,
+passing or failing, so it cannot be dead code specific to one run's control
+flow, only dead code specific to the buggy build itself.
+
+Deliberately NOT implemented here: substituting a "call site" (nearest
+in-project stack frame, polymorphic dispatch site, etc.) as a replacement
+ground-truth line for unanswerable bugs. Evaluated and rejected: it is
+under-specified (several different frames could be chosen), unstable across
+different failing tests of the same bug (unlike the patch, it isn't a fixed
+per-bug artifact), and conflates crash-site localization with root-cause
+fault localization - a technique that ranks generic exception-wrapping
+boilerplate highly would score as a "hit" under that scheme for reasons
+unrelated to finding the actual defect. Unanswerable bugs are excluded from
+primary scoring instead (see rq_writers.py's rq0_answerability.csv).
 """
 
 import re
@@ -119,11 +147,71 @@ def parse_patch(patch_text: str):
     return faults
 
 
-def load_ground_truth_faults(project_id: str, bug_id: str, logger):
+_STMT_TERMINATOR_RE = re.compile(r"[;{}]$|\*/$")
+_MAX_STATEMENT_LOOKBACK = 10
+
+
+def normalize_statement_line(src_path, line_no: int, max_lookback: int = _MAX_STATEMENT_LOOKBACK) -> int:
+    """The enclosing Java statement's FIRST physical line for `line_no` in
+    `src_path` - i.e. the line javac's bytecode line-number table actually
+    attributes a multi-line statement to (confirmed directly for Csv-13:
+    the `MYSQL` field's fluent-builder chain spans source lines 318-319;
+    javac attributes the whole `putstatic` to 318, while the diff's edit
+    point sits on 319 - so a slicer/coverage hit on 318 and a diff-derived
+    ground-truth line of 319 are the SAME statement, not a near miss).
+
+    Coverage tools (Cobertura) and Slicer4J both report lines via that same
+    bytecode convention; only Defects4J's diff-derived ground truth doesn't
+    (it reports wherever the literal text changed). This makes the two
+    sides literally not comparable for any multi-line statement without
+    normalizing one to the other - deliberately normalizing the ground
+    truth side here (never touching what the coverage/slicing tools
+    report), so Step 4's line-exact matching stops mistaking "found the
+    right statement" for "missed by N lines".
+
+    Heuristic (no AST library available - same constraint java_ast.py
+    already documents): walk backward from `line_no` while the PRECEDING
+    physical line does not terminate a statement (doesn't end in `;`, `{`,
+    `}`, or `*/`) and is not itself blank/a comment line (a genuine
+    statement terminator or a comment/blank line both mean "line_no is not
+    a continuation of it"). Bounded by `max_lookback` so a misidentified
+    boundary can never run away across unrelated code. Returns `line_no`
+    unchanged if the source file is unavailable, out of range, or no
+    continuation pattern is found within the bound.
+    """
+    if not src_path or not Path(src_path).exists():
+        return line_no
+    lines = Path(src_path).read_text(encoding=ENCODING, errors="replace").splitlines()
+    if not (1 <= line_no <= len(lines)):
+        return line_no
+
+    cur, steps = line_no, 0
+    while steps < max_lookback and cur > 1:
+        prev = lines[cur - 2].strip()
+        prev_is_boundary = (
+            prev == "" or prev.startswith("//") or prev.startswith("*") or prev.startswith("/*")
+            or bool(_STMT_TERMINATOR_RE.search(prev))
+        )
+        if prev_is_boundary:
+            break
+        cur -= 1
+        steps += 1
+    return cur
+
+
+def load_ground_truth_faults(project_id: str, bug_id: str, logger, checkout_dir=None):
     """Ground-truth faulty (file, line) pairs for one Defects4J bug, resolved
     against its own patch file. `file` is the project-relative path exactly
     as it appears in the buggy checkout (e.g.
-    'src/main/java/org/apache/commons/csv/Lexer.java').
+    'src/main/java/org/apache/commons/csv/Lexer.java'). `line` is always the
+    original diff-derived line, unchanged, for display/audit.
+
+    If `checkout_dir` is given, each fault also gets a `statement_line`
+    field - `line` normalized to its enclosing statement's first physical
+    line (see normalize_statement_line) - which is what Step 4 actually
+    matches ranked statements against. Without `checkout_dir`,
+    `statement_line` falls back to `line` unchanged (no normalization
+    possible without the source tree to read).
     """
     path = patch_path(project_id, bug_id)
     if not path.exists():
@@ -134,5 +222,78 @@ def load_ground_truth_faults(project_id: str, bug_id: str, logger):
     if approx:
         logger.info(f"{len(approx)}/{len(faults)} ground-truth fault line(s) are approximate "
                      f"(pure-deletion hunk, anchored to the preceding context line).")
+
+    faults = [
+        {**f, "statement_line": normalize_statement_line(Path(checkout_dir) / f["file"], f["line"])
+                                 if checkout_dir is not None else f["line"]}
+        for f in faults
+    ]
+
+    normalized = [f for f in faults if f["statement_line"] != f["line"]]
+    if normalized:
+        logger.info(f"{len(normalized)}/{len(faults)} ground-truth fault line(s) normalized to their "
+                    f"enclosing statement's first line for matching: "
+                    f"{[(f['file'], f['line'], '->', f['statement_line']) for f in normalized]}")
     logger.info(f"Loaded {len(faults)} ground-truth fault line(s) for {project_id}-{bug_id} from {path}")
     return faults
+
+
+def classify_answerability(faults, trace_universe, logger):
+    """Per-fault `answerable` flag + bug-level `bug_fully_unanswerable` verdict.
+
+    `trace_universe` is the trace (SBFL) matrix's statement universe -
+    every (file_basename, line) that executed with hits>0 in at least one
+    test, passing or failing (see step3_matrices.build_trace_matrix). It is
+    the broadest "did this line ever run at all, by any test" signal this
+    pipeline computes, so it is the right oracle for "is this anchor
+    provably dead code" - a slice-matrix-only check would be narrower and
+    could mistake "not selected by our slicing criteria" for "never
+    executed anywhere", which is a different (and not what we want to
+    detect here) failure mode.
+
+    A fault row is unanswerable only when ALL hold:
+      - it is `approx` (a pure-deletion hunk's anchor, not a real edited
+        line - see module docstring), AND
+      - neither its raw diff `line` NOR its normalized `statement_line`
+        (when present - see normalize_statement_line) appears in
+        trace_universe. Checking both, not just `line`, avoids a false
+        "unanswerable" verdict for an anchor that's itself the continuation
+        line of a multi-line statement whose coverage hit lands on the
+        statement's first line instead.
+    A non-approx fault (a genuine `+` edit line) is never marked
+    unanswerable here, even if some *other* run never covered it - that is
+    an ordinary "technique missed a real, live line" outcome, not a
+    ground-truth representation problem, and must keep counting normally
+    against RQ4/RQ5.
+
+    Returns [{"file", "line", "approx", "answerable"}, ...] (same order/
+    length as `faults`) plus logs a bug-level verdict. Callers combine the
+    per-row list with `all(not f["answerable"] for f in faults)` for the
+    bug-level flag (empty `faults` is a separate "no ground truth" case,
+    deliberately not conflated with "unanswerable" - see rq_writers.py).
+    """
+    # trace_universe is already [(file_basename, line), ...] - see
+    # step3_matrices.build_trace_matrix's `ordered` / trace_statement_mapping.csv.
+    universe = {(file, int(line)) for file, line in trace_universe}
+    out = []
+    for f in faults:
+        basename = Path(f["file"]).name
+        never_ran = (basename, f["line"]) not in universe and (basename, f.get("statement_line", f["line"])) not in universe
+        dead = f["approx"] and never_ran
+        out.append({**f, "answerable": not dead})
+
+    unanswerable = [f for f in out if not f["answerable"]]
+    if unanswerable:
+        logger.warning(
+            f"{len(unanswerable)}/{len(out)} ground-truth fault line(s) are UNANSWERABLE: approximate "
+            f"anchors that never executed in any test (dead code in the buggy build - most likely an "
+            f"entire deleted method, not a wrong-but-live statement). No line-level SBFL or slicing "
+            f"technique can find these by construction: {[(f['file'], f['line']) for f in unanswerable]}"
+        )
+    if out and all(not f["answerable"] for f in out):
+        logger.warning(
+            "ALL ground-truth fault lines for this bug are unanswerable - this bug should be excluded "
+            "from primary SBFL/Hybrid comparison scoring (see rq0_answerability.csv), not counted as "
+            "either technique 'failing to find' a findable defect."
+        )
+    return out

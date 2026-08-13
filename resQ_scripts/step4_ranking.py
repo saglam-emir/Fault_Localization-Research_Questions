@@ -110,9 +110,28 @@ def _write_ranking_csv(path, ranked):
     common.write_csv(path, ["rank", "statement_id", "file", "line", "code", "ochiai_score", "tie_size", "r_worst"], ranked)
 
 
-def run(ctx, ochiai_result, ground_truth_faults):
+def _write_answerability_csv(path, answerability):
+    common.write_csv(path, ["file", "line", "approx", "answerable"], answerability)
+
+
+def run(ctx, ochiai_result, ground_truth_faults, answerability=None):
+    """`answerability`: ground_truth.classify_answerability's output, same
+    order as `ground_truth_faults` (None if the caller didn't compute it -
+    kept optional so this function still works standalone/pre-Step-2).
+    """
     logger = ctx.logger
-    gt = [{"file": Path(f["file"]).name, "line": f["line"]} for f in ground_truth_faults]
+    # Matching uses `statement_line` (the enclosing statement's first line,
+    # per ground_truth.normalize_statement_line) - coverage/slice tools
+    # report a multi-line statement's hit on that same first line, so
+    # matching on the raw diff line would mismatch a genuine hit by however
+    # many lines the statement spans (verified concretely on Csv-13's
+    # CSVFormat.java: diff line 319, statement/coverage line 318). `line`
+    # (the original, un-normalized diff line) is kept only for the summary
+    # header's human-readable display, never for matching.
+    gt = [{"file": Path(f["file"]).name, "line": f.get("statement_line", f["line"])} for f in ground_truth_faults]
+    gt_display = [(Path(f["file"]).name, f["line"]) for f in ground_truth_faults]
+    line_shifts = {(Path(f["file"]).name, f["line"]): f.get("statement_line", f["line"])
+                   for f in ground_truth_faults if f.get("statement_line", f["line"]) != f["line"]}
 
     trace_ranked = build_ranking(ochiai_result["trace_scores"], ochiai_result["trace_mapping"], logger, "trace (SBFL)")
     slice_ranked = build_ranking(ochiai_result["slice_scores"], ochiai_result["slice_mapping"], logger, "slice (hybrid)")
@@ -123,9 +142,32 @@ def run(ctx, ochiai_result, ground_truth_faults):
     trace_ap, trace_top = average_precision_and_top_rank(trace_ranked, gt, logger, "trace (SBFL)")
     slice_ap, slice_top = average_precision_and_top_rank(slice_ranked, gt, logger, "slice (hybrid)")
 
+    bug_fully_unanswerable = bool(answerability) and all(not f["answerable"] for f in answerability)
+    if answerability is not None:
+        _write_answerability_csv(ctx.step4_dir / "ground_truth_answerability.csv", answerability)
+
     summary = ["# Ranking Comparison Summary", "",
-               f"Ground truth faulty statement(s): {[(f['file'], f['line']) for f in gt]}", "",
-               f"- SBFL   top rank: {trace_top}, AP: {trace_ap:.4f}",
+               f"Ground truth faulty statement(s) (diff line): {gt_display}", ""]
+    if line_shifts:
+        summary += [f"Statement-line-normalized for matching (multi-line statement, first-line "
+                    f"attribution - see ground_truth.normalize_statement_line): "
+                    f"{[(f, diff_ln, '->', stmt_ln) for (f, diff_ln), stmt_ln in line_shifts.items()]}", ""]
+    if answerability is not None:
+        unanswerable = [(f["file"], f["line"]) for f in answerability if not f["answerable"]]
+        summary += [f"Ground_Truth_Answerable: {not bug_fully_unanswerable}"]
+        if unanswerable:
+            summary += [f"Unanswerable fault line(s) (dead code in the buggy build - see "
+                        f"ground_truth_answerability.csv): {unanswerable}"]
+        summary += [""]
+    if bug_fully_unanswerable:
+        summary += ["> **WARNING**: every ground-truth fault line for this bug is an approximate "
+                     "pure-deletion anchor that never executed in any test (dead code in the buggy "
+                     "build, not a wrong-but-live statement - typically an entire deleted method). No "
+                     "line-level SBFL or slicing technique can find this by construction. The top "
+                     "rank/AP numbers below are not a meaningful measure of either technique's "
+                     "capability for this bug and should be excluded from primary cross-bug scoring "
+                     "(see rq0_answerability.csv).", ""]
+    summary += [f"- SBFL   top rank: {trace_top}, AP: {trace_ap:.4f}",
                f"- Hybrid top rank: {slice_top}, AP: {slice_ap:.4f}", ""]
     if ochiai_result.get("slice_universe_empty"):
         summary += ["> **WARNING**: the hybrid slice matrix's statement universe was empty for this "
@@ -153,4 +195,5 @@ def run(ctx, ochiai_result, ground_truth_faults):
         "trace_ranked": trace_ranked, "slice_ranked": slice_ranked,
         "sbfl_top_rank": trace_top, "hybrid_top_rank": slice_top,
         "sbfl_ap": trace_ap, "hybrid_ap": slice_ap,
+        "bug_fully_unanswerable": bug_fully_unanswerable,
     }

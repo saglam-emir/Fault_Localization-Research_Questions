@@ -1,0 +1,463 @@
+public abstract class com.fasterxml.jackson.dataformat.xml.XmlTestBase extends junit.framework.TestCase
+{
+    protected static final int SAMPLE_SPEC_VALUE_WIDTH;
+    protected static final int SAMPLE_SPEC_VALUE_HEIGHT;
+    protected static final java.lang.String SAMPLE_SPEC_VALUE_TITLE;
+    protected static final java.lang.String SAMPLE_SPEC_VALUE_TN_URL;
+    protected static final int SAMPLE_SPEC_VALUE_TN_HEIGHT;
+    protected static final java.lang.String SAMPLE_SPEC_VALUE_TN_WIDTH;
+    protected static final int SAMPLE_SPEC_VALUE_TN_ID1;
+    protected static final int SAMPLE_SPEC_VALUE_TN_ID2;
+    protected static final int SAMPLE_SPEC_VALUE_TN_ID3;
+    protected static final int SAMPLE_SPEC_VALUE_TN_ID4;
+    protected static final java.lang.String SAMPLE_DOC_JSON_SPEC;
+
+    protected void <init>()
+    {
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        specialinvoke this.<junit.framework.TestCase: void <init>()>();
+
+        return;
+    }
+
+    protected com.fasterxml.jackson.dataformat.xml.XmlMapper xmlMapper(boolean)
+    {
+        com.fasterxml.jackson.dataformat.xml.XmlMapper $stack4;
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+        com.fasterxml.jackson.dataformat.xml.JacksonXmlModule $stack3;
+        boolean useListWrapping;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        useListWrapping := @parameter0: boolean;
+
+        $stack3 = new com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+
+        specialinvoke $stack3.<com.fasterxml.jackson.dataformat.xml.JacksonXmlModule: void <init>()>();
+
+        virtualinvoke $stack3.<com.fasterxml.jackson.dataformat.xml.JacksonXmlModule: void setDefaultUseWrapper(boolean)>(useListWrapping);
+
+        $stack4 = new com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+        specialinvoke $stack4.<com.fasterxml.jackson.dataformat.xml.XmlMapper: void <init>(com.fasterxml.jackson.dataformat.xml.JacksonXmlModule)>($stack3);
+
+        return $stack4;
+    }
+
+    protected void assertToken(com.fasterxml.jackson.core.JsonToken, com.fasterxml.jackson.core.JsonToken)
+    {
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+        java.lang.StringBuilder $stack3, $stack4, $stack5, $stack6, $stack7;
+        com.fasterxml.jackson.core.JsonToken actToken, expToken;
+        java.lang.String $stack8;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        expToken := @parameter0: com.fasterxml.jackson.core.JsonToken;
+
+        actToken := @parameter1: com.fasterxml.jackson.core.JsonToken;
+
+        if actToken == expToken goto label1;
+
+        $stack3 = new java.lang.StringBuilder;
+
+        specialinvoke $stack3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected token ");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(expToken);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(", current token ");
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(actToken);
+
+        $stack8 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.XmlTestBase: void fail(java.lang.String)>($stack8);
+
+     label1:
+        return;
+    }
+
+    protected void assertToken(com.fasterxml.jackson.core.JsonToken, com.fasterxml.jackson.core.JsonParser)
+    {
+        com.fasterxml.jackson.core.JsonParser jp;
+        com.fasterxml.jackson.core.JsonToken expToken, $stack3;
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        expToken := @parameter0: com.fasterxml.jackson.core.JsonToken;
+
+        jp := @parameter1: com.fasterxml.jackson.core.JsonParser;
+
+        $stack3 = virtualinvoke jp.<com.fasterxml.jackson.core.JsonParser: com.fasterxml.jackson.core.JsonToken getCurrentToken()>();
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.XmlTestBase: void assertToken(com.fasterxml.jackson.core.JsonToken,com.fasterxml.jackson.core.JsonToken)>(expToken, $stack3);
+
+        return;
+    }
+
+    protected java.lang.String getAndVerifyText(com.fasterxml.jackson.core.JsonParser) throws java.io.IOException, com.fasterxml.jackson.core.JsonParseException
+    {
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+        int $stack6, $stack9, $stack11, $stack19;
+        java.lang.String $stack8, $stack10, $stack23;
+        com.fasterxml.jackson.core.JsonToken $stack14;
+        com.fasterxml.jackson.core.JsonParser jp;
+        char[] $stack7;
+        java.lang.StringBuilder $stack12, $stack13, $stack15, $stack16, $stack17, $stack18, $stack20, $stack21, $stack22;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        jp := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        $stack6 = virtualinvoke jp.<com.fasterxml.jackson.core.JsonParser: int getTextLength()>();
+
+        $stack7 = virtualinvoke jp.<com.fasterxml.jackson.core.JsonParser: char[] getTextCharacters()>();
+
+        $stack8 = new java.lang.String;
+
+        $stack9 = virtualinvoke jp.<com.fasterxml.jackson.core.JsonParser: int getTextOffset()>();
+
+        specialinvoke $stack8.<java.lang.String: void <init>(char[],int,int)>($stack7, $stack9, $stack6);
+
+        $stack10 = virtualinvoke jp.<com.fasterxml.jackson.core.JsonParser: java.lang.String getText()>();
+
+        $stack11 = virtualinvoke $stack10.<java.lang.String: int length()>();
+
+        if $stack11 == $stack6 goto label1;
+
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Internal problem (jp.token == ");
+
+        $stack14 = virtualinvoke jp.<com.fasterxml.jackson.core.JsonParser: com.fasterxml.jackson.core.JsonToken getCurrentToken()>();
+
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("): jp.getText().length() [\'");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\'] == ");
+
+        $stack19 = virtualinvoke $stack10.<java.lang.String: int length()>();
+
+        $stack20 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack19);
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("; jp.getTextLength() == ");
+
+        $stack22 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack6);
+
+        $stack23 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.XmlTestBase: void fail(java.lang.String)>($stack23);
+
+     label1:
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.XmlTestBase: void assertEquals(java.lang.String,java.lang.String,java.lang.String)>("String access via getText(), getTextXxx() must be the same", $stack10, $stack8);
+
+        return $stack10;
+    }
+
+    protected void verifyFieldName(com.fasterxml.jackson.core.JsonParser, java.lang.String) throws java.io.IOException
+    {
+        com.fasterxml.jackson.core.JsonParser jp;
+        java.lang.String expName, $stack3, $stack4;
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        jp := @parameter0: com.fasterxml.jackson.core.JsonParser;
+
+        expName := @parameter1: java.lang.String;
+
+        $stack3 = virtualinvoke jp.<com.fasterxml.jackson.core.JsonParser: java.lang.String getText()>();
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.XmlTestBase: void assertEquals(java.lang.String,java.lang.String)>(expName, $stack3);
+
+        $stack4 = virtualinvoke jp.<com.fasterxml.jackson.core.JsonParser: java.lang.String getCurrentName()>();
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.XmlTestBase: void assertEquals(java.lang.String,java.lang.String)>(expName, $stack4);
+
+        return;
+    }
+
+    protected transient void verifyException(java.lang.Throwable, java.lang.String[])
+    {
+        java.lang.Throwable e;
+        java.lang.String[] matches;
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+        int $stack21, $stack26, i$;
+        java.lang.String $stack10, lmsg, $stack19, match, $stack20, $stack11;
+        java.util.List $stack14;
+        java.lang.StringBuilder $stack12, $stack13, $stack15, $stack16, $stack17, $stack18;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        e := @parameter0: java.lang.Throwable;
+
+        matches := @parameter1: java.lang.String[];
+
+        $stack10 = virtualinvoke e.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        if $stack10 != null goto label1;
+
+        $stack11 = "";
+
+        goto label2;
+
+     label1:
+        $stack11 = virtualinvoke $stack10.<java.lang.String: java.lang.String toLowerCase()>();
+
+     label2:
+        lmsg = $stack11;
+
+        $stack26 = lengthof matches;
+
+        i$ = 0;
+
+     label3:
+        if i$ >= $stack26 goto label5;
+
+        match = matches[i$];
+
+        $stack20 = virtualinvoke match.<java.lang.String: java.lang.String toLowerCase()>();
+
+        $stack21 = virtualinvoke lmsg.<java.lang.String: int indexOf(java.lang.String)>($stack20);
+
+        if $stack21 < 0 goto label4;
+
+        return;
+
+     label4:
+        i$ = i$ + 1;
+
+        goto label3;
+
+     label5:
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected an exception with one of substrings (");
+
+        $stack14 = staticinvoke <java.util.Arrays: java.util.List asList(java.lang.Object[])>(matches);
+
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("): got one with message \"");
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        $stack18 = virtualinvoke $stack17.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\"");
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.XmlTestBase: void fail(java.lang.String)>($stack19);
+
+        return;
+    }
+
+    protected static java.lang.String aposToQuotes(java.lang.String)
+    {
+        java.lang.String json, $stack1;
+
+        json := @parameter0: java.lang.String;
+
+        $stack1 = virtualinvoke json.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("\'", "\"");
+
+        return $stack1;
+    }
+
+    protected byte[] utf8Bytes(java.lang.String)
+    {
+        byte[] $stack3;
+        java.io.IOException $stack4;
+        java.lang.String str;
+        java.lang.IllegalArgumentException $stack5;
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        str := @parameter0: java.lang.String;
+
+     label1:
+        $stack3 = virtualinvoke str.<java.lang.String: byte[] getBytes(java.lang.String)>("UTF-8");
+
+     label2:
+        return $stack3;
+
+     label3:
+        $stack4 := @caughtexception;
+
+        $stack5 = new java.lang.IllegalArgumentException;
+
+        specialinvoke $stack5.<java.lang.IllegalArgumentException: void <init>(java.lang.Throwable)>($stack4);
+
+        throw $stack5;
+
+        catch java.io.IOException from label1 to label2 with label3;
+    }
+
+    protected static java.lang.String removeSjsxpNamespace(java.lang.String)
+    {
+        int $stack3, $stack8, $stack9;
+        java.lang.StringBuilder $stack4, $stack6, $stack11;
+        java.lang.String $stack5, $stack7, $stack10, xml;
+
+        xml := @parameter0: java.lang.String;
+
+        $stack3 = virtualinvoke xml.<java.lang.String: int indexOf(java.lang.String)>(" xmlns=\"\"");
+
+        if $stack3 <= 0 goto label1;
+
+        $stack4 = new java.lang.StringBuilder;
+
+        specialinvoke $stack4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack5 = virtualinvoke xml.<java.lang.String: java.lang.String substring(int,int)>(0, $stack3);
+
+        $stack6 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack5);
+
+        $stack7 = " xmlns=\"\"";
+
+        $stack8 = virtualinvoke $stack7.<java.lang.String: int length()>();
+
+        $stack9 = $stack3 + $stack8;
+
+        $stack10 = virtualinvoke xml.<java.lang.String: java.lang.String substring(int)>($stack9);
+
+        $stack11 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack10);
+
+        xml = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label1:
+        return xml;
+    }
+
+    protected java.lang.String readAll(java.io.File) throws java.io.IOException
+    {
+        java.io.FileInputStream $stack8;
+        java.io.InputStreamReader $stack7;
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+        java.io.File f;
+        java.lang.StringBuilder $stack5, $stack11;
+        java.io.BufferedReader $stack6;
+        java.lang.String $stack9, $stack10;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        f := @parameter0: java.io.File;
+
+        $stack5 = new java.lang.StringBuilder;
+
+        specialinvoke $stack5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = new java.io.BufferedReader;
+
+        $stack7 = new java.io.InputStreamReader;
+
+        $stack8 = new java.io.FileInputStream;
+
+        specialinvoke $stack8.<java.io.FileInputStream: void <init>(java.io.File)>(f);
+
+        specialinvoke $stack7.<java.io.InputStreamReader: void <init>(java.io.InputStream,java.lang.String)>($stack8, "UTF-8");
+
+        specialinvoke $stack6.<java.io.BufferedReader: void <init>(java.io.Reader)>($stack7);
+
+     label1:
+        $stack9 = virtualinvoke $stack6.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        if $stack9 == null goto label2;
+
+        $stack11 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack9);
+
+        virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        goto label1;
+
+     label2:
+        virtualinvoke $stack6.<java.io.BufferedReader: void close()>();
+
+        $stack10 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack10;
+    }
+
+    public transient java.lang.String jaxbSerialized(java.lang.Object, java.lang.Class[]) throws java.lang.Exception
+    {
+        java.io.StringWriter $stack4;
+        javax.xml.bind.Marshaller $stack7;
+        java.lang.Class[] classes;
+        com.fasterxml.jackson.dataformat.xml.XmlTestBase this;
+        int $stack5;
+        java.lang.Object ob;
+        java.lang.String $stack8;
+        javax.xml.bind.JAXBContext $stack6;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.XmlTestBase;
+
+        ob := @parameter0: java.lang.Object;
+
+        classes := @parameter1: java.lang.Class[];
+
+        $stack4 = new java.io.StringWriter;
+
+        specialinvoke $stack4.<java.io.StringWriter: void <init>()>();
+
+        $stack5 = lengthof classes;
+
+        if $stack5 != 0 goto label1;
+
+        staticinvoke <javax.xml.bind.JAXB: void marshal(java.lang.Object,java.io.Writer)>(ob, $stack4);
+
+        goto label2;
+
+     label1:
+        $stack6 = staticinvoke <javax.xml.bind.JAXBContext: javax.xml.bind.JAXBContext newInstance(java.lang.Class[])>(classes);
+
+        $stack7 = virtualinvoke $stack6.<javax.xml.bind.JAXBContext: javax.xml.bind.Marshaller createMarshaller()>();
+
+        interfaceinvoke $stack7.<javax.xml.bind.Marshaller: void marshal(java.lang.Object,java.io.Writer)>(ob, $stack4);
+
+     label2:
+        virtualinvoke $stack4.<java.io.StringWriter: void close()>();
+
+        $stack8 = virtualinvoke $stack4.<java.io.StringWriter: java.lang.String toString()>();
+
+        return $stack8;
+    }
+
+    public static void <clinit>()
+    {
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: java.lang.String SAMPLE_DOC_JSON_SPEC> = "{\n  \"Image\" : {\n    \"Width\" : 800,\n    \"Height\" : 600,\"Title\" : \"View from 15th Floor\",\n    \"Thumbnail\" : {\n      \"Url\" : \"http://www.example.com/image/481989943\",\n\"Height\" : 125,\n      \"Width\" : \"100\"\n    },\n    \"IDs\" : [116,943,234,38793]\n  }}";
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: int SAMPLE_SPEC_VALUE_TN_ID4> = 38793;
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: int SAMPLE_SPEC_VALUE_TN_ID3> = 234;
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: int SAMPLE_SPEC_VALUE_TN_ID2> = 943;
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: int SAMPLE_SPEC_VALUE_TN_ID1> = 116;
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: java.lang.String SAMPLE_SPEC_VALUE_TN_WIDTH> = "100";
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: int SAMPLE_SPEC_VALUE_TN_HEIGHT> = 125;
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: java.lang.String SAMPLE_SPEC_VALUE_TN_URL> = "http://www.example.com/image/481989943";
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: java.lang.String SAMPLE_SPEC_VALUE_TITLE> = "View from 15th Floor";
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: int SAMPLE_SPEC_VALUE_HEIGHT> = 600;
+
+        <com.fasterxml.jackson.dataformat.xml.XmlTestBase: int SAMPLE_SPEC_VALUE_WIDTH> = 800;
+
+        return;
+    }
+}

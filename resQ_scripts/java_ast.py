@@ -114,6 +114,87 @@ _DECL_OR_ASSIGN_RE = re.compile(
 )
 
 
+_RECEIVER_CALL_RE = re.compile(r"^\s*([A-Za-z_$][\w$]*)\s*\.")
+
+
+def find_aliasing_seed_candidates(src_file: Path, method_name: str, seed_variable: str, before_line: int,
+                                   max_lookback_lines: int = 15, max_candidates: int = 3):
+    """Statements preceding `before_line` (within the same test method) that
+    hand `seed_variable` to another local - the "wrapping object" pattern
+    behind Slicer4J's aliasing blind spot (see slicer_runner.py's module
+    docstring point 3, verified concretely on Csv-13's `writer`/`printer`):
+    a criterion like `assertEquals(expected, writer.toString())` never
+    depends, in Slicer4J's own backward walk, on
+    `CSVPrinter printer = new CSVPrinter(writer, format); printer.printRecord(s);`
+    two lines earlier, because `printer`'s Jimple local is never one of the
+    `$stackN` tokens present ON the criterion's own line - the only pool
+    `_jimple_local_candidates` (slicer_runner.py) ever searches. This finds
+    the OTHER local's name and its last relevant line statically, from the
+    test's own source, so step2_slicing.py can seed one extra Slicer4J
+    criterion there and union whatever it finds into the same virtual
+    column.
+
+    NOTE on what this can and cannot fix: Slicer4J's demonstrated
+    interprocedural reach is a RETURN-VALUE data-flow edge (`x =
+    someCall(...)` backward-enters `someCall`'s own body - verified on
+    JacksonXml-1's `result = mapper.readValue(...)`). A void call like
+    `printer.printRecord(s)` produces no such edge for a backward walker to
+    enter through, aliasing candidate or not - seeding here is a real,
+    reproducible improvement whenever the wrapping object's relevant use IS
+    itself a return-value-producing call, and a no-op (same trivial result)
+    for a genuinely void mutating call. Verify empirically per target
+    rather than assuming this closes every aliasing gap.
+
+    Returns up to `max_candidates` {"variable", "line"} dicts, nearest
+    criterion-line first: `variable` is the name of a local constructed/
+    assigned from an expression containing `seed_variable` as a token, and
+    `line` is the LAST line before `before_line` where that local appears
+    as a method-call receiver (the actual mutating/producing call, if one
+    is found) - or its own declaration line otherwise. [] if the source/
+    method can't be resolved or nothing matches within `max_lookback_lines`.
+    """
+    if not src_file.exists() or not seed_variable:
+        return []
+    all_lines = src_file.read_text(encoding="utf-8", errors="replace").splitlines()
+    bounds = extract_method_body_lines(all_lines, method_name)
+    if not bounds:
+        return []
+    start, _ = bounds
+    scan_floor = max(start, before_line - 1 - max_lookback_lines)
+    seed_token_re = re.compile(rf"\b{re.escape(seed_variable)}\b")
+
+    found = []  # (distance_from_criterion, variable, line)
+    for lineno in range(before_line - 1, scan_floor, -1):
+        if not (1 <= lineno <= len(all_lines)):
+            continue
+        text = all_lines[lineno - 1]
+        m = _DECL_OR_ASSIGN_RE.match(text)
+        if not m:
+            continue
+        lhs = m.group(1)
+        if lhs == seed_variable:
+            continue  # reassigning the seed itself, not a wrapper around it
+        rhs = text[m.end():]
+        if not seed_token_re.search(rhs):
+            continue  # this declaration doesn't reference seed_variable at all
+
+        # `lhs` was constructed/assigned from something referencing
+        # seed_variable. Find its LAST use as a call receiver before
+        # before_line (the actual mutating/producing call) to seed on -
+        # falling back to its own declaration line if it's never called.
+        call_re = re.compile(rf"^\s*{re.escape(lhs)}\s*\.")
+        use_line = lineno
+        for j in range(lineno + 1, before_line):
+            if 1 <= j <= len(all_lines) and call_re.match(all_lines[j - 1]):
+                use_line = j
+        found.append((before_line - use_line, lhs, use_line))
+        if len(found) >= max_candidates:
+            break
+
+    found.sort(key=lambda c: c[0])
+    return [{"variable": v, "line": ln} for _, v, ln in found[:max_candidates]]
+
+
 def synthetic_exception_criterion(src_file: Path, method_name: str, fail_line: int):
     """Fallback pool-criterion for a failing test whose OWN stack-trace line
     is not an assertX(...) call - i.e. the bug throws an exception from

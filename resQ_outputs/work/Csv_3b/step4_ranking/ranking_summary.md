@@ -1,9 +1,12 @@
 # Ranking Comparison Summary
 
-Ground truth faulty statement(s): [('Lexer.java', 111), ('Lexer.java', 112), ('Lexer.java', 113)]
+Ground truth faulty statement(s) (diff line): [('Lexer.java', 111), ('Lexer.java', 112), ('Lexer.java', 113)]
+
+Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/csv/Lexer.java', 112), ('src/main/java/org/apache/commons/csv/Lexer.java', 113)]
 
 - SBFL   top rank: 1, AP: 0.3333
-- Hybrid top rank: 1, AP: 0.0019
+- Hybrid top rank: 58, AP: 0.0016
 
 ## Top 10 - Trace-Based SBFL
 
@@ -24,14 +27,14 @@ Ground truth faulty statement(s): [('Lexer.java', 111), ('Lexer.java', 112), ('L
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 176 | CSVFormat.java:78 | 0.0 | `this(delimiter, null, null, null, null, false, false, null, Constants.EMPTY, null);` |
-| 1 | 176 | CSVFormat.java:110 | 0.0 | `String nullToString, final String[] header) {` |
-| 1 | 176 | CSVFormat.java:114 | 0.0 | `this.delimiter = delimiter;` |
-| 1 | 176 | CSVFormat.java:115 | 0.0 | `this.quoteChar = quoteChar;` |
-| 1 | 176 | CSVFormat.java:116 | 0.0 | `this.quotePolicy = quotePolicy;` |
-| 1 | 176 | CSVFormat.java:117 | 0.0 | `this.commentStart = commentStart;` |
-| 1 | 176 | CSVFormat.java:118 | 0.0 | `this.escape = escape;` |
-| 1 | 176 | CSVFormat.java:119 | 0.0 | `this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;` |
-| 1 | 176 | CSVFormat.java:120 | 0.0 | `this.ignoreEmptyLines = ignoreEmptyLines;` |
-| 1 | 176 | CSVFormat.java:121 | 0.0 | `this.recordSeparator = recordSeparator;` |
+| 1 | 3 | CSVFormat.java:263 | 0.426401 | `return withEscape(Character.valueOf(escape));` |
+| 1 | 3 | CSVFormat.java:279 | 0.426401 | `this.escape = escape;` |
+| 1 | 3 | CSVLexer.java:169 | 0.426401 | `c = in.read(); // continue` |
+| 4 | 2 | CSVLexer.java:156 | 0.342997 | `tkn.type = EOF;` |
+| 4 | 2 | CSVLexer.java:157 | 0.342997 | `tkn.isReady = true; // There is data at EOF` |
+| 6 | 1 | CSVFormat.java:527 | 0.333333 | `public static final CSVFormat MYSQL =` |
+| 7 | 2 | Token.java:29 | 0.294884 | `final class Token {` |
+| 7 | 2 | Token.java:52 | 0.294884 | `Token.Type type = INVALID;` |
+| 9 | 2 | CSVFormat.java:442 | 0.229416 | `return new CSVFormatBuilder(COMMA, DOUBLE_QUOTE_CHAR, null, null, null, false, true, CRLF, Constants.EMPTY,` |
+| 9 | 2 | Constants.java:36 | 0.229416 | `static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('"');` |
 

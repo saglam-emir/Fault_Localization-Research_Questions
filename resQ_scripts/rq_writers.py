@@ -27,6 +27,13 @@ RQ2_FIELDS = ["Project", "BugID", "Full_Execution_Size", "Union_Passing_Slices",
 RQ3_FIELDS = ["Project", "BugID", "Baseline_Time", "SBFL_Time", "Hybrid_Time", "Avg_Slice_Time", "Peak_Memory"]
 RQ4_FIELDS = ["Project", "BugID", "Total_Faults", "Included_In_Slice", "Fault_Inclusion_Rate"]
 RQ5_FIELDS = ["Project", "BugID", "SBFL_Top_Rank", "Hybrid_Top_Rank", "SBFL_AP", "Hybrid_AP"]
+# Kept deliberately separate from rq1-rq5's existing schemas (no columns
+# added to those) so nothing already reading them breaks. This is the join
+# key any cross-bug aggregate analysis should filter on (WHERE NOT
+# Bug_Fully_Unanswerable) before computing "did SBFL/Hybrid find the bug"
+# summary stats - see ground_truth.classify_answerability's docstring for
+# why a bug can be provably unscoreable by any line-level technique.
+RQ0_FIELDS = ["Project", "BugID", "Total_Fault_Lines", "Unanswerable_Fault_Lines", "Bug_Fully_Unanswerable"]
 
 
 def _write_rq1(ctx, outputs_dir, test_results, target_pool, passed_variable_matches):
@@ -91,7 +98,11 @@ def _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_re
         if row["virtual_status"] == "Virtual_Fail":
             union_fail |= per_column.get(row["virtual_test_id"], set())
 
-    faults = sorted({(Path(f["file"]).name, f["line"]) for f in ground_truth_faults})
+    # Match on statement_line (normalized), same convention as
+    # step4_ranking.py's AP/rank matching - a multi-line statement's
+    # coverage/slice hit lands on its first physical line, not necessarily
+    # the diff's edit line (see ground_truth.normalize_statement_line).
+    faults = sorted({(Path(f["file"]).name, f.get("statement_line", f["line"])) for f in ground_truth_faults})
     total = len(faults)
     included = sum(1 for f in faults if f in union_fail)
     rate = (included / total) if total else 0.0
@@ -99,6 +110,16 @@ def _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_re
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Total_Faults": total,
            "Included_In_Slice": included, "Fault_Inclusion_Rate": round(rate, 6)}
     common.upsert_csv_row(outputs_dir / "rq4.csv", RQ4_FIELDS, row, key_fields=RQ_KEY_FIELDS)
+    return row
+
+
+def _write_rq0(ctx, outputs_dir, answerability):
+    total = len(answerability) if answerability else 0
+    unanswerable = sum(1 for f in answerability if not f["answerable"]) if answerability else 0
+    row = {"Project": ctx.project_id, "BugID": ctx.vid, "Total_Fault_Lines": total,
+           "Unanswerable_Fault_Lines": unanswerable,
+           "Bug_Fully_Unanswerable": bool(total) and unanswerable == total}
+    common.upsert_csv_row(outputs_dir / "rq0_answerability.csv", RQ0_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
 
@@ -113,10 +134,11 @@ def _write_rq5(ctx, outputs_dir, ranking_result):
 
 
 def write_all(ctx, outputs_dir, *, test_results, target_pool, passed_variable_matches,
-              virtual_columns, ochiai_result, ranking_result, ground_truth_faults):
+              virtual_columns, ochiai_result, ranking_result, ground_truth_faults, answerability=None):
+    rq0 = _write_rq0(ctx, outputs_dir, answerability)
     rq1 = _write_rq1(ctx, outputs_dir, test_results, target_pool, passed_variable_matches)
     rq2 = _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result)
     rq3 = _write_rq3(ctx, outputs_dir)
     rq4 = _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_result)
     rq5 = _write_rq5(ctx, outputs_dir, ranking_result)
-    ctx.logger.info(f"RQ rows written for {ctx.name}: rq1={rq1} rq2={rq2} rq3={rq3} rq4={rq4} rq5={rq5}")
+    ctx.logger.info(f"RQ rows written for {ctx.name}: rq0={rq0} rq1={rq1} rq2={rq2} rq3={rq3} rq4={rq4} rq5={rq5}")

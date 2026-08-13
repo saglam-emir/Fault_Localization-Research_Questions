@@ -68,8 +68,13 @@ def run_one_target(target: dict) -> bool:
         step1_out = step1_tests.run(ctx)
         step2_out = step2_slicing.run(ctx, step1_out["test_results"], step1_out["target_pool"])
         step3_out = step3_matrices.run(ctx, step1_out["test_results"], step2_out["virtual_columns"])
-        gt_faults = ground_truth.load_ground_truth_faults(ctx.project_id, ctx.bug_id, logger)
-        step4_out = step4_ranking.run(ctx, step3_out, gt_faults)
+        gt_faults = ground_truth.load_ground_truth_faults(ctx.project_id, ctx.bug_id, logger, ctx.checkout_dir)
+        # Answerability must be classified against the TRACE matrix's statement
+        # universe (broadest "did this line execute in any test" signal this
+        # pipeline computes), not the (narrower, criteria-dependent) slice
+        # universe - see ground_truth.classify_answerability's docstring.
+        answerability = ground_truth.classify_answerability(gt_faults, step3_out["trace_universe"], logger)
+        step4_out = step4_ranking.run(ctx, step3_out, gt_faults, answerability)
 
         rq_writers.write_all(
             ctx, OUTPUTS_DIR,
@@ -80,6 +85,7 @@ def run_one_target(target: dict) -> bool:
             ochiai_result=step3_out,
             ranking_result=step4_out,
             ground_truth_faults=gt_faults,
+            answerability=answerability,
         )
     except common.StepFailure as e:
         logger.error(f"TARGET {name} stopped safely after a fatal step error: {e}")

@@ -1,0 +1,2183 @@
+public class com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser extends com.fasterxml.jackson.core.base.ParserMinimalBase
+{
+    public static final java.lang.String DEFAULT_UNNAMED_TEXT_PROPERTY;
+    protected java.lang.String _cfgNameForTextElement;
+    protected int _formatFeatures;
+    protected com.fasterxml.jackson.core.ObjectCodec _objectCodec;
+    protected boolean _closed;
+    protected final com.fasterxml.jackson.core.io.IOContext _ioContext;
+    protected com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext;
+    protected final com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens;
+    protected boolean _mayBeLeaf;
+    protected com.fasterxml.jackson.core.JsonToken _nextToken;
+    protected java.lang.String _currText;
+    protected java.util.Set _namesToWrap;
+    protected com.fasterxml.jackson.core.util.ByteArrayBuilder _byteArrayBuilder;
+    protected byte[] _binaryValue;
+
+    public void <init>(com.fasterxml.jackson.core.io.IOContext, int, int, com.fasterxml.jackson.core.ObjectCodec, javax.xml.stream.XMLStreamReader)
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack6;
+        com.fasterxml.jackson.core.ObjectCodec codec;
+        javax.xml.stream.XMLStreamReader xmlReader;
+        int genericParserFeatures, xmlFeatures, $stack10, $i0, $i1;
+        com.fasterxml.jackson.core.io.IOContext ctxt;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.Object $stack9;
+        com.fasterxml.jackson.core.JsonToken $stack7;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $u0;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        ctxt := @parameter0: com.fasterxml.jackson.core.io.IOContext;
+
+        genericParserFeatures := @parameter1: int;
+
+        xmlFeatures := @parameter2: int;
+
+        codec := @parameter3: com.fasterxml.jackson.core.ObjectCodec;
+
+        xmlReader := @parameter4: javax.xml.stream.XMLStreamReader;
+
+        specialinvoke this.<com.fasterxml.jackson.core.base.ParserMinimalBase: void <init>(int)>(genericParserFeatures);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _cfgNameForTextElement> = "";
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.util.ByteArrayBuilder _byteArrayBuilder> = null;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures> = xmlFeatures;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.io.IOContext _ioContext> = ctxt;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.ObjectCodec _objectCodec> = codec;
+
+        $i0 = (int) -1;
+
+        $i1 = (int) -1;
+
+        $stack6 = staticinvoke <com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createRootContext(int,int)>($i0, $i1);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack6;
+
+        $stack7 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack7;
+
+        $u0 = new com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack9 = virtualinvoke ctxt.<com.fasterxml.jackson.core.io.IOContext: java.lang.Object getSourceReference()>();
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures>;
+
+        specialinvoke $u0.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void <init>(javax.xml.stream.XMLStreamReader,java.lang.Object,int)>(xmlReader, $stack9, $stack10);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens> = $u0;
+
+        return;
+    }
+
+    public com.fasterxml.jackson.core.Version version()
+    {
+        com.fasterxml.jackson.core.Version $stack1;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = <com.fasterxml.jackson.dataformat.xml.PackageVersion: com.fasterxml.jackson.core.Version VERSION>;
+
+        return $stack1;
+    }
+
+    public com.fasterxml.jackson.core.ObjectCodec getCodec()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.core.ObjectCodec $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.ObjectCodec _objectCodec>;
+
+        return $stack1;
+    }
+
+    public void setCodec(com.fasterxml.jackson.core.ObjectCodec)
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.core.ObjectCodec c;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        c := @parameter0: com.fasterxml.jackson.core.ObjectCodec;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.ObjectCodec _objectCodec> = c;
+
+        return;
+    }
+
+    public void setXMLTextElementName(java.lang.String)
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.String name;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        name := @parameter0: java.lang.String;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _cfgNameForTextElement> = name;
+
+        return;
+    }
+
+    public boolean requiresCustomCodec()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return 1;
+    }
+
+    public com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser enable(com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature)
+    {
+        int $stack2, $stack3, $stack4, $stack5;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack6;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature f;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        f := @parameter0: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures>;
+
+        $stack3 = virtualinvoke f.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature: int getMask()>();
+
+        $stack4 = $stack2 | $stack3;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures> = $stack4;
+
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures>;
+
+        virtualinvoke $stack6.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void setFormatFeatures(int)>($stack5);
+
+        return this;
+    }
+
+    public com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser disable(com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature)
+    {
+        int $stack2, $stack3, $stack4, $stack5, $stack6, $i0;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack7;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature f;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        f := @parameter0: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures>;
+
+        $stack3 = virtualinvoke f.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature: int getMask()>();
+
+        $i0 = (int) -1;
+
+        $stack4 = $stack3 ^ $i0;
+
+        $stack5 = $stack2 & $stack4;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures> = $stack5;
+
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures>;
+
+        virtualinvoke $stack7.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void setFormatFeatures(int)>($stack6);
+
+        return this;
+    }
+
+    public final boolean isEnabled(com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature)
+    {
+        int $stack2, $stack3, $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature f;
+        boolean $stack5;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        f := @parameter0: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures>;
+
+        $stack3 = virtualinvoke f.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature: int getMask()>();
+
+        $stack4 = $stack2 & $stack3;
+
+        if $stack4 == 0 goto label1;
+
+        $stack5 = 1;
+
+        goto label2;
+
+     label1:
+        $stack5 = 0;
+
+     label2:
+        return $stack5;
+    }
+
+    public com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser configure(com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature, boolean)
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature f;
+        boolean state;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        f := @parameter0: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature;
+
+        state := @parameter1: boolean;
+
+        if state == 0 goto label1;
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser enable(com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature)>(f);
+
+        goto label2;
+
+     label1:
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser disable(com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature)>(f);
+
+     label2:
+        return this;
+    }
+
+    public int getFormatFeatures()
+    {
+        int $stack1;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures>;
+
+        return $stack1;
+    }
+
+    public com.fasterxml.jackson.core.JsonParser overrideFormatFeatures(int, int)
+    {
+        com.fasterxml.jackson.core.JsonParser $r0;
+        int mask, $stack3, $stack4, values, $stack5, $stack6, $stack7, $i0;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        values := @parameter0: int;
+
+        mask := @parameter1: int;
+
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures>;
+
+        $i0 = (int) -1;
+
+        $stack3 = mask ^ $i0;
+
+        $stack6 = $stack4 & $stack3;
+
+        $stack5 = values & mask;
+
+        $stack7 = $stack6 | $stack5;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: int _formatFeatures> = $stack7;
+
+        $r0 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        return $r0;
+    }
+
+    public javax.xml.stream.XMLStreamReader getStaxReader()
+    {
+        org.codehaus.stax2.XMLStreamReader2 $stack2;
+        javax.xml.stream.XMLStreamReader $r0;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack2 = virtualinvoke $stack1.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 getXmlReader()>();
+
+        $r0 = (javax.xml.stream.XMLStreamReader) $stack2;
+
+        return $r0;
+    }
+
+    public void addVirtualWrapping(java.util.Set)
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack5;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.util.Set namesToWrap;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack3, $stack11;
+        java.lang.String $stack4;
+        boolean $stack6;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        namesToWrap := @parameter0: java.util.Set;
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack4 = virtualinvoke $stack3.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getLocalName()>();
+
+        if $stack4 == null goto label1;
+
+        $stack6 = interfaceinvoke namesToWrap.<java.util.Set: boolean contains(java.lang.Object)>($stack4);
+
+        if $stack6 == 0 goto label1;
+
+        $stack11 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack11.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void repeatStartElement()>();
+
+     label1:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap> = namesToWrap;
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        virtualinvoke $stack5.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setNamesToWrap(java.util.Set)>(namesToWrap);
+
+        return;
+    }
+
+    public java.lang.String getCurrentName() throws java.io.IOException
+    {
+        java.lang.IllegalStateException $stack8;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack5, $stack6, $stack16;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.StringBuilder $stack9, $stack10, $stack12;
+        com.fasterxml.jackson.core.JsonToken $stack3, $stack4, $stack11, $stack14, $stack15;
+        java.lang.String $stack13, name;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack3 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        if $stack4 == $stack3 goto label1;
+
+        $stack15 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack14 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_ARRAY>;
+
+        if $stack15 != $stack14 goto label2;
+
+     label1:
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack6 = virtualinvoke $stack5.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParent()>();
+
+        name = virtualinvoke $stack6.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: java.lang.String getCurrentName()>();
+
+        goto label3;
+
+     label2:
+        $stack16 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        name = virtualinvoke $stack16.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: java.lang.String getCurrentName()>();
+
+     label3:
+        if name != null goto label4;
+
+        $stack8 = new java.lang.IllegalStateException;
+
+        $stack9 = new java.lang.StringBuilder;
+
+        specialinvoke $stack9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack10 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Missing name, in state: ");
+
+        $stack11 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack12 = virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack11);
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack8.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack13);
+
+        throw $stack8;
+
+     label4:
+        return name;
+    }
+
+    public void overrideCurrentName(java.lang.String)
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext ctxt;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.core.JsonToken $stack3, $stack4, $stack6, $stack7;
+        java.lang.String name;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        name := @parameter0: java.lang.String;
+
+        ctxt = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack3 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        if $stack4 == $stack3 goto label1;
+
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack6 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_ARRAY>;
+
+        if $stack7 != $stack6 goto label2;
+
+     label1:
+        ctxt = virtualinvoke ctxt.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParent()>();
+
+     label2:
+        virtualinvoke ctxt.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>(name);
+
+        return;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        java.lang.Throwable $stack12;
+        com.fasterxml.jackson.core.JsonParser $r0;
+        com.fasterxml.jackson.core.JsonParser$Feature $stack7;
+        javax.xml.stream.XMLStreamException $stack13;
+        com.fasterxml.jackson.core.io.IOContext $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack6, $stack9;
+        boolean $stack3, $stack5, $stack8;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _closed>;
+
+        if $stack3 != 0 goto label9;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _closed> = 1;
+
+     label1:
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.io.IOContext _ioContext>;
+
+        $stack5 = virtualinvoke $stack4.<com.fasterxml.jackson.core.io.IOContext: boolean isResourceManaged()>();
+
+        if $stack5 != 0 goto label2;
+
+        $stack7 = <com.fasterxml.jackson.core.JsonParser$Feature: com.fasterxml.jackson.core.JsonParser$Feature AUTO_CLOSE_SOURCE>;
+
+        $stack8 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean isEnabled(com.fasterxml.jackson.core.JsonParser$Feature)>($stack7);
+
+        if $stack8 == 0 goto label3;
+
+     label2:
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack6.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void closeCompletely()>();
+
+        goto label4;
+
+     label3:
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack9.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void close()>();
+
+     label4:
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: void _releaseBuffers()>();
+
+        goto label9;
+
+     label5:
+        $stack13 := @caughtexception;
+
+        $r0 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack13, $r0);
+
+     label6:
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: void _releaseBuffers()>();
+
+        goto label9;
+
+     label7:
+        $stack12 := @caughtexception;
+
+     label8:
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: void _releaseBuffers()>();
+
+        throw $stack12;
+
+     label9:
+        return;
+
+        catch javax.xml.stream.XMLStreamException from label1 to label4 with label5;
+        catch java.lang.Throwable from label1 to label4 with label7;
+        catch java.lang.Throwable from label5 to label6 with label7;
+        catch java.lang.Throwable from label7 to label8 with label7;
+    }
+
+    public boolean isClosed()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        boolean $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _closed>;
+
+        return $stack1;
+    }
+
+    public com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParsingContext()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        return $stack1;
+    }
+
+    public com.fasterxml.jackson.core.JsonLocation getTokenLocation()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack1;
+        com.fasterxml.jackson.core.JsonLocation $stack2;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack2 = virtualinvoke $stack1.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.core.JsonLocation getTokenLocation()>();
+
+        return $stack2;
+    }
+
+    public com.fasterxml.jackson.core.JsonLocation getCurrentLocation()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack1;
+        com.fasterxml.jackson.core.JsonLocation $stack2;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack2 = virtualinvoke $stack1.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.core.JsonLocation getCurrentLocation()>();
+
+        return $stack2;
+    }
+
+    public boolean isExpectedStartArrayToken()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack6;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.core.JsonToken t, $stack2, $stack3, $stack5, $stack7, $stack8, $stack10;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack9;
+        boolean $stack4;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        t = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack2 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        if t != $stack2 goto label3;
+
+        $stack5 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_ARRAY>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack5;
+
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        virtualinvoke $stack6.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void convertToArray()>();
+
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken>;
+
+        $stack7 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken END_OBJECT>;
+
+        if $stack8 != $stack7 goto label1;
+
+        $stack10 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken END_ARRAY>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack10;
+
+        goto label2;
+
+     label1:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = null;
+
+     label2:
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack9.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void skipAttributes()>();
+
+        return 1;
+
+     label3:
+        $stack3 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_ARRAY>;
+
+        if t != $stack3 goto label4;
+
+        $stack4 = 1;
+
+        goto label5;
+
+     label4:
+        $stack4 = 0;
+
+     label5:
+        return $stack4;
+    }
+
+    public com.fasterxml.jackson.core.JsonToken nextToken() throws java.io.IOException
+    {
+        java.lang.Integer $stack122;
+        javax.xml.stream.XMLStreamException $stack111, $stack113, $stack116, $stack120;
+        java.util.Set $stack59, $stack80, $stack82, $stack105;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack4, $stack7, $stack24, $stack27, $stack38, $stack42, $stack47, $stack77, $stack87, $stack88, $stack99;
+        java.lang.String $stack8, $stack22, $stack31, $stack39, $stack44, $stack48, $stack78, $stack101, $stack12;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        int[] $stack96;
+        boolean $stack9, $stack11, $stack23, $stack29, $stack32, $stack41, $stack52, $stack54, $stack68, $stack74, $stack76, $stack83;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack10, $stack28, $stack35, $stack36, $stack43, $stack49, $stack50, $stack53, $stack56, $stack57, $stack58, $stack67, $stack71, $stack72, $stack75, $stack79, $stack93, $stack94, $stack100, $stack102, $stack103, $stack104, $stack107, $stack108, $stack109, $stack110, $stack13;
+        int $stack97, $stack98, t#4, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10, $i11;
+        com.fasterxml.jackson.core.JsonToken $stack3, $stack16, $stack17, $stack30, $stack34, $stack37, $stack40, $stack45, $stack46, $stack51, $stack60, $stack69, $stack70, $stack73, $stack92, $stack95, t, $stack81, $stack55, $stack14, $stack15;
+        com.fasterxml.jackson.core.JsonParser $r0, $r1, $r2, $r3;
+        java.lang.Object $stack121;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: byte[] _binaryValue> = null;
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken>;
+
+        if $stack3 == null goto label06;
+
+        t = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = t;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = null;
+
+        $stack96 = <com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$1: int[] $SwitchMap$com$fasterxml$jackson$core$JsonToken>;
+
+        $stack97 = virtualinvoke t.<com.fasterxml.jackson.core.JsonToken: int ordinal()>();
+
+        $stack98 = $stack96[$stack97];
+
+        tableswitch($stack98)
+        {
+            case 1: goto label01;
+            case 2: goto label02;
+            case 3: goto label03;
+            case 4: goto label03;
+            case 5: goto label04;
+            default: goto label05;
+        };
+
+     label01:
+        $stack109 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i0 = (int) -1;
+
+        $i1 = (int) -1;
+
+        $stack110 = virtualinvoke $stack109.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildObjectContext(int,int)>($i0, $i1);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack110;
+
+        goto label05;
+
+     label02:
+        $stack107 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i2 = (int) -1;
+
+        $i3 = (int) -1;
+
+        $stack108 = virtualinvoke $stack107.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildArrayContext(int,int)>($i2, $i3);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack108;
+
+        goto label05;
+
+     label03:
+        $stack102 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack103 = virtualinvoke $stack102.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack103;
+
+        $stack104 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack105 = virtualinvoke $stack104.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: java.util.Set getNamesToWrap()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap> = $stack105;
+
+        goto label05;
+
+     label04:
+        $stack100 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack99 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack101 = virtualinvoke $stack99.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getLocalName()>();
+
+        virtualinvoke $stack100.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>($stack101);
+
+        goto label05;
+
+     label05:
+        return t;
+
+     label06:
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        t#4 = virtualinvoke $stack4.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int next()>();
+
+     label07:
+        goto label09;
+
+     label08:
+        $stack120 := @caughtexception;
+
+        $r0 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        $stack121 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack120, $r0);
+
+        $stack122 = (java.lang.Integer) $stack121;
+
+        t#4 = virtualinvoke $stack122.<java.lang.Integer: int intValue()>();
+
+     label09:
+        if t#4 != 1 goto label17;
+
+        $stack74 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf>;
+
+        if $stack74 == 0 goto label10;
+
+        $stack92 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack92;
+
+        $stack93 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i4 = (int) -1;
+
+        $i5 = (int) -1;
+
+        $stack94 = virtualinvoke $stack93.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildObjectContext(int,int)>($i4, $i5);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack94;
+
+        $stack95 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack95;
+
+        return $stack95;
+
+     label10:
+        $stack75 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack76 = virtualinvoke $stack75.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inArray()>();
+
+        if $stack76 == 0 goto label15;
+
+     label11:
+        $stack88 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        t#4 = virtualinvoke $stack88.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int next()>();
+
+     label12:
+        goto label14;
+
+     label13:
+        $stack116 := @caughtexception;
+
+        $r1 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack116, $r1);
+
+     label14:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 1;
+
+        goto label09;
+
+     label15:
+        $stack77 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack78 = virtualinvoke $stack77.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getLocalName()>();
+
+        $stack79 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        virtualinvoke $stack79.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>($stack78);
+
+        $stack80 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap>;
+
+        if $stack80 == null goto label16;
+
+        $stack82 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap>;
+
+        $stack83 = interfaceinvoke $stack82.<java.util.Set: boolean contains(java.lang.Object)>($stack78);
+
+        if $stack83 == 0 goto label16;
+
+        $stack87 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack87.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void repeatStartElement()>();
+
+     label16:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 1;
+
+        $stack81 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack81;
+
+        return $stack81;
+
+     label17:
+        tableswitch(t#4)
+        {
+            case 2: goto label18;
+            case 3: goto label23;
+            case 4: goto label25;
+            case 5: goto label26;
+            case 6: goto label37;
+            default: goto label38;
+        };
+
+     label18:
+        $stack52 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf>;
+
+        if $stack52 == 0 goto label20;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 0;
+
+        $stack67 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack68 = virtualinvoke $stack67.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inArray()>();
+
+        if $stack68 == 0 goto label19;
+
+        $stack70 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken END_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack70;
+
+        $stack71 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i6 = (int) -1;
+
+        $i7 = (int) -1;
+
+        $stack72 = virtualinvoke $stack71.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildObjectContext(int,int)>($i6, $i7);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack72;
+
+        $stack73 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack73;
+
+        return $stack73;
+
+     label19:
+        $stack69 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_NULL>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack69;
+
+        return $stack69;
+
+     label20:
+        $stack53 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack54 = virtualinvoke $stack53.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inArray()>();
+
+        if $stack54 == 0 goto label21;
+
+        $stack55 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken END_ARRAY>;
+
+        goto label22;
+
+     label21:
+        $stack55 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken END_OBJECT>;
+
+     label22:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack55;
+
+        $stack56 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack57 = virtualinvoke $stack56.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack57;
+
+        $stack58 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack59 = virtualinvoke $stack58.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: java.util.Set getNamesToWrap()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap> = $stack59;
+
+        $stack60 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        return $stack60;
+
+     label23:
+        $stack41 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf>;
+
+        if $stack41 == 0 goto label24;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 0;
+
+        $stack46 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack46;
+
+        $stack47 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack48 = virtualinvoke $stack47.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getText()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText> = $stack48;
+
+        $stack49 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i8 = (int) -1;
+
+        $i9 = (int) -1;
+
+        $stack50 = virtualinvoke $stack49.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildObjectContext(int,int)>($i8, $i9);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack50;
+
+        $stack51 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack51;
+
+        return $stack51;
+
+     label24:
+        $stack43 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack42 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack44 = virtualinvoke $stack42.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getLocalName()>();
+
+        virtualinvoke $stack43.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>($stack44);
+
+        $stack45 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack45;
+
+        return $stack45;
+
+     label25:
+        $stack38 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack39 = virtualinvoke $stack38.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getText()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText> = $stack39;
+
+        $stack40 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack40;
+
+        return $stack40;
+
+     label26:
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack8 = virtualinvoke $stack7.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getText()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText> = $stack8;
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf>;
+
+        if $stack9 == 0 goto label32;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 0;
+
+     label27:
+        $stack27 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack27.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void skipEndElement()>();
+
+     label28:
+        goto label30;
+
+     label29:
+        $stack113 := @caughtexception;
+
+        $r2 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack113, $r2);
+
+     label30:
+        $stack28 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack29 = virtualinvoke $stack28.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inArray()>();
+
+        if $stack29 == 0 goto label31;
+
+        $stack31 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText>;
+
+        $stack32 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _isEmpty(java.lang.String)>($stack31);
+
+        if $stack32 == 0 goto label31;
+
+        $stack34 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken END_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack34;
+
+        $stack35 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i10 = (int) -1;
+
+        $i11 = (int) -1;
+
+        $stack36 = virtualinvoke $stack35.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildObjectContext(int,int)>($i10, $i11);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack36;
+
+        $stack37 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack37;
+
+        return $stack37;
+
+     label31:
+        $stack30 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack30;
+
+        return $stack30;
+
+     label32:
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack11 = virtualinvoke $stack10.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inObject()>();
+
+        if $stack11 == 0 goto label36;
+
+        $stack17 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack16 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        if $stack17 == $stack16 goto label36;
+
+        $stack22 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText>;
+
+        $stack23 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _isEmpty(java.lang.String)>($stack22);
+
+        if $stack23 == 0 goto label36;
+
+     label33:
+        $stack24 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        t#4 = virtualinvoke $stack24.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int next()>();
+
+     label34:
+        goto label17;
+
+     label35:
+        $stack111 := @caughtexception;
+
+        $r3 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack111, $r3);
+
+        goto label17;
+
+     label36:
+        $stack13 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack12 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _cfgNameForTextElement>;
+
+        virtualinvoke $stack13.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>($stack12);
+
+        $stack14 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack14;
+
+        $stack15 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack15;
+
+        return $stack15;
+
+     label37:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = null;
+
+        return null;
+
+     label38:
+        goto label17;
+
+        catch javax.xml.stream.XMLStreamException from label06 to label07 with label08;
+        catch javax.xml.stream.XMLStreamException from label11 to label12 with label13;
+        catch javax.xml.stream.XMLStreamException from label27 to label28 with label29;
+        catch javax.xml.stream.XMLStreamException from label33 to label34 with label35;
+    }
+
+    public java.lang.String nextTextValue() throws java.io.IOException
+    {
+        java.lang.Integer $stack81;
+        javax.xml.stream.XMLStreamException $stack71, $stack75, $stack79;
+        java.util.Set $stack38, $stack52, $stack54;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack4, $stack6, $stack14, $stack18, $stack21, $stack26, $stack49, $stack60, $stack61;
+        java.lang.String $stack7, $stack9, $stack16, $stack19, $stack23, $stack27, $stack50, $stack70;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        boolean $stack8, $stack20, $stack31, $stack33, $stack46, $stack48, $stack55;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack10, $stack22, $stack28, $stack29, $stack32, $stack35, $stack36, $stack37, $stack47, $stack51, $stack66, $stack67;
+        int t#2, $i0, $i1, $i2, $i3;
+        com.fasterxml.jackson.core.JsonToken $stack3, $stack11, $stack12, $stack15, $stack17, $stack24, $stack25, $stack30, $stack44, $stack65, $stack68, $stack69, t, $stack53, $stack34;
+        com.fasterxml.jackson.core.JsonParser $r0, $r1, $r2;
+        java.lang.Object $stack80;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: byte[] _binaryValue> = null;
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken>;
+
+        if $stack3 == null goto label02;
+
+        t = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = t;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = null;
+
+        $stack69 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        if t != $stack69 goto label01;
+
+        $stack70 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText>;
+
+        return $stack70;
+
+     label01:
+        specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: void _updateState(com.fasterxml.jackson.core.JsonToken)>(t);
+
+        return null;
+
+     label02:
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        t#2 = virtualinvoke $stack4.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int next()>();
+
+     label03:
+        goto label05;
+
+     label04:
+        $stack79 := @caughtexception;
+
+        $r0 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        $stack80 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack79, $r0);
+
+        $stack81 = (java.lang.Integer) $stack80;
+
+        t#2 = virtualinvoke $stack81.<java.lang.Integer: int intValue()>();
+
+     label05:
+        if t#2 != 1 goto label13;
+
+        $stack46 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf>;
+
+        if $stack46 == 0 goto label06;
+
+        $stack65 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack65;
+
+        $stack66 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i0 = (int) -1;
+
+        $i1 = (int) -1;
+
+        $stack67 = virtualinvoke $stack66.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildObjectContext(int,int)>($i0, $i1);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack67;
+
+        $stack68 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack68;
+
+        return null;
+
+     label06:
+        $stack47 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack48 = virtualinvoke $stack47.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inArray()>();
+
+        if $stack48 == 0 goto label11;
+
+     label07:
+        $stack61 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        t#2 = virtualinvoke $stack61.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int next()>();
+
+     label08:
+        goto label10;
+
+     label09:
+        $stack75 := @caughtexception;
+
+        $r1 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack75, $r1);
+
+     label10:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 1;
+
+        goto label05;
+
+     label11:
+        $stack49 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack50 = virtualinvoke $stack49.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getLocalName()>();
+
+        $stack51 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        virtualinvoke $stack51.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>($stack50);
+
+        $stack52 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap>;
+
+        if $stack52 == null goto label12;
+
+        $stack54 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap>;
+
+        $stack55 = interfaceinvoke $stack54.<java.util.Set: boolean contains(java.lang.Object)>($stack50);
+
+        if $stack55 == 0 goto label12;
+
+        $stack60 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack60.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void repeatStartElement()>();
+
+     label12:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 1;
+
+        $stack53 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack53;
+
+        return null;
+
+     label13:
+        tableswitch(t#2)
+        {
+            case 2: goto label14;
+            case 3: goto label18;
+            case 4: goto label20;
+            case 5: goto label21;
+            case 6: goto label27;
+            default: goto label28;
+        };
+
+     label14:
+        $stack31 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf>;
+
+        if $stack31 == 0 goto label15;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 0;
+
+        $stack44 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack44;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText> = "";
+
+        return "";
+
+     label15:
+        $stack32 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack33 = virtualinvoke $stack32.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inArray()>();
+
+        if $stack33 == 0 goto label16;
+
+        $stack34 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken END_ARRAY>;
+
+        goto label17;
+
+     label16:
+        $stack34 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken END_OBJECT>;
+
+     label17:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack34;
+
+        $stack35 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack36 = virtualinvoke $stack35.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack36;
+
+        $stack37 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack38 = virtualinvoke $stack37.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: java.util.Set getNamesToWrap()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap> = $stack38;
+
+        goto label28;
+
+     label18:
+        $stack20 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf>;
+
+        if $stack20 == 0 goto label19;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 0;
+
+        $stack25 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack25;
+
+        $stack26 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack27 = virtualinvoke $stack26.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getText()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText> = $stack27;
+
+        $stack28 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i2 = (int) -1;
+
+        $i3 = (int) -1;
+
+        $stack29 = virtualinvoke $stack28.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildObjectContext(int,int)>($i2, $i3);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack29;
+
+        $stack30 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken START_OBJECT>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack30;
+
+        goto label28;
+
+     label19:
+        $stack22 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack21 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack23 = virtualinvoke $stack21.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getLocalName()>();
+
+        virtualinvoke $stack22.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>($stack23);
+
+        $stack24 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack24;
+
+        goto label28;
+
+     label20:
+        $stack17 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack17;
+
+        $stack18 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack19 = virtualinvoke $stack18.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getText()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText> = $stack19;
+
+        return $stack19;
+
+     label21:
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack7 = virtualinvoke $stack6.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getText()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText> = $stack7;
+
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf>;
+
+        if $stack8 == 0 goto label26;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: boolean _mayBeLeaf> = 0;
+
+     label22:
+        $stack14 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack14.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void skipEndElement()>();
+
+     label23:
+        goto label25;
+
+     label24:
+        $stack71 := @caughtexception;
+
+        $r2 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack71, $r2);
+
+     label25:
+        $stack15 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack15;
+
+        $stack16 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText>;
+
+        return $stack16;
+
+     label26:
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _cfgNameForTextElement>;
+
+        virtualinvoke $stack10.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>($stack9);
+
+        $stack11 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = $stack11;
+
+        $stack12 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken FIELD_NAME>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack12;
+
+        goto label28;
+
+     label27:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = null;
+
+     label28:
+        return null;
+
+        catch javax.xml.stream.XMLStreamException from label02 to label03 with label04;
+        catch javax.xml.stream.XMLStreamException from label07 to label08 with label09;
+        catch javax.xml.stream.XMLStreamException from label22 to label23 with label24;
+    }
+
+    private void _updateState(com.fasterxml.jackson.core.JsonToken)
+    {
+        int[] $stack2;
+        int $stack3, $stack4, $i0, $i1, $i2, $i3;
+        com.fasterxml.jackson.core.JsonToken t;
+        java.lang.String $stack7;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack6, $stack8, $stack9, $stack10, $stack12, $stack13, $stack14, $stack15;
+        java.util.Set $stack11;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack5;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        t := @parameter0: com.fasterxml.jackson.core.JsonToken;
+
+        $stack2 = <com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$1: int[] $SwitchMap$com$fasterxml$jackson$core$JsonToken>;
+
+        $stack3 = virtualinvoke t.<com.fasterxml.jackson.core.JsonToken: int ordinal()>();
+
+        $stack4 = $stack2[$stack3];
+
+        tableswitch($stack4)
+        {
+            case 1: goto label1;
+            case 2: goto label2;
+            case 3: goto label3;
+            case 4: goto label3;
+            case 5: goto label4;
+            default: goto label5;
+        };
+
+     label1:
+        $stack14 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i0 = (int) -1;
+
+        $i1 = (int) -1;
+
+        $stack15 = virtualinvoke $stack14.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildObjectContext(int,int)>($i0, $i1);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack15;
+
+        goto label5;
+
+     label2:
+        $stack12 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $i2 = (int) -1;
+
+        $i3 = (int) -1;
+
+        $stack13 = virtualinvoke $stack12.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext createChildArrayContext(int,int)>($i2, $i3);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack13;
+
+        goto label5;
+
+     label3:
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack9 = virtualinvoke $stack8.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack9;
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack11 = virtualinvoke $stack10.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: java.util.Set getNamesToWrap()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap> = $stack11;
+
+        goto label5;
+
+     label4:
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack7 = virtualinvoke $stack5.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String getLocalName()>();
+
+        virtualinvoke $stack6.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: void setCurrentName(java.lang.String)>($stack7);
+
+        goto label5;
+
+     label5:
+        return;
+    }
+
+    public java.lang.String getText() throws java.io.IOException
+    {
+        int[] $stack3;
+        int $stack4, $stack5;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.core.JsonToken $stack1, $stack2, $stack8;
+        java.lang.String $stack6, $stack7, $stack9;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        if $stack1 != null goto label1;
+
+        return null;
+
+     label1:
+        $stack3 = <com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$1: int[] $SwitchMap$com$fasterxml$jackson$core$JsonToken>;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack4 = virtualinvoke $stack2.<com.fasterxml.jackson.core.JsonToken: int ordinal()>();
+
+        $stack5 = $stack3[$stack4];
+
+        lookupswitch($stack5)
+        {
+            case 5: goto label2;
+            case 6: goto label3;
+            default: goto label4;
+        };
+
+     label2:
+        $stack7 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String getCurrentName()>();
+
+        return $stack7;
+
+     label3:
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText>;
+
+        return $stack6;
+
+     label4:
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack9 = virtualinvoke $stack8.<com.fasterxml.jackson.core.JsonToken: java.lang.String asString()>();
+
+        return $stack9;
+    }
+
+    public final java.lang.String getValueAsString() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.String $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String getValueAsString(java.lang.String)>(null);
+
+        return $stack1;
+    }
+
+    public java.lang.String getValueAsString(java.lang.String) throws java.io.IOException
+    {
+        int[] $stack5;
+        javax.xml.stream.XMLStreamException $stack22, $stack25;
+        int $stack6, $stack7;
+        com.fasterxml.jackson.core.JsonToken t, $stack16, $stack18, $stack20;
+        java.lang.String $stack8, $stack9, $stack11, defValue, $stack21;
+        boolean $stack19;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack12, $stack13, $stack14;
+        com.fasterxml.jackson.core.JsonParser $r0, $r1;
+        java.util.Set $stack15;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream $stack10, $stack17;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        defValue := @parameter0: java.lang.String;
+
+        t = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        if t != null goto label01;
+
+        return null;
+
+     label01:
+        $stack5 = <com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$1: int[] $SwitchMap$com$fasterxml$jackson$core$JsonToken>;
+
+        $stack6 = virtualinvoke t.<com.fasterxml.jackson.core.JsonToken: int ordinal()>();
+
+        $stack7 = $stack5[$stack6];
+
+        lookupswitch($stack7)
+        {
+            case 1: goto label04;
+            case 5: goto label02;
+            case 6: goto label03;
+            default: goto label13;
+        };
+
+     label02:
+        $stack9 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String getCurrentName()>();
+
+        return $stack9;
+
+     label03:
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText>;
+
+        return $stack8;
+
+     label04:
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        $stack11 = virtualinvoke $stack10.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String convertToString()>();
+
+        if $stack11 == null goto label10;
+
+        $stack12 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack13 = virtualinvoke $stack12.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext> = $stack13;
+
+        $stack14 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack15 = virtualinvoke $stack14.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: java.util.Set getNamesToWrap()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.util.Set _namesToWrap> = $stack15;
+
+        $stack16 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken> = $stack16;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _nextToken> = null;
+
+     label05:
+        $stack17 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream _xmlTokens>;
+
+        virtualinvoke $stack17.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: void skipEndElement()>();
+
+     label06:
+        goto label08;
+
+     label07:
+        $stack25 := @caughtexception;
+
+        $r0 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack25, $r0);
+
+     label08:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String _currText> = $stack11;
+
+     label09:
+        return $stack11;
+
+     label10:
+        goto label12;
+
+     label11:
+        $stack22 := @caughtexception;
+
+        $r1 = (com.fasterxml.jackson.core.JsonParser) this;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException,com.fasterxml.jackson.core.JsonParser)>($stack22, $r1);
+
+     label12:
+        return null;
+
+     label13:
+        $stack18 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack19 = virtualinvoke $stack18.<com.fasterxml.jackson.core.JsonToken: boolean isScalarValue()>();
+
+        if $stack19 == 0 goto label14;
+
+        $stack20 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack21 = virtualinvoke $stack20.<com.fasterxml.jackson.core.JsonToken: java.lang.String asString()>();
+
+        return $stack21;
+
+     label14:
+        return defValue;
+
+        catch javax.xml.stream.XMLStreamException from label05 to label06 with label07;
+        catch javax.xml.stream.XMLStreamException from label04 to label09 with label11;
+    }
+
+    public char[] getTextCharacters() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        char[] $stack3;
+        java.lang.String $stack2;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack2 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String getText()>();
+
+        if $stack2 != null goto label1;
+
+        $stack3 = null;
+
+        goto label2;
+
+     label1:
+        $stack3 = virtualinvoke $stack2.<java.lang.String: char[] toCharArray()>();
+
+     label2:
+        return $stack3;
+    }
+
+    public int getTextLength() throws java.io.IOException
+    {
+        int $stack3;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.String $stack2;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack2 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String getText()>();
+
+        if $stack2 != null goto label1;
+
+        $stack3 = 0;
+
+        goto label2;
+
+     label1:
+        $stack3 = virtualinvoke $stack2.<java.lang.String: int length()>();
+
+     label2:
+        return $stack3;
+    }
+
+    public int getTextOffset() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return 0;
+    }
+
+    public boolean hasTextCharacters()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return 0;
+    }
+
+    public int getText(java.io.Writer) throws java.io.IOException
+    {
+        java.io.Writer writer;
+        int $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.String $stack3;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        writer := @parameter0: java.io.Writer;
+
+        $stack3 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String getText()>();
+
+        if $stack3 != null goto label1;
+
+        return 0;
+
+     label1:
+        virtualinvoke writer.<java.io.Writer: void write(java.lang.String)>($stack3);
+
+        $stack4 = virtualinvoke $stack3.<java.lang.String: int length()>();
+
+        return $stack4;
+    }
+
+    public java.lang.Object getEmbeddedObject() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return null;
+    }
+
+    public byte[] getBinaryValue(com.fasterxml.jackson.core.Base64Variant) throws java.io.IOException
+    {
+        java.lang.Throwable $r0;
+        byte[] $stack6, $stack7, $stack18, $stack5;
+        com.fasterxml.jackson.core.JsonToken $stack3, $stack4, $stack9, $stack10, $stack13;
+        java.lang.String $stack16, $stack28, $stack30;
+        com.fasterxml.jackson.core.JsonParseException $stack31;
+        java.lang.IllegalArgumentException $stack23;
+        com.fasterxml.jackson.core.Base64Variant b64variant;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.StringBuilder $stack12, $stack14, $stack15, $stack25, $stack26, $stack27, $stack29, $u0, $u1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        b64variant := @parameter0: com.fasterxml.jackson.core.Base64Variant;
+
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack3 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_STRING>;
+
+        if $stack4 == $stack3 goto label2;
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack9 = <com.fasterxml.jackson.core.JsonToken: com.fasterxml.jackson.core.JsonToken VALUE_EMBEDDED_OBJECT>;
+
+        if $stack10 != $stack9 goto label1;
+
+        $stack18 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: byte[] _binaryValue>;
+
+        if $stack18 != null goto label2;
+
+     label1:
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>()>();
+
+        $stack12 = virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current token (");
+
+        $stack13 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonToken _currToken>;
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") not VALUE_STRING or VALUE_EMBEDDED_OBJECT, can not access as binary");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: void _reportError(java.lang.String)>($stack16);
+
+     label2:
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: byte[] _binaryValue>;
+
+        if $stack5 != null goto label6;
+
+     label3:
+        $stack7 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: byte[] _decodeBase64(com.fasterxml.jackson.core.Base64Variant)>(b64variant);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: byte[] _binaryValue> = $stack7;
+
+     label4:
+        goto label6;
+
+     label5:
+        $stack23 := @caughtexception;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        $stack25 = virtualinvoke $u1.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Failed to decode VALUE_STRING as base64 (");
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(b64variant);
+
+        $stack27 = virtualinvoke $stack26.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("): ");
+
+        $stack28 = virtualinvoke $stack23.<java.lang.IllegalArgumentException: java.lang.String getMessage()>();
+
+        $stack29 = virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack28);
+
+        $stack30 = virtualinvoke $stack29.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack31 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.JsonParseException _constructError(java.lang.String)>($stack30);
+
+        $r0 = (java.lang.Throwable) $stack31;
+
+        throw $r0;
+
+     label6:
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: byte[] _binaryValue>;
+
+        return $stack6;
+
+        catch java.lang.IllegalArgumentException from label3 to label4 with label5;
+    }
+
+    protected byte[] _decodeBase64(com.fasterxml.jackson.core.Base64Variant) throws java.io.IOException
+    {
+        com.fasterxml.jackson.core.Base64Variant b64variant;
+        byte[] $stack6;
+        com.fasterxml.jackson.core.util.ByteArrayBuilder $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.String $stack5;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        b64variant := @parameter0: com.fasterxml.jackson.core.Base64Variant;
+
+        $stack4 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.util.ByteArrayBuilder _getByteArrayBuilder()>();
+
+        $stack5 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String getText()>();
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: void _decodeBase64(java.lang.String,com.fasterxml.jackson.core.util.ByteArrayBuilder,com.fasterxml.jackson.core.Base64Variant)>($stack5, $stack4, b64variant);
+
+        $stack6 = virtualinvoke $stack4.<com.fasterxml.jackson.core.util.ByteArrayBuilder: byte[] toByteArray()>();
+
+        return $stack6;
+    }
+
+    public java.math.BigInteger getBigIntegerValue() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return null;
+    }
+
+    public java.math.BigDecimal getDecimalValue() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return null;
+    }
+
+    public double getDoubleValue() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return 0.0;
+    }
+
+    public float getFloatValue() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return 0.0F;
+    }
+
+    public int getIntValue() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return 0;
+    }
+
+    public long getLongValue() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return 0L;
+    }
+
+    public com.fasterxml.jackson.core.JsonParser$NumberType getNumberType() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return null;
+    }
+
+    public java.lang.Number getNumberValue() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return null;
+    }
+
+    protected void _handleEOF() throws com.fasterxml.jackson.core.JsonParseException
+    {
+        java.lang.Object[] $stack6;
+        com.fasterxml.jackson.core.JsonLocation $stack12;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack2, $stack4, $stack10;
+        com.fasterxml.jackson.core.io.IOContext $stack7;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        java.lang.Object $stack11;
+        java.lang.String $stack13, $stack14;
+        boolean $stack3, $stack5;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack3 = virtualinvoke $stack2.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inRoot()>();
+
+        if $stack3 != 0 goto label3;
+
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack5 = virtualinvoke $stack4.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: boolean inArray()>();
+
+        if $stack5 == 0 goto label1;
+
+        $stack14 = "Array";
+
+        goto label2;
+
+     label1:
+        $stack14 = "Object";
+
+     label2:
+        $stack6 = newarray (java.lang.Object)[2];
+
+        $stack6[0] = $stack14;
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext _parsingContext>;
+
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.io.IOContext _ioContext>;
+
+        $stack11 = virtualinvoke $stack7.<com.fasterxml.jackson.core.io.IOContext: java.lang.Object getSourceReference()>();
+
+        $stack12 = virtualinvoke $stack10.<com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext: com.fasterxml.jackson.core.JsonLocation getStartLocation(java.lang.Object)>($stack11);
+
+        $stack6[1] = $stack12;
+
+        $stack13 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>(": expected close marker for %s (start marker at %s)", $stack6);
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: void _reportInvalidEOF(java.lang.String,com.fasterxml.jackson.core.JsonToken)>($stack13, null);
+
+     label3:
+        return;
+    }
+
+    protected void _releaseBuffers() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        return;
+    }
+
+    protected com.fasterxml.jackson.core.util.ByteArrayBuilder _getByteArrayBuilder()
+    {
+        com.fasterxml.jackson.core.util.ByteArrayBuilder $stack1, $stack2, $stack3, $stack4;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.util.ByteArrayBuilder _byteArrayBuilder>;
+
+        if $stack1 != null goto label1;
+
+        $stack4 = new com.fasterxml.jackson.core.util.ByteArrayBuilder;
+
+        specialinvoke $stack4.<com.fasterxml.jackson.core.util.ByteArrayBuilder: void <init>()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.util.ByteArrayBuilder _byteArrayBuilder> = $stack4;
+
+        goto label2;
+
+     label1:
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.util.ByteArrayBuilder _byteArrayBuilder>;
+
+        virtualinvoke $stack2.<com.fasterxml.jackson.core.util.ByteArrayBuilder: void reset()>();
+
+     label2:
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.core.util.ByteArrayBuilder _byteArrayBuilder>;
+
+        return $stack3;
+    }
+
+    protected boolean _isEmpty(java.lang.String)
+    {
+        int len, $stack4, i, $i0;
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        char $stack6;
+        java.lang.String str;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        str := @parameter0: java.lang.String;
+
+        if str != null goto label1;
+
+        $stack4 = 0;
+
+        goto label2;
+
+     label1:
+        $stack4 = virtualinvoke str.<java.lang.String: int length()>();
+
+     label2:
+        len = $stack4;
+
+        if $stack4 <= 0 goto label5;
+
+        i = 0;
+
+     label3:
+        if i >= len goto label5;
+
+        $stack6 = virtualinvoke str.<java.lang.String: char charAt(int)>(i);
+
+        $i0 = (int) $stack6;
+
+        if $i0 <= 32 goto label4;
+
+        return 0;
+
+     label4:
+        i = i + 1;
+
+        goto label3;
+
+     label5:
+        return 1;
+    }
+
+    public volatile com.fasterxml.jackson.core.JsonStreamContext getParsingContext()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser this;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+
+        $stack1 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: com.fasterxml.jackson.dataformat.xml.deser.XmlReadContext getParsingContext()>();
+
+        return $stack1;
+    }
+
+    public static void <clinit>()
+    {
+        <com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser: java.lang.String DEFAULT_UNNAMED_TEXT_PROPERTY> = "";
+
+        return;
+    }
+}

@@ -32,18 +32,57 @@ import time
 from pathlib import Path
 
 import common
+import java_ast
 import slicer_runner
+from context import ALIAS_SCAN_MAX_CANDIDATES, ALIAS_SCAN_MAX_LINES_BACK
 
 VIRTUAL_COLUMNS_FIELDS = [
     "virtual_test_id", "test_case", "test_class", "test_method",
-    "variable", "line", "virtual_status", "slice_size", "slice_path",
+    "variable", "line", "virtual_status", "slice_size", "slice_path", "extra_slice_paths",
 ]
+
+
+def _run_aliasing_extras(ctx, jar_path, dep_dir, test_source_dir, row, tag, out_root):
+    """Correction roadmap Step 4: seed extra Slicer4J criteria on any local
+    the test's own source shows `row['variable']` being handed to before the
+    criterion line (see java_ast.find_aliasing_seed_candidates), so a
+    "receiver mutated the seed via a wrapping object" pattern (verified on
+    Csv-13's `writer`/`printer`) gets a chance to contribute statements the
+    primary criterion's same-line-only retry can never reach. Returns a list
+    of extra slice_log Paths (possibly empty - a candidate that also comes
+    back trivial contributes nothing, which is an expected, honest outcome
+    for a genuinely void mutating call; see java_ast's docstring on what
+    this can and cannot fix).
+    """
+    test_class, test_method = row["test_class"], row["test_method"]
+    variable, line = row["variable"], int(row["line"])
+    src_file = test_source_dir / (test_class.replace(".", "/") + ".java")
+    candidates = java_ast.find_aliasing_seed_candidates(
+        src_file, test_method, variable, line,
+        max_lookback_lines=ALIAS_SCAN_MAX_LINES_BACK, max_candidates=ALIAS_SCAN_MAX_CANDIDATES,
+    )
+    extra_logs = []
+    for cand in candidates:
+        cand_tag = common.safe_filename(f"{tag}_alias_{cand['variable']}")
+        cand_out_dir = out_root / cand_tag
+        ctx.logger.info(f"[{tag}] Aliasing candidate: '{cand['variable']}' (seed '{variable}' was handed "
+                         f"to it) @ line {cand['line']} - running an extra Slicer4J criterion.")
+        cand_log = slicer_runner.run_slicer4j_criterion(
+            ctx, jar_path, dep_dir, test_class, cand["line"], cand["variable"],
+            test_class, test_method, cand_out_dir, tag=cand_tag,
+        )
+        if cand_log:
+            extra_logs.append(cand_log)
+    return extra_logs
 
 
 def _slice_criteria(ctx, jar_path, dep_dir, rows, out_root: Path, tag_suffix: str):
     """Shared driver for both 2a (failing) and 2c (passed) slicing: one
-    Slicer4J run per row, returns virtual-column metadata rows.
+    primary Slicer4J run per row, plus (correction roadmap Step 4) any
+    aliasing-candidate extra runs, unioned into the same virtual column.
+    Returns virtual-column metadata rows.
     """
+    test_source_dir = slicer_runner.get_test_source_dir(ctx.checkout_dir, ctx.step2_dir, ctx.logger)
     metadata = []
     for i, row in enumerate(rows, start=1):
         test_class, test_method = row["test_class"], row["test_method"]
@@ -58,21 +97,23 @@ def _slice_criteria(ctx, jar_path, dep_dir, rows, out_root: Path, tag_suffix: st
         slice_log = slicer_runner.run_slicer4j_criterion(
             ctx, jar_path, dep_dir, test_class, line, variable, test_class, test_method, out_dir, tag=tag,
         )
+        extra_logs = _run_aliasing_extras(ctx, jar_path, dep_dir, test_source_dir, row, tag, out_root)
+
         slice_size = 0
-        if slice_log:
-            slice_size = len([l for l in slice_log.read_text(encoding="utf-8").splitlines() if l.strip()])
+        for sp in ([slice_log] if slice_log else []) + extra_logs:
+            slice_size += len([l for l in sp.read_text(encoding="utf-8").splitlines() if l.strip()])
 
         metadata.append({
             "virtual_test_id": tag, "test_case": row["test_case"], "test_class": test_class,
             "test_method": test_method, "variable": variable, "line": line,
             "virtual_status": virtual_status, "slice_size": slice_size,
             "slice_path": str(slice_log) if slice_log else "",
+            "extra_slice_paths": ";".join(str(p) for p in extra_logs),
         })
     return metadata
 
 
 def _scan_passed_assertions(ctx, target_variables, passed_tests):
-    import java_ast
     test_source_dir = slicer_runner.get_test_source_dir(ctx.checkout_dir, ctx.step2_dir, ctx.logger)
     matches = []
     for row in passed_tests:
@@ -102,11 +143,18 @@ def _collect(ctx, virtual_columns):
         return main_source_cache[file_name]
 
     for row in virtual_columns:
-        vtid, slice_path = row["virtual_test_id"], row.get("slice_path", "")
+        vtid = row["virtual_test_id"]
+        # Primary criterion's slice_path plus (correction roadmap Step 4)
+        # any aliasing-candidate extra_slice_paths, unioned into one
+        # virtual column - see _run_aliasing_extras. A row with only a
+        # primary path behaves exactly as before this change.
+        slice_paths = [p for p in (
+            [row.get("slice_path", "")] + row.get("extra_slice_paths", "").split(";")
+        ) if p and Path(p).exists()]
         lines_out = ctx.slice_lines_dir / f"{vtid}.txt"
         code_out = ctx.slice_code_dir / f"{vtid}_slice.txt"
 
-        if not slice_path or not Path(slice_path).exists():
+        if not slice_paths:
             lines_out.write_text("", encoding="utf-8")
             code_out.write_text(f"# No slice produced for {row['test_case']} (variable={row['variable']})\n", encoding="utf-8")
             row["slice_size"] = 0
@@ -114,16 +162,18 @@ def _collect(ctx, virtual_columns):
             continue
 
         entries = []
-        for line in Path(slice_path).read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if not line or ":" not in line:
-                continue
-            fq_class, _, line_no_str = line.rpartition(":")
-            try:
-                line_no = int(line_no_str)
-            except ValueError:
-                continue
-            entries.append((fq_class_to_source_file(fq_class), line_no))
+        for slice_path in slice_paths:
+            for line in Path(slice_path).read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line or ":" not in line:
+                    continue
+                fq_class, _, line_no_str = line.rpartition(":")
+                try:
+                    line_no = int(line_no_str)
+                except ValueError:
+                    continue
+                entries.append((fq_class_to_source_file(fq_class), line_no))
+        entries = list(dict.fromkeys(entries))  # dedup across primary+extra paths, preserve order
 
         filtered = []
         for file_name, line_no in entries:
@@ -135,7 +185,10 @@ def _collect(ctx, virtual_columns):
 
         lines_out.write_text("\n".join(str(ln) for _, ln in entries) + ("\n" if entries else ""), encoding="utf-8")
 
-        code_lines = [f"# Dynamic slice for {row['test_case']} (variable: {row['variable']}, virtual_test_id: {vtid})", ""]
+        n_extra = len(slice_paths) - 1
+        extra_note = f", +{n_extra} aliasing-candidate criterion/criteria unioned in" if n_extra else ""
+        code_lines = [f"# Dynamic slice for {row['test_case']} (variable: {row['variable']}, "
+                      f"virtual_test_id: {vtid}{extra_note})", ""]
         for file_name, line_no in entries:
             if line_no == -1:
                 code_lines.append(f"{file_name}:-1: <synthetic statement, no source line>")

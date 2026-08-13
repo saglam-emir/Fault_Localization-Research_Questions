@@ -1,6 +1,9 @@
 # Ranking Comparison Summary
 
-Ground truth faulty statement(s): [('FromXmlParser.java', 512), ('FromXmlParser.java', 514), ('FromXmlParser.java', 550), ('FromXmlParser.java', 551), ('FromXmlParser.java', 552), ('FromXmlParser.java', 553)]
+Ground truth faulty statement(s) (diff line): [('FromXmlParser.java', 512), ('FromXmlParser.java', 514), ('FromXmlParser.java', 550), ('FromXmlParser.java', 551), ('FromXmlParser.java', 552), ('FromXmlParser.java', 553)]
+
+Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java', 512)]
 
 - SBFL   top rank: 1, AP: 0.6717
 - Hybrid top rank: 125, AP: 0.0000

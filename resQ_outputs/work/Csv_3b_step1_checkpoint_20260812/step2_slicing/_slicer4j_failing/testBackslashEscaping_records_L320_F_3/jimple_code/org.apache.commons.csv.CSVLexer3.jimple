@@ -1,0 +1,616 @@
+class org.apache.commons.csv.CSVLexer3 extends org.apache.commons.csv.Lexer
+{
+    private final char escape;
+
+    public void <init>(org.apache.commons.csv.CSVFormat, org.apache.commons.csv.ExtendedBufferedReader)
+    {
+        org.apache.commons.csv.CSVFormat format;
+        java.lang.Character $stack3;
+        org.apache.commons.csv.CSVLexer3 this;
+        char $stack4;
+        org.apache.commons.csv.ExtendedBufferedReader in;
+
+        this := @this: org.apache.commons.csv.CSVLexer3;
+
+        format := @parameter0: org.apache.commons.csv.CSVFormat;
+
+        in := @parameter1: org.apache.commons.csv.ExtendedBufferedReader;
+
+        specialinvoke this.<org.apache.commons.csv.Lexer: void <init>(org.apache.commons.csv.CSVFormat,org.apache.commons.csv.ExtendedBufferedReader)>(format, in);
+
+        $stack3 = virtualinvoke format.<org.apache.commons.csv.CSVFormat: java.lang.Character getEscape()>();
+
+        $stack4 = virtualinvoke $stack3.<java.lang.Character: char charValue()>();
+
+        this.<org.apache.commons.csv.CSVLexer3: char escape> = $stack4;
+
+        return;
+    }
+
+    private org.apache.commons.csv.CSVLexer3$CharType classify(int)
+    {
+        org.apache.commons.csv.CSVLexer3 this;
+        int intch, $i0;
+        boolean $stack2, $stack3, $stack4, $stack5, $stack7;
+        org.apache.commons.csv.CSVLexer3$CharType $stack6, $stack8, $stack9, $stack10, $stack11, $stack12, $stack13, $stack14;
+
+        this := @this: org.apache.commons.csv.CSVLexer3;
+
+        intch := @parameter0: int;
+
+        $stack2 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: boolean isDelimiter(int)>(intch);
+
+        if $stack2 == 0 goto label1;
+
+        $stack14 = <org.apache.commons.csv.CSVLexer3$CharType: org.apache.commons.csv.CSVLexer3$CharType DELIM>;
+
+        return $stack14;
+
+     label1:
+        $stack3 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: boolean isCommentStart(int)>(intch);
+
+        if $stack3 == 0 goto label2;
+
+        $stack13 = <org.apache.commons.csv.CSVLexer3$CharType: org.apache.commons.csv.CSVLexer3$CharType COMMENT_START>;
+
+        return $stack13;
+
+     label2:
+        $stack4 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: boolean isQuoteChar(int)>(intch);
+
+        if $stack4 == 0 goto label3;
+
+        $stack12 = <org.apache.commons.csv.CSVLexer3$CharType: org.apache.commons.csv.CSVLexer3$CharType ENCAP>;
+
+        return $stack12;
+
+     label3:
+        $stack5 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: boolean isEscape(int)>(intch);
+
+        if $stack5 == 0 goto label4;
+
+        $stack11 = <org.apache.commons.csv.CSVLexer3$CharType: org.apache.commons.csv.CSVLexer3$CharType ESCAPE>;
+
+        return $stack11;
+
+     label4:
+        if intch == 13 goto label5;
+
+        if intch != 10 goto label6;
+
+     label5:
+        $stack6 = <org.apache.commons.csv.CSVLexer3$CharType: org.apache.commons.csv.CSVLexer3$CharType EOL>;
+
+        return $stack6;
+
+     label6:
+        $stack7 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: boolean isWhitespace(int)>(intch);
+
+        if $stack7 == 0 goto label7;
+
+        $stack10 = <org.apache.commons.csv.CSVLexer3$CharType: org.apache.commons.csv.CSVLexer3$CharType WHITESPACE>;
+
+        return $stack10;
+
+     label7:
+        $i0 = (int) -1;
+
+        if intch != $i0 goto label8;
+
+        $stack9 = <org.apache.commons.csv.CSVLexer3$CharType: org.apache.commons.csv.CSVLexer3$CharType EOFCHAR>;
+
+        return $stack9;
+
+     label8:
+        $stack8 = <org.apache.commons.csv.CSVLexer3$CharType: org.apache.commons.csv.CSVLexer3$CharType OTHER>;
+
+        return $stack8;
+    }
+
+    org.apache.commons.csv.Token nextToken(org.apache.commons.csv.Token) throws java.io.IOException
+    {
+        org.apache.commons.csv.CSVLexer3 this;
+        org.apache.commons.csv.Token$Type $stack6, $stack7, $stack66, $stack67, $stack68, $stack95, $stack96, $stack97, $stack111, $stack112, $stack113, $stack116;
+        java.lang.StringBuilder $stack8, $stack20, $stack21, $stack23, $stack24, $stack27, $stack31, $stack34, $stack40, $stack41, $stack43, $stack44, $stack47, $stack50, $stack53, $stack60, $stack61, $stack63, $stack64, $stack70, $stack73, $stack74, $stack76, $stack77, $stack83, $stack84, $stack86, $stack87, $stack90, $stack99, $stack106, $stack109;
+        long $stack22, $stack42, $stack62, $stack75, $stack85;
+        java.lang.String $stack25, $stack45, $stack65, $stack78, $stack88;
+        org.apache.commons.csv.ExtendedBufferedReader $stack10, $stack114;
+        java.io.IOException $stack19, $stack39, $stack59, $stack72, $stack82;
+        org.apache.commons.csv.CSVLexer3$CharType $stack12;
+        org.apache.commons.csv.Token tkn;
+        org.apache.commons.csv.CSVLexer3$State state;
+        int[] $stack13, $stack16, $stack36, $stack55, $stack79, $stack92, $stack101;
+        boolean $stack58, $stack104, trimTrailingSpaces;
+        int $stack11, $stack14, $stack15, $stack17, $stack18, $stack37, $stack38, $stack56, $stack57, $stack80, $stack81, $stack93, $stack94, $stack102, $stack103;
+        char $stack26, $stack30, $stack33, $stack46, $stack49, $stack52, $stack69, $stack89, $stack98, $stack105, $stack108;
+
+        this := @this: org.apache.commons.csv.CSVLexer3;
+
+        tkn := @parameter0: org.apache.commons.csv.Token;
+
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State BEGIN>;
+
+        trimTrailingSpaces = 0;
+
+     label01:
+        $stack7 = tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type>;
+
+        $stack6 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type INVALID>;
+
+        if $stack7 != $stack6 goto label42;
+
+        $stack10 = this.<org.apache.commons.csv.CSVLexer3: org.apache.commons.csv.ExtendedBufferedReader in>;
+
+        $stack11 = virtualinvoke $stack10.<org.apache.commons.csv.ExtendedBufferedReader: int read()>();
+
+        $stack12 = specialinvoke this.<org.apache.commons.csv.CSVLexer3: org.apache.commons.csv.CSVLexer3$CharType classify(int)>($stack11);
+
+        $stack13 = <org.apache.commons.csv.CSVLexer3$1: int[] $SwitchMap$org$apache$commons$csv$CSVLexer3$State>;
+
+        $stack14 = virtualinvoke state.<org.apache.commons.csv.CSVLexer3$State: int ordinal()>();
+
+        $stack15 = $stack13[$stack14];
+
+        tableswitch($stack15)
+        {
+            case 1: goto label02;
+            case 2: goto label12;
+            case 3: goto label18;
+            case 4: goto label23;
+            case 5: goto label31;
+            case 6: goto label36;
+            default: goto label41;
+        };
+
+     label02:
+        $stack101 = <org.apache.commons.csv.CSVLexer3$1: int[] $SwitchMap$org$apache$commons$csv$CSVLexer3$CharType>;
+
+        $stack102 = virtualinvoke $stack12.<org.apache.commons.csv.CSVLexer3$CharType: int ordinal()>();
+
+        $stack103 = $stack101[$stack102];
+
+        tableswitch($stack103)
+        {
+            case 1: goto label03;
+            case 2: goto label04;
+            case 3: goto label05;
+            case 4: goto label06;
+            case 5: goto label07;
+            case 6: goto label08;
+            case 7: goto label09;
+            case 8: goto label10;
+            default: goto label11;
+        };
+
+     label03:
+        $stack114 = this.<org.apache.commons.csv.CSVLexer3: org.apache.commons.csv.ExtendedBufferedReader in>;
+
+        virtualinvoke $stack114.<org.apache.commons.csv.ExtendedBufferedReader: java.lang.String readLine()>();
+
+        $stack116 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type COMMENT>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack116;
+
+        goto label11;
+
+     label04:
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State INQUOTE>;
+
+        goto label11;
+
+     label05:
+        $stack113 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type TOKEN>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack113;
+
+        goto label11;
+
+     label06:
+        $stack112 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type EORECORD>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack112;
+
+        goto label11;
+
+     label07:
+        $stack111 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type EOF>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack111;
+
+        goto label11;
+
+     label08:
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State ESCAPE_PLAIN>;
+
+        goto label11;
+
+     label09:
+        $stack109 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack108 = (char) $stack11;
+
+        virtualinvoke $stack109.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack108);
+
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State PLAIN>;
+
+        goto label11;
+
+     label10:
+        $stack104 = this.<org.apache.commons.csv.CSVLexer3: boolean ignoreSurroundingSpaces>;
+
+        if $stack104 != 0 goto label11;
+
+        $stack106 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack105 = (char) $stack11;
+
+        virtualinvoke $stack106.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack105);
+
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State PLAIN>;
+
+     label11:
+        goto label41;
+
+     label12:
+        $stack92 = <org.apache.commons.csv.CSVLexer3$1: int[] $SwitchMap$org$apache$commons$csv$CSVLexer3$CharType>;
+
+        $stack93 = virtualinvoke $stack12.<org.apache.commons.csv.CSVLexer3$CharType: int ordinal()>();
+
+        $stack94 = $stack92[$stack93];
+
+        tableswitch($stack94)
+        {
+            case 3: goto label13;
+            case 4: goto label14;
+            case 5: goto label15;
+            case 6: goto label16;
+            default: goto label17;
+        };
+
+     label13:
+        $stack97 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type TOKEN>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack97;
+
+        goto label41;
+
+     label14:
+        $stack96 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type EORECORD>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack96;
+
+        goto label41;
+
+     label15:
+        $stack95 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type EOF>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack95;
+
+        goto label41;
+
+     label16:
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State ESCAPE_PLAIN>;
+
+        goto label41;
+
+     label17:
+        trimTrailingSpaces = this.<org.apache.commons.csv.CSVLexer3: boolean ignoreSurroundingSpaces>;
+
+        $stack99 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack98 = (char) $stack11;
+
+        virtualinvoke $stack99.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack98);
+
+        goto label41;
+
+     label18:
+        $stack79 = <org.apache.commons.csv.CSVLexer3$1: int[] $SwitchMap$org$apache$commons$csv$CSVLexer3$CharType>;
+
+        $stack80 = virtualinvoke $stack12.<org.apache.commons.csv.CSVLexer3$CharType: int ordinal()>();
+
+        $stack81 = $stack79[$stack80];
+
+        tableswitch($stack81)
+        {
+            case 2: goto label19;
+            case 3: goto label22;
+            case 4: goto label22;
+            case 5: goto label21;
+            case 6: goto label20;
+            default: goto label22;
+        };
+
+     label19:
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State QUOTEQUOTE>;
+
+        goto label41;
+
+     label20:
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State ESCAPE_QUOTE>;
+
+        goto label41;
+
+     label21:
+        $stack82 = new java.io.IOException;
+
+        $stack83 = new java.lang.StringBuilder;
+
+        specialinvoke $stack83.<java.lang.StringBuilder: void <init>()>();
+
+        $stack84 = virtualinvoke $stack83.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(line ");
+
+        $stack85 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: long getLineNumber()>();
+
+        $stack86 = virtualinvoke $stack84.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack85);
+
+        $stack87 = virtualinvoke $stack86.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") unexpected EOF in quoted string");
+
+        $stack88 = virtualinvoke $stack87.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack82.<java.io.IOException: void <init>(java.lang.String)>($stack88);
+
+        throw $stack82;
+
+     label22:
+        $stack90 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack89 = (char) $stack11;
+
+        virtualinvoke $stack90.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack89);
+
+        goto label41;
+
+     label23:
+        $stack55 = <org.apache.commons.csv.CSVLexer3$1: int[] $SwitchMap$org$apache$commons$csv$CSVLexer3$CharType>;
+
+        $stack56 = virtualinvoke $stack12.<org.apache.commons.csv.CSVLexer3$CharType: int ordinal()>();
+
+        $stack57 = $stack55[$stack56];
+
+        tableswitch($stack57)
+        {
+            case 1: goto label29;
+            case 2: goto label27;
+            case 3: goto label24;
+            case 4: goto label25;
+            case 5: goto label26;
+            case 6: goto label29;
+            case 7: goto label29;
+            case 8: goto label28;
+            default: goto label30;
+        };
+
+     label24:
+        $stack68 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type TOKEN>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack68;
+
+        goto label30;
+
+     label25:
+        $stack67 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type EORECORD>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack67;
+
+        goto label30;
+
+     label26:
+        $stack66 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type EOF>;
+
+        tkn.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack66;
+
+        goto label30;
+
+     label27:
+        $stack70 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack69 = (char) $stack11;
+
+        virtualinvoke $stack70.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack69);
+
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State INQUOTE>;
+
+        goto label30;
+
+     label28:
+        $stack58 = this.<org.apache.commons.csv.CSVLexer3: boolean ignoreSurroundingSpaces>;
+
+        if $stack58 != 0 goto label30;
+
+        $stack59 = new java.io.IOException;
+
+        $stack60 = new java.lang.StringBuilder;
+
+        specialinvoke $stack60.<java.lang.StringBuilder: void <init>()>();
+
+        $stack61 = virtualinvoke $stack60.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(line ");
+
+        $stack62 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: long getLineNumber()>();
+
+        $stack63 = virtualinvoke $stack61.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack62);
+
+        $stack64 = virtualinvoke $stack63.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") invalid char between encapsulated token and delimiter");
+
+        $stack65 = virtualinvoke $stack64.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack59.<java.io.IOException: void <init>(java.lang.String)>($stack65);
+
+        throw $stack59;
+
+     label29:
+        $stack72 = new java.io.IOException;
+
+        $stack73 = new java.lang.StringBuilder;
+
+        specialinvoke $stack73.<java.lang.StringBuilder: void <init>()>();
+
+        $stack74 = virtualinvoke $stack73.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(line ");
+
+        $stack75 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: long getLineNumber()>();
+
+        $stack76 = virtualinvoke $stack74.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack75);
+
+        $stack77 = virtualinvoke $stack76.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") invalid char between encapsulated token and delimiter");
+
+        $stack78 = virtualinvoke $stack77.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack72.<java.io.IOException: void <init>(java.lang.String)>($stack78);
+
+        throw $stack72;
+
+     label30:
+        goto label41;
+
+     label31:
+        $stack36 = <org.apache.commons.csv.CSVLexer3$1: int[] $SwitchMap$org$apache$commons$csv$CSVLexer3$CharType>;
+
+        $stack37 = virtualinvoke $stack12.<org.apache.commons.csv.CSVLexer3$CharType: int ordinal()>();
+
+        $stack38 = $stack36[$stack37];
+
+        tableswitch($stack38)
+        {
+            case 1: goto label33;
+            case 2: goto label33;
+            case 3: goto label32;
+            case 4: goto label32;
+            case 5: goto label34;
+            case 6: goto label32;
+            case 7: goto label33;
+            case 8: goto label33;
+            default: goto label35;
+        };
+
+     label32:
+        $stack47 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack46 = (char) $stack11;
+
+        virtualinvoke $stack47.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack46);
+
+        state = <org.apache.commons.csv.CSVLexer3$State: org.apache.commons.csv.CSVLexer3$State PLAIN>;
+
+        goto label35;
+
+     label33:
+        $stack50 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack49 = this.<org.apache.commons.csv.CSVLexer3: char escape>;
+
+        virtualinvoke $stack50.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack49);
+
+        $stack53 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack52 = (char) $stack11;
+
+        virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack52);
+
+        goto label35;
+
+     label34:
+        $stack39 = new java.io.IOException;
+
+        $stack40 = new java.lang.StringBuilder;
+
+        specialinvoke $stack40.<java.lang.StringBuilder: void <init>()>();
+
+        $stack41 = virtualinvoke $stack40.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(line ");
+
+        $stack42 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: long getLineNumber()>();
+
+        $stack43 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack42);
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") unexpected EOF in escape sequence");
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack39.<java.io.IOException: void <init>(java.lang.String)>($stack45);
+
+        throw $stack39;
+
+     label35:
+        goto label41;
+
+     label36:
+        $stack16 = <org.apache.commons.csv.CSVLexer3$1: int[] $SwitchMap$org$apache$commons$csv$CSVLexer3$CharType>;
+
+        $stack17 = virtualinvoke $stack12.<org.apache.commons.csv.CSVLexer3$CharType: int ordinal()>();
+
+        $stack18 = $stack16[$stack17];
+
+        tableswitch($stack18)
+        {
+            case 1: goto label38;
+            case 2: goto label37;
+            case 3: goto label38;
+            case 4: goto label38;
+            case 5: goto label39;
+            case 6: goto label37;
+            case 7: goto label38;
+            case 8: goto label38;
+            default: goto label40;
+        };
+
+     label37:
+        $stack27 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack26 = (char) $stack11;
+
+        virtualinvoke $stack27.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack26);
+
+        goto label40;
+
+     label38:
+        $stack31 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack30 = this.<org.apache.commons.csv.CSVLexer3: char escape>;
+
+        virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack30);
+
+        $stack34 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack33 = (char) $stack11;
+
+        virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack33);
+
+        goto label40;
+
+     label39:
+        $stack19 = new java.io.IOException;
+
+        $stack20 = new java.lang.StringBuilder;
+
+        specialinvoke $stack20.<java.lang.StringBuilder: void <init>()>();
+
+        $stack21 = virtualinvoke $stack20.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(line ");
+
+        $stack22 = virtualinvoke this.<org.apache.commons.csv.CSVLexer3: long getLineNumber()>();
+
+        $stack23 = virtualinvoke $stack21.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack22);
+
+        $stack24 = virtualinvoke $stack23.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") unexpected EOF in escape sequence");
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack19.<java.io.IOException: void <init>(java.lang.String)>($stack25);
+
+        throw $stack19;
+
+     label40:
+        goto label41;
+
+     label41:
+        goto label01;
+
+     label42:
+        if trimTrailingSpaces == 0 goto label43;
+
+        $stack8 = tkn.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        virtualinvoke this.<org.apache.commons.csv.CSVLexer3: void trimTrailingSpaces(java.lang.StringBuilder)>($stack8);
+
+     label43:
+        return tkn;
+    }
+}
