@@ -23,8 +23,21 @@ RQ_KEY_FIELDS = ["Project", "BugID"]  # one row per target; reruns upsert on thi
 
 RQ1_FIELDS = ["Project", "BugID", "Pass_TC", "Fail_TC", "Pass_Assert", "Fail_Assert"]
 RQ2_FIELDS = ["Project", "BugID", "Full_Execution_Size", "Union_Passing_Slices",
-              "Union_Failing_Slices", "Union_All_Slices", "Reduction_Ratio"]
-RQ3_FIELDS = ["Project", "BugID", "Baseline_Time", "SBFL_Time", "Hybrid_Time", "Avg_Slice_Time", "Peak_Memory"]
+              "Union_Failing_Slices", "Union_All_Slices", "Reduction_Ratio",
+              # Same three underlying quantities as Full_Execution_Size/Union_Passing_Slices/
+              # Union_Failing_Slices above, appended under the exact column names requested
+              # for the paper/doc-facing schema. Kept alongside (not replacing) the original
+              # names so nothing already reading those breaks - see _write_rq2's docstring.
+              "Statements executed", "Union statements in slices of passing assertions",
+              "Union statements in slices of failing assertions"]
+# Suffixed with the actual unit each value is computed/rounded in - all four
+# time fields are wall-clock seconds (context.Metrics.*_time_sec, timed via
+# time.time() in common.run_cmd_timed), Peak_Memory is kilobytes (parsed
+# straight from `/usr/bin/time -v`'s "Maximum resident set size (kbytes)" -
+# see common.py's _MAX_RSS_RE), never converted to MB/bytes anywhere in the
+# pipeline.
+RQ3_FIELDS = ["Project", "BugID", "Baseline_Time_(s)", "SBFL_Time_(s)", "Hybrid_Time_(s)",
+              "Avg_Slice_Time_(s)", "Peak_Memory_(KB)"]
 RQ4_FIELDS = ["Project", "BugID", "Total_Faults", "Included_In_Slice", "Fault_Inclusion_Rate"]
 RQ5_FIELDS = ["Project", "BugID", "SBFL_Top_Rank", "Hybrid_Top_Rank", "SBFL_AP", "Hybrid_AP"]
 # Kept deliberately separate from rq1-rq5's existing schemas (no columns
@@ -74,7 +87,12 @@ def _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result):
 
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Full_Execution_Size": full_execution_size,
            "Union_Passing_Slices": len(union_pass), "Union_Failing_Slices": len(union_fail),
-           "Union_All_Slices": len(union_all), "Reduction_Ratio": round(reduction_ratio, 6)}
+           "Union_All_Slices": len(union_all), "Reduction_Ratio": round(reduction_ratio, 6),
+           # Aliases of the three fields above under the doc-facing column names (same
+           # values, same sets - see RQ2_FIELDS's comment).
+           "Statements executed": full_execution_size,
+           "Union statements in slices of passing assertions": len(union_pass),
+           "Union statements in slices of failing assertions": len(union_fail)}
     common.upsert_csv_row(outputs_dir / "rq2.csv", RQ2_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
@@ -82,11 +100,11 @@ def _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result):
 def _write_rq3(ctx, outputs_dir):
     m = ctx.metrics
     row = {"Project": ctx.project_id, "BugID": ctx.vid,
-           "Baseline_Time": round(m.baseline_time_sec, 3),
-           "SBFL_Time": round(m.sbfl_time_sec, 3),
-           "Hybrid_Time": round(m.hybrid_time_sec, 3),
-           "Avg_Slice_Time": round(m.avg_slice_time_sec, 3),
-           "Peak_Memory": round(m.peak_memory_kb, 1)}
+           "Baseline_Time_(s)": round(m.baseline_time_sec, 3),
+           "SBFL_Time_(s)": round(m.sbfl_time_sec, 3),
+           "Hybrid_Time_(s)": round(m.hybrid_time_sec, 3),
+           "Avg_Slice_Time_(s)": round(m.avg_slice_time_sec, 3),
+           "Peak_Memory_(KB)": round(m.peak_memory_kb, 1)}
     common.upsert_csv_row(outputs_dir / "rq3.csv", RQ3_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
