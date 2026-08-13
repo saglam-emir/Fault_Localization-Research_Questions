@@ -7,9 +7,13 @@ runs the full assertion-level hybrid SBFL pipeline EXACTLY ONCE and, from
 that single pass, derives the data for all 5 RQs:
 
     Step 1  Test execution (untraced baseline + per-test) + Target Variable
-            Pool construction (RQ1 raw data)
+            Pool construction (RQ2/RQ4/RQ5's slicing-criterion raw data)
     Step 2  Dynamic slicing: failing-test criteria + selective passing-test
             criteria -> virtual test columns (RQ2/RQ3/RQ4 raw data)
+    RQ1    True dynamic assertion-execution counts (Pass_Assert/Fail_Assert),
+            read off Slicer4J's own per-test bytecode trace - see
+            rq1_dynamic_asserts.py's module docstring. Independent of Step
+            2's Target-Pool/virtual-column methodology above.
     Step 3  Trace matrix (traditional SBFL baseline) + slice matrix
             (hybrid) + Ochiai scoring for both
     Step 4  Ranking with tie-break (r_worst) + Average Precision (RQ5)
@@ -31,6 +35,7 @@ from pathlib import Path
 
 import common
 import ground_truth
+import rq1_dynamic_asserts
 import rq_writers
 import step1_tests
 import step2_slicing
@@ -67,6 +72,7 @@ def run_one_target(target: dict) -> bool:
     try:
         step1_out = step1_tests.run(ctx)
         step2_out = step2_slicing.run(ctx, step1_out["test_results"], step1_out["target_pool"])
+        assert_counts = rq1_dynamic_asserts.compute(ctx, step1_out["test_results"])
         step3_out = step3_matrices.run(ctx, step1_out["test_results"], step2_out["virtual_columns"])
         gt_faults = ground_truth.load_ground_truth_faults(ctx.project_id, ctx.bug_id, logger, ctx.checkout_dir)
         # Answerability must be classified against the TRACE matrix's statement
@@ -79,8 +85,7 @@ def run_one_target(target: dict) -> bool:
         rq_writers.write_all(
             ctx, OUTPUTS_DIR,
             test_results=step1_out["test_results"],
-            target_pool=step1_out["target_pool"],
-            passed_variable_matches=step2_out["passed_variable_matches"],
+            assert_counts=assert_counts,
             virtual_columns=step2_out["virtual_columns"],
             ochiai_result=step3_out,
             ranking_result=step4_out,

@@ -36,17 +36,17 @@ RQ5_FIELDS = ["Project", "BugID", "SBFL_Top_Rank", "Hybrid_Top_Rank", "SBFL_AP",
 RQ0_FIELDS = ["Project", "BugID", "Total_Fault_Lines", "Unanswerable_Fault_Lines", "Bug_Fully_Unanswerable"]
 
 
-def _write_rq1(ctx, outputs_dir, test_results, target_pool, passed_variable_matches):
+def _write_rq1(ctx, outputs_dir, test_results, assert_counts):
     pass_tc = sum(1 for r in test_results if r["result"] == "PASS")
     fail_tc = sum(1 for r in test_results if r["result"] == "FAIL")
-    # Pass_Assert = "Correct" assertions from failing tests (evaluated
-    # before the failure) + the selectively-filtered assertions from
-    # passing tests that matched the Target Variable Pool.
-    pass_assert = sum(1 for r in target_pool if r["status"] == "Correct") + len(passed_variable_matches)
-    fail_assert = sum(1 for r in target_pool if r["status"] == "Incorrect")
-
+    # Pass_Assert/Fail_Assert are TRUE dynamic assertion-execution counts
+    # (loop iterations counted per iteration actually run, short-circuited
+    # assertions after a failure correctly excluded because they never ran)
+    # - see rq1_dynamic_asserts.compute's docstring. Deliberately NOT Step
+    # 1/2's Target Variable Pool, which is a selective slicing-criterion set
+    # scoped to RQ2/RQ4/RQ5's needs, not a full assertion-execution count.
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Pass_TC": pass_tc, "Fail_TC": fail_tc,
-           "Pass_Assert": pass_assert, "Fail_Assert": fail_assert}
+           "Pass_Assert": assert_counts["pass_assert"], "Fail_Assert": assert_counts["fail_assert"]}
     common.upsert_csv_row(outputs_dir / "rq1.csv", RQ1_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
@@ -133,10 +133,10 @@ def _write_rq5(ctx, outputs_dir, ranking_result):
     return row
 
 
-def write_all(ctx, outputs_dir, *, test_results, target_pool, passed_variable_matches,
+def write_all(ctx, outputs_dir, *, test_results, assert_counts,
               virtual_columns, ochiai_result, ranking_result, ground_truth_faults, answerability=None):
     rq0 = _write_rq0(ctx, outputs_dir, answerability)
-    rq1 = _write_rq1(ctx, outputs_dir, test_results, target_pool, passed_variable_matches)
+    rq1 = _write_rq1(ctx, outputs_dir, test_results, assert_counts)
     rq2 = _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result)
     rq3 = _write_rq3(ctx, outputs_dir)
     rq4 = _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_result)
