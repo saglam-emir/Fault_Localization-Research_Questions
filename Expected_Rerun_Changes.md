@@ -103,3 +103,63 @@ respectively, row for row:
   populated, and should exactly match the current values of
   `Full_Execution_Size`, `Union_Passing_Slices`, `Union_Failing_Slices`
   respectively for the same row.
+
+## rq3.csv — unit suffixes added to headers (this session)
+
+**Step 1 analysis:** the 5 metrics themselves (`_write_rq3` in
+`rq_writers.py`, fed by `context.Metrics` / `common.run_cmd_timed`) were
+already correct and are untouched by this change — only the CSV column
+*names* were missing their units. Confirmed the actual units straight from
+where each value is produced, not assumed:
+- `Baseline_Time`, `SBFL_Time`, `Hybrid_Time`, `Avg_Slice_Time` — all four
+  are wall-clock seconds (`context.Metrics.*_time_sec`, measured via
+  `time.time()` deltas in `common.run_cmd_timed`/`run_cmd`), rounded to 3
+  decimals in `_write_rq3`.
+- `Peak_Memory` — kilobytes, parsed directly from `/usr/bin/time -v`'s
+  `Maximum resident set size (kbytes)` line (`common.py`'s `_MAX_RSS_RE`),
+  rounded to 1 decimal. Never converted to MB or bytes anywhere in the
+  pipeline (current on-disk values like `667272.0` for `Peak_Memory` are
+  KB, i.e. ~667 MB — consistent with a JVM process, not a byte or MB
+  count).
+
+`RQ3_FIELDS` renamed (not just extended) to:
+
+| Old header | New header |
+|---|---|
+| `Baseline_Time` | `Baseline_Time_(s)` |
+| `SBFL_Time` | `SBFL_Time_(s)` |
+| `Hybrid_Time` | `Hybrid_Time_(s)` |
+| `Avg_Slice_Time` | `Avg_Slice_Time_(s)` |
+| `Peak_Memory` | `Peak_Memory_(KB)` |
+
+Current (pre-rerun) values for reference — same numbers are expected back
+under the new header names after rerun, since the computation itself did
+not change:
+
+| Project | BugID | Baseline_Time | SBFL_Time | Hybrid_Time | Avg_Slice_Time | Peak_Memory |
+|---|---|---|---|---|---|---|
+| Csv | 3b | 3.09 | 281.253 | 1186.712 | 6.901 | 667272.0 |
+| Csv | 13b | 5.261 | 770.317 | 1540.659 | 7.482 | 668948.0 |
+| JacksonXml | 1b | 14.49 | 550.72 | 1725.878 | 6.908 | 1007140.0 |
+| JacksonXml | 6b | 19.196 | 771.315 | 2251.852 | 6.795 | 1142496.0 |
+
+**Expected after rerun:** the 5 columns reappear under their new,
+unit-suffixed names with values numerically unchanged from the table
+above (assuming ordinary run-to-run timing/memory jitter only — these are
+wall-clock/RSS measurements, not deterministic like RQ1/RQ2/RQ4/RQ5's
+counts, so small fluctuations between runs are expected and not a bug).
+
+**Gotcha specific to this change, unlike RQ2's column *addition*:** this
+was a rename, not an addition, so `Baseline_Time` and
+`Baseline_Time_(s)` are two different dict keys as far as
+`common.upsert_csv_row` is concerned. The moment `_write_rq3` runs for
+*any single target*, the whole file is rewritten under the new 5-column
+header, and every *other* target's row - read back in under the old key
+names - has nothing matching the new keys, so `row.get(k, "")` blanks all
+5 metric cells for that row (not just the 3 new ones, as in RQ2's case).
+Full data for all 4 targets is only guaranteed once **every** target has
+been rerun at least once after this change - a partial/single-target
+rerun will transiently blank the untouched targets' rq3.csv metrics until
+they're rerun too. Rerunning all 4 targets together (the normal
+no-arg `run_pipeline.py` invocation) avoids ever observing that
+intermediate blanked state.
