@@ -1,15 +1,25 @@
 # Expected Rerun Changes (temporary tracking file)
 
-Status as of 2026-08-13: code changes below are committed to the pipeline
-scripts, but `run_pipeline.py` has **not** been re-executed for any target.
-Everything in this file is a prediction of what the next full rerun
+**Update, 2026-08-14:** the rq1/rq2/rq3 predictions below (as they stood on
+2026-08-13) were checked against a completed full 4-target rerun and
+confirmed materialized - see "STATUS: VERIFIED" notes inline. That rerun's
+`rq2.csv` is now itself superseded by a same-day schema change (§ "rq2.csv
+v2" below), which has **not** been rerun yet. Everything under the v2
+heading is a prediction of the *next* full rerun
 (`python3 run_pipeline.py` with no target arg, covering all 4 targets:
-`Csv_3b`, `Csv_13b`, `JacksonXml_1b`, `JacksonXml_6b`) will change in
-`resQ_outputs/rq1.csv`, `resQ_outputs/rq2.csv`, and `resQ_outputs/rq3.csv` —
-not a record of an actual run. Delete this file once the rerun has happened
-and the three CSVs have been checked against it.
+`Csv_3b`, `Csv_13b`, `JacksonXml_1b`, `JacksonXml_6b`), not a record of an
+actual run. Delete this file once that rerun has happened and
+`resQ_outputs/rq2.csv` has been checked against the v2 predictions.
 
 ## rq1.csv — dynamic assertion counting (`rq1_dynamic_asserts.py`, commit `c133ac1`)
+
+**STATUS: VERIFIED (2026-08-14).** The full rerun confirmed the predicted
+direction: `Pass_Assert` moved 49→1264, 11→1759, 92→806, 49→1003 across the
+4 targets (8×-160× larger). One value worth a second look, not a rerun
+defect: `JacksonXml_6b`'s `Fail_Assert` went 5→0 despite 11 failing tests -
+consistent with the new trace-based mechanism if none of those 11 tests'
+traces hit an `assertX(...)` line before throwing (e.g. failing via an
+uncaught exception rather than a JUnit assertion).
 
 Current `Pass_Assert`/`Fail_Assert` values on disk were written by the
 **old** logic (`_write_rq1`, pre-`c133ac1`):
@@ -51,7 +61,21 @@ dynamic-execution counts; exact numbers are unknown until the rerun
 actually happens — no number in this section should be treated as the
 predicted new value, only the direction/mechanism of the change.
 
-## rq2.csv — three doc-facing column names added (this session)
+## rq2.csv (v1, superseded) — three doc-facing column names added
+
+**STATUS: VERIFIED (2026-08-14), then SUPERSEDED (same day, see "rq2.csv
+v2" below).** The rerun confirmed the 5 pre-existing columns held exactly
+steady for 3 of 4 targets, and the 3 aliased columns populated correctly
+and matched their originals row-for-row, as predicted. `JacksonXml_6b` did
+drift (`Union_Passing_Slices` 65→60, cascading into `Union_All_Slices` and
+`Reduction_Ratio`) - ordinary Slicer4J run-to-run slice nondeterminism,
+already flagged as a caveat below, not a surprise. This whole v1 design -
+aliasing `Statements executed` / `Union statements in slices of passing
+assertions` / `Union statements in slices of failing assertions` onto the
+existing values - was itself replaced on 2026-08-14 (see "rq2.csv v2"):
+`Statements executed` was deleted outright, and the two "assertions"
+columns turned out to need genuinely different values, not aliases - kept
+here only as a historical record of what v1 predicted and verified.
 
 **Important finding from Step 1's analysis, before making any change:**
 the three union columns first requested in this session's original prompt
@@ -105,6 +129,13 @@ respectively, row for row:
   respectively for the same row.
 
 ## rq3.csv — unit suffixes added to headers (this session)
+
+**STATUS: VERIFIED (2026-08-14).** Header confirmed as
+`Baseline_Time_(s),SBFL_Time_(s),Hybrid_Time_(s),Avg_Slice_Time_(s),Peak_Memory_(KB)`,
+all 4 rows fully populated with no blanks - the full-simultaneous-rerun
+requirement worked as intended. Values shifted a few percent from the
+pre-rerun numbers (e.g. `Csv_3b` `Baseline_Time_(s)` 3.09→3.499), ordinary
+wall-clock/RSS jitter as predicted, not a concern.
 
 **Step 1 analysis:** the 5 metrics themselves (`_write_rq3` in
 `rq_writers.py`, fed by `context.Metrics` / `common.run_cmd_timed`) were
@@ -163,3 +194,96 @@ rerun will transiently blank the untouched targets' rq3.csv metrics until
 they're rerun too. Rerunning all 4 targets together (the normal
 no-arg `run_pipeline.py` invocation) avoids ever observing that
 intermediate blanked state.
+
+## rq2.csv v2 — "Statements executed" deleted; the two "assertions" columns redefined (2026-08-14, not yet rerun)
+
+**Why v1 needed fixing:** v1 (above) aliased `Union statements in slices
+of passing assertions` / `...failing assertions` onto the *exact same*
+Python variables as `Union_Passing_Slices`/`Union_Failing_Slices` - same
+computation, just a second dict key. On review this was wrong: those two
+existing columns already group virtual columns by **the individual
+assertion's own outcome** (`virtual_status`: `Virtual_Pass` = this
+specific criterion evaluated true, `Virtual_Fail` = this specific
+criterion is the one that threw). A single FAILING test contributes rows
+to *both* buckets - every assertion JUnit reached before the failure line
+is individually `Correct`/`Virtual_Pass` (Step 1's Target Variable Pool,
+`step1_tests.py`), and only the one at the failure line is
+`Virtual_Fail`. Aliasing a second name onto that same computation gave two
+columns with identical values and identical meaning - not the "these mean
+different things" the schema is supposed to express.
+
+**The fix - Task 1 (delete):** `Statements executed` (the
+`Full_Execution_Size` alias) is removed outright, no replacement. Nothing
+else needed a third name for "size of the full trace-coverage universe" -
+`Full_Execution_Size` already covers it under its original name.
+
+**The fix - Tasks 2/3 (differentiate, not just rename):** `_write_rq2`
+now also computes `Pass_TC_Slices`/`Fail_TC_Slices` - the **same**
+per-virtual-column slice-statement sets, unioned by a **different**
+grouping: whether the virtual column's **source test case, taken as a
+whole**, passed or failed per Step 1's `test_results` (`test_case` field
+looked up against each test's own PASS/FAIL), not by the individual
+assertion's outcome. Concretely: a `Correct`/`Virtual_Pass` assertion
+drawn from an otherwise-FAILING test still counts toward
+`Union_Passing_Slices` (assertion-outcome view) but now counts toward
+`Fail_TC_Slices` instead (source-test-outcome view), since the test it
+came from still failed overall. Every virtual column built from a
+*passing* test's assertion scan (Step 2b/2c) is trivially `Virtual_Pass`
+**and** from a passing test case, so it agrees under both groupings - the
+two views can only diverge on virtual columns built from a *failing*
+test's Target Pool rows (Step 2a), specifically their `Correct` ones.
+This is deliberately independent of RQ1's own dynamic assertion-hit trace
+(`rq1_dynamic_asserts.py`) - reuses only Step 1's already-computed
+per-test PASS/FAIL, not RQ1's separate bytecode-trace mechanism (keeping
+the architectural boundary that module's own docstring establishes).
+
+**Naming:** shortened, underscore-separated, and deliberately reuses RQ1's
+established `_TC`/`Assert` vocabulary (`Pass_TC`/`Fail_TC` = test-case
+counts, `Pass_Assert`/`Fail_Assert` = assertion counts) so a reader of
+both CSVs recognizes `_TC_` as "grouped by test case" on sight, distinct
+from the assertion-level `Union_Passing_Slices`/`Union_Failing_Slices`
+next to it.
+
+**Code changes:** `RQ2_FIELDS` in `rq_writers.py` is now `["Project",
+"BugID", "Full_Execution_Size", "Union_Passing_Slices",
+"Union_Failing_Slices", "Union_All_Slices", "Reduction_Ratio",
+"Pass_TC_Slices", "Fail_TC_Slices"]` (9 columns, down from v1's 10).
+`_write_rq2` now takes `test_results` as a parameter (threaded through
+from `write_all`, which already received it for `_write_rq1`) to build
+the `test_case → PASS/FAIL` lookup.
+
+**Predicted values after the next rerun** - computed just now by
+re-running this exact grouping logic offline against the *already
+materialized* Step 1-3 artifacts on disk from the 2026-08-14 rerun
+(`slice_observation_matrix.csv`, `virtual_test_status.csv`,
+`test_results.csv` under `resQ_outputs/work/<target>/`) - not a guess.
+`Union_Passing_Slices`/`Union_Failing_Slices` were recomputed the same way
+as a sanity check and matched the current `rq2.csv` exactly (208/57,
+1/59, 124/107, 60/4), confirming the script's logic before trusting its
+`Pass_TC_Slices`/`Fail_TC_Slices` output:
+
+| Project | BugID | Union_Passing_Slices | Union_Failing_Slices | Pass_TC_Slices (predicted) | Fail_TC_Slices (predicted) | Diverges? |
+|---|---|---|---|---|---|---|
+| Csv | 3b | 208 | 57 | 201 | 148 | Yes - 7 statements move out of the passing bucket, growing the failing bucket by 91 |
+| Csv | 13b | 1 | 59 | 1 | 59 | No - this bug's failing-test criteria contribute no `Correct` rows |
+| JacksonXml | 1b | 124 | 107 | 120 | 107 | Yes - 4 statements move out of the passing bucket, but they were already inside the failing bucket (no growth there) |
+| JacksonXml | 6b | 60 | 4 | 60 | 4 | No - same as Csv_13b |
+
+**Caveat:** these are computed from the *current* on-disk slice artifacts,
+which were themselves produced by one particular Slicer4J run. As already
+observed for `JacksonXml_6b`'s `Union_Passing_Slices` (65→60 across the
+v1 rerun), Slicer4J's own dynamic slicing has some run-to-run
+nondeterminism - so `Pass_TC_Slices`/`Fail_TC_Slices` after the *next*
+actual rerun should land close to this table but are not guaranteed to
+match it exactly, for the same reason `Union_Passing_Slices`/
+`Union_Failing_Slices` aren't guaranteed to reproduce 208/57/124/107/60/4
+verbatim either.
+
+**Expected after rerun:** `Full_Execution_Size`, `Union_Passing_Slices`,
+`Union_Failing_Slices`, `Union_All_Slices`, `Reduction_Ratio` unchanged in
+formula (same code as v1, values subject only to ordinary Slicer4J
+nondeterminism). `Statements executed` gone from the header entirely.
+`Pass_TC_Slices`/`Fail_TC_Slices` populated per the table above, and -
+this is the concrete, checkable proof the two groupings are genuinely
+different - **not** expected to equal `Union_Passing_Slices`/
+`Union_Failing_Slices` for `Csv_3b` and `JacksonXml_1b`.

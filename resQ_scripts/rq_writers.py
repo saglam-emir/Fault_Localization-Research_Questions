@@ -24,12 +24,11 @@ RQ_KEY_FIELDS = ["Project", "BugID"]  # one row per target; reruns upsert on thi
 RQ1_FIELDS = ["Project", "BugID", "Pass_TC", "Fail_TC", "Pass_Assert", "Fail_Assert"]
 RQ2_FIELDS = ["Project", "BugID", "Full_Execution_Size", "Union_Passing_Slices",
               "Union_Failing_Slices", "Union_All_Slices", "Reduction_Ratio",
-              # Same three underlying quantities as Full_Execution_Size/Union_Passing_Slices/
-              # Union_Failing_Slices above, appended under the exact column names requested
-              # for the paper/doc-facing schema. Kept alongside (not replacing) the original
-              # names so nothing already reading those breaks - see _write_rq2's docstring.
-              "Statements executed", "Union statements in slices of passing assertions",
-              "Union statements in slices of failing assertions"]
+              # Pass_TC_Slices/Fail_TC_Slices are a GENUINELY DIFFERENT grouping from
+              # Union_Passing_Slices/Union_Failing_Slices above, not aliases of them - see
+              # _write_rq2's docstring for the exact distinction (assertion-outcome grouping
+              # vs source-test-case-outcome grouping) and why they can diverge.
+              "Pass_TC_Slices", "Fail_TC_Slices"]
 # Suffixed with the actual unit each value is computed/rounded in - all four
 # time fields are wall-clock seconds (context.Metrics.*_time_sec, timed via
 # time.time() in common.run_cmd_timed), Peak_Memory is kilobytes (parsed
@@ -64,7 +63,7 @@ def _write_rq1(ctx, outputs_dir, test_results, assert_counts):
     return row
 
 
-def _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result):
+def _write_rq2(ctx, outputs_dir, test_results, virtual_columns, ochiai_result):
     full_execution_size = len(ochiai_result["trace_universe"])
     per_column = ochiai_result["per_column_statements"]
     # per_column_statements is captured before step3's bracket-only-line
@@ -74,6 +73,14 @@ def _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result):
     # against Full_Execution_Size (also bracket-only-filtered).
     slice_universe = set(ochiai_result["slice_universe"])
 
+    # Union_Passing_Slices/Union_Failing_Slices: grouped by the OUTCOME OF
+    # THE ASSERTION ITSELF (virtual_status). Virtual_Pass means this exact
+    # criterion evaluated true at runtime; Virtual_Fail means it is the one
+    # assertion whose failure ended the test. A single FAILING test
+    # contributes BOTH: every assertion JUnit reached before the failure
+    # line is individually "Correct"/Virtual_Pass (see step1_tests.py's
+    # Target Variable Pool construction, status="Correct"/"Incorrect"),
+    # and only the one at the failure line is Virtual_Fail.
     union_pass, union_fail = set(), set()
     for row in virtual_columns:
         stmts = per_column.get(row["virtual_test_id"], set()) & slice_universe
@@ -85,14 +92,41 @@ def _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result):
 
     reduction_ratio = (1 - (len(union_all) / full_execution_size)) if full_execution_size else 0.0
 
+    # Pass_TC_Slices/Fail_TC_Slices: a DIFFERENT grouping of the same
+    # per-column statement sets, by whether the virtual column's SOURCE
+    # TEST CASE - taken as a whole, per Step 1's test_results - passed or
+    # failed, not by the individual assertion's own outcome above. Every
+    # virtual column Step 2 built from a passing test's assertion scan
+    # (2b/2c) is trivially Virtual_Pass AND from a passing test case, so it
+    # agrees with Union_Passing_Slices either way. The two groupings can
+    # only diverge on virtual columns Step 2 built from a FAILING test's
+    # Target Pool rows (2a): a "Correct"/Virtual_Pass assertion drawn from
+    # an otherwise-FAILING test counts toward Union_Passing_Slices above,
+    # but toward Fail_TC_Slices here, since its source test still failed.
+    # This is deliberately independent of RQ1's own dynamic assertion-hit
+    # trace (rq1_dynamic_asserts.py) - see that module's docstring on why
+    # it stays decoupled from Step 2's virtual-column methodology; this
+    # reuses only Step 1's plain per-test PASS/FAIL, already computed and
+    # passed in for RQ1 anyway.
+    tc_result = {r["test_case"]: r["result"] for r in test_results}
+    tc_pass, tc_fail = set(), set()
+    for row in virtual_columns:
+        stmts = per_column.get(row["virtual_test_id"], set()) & slice_universe
+        outcome = tc_result.get(row["test_case"])
+        if outcome == "PASS":
+            tc_pass |= stmts
+        elif outcome == "FAIL":
+            tc_fail |= stmts
+        else:
+            ctx.logger.warning(f"RQ2: virtual column {row['virtual_test_id']!r}'s source test case "
+                                f"{row['test_case']!r} has no Step 1 test_results entry; excluded from "
+                                f"Pass_TC_Slices/Fail_TC_Slices (should not happen - every virtual column "
+                                f"is built from either a failing or a passing Step 1 test).")
+
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Full_Execution_Size": full_execution_size,
            "Union_Passing_Slices": len(union_pass), "Union_Failing_Slices": len(union_fail),
            "Union_All_Slices": len(union_all), "Reduction_Ratio": round(reduction_ratio, 6),
-           # Aliases of the three fields above under the doc-facing column names (same
-           # values, same sets - see RQ2_FIELDS's comment).
-           "Statements executed": full_execution_size,
-           "Union statements in slices of passing assertions": len(union_pass),
-           "Union statements in slices of failing assertions": len(union_fail)}
+           "Pass_TC_Slices": len(tc_pass), "Fail_TC_Slices": len(tc_fail)}
     common.upsert_csv_row(outputs_dir / "rq2.csv", RQ2_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
@@ -155,7 +189,7 @@ def write_all(ctx, outputs_dir, *, test_results, assert_counts,
               virtual_columns, ochiai_result, ranking_result, ground_truth_faults, answerability=None):
     rq0 = _write_rq0(ctx, outputs_dir, answerability)
     rq1 = _write_rq1(ctx, outputs_dir, test_results, assert_counts)
-    rq2 = _write_rq2(ctx, outputs_dir, virtual_columns, ochiai_result)
+    rq2 = _write_rq2(ctx, outputs_dir, test_results, virtual_columns, ochiai_result)
     rq3 = _write_rq3(ctx, outputs_dir)
     rq4 = _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_result)
     rq5 = _write_rq5(ctx, outputs_dir, ranking_result)
