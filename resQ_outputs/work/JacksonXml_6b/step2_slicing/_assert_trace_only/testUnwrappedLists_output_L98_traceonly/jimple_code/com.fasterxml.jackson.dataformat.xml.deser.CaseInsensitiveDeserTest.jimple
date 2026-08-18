@@ -1,0 +1,88 @@
+public class com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest extends com.fasterxml.jackson.dataformat.xml.XmlTestBase
+{
+    private final com.fasterxml.jackson.databind.ObjectMapper MAPPER;
+    private final com.fasterxml.jackson.databind.ObjectMapper INSENSITIVE_MAPPER;
+
+    public void <init>()
+    {
+        com.fasterxml.jackson.databind.MapperFeature $stack4;
+        com.fasterxml.jackson.databind.MapperFeature[] $stack3;
+        com.fasterxml.jackson.dataformat.xml.XmlMapper $stack1, $stack2;
+        com.fasterxml.jackson.databind.ObjectMapper $stack5;
+        com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest;
+
+        specialinvoke this.<com.fasterxml.jackson.dataformat.xml.XmlTestBase: void <init>()>();
+
+        $stack1 = staticinvoke <com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: com.fasterxml.jackson.dataformat.xml.XmlMapper newMapper()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: com.fasterxml.jackson.databind.ObjectMapper MAPPER> = $stack1;
+
+        $stack2 = staticinvoke <com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: com.fasterxml.jackson.dataformat.xml.XmlMapper newMapper()>();
+
+        $stack3 = newarray (com.fasterxml.jackson.databind.MapperFeature)[1];
+
+        $stack4 = <com.fasterxml.jackson.databind.MapperFeature: com.fasterxml.jackson.databind.MapperFeature ACCEPT_CASE_INSENSITIVE_PROPERTIES>;
+
+        $stack3[0] = $stack4;
+
+        $stack5 = virtualinvoke $stack2.<com.fasterxml.jackson.dataformat.xml.XmlMapper: com.fasterxml.jackson.databind.ObjectMapper enable(com.fasterxml.jackson.databind.MapperFeature[])>($stack3);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: com.fasterxml.jackson.databind.ObjectMapper INSENSITIVE_MAPPER> = $stack5;
+
+        return;
+    }
+
+    public void testCaseInsensitive1036() throws java.lang.Exception
+    {
+        java.lang.Throwable $stack10;
+        com.fasterxml.jackson.databind.ObjectMapper $stack4, $stack8;
+        java.lang.String[] $stack11;
+        com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest$BaseResponse response;
+        int $stack6;
+        java.lang.Object $stack5;
+        java.lang.String $stack7;
+        com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest;
+
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: com.fasterxml.jackson.databind.ObjectMapper INSENSITIVE_MAPPER>;
+
+        $stack5 = virtualinvoke $stack4.<com.fasterxml.jackson.databind.ObjectMapper: java.lang.Object readValue(java.lang.String,java.lang.Class)>("<BaseResponse><ErrorCode>2</ErrorCode><DebugMessage>Signature not valid!</DebugMessage></BaseResponse>", class "Lcom/fasterxml/jackson/dataformat/xml/deser/CaseInsensitiveDeserTest$BaseResponse;");
+
+        response = (com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest$BaseResponse) $stack5;
+
+        $stack6 = response.<com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest$BaseResponse: int errorCode>;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: void assertEquals(int,int)>(2, $stack6);
+
+        $stack7 = response.<com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest$BaseResponse: java.lang.String debugMessage>;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: void assertEquals(java.lang.String,java.lang.String)>("Signature not valid!", $stack7);
+
+     label1:
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: com.fasterxml.jackson.databind.ObjectMapper MAPPER>;
+
+        virtualinvoke $stack8.<com.fasterxml.jackson.databind.ObjectMapper: java.lang.Object readValue(java.lang.String,java.lang.Class)>("<BaseResponse><ErrorCode>2</ErrorCode><DebugMessage>Signature not valid!</DebugMessage></BaseResponse>", class "Lcom/fasterxml/jackson/dataformat/xml/deser/CaseInsensitiveDeserTest$BaseResponse;");
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: void fail(java.lang.String)>("Should not pass");
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack10 := @caughtexception;
+
+        $stack11 = newarray (java.lang.String)[1];
+
+        $stack11[0] = "ErrorCode";
+
+        virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.CaseInsensitiveDeserTest: void verifyException(java.lang.Throwable,java.lang.String[])>($stack10, $stack11);
+
+     label4:
+        return;
+
+        catch com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException from label1 to label2 with label3;
+    }
+}

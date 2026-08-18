@@ -5,8 +5,8 @@ Ground truth faulty statement(s) (diff line): [('Lexer.java', 111), ('Lexer.java
 Ground_Truth_Answerable: True
 Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/csv/Lexer.java', 112), ('src/main/java/org/apache/commons/csv/Lexer.java', 113)]
 
-- SBFL   top rank: 1, AP: 0.3333
-- Hybrid top rank: 58, AP: 0.0016
+- SBFL   ranked 443 statement(s)
+- Hybrid ranked 208 statement(s)
 
 ## Top 10 - Trace-Based SBFL
 

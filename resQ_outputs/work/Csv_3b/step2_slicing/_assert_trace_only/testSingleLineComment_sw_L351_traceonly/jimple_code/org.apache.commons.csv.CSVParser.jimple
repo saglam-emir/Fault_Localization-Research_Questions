@@ -1,0 +1,459 @@
+public class org.apache.commons.csv.CSVParser extends java.lang.Object implements java.lang.Iterable
+{
+    private final org.apache.commons.csv.Lexer lexer;
+    private final java.util.Map headerMap;
+    private long recordNumber;
+    private final java.util.List record;
+    private final org.apache.commons.csv.Token reusableToken;
+
+    public void <init>(java.io.Reader) throws java.io.IOException
+    {
+        org.apache.commons.csv.CSVParser this;
+        java.io.Reader input;
+        org.apache.commons.csv.CSVFormat $stack2;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        input := @parameter0: java.io.Reader;
+
+        $stack2 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat DEFAULT>;
+
+        specialinvoke this.<org.apache.commons.csv.CSVParser: void <init>(java.io.Reader,org.apache.commons.csv.CSVFormat)>(input, $stack2);
+
+        return;
+    }
+
+    public void <init>(java.io.Reader, org.apache.commons.csv.CSVFormat) throws java.io.IOException
+    {
+        org.apache.commons.csv.Token $stack4;
+        org.apache.commons.csv.CSVLexer $stack5;
+        java.io.Reader input;
+        java.util.ArrayList $stack3;
+        org.apache.commons.csv.CSVFormat format;
+        java.util.Map $stack7;
+        org.apache.commons.csv.CSVParser this;
+        org.apache.commons.csv.ExtendedBufferedReader $stack6;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        input := @parameter0: java.io.Reader;
+
+        format := @parameter1: org.apache.commons.csv.CSVFormat;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $stack3 = new java.util.ArrayList;
+
+        specialinvoke $stack3.<java.util.ArrayList: void <init>()>();
+
+        this.<org.apache.commons.csv.CSVParser: java.util.List record> = $stack3;
+
+        $stack4 = new org.apache.commons.csv.Token;
+
+        specialinvoke $stack4.<org.apache.commons.csv.Token: void <init>()>();
+
+        this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken> = $stack4;
+
+        $stack5 = new org.apache.commons.csv.CSVLexer;
+
+        $stack6 = new org.apache.commons.csv.ExtendedBufferedReader;
+
+        specialinvoke $stack6.<org.apache.commons.csv.ExtendedBufferedReader: void <init>(java.io.Reader)>(input);
+
+        specialinvoke $stack5.<org.apache.commons.csv.CSVLexer: void <init>(org.apache.commons.csv.CSVFormat,org.apache.commons.csv.ExtendedBufferedReader)>(format, $stack6);
+
+        this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Lexer lexer> = $stack5;
+
+        $stack7 = specialinvoke this.<org.apache.commons.csv.CSVParser: java.util.Map initializeHeader(org.apache.commons.csv.CSVFormat)>(format);
+
+        this.<org.apache.commons.csv.CSVParser: java.util.Map headerMap> = $stack7;
+
+        return;
+    }
+
+    public void <init>(java.lang.String, org.apache.commons.csv.CSVFormat) throws java.io.IOException
+    {
+        java.io.StringReader $stack3;
+        org.apache.commons.csv.CSVFormat format;
+        org.apache.commons.csv.CSVParser this;
+        java.lang.String input;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        input := @parameter0: java.lang.String;
+
+        format := @parameter1: org.apache.commons.csv.CSVFormat;
+
+        $stack3 = new java.io.StringReader;
+
+        specialinvoke $stack3.<java.io.StringReader: void <init>(java.lang.String)>(input);
+
+        specialinvoke this.<org.apache.commons.csv.CSVParser: void <init>(java.io.Reader,org.apache.commons.csv.CSVFormat)>($stack3, format);
+
+        return;
+    }
+
+    public java.util.Map getHeaderMap()
+    {
+        java.util.LinkedHashMap $stack1;
+        org.apache.commons.csv.CSVParser this;
+        java.util.Map $stack2;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        $stack1 = new java.util.LinkedHashMap;
+
+        $stack2 = this.<org.apache.commons.csv.CSVParser: java.util.Map headerMap>;
+
+        specialinvoke $stack1.<java.util.LinkedHashMap: void <init>(java.util.Map)>($stack2);
+
+        return $stack1;
+    }
+
+    public long getLineNumber()
+    {
+        org.apache.commons.csv.CSVParser this;
+        long $stack2;
+        org.apache.commons.csv.Lexer $stack1;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        $stack1 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Lexer lexer>;
+
+        $stack2 = virtualinvoke $stack1.<org.apache.commons.csv.Lexer: long getLineNumber()>();
+
+        return $stack2;
+    }
+
+    public long getRecordNumber()
+    {
+        org.apache.commons.csv.CSVParser this;
+        long $stack1;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        $stack1 = this.<org.apache.commons.csv.CSVParser: long recordNumber>;
+
+        return $stack1;
+    }
+
+    org.apache.commons.csv.CSVRecord nextRecord() throws java.io.IOException
+    {
+        org.apache.commons.csv.Token $stack5, $stack6, $stack9, $stack15, $stack19, $stack59, $stack61, $stack66, $stack71, $stack20;
+        org.apache.commons.csv.CSVRecord $stack32, result;
+        int[] $stack11;
+        java.util.Map $stack39;
+        org.apache.commons.csv.CSVParser this;
+        boolean $stack28, $stack60;
+        java.util.List $stack4, $stack27, $stack33, $stack34, $stack63, $stack68, $stack73;
+        org.apache.commons.csv.Lexer $stack7;
+        org.apache.commons.csv.Token$Type $stack10, $stack18, $stack22, $stack21;
+        java.lang.StringBuilder $stack16, $stack47, $stack53, $stack54, $stack56, $stack57, $stack62, $stack67, $stack72, sb;
+        java.lang.Object[] $stack37;
+        long $stack29, $stack30, $stack38, $stack55;
+        java.lang.String[] $stack36, $stack40;
+        int $stack12, $stack13, $stack35;
+        java.lang.String $stack58, $stack64, $stack69, $stack74, $stack31;
+        java.io.IOException $stack52;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        result = null;
+
+        $stack4 = this.<org.apache.commons.csv.CSVParser: java.util.List record>;
+
+        interfaceinvoke $stack4.<java.util.List: void clear()>();
+
+        sb = null;
+
+     label01:
+        $stack5 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        virtualinvoke $stack5.<org.apache.commons.csv.Token: void reset()>();
+
+        $stack7 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Lexer lexer>;
+
+        $stack6 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        virtualinvoke $stack7.<org.apache.commons.csv.Lexer: org.apache.commons.csv.Token nextToken(org.apache.commons.csv.Token)>($stack6);
+
+        $stack11 = <org.apache.commons.csv.CSVParser$2: int[] $SwitchMap$org$apache$commons$csv$Token$Type>;
+
+        $stack9 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        $stack10 = $stack9.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type>;
+
+        $stack12 = virtualinvoke $stack10.<org.apache.commons.csv.Token$Type: int ordinal()>();
+
+        $stack13 = $stack11[$stack12];
+
+        tableswitch($stack13)
+        {
+            case 1: goto label02;
+            case 2: goto label03;
+            case 3: goto label04;
+            case 4: goto label05;
+            case 5: goto label06;
+            default: goto label09;
+        };
+
+     label02:
+        $stack73 = this.<org.apache.commons.csv.CSVParser: java.util.List record>;
+
+        $stack71 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        $stack72 = $stack71.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack74 = virtualinvoke $stack72.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack73.<java.util.List: boolean add(java.lang.Object)>($stack74);
+
+        goto label09;
+
+     label03:
+        $stack68 = this.<org.apache.commons.csv.CSVParser: java.util.List record>;
+
+        $stack66 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        $stack67 = $stack66.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack69 = virtualinvoke $stack67.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack68.<java.util.List: boolean add(java.lang.Object)>($stack69);
+
+        goto label09;
+
+     label04:
+        $stack59 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        $stack60 = $stack59.<org.apache.commons.csv.Token: boolean isReady>;
+
+        if $stack60 == 0 goto label09;
+
+        $stack63 = this.<org.apache.commons.csv.CSVParser: java.util.List record>;
+
+        $stack61 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        $stack62 = $stack61.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack64 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        interfaceinvoke $stack63.<java.util.List: boolean add(java.lang.Object)>($stack64);
+
+        goto label09;
+
+     label05:
+        $stack52 = new java.io.IOException;
+
+        $stack53 = new java.lang.StringBuilder;
+
+        specialinvoke $stack53.<java.lang.StringBuilder: void <init>()>();
+
+        $stack54 = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(line ");
+
+        $stack55 = virtualinvoke this.<org.apache.commons.csv.CSVParser: long getLineNumber()>();
+
+        $stack56 = virtualinvoke $stack54.<java.lang.StringBuilder: java.lang.StringBuilder append(long)>($stack55);
+
+        $stack57 = virtualinvoke $stack56.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") invalid parse sequence");
+
+        $stack58 = virtualinvoke $stack57.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack52.<java.io.IOException: void <init>(java.lang.String)>($stack58);
+
+        throw $stack52;
+
+     label06:
+        if sb != null goto label07;
+
+        $stack47 = new java.lang.StringBuilder;
+
+        specialinvoke $stack47.<java.lang.StringBuilder: void <init>()>();
+
+        sb = $stack47;
+
+        goto label08;
+
+     label07:
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+     label08:
+        $stack15 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        $stack16 = $stack15.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.CharSequence)>($stack16);
+
+        $stack19 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        $stack18 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type TOKEN>;
+
+        $stack19.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type> = $stack18;
+
+     label09:
+        $stack20 = this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.Token reusableToken>;
+
+        $stack22 = $stack20.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type>;
+
+        $stack21 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type TOKEN>;
+
+        if $stack22 == $stack21 goto label01;
+
+        $stack27 = this.<org.apache.commons.csv.CSVParser: java.util.List record>;
+
+        $stack28 = interfaceinvoke $stack27.<java.util.List: boolean isEmpty()>();
+
+        if $stack28 != 0 goto label12;
+
+        $stack29 = this.<org.apache.commons.csv.CSVParser: long recordNumber>;
+
+        $stack30 = $stack29 + 1L;
+
+        this.<org.apache.commons.csv.CSVParser: long recordNumber> = $stack30;
+
+        if sb != null goto label10;
+
+        $stack31 = null;
+
+        goto label11;
+
+     label10:
+        $stack31 = virtualinvoke sb.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label11:
+        $stack32 = new org.apache.commons.csv.CSVRecord;
+
+        $stack34 = this.<org.apache.commons.csv.CSVParser: java.util.List record>;
+
+        $stack33 = this.<org.apache.commons.csv.CSVParser: java.util.List record>;
+
+        $stack35 = interfaceinvoke $stack33.<java.util.List: int size()>();
+
+        $stack36 = newarray (java.lang.String)[$stack35];
+
+        $stack37 = interfaceinvoke $stack34.<java.util.List: java.lang.Object[] toArray(java.lang.Object[])>($stack36);
+
+        $stack40 = (java.lang.String[]) $stack37;
+
+        $stack39 = this.<org.apache.commons.csv.CSVParser: java.util.Map headerMap>;
+
+        $stack38 = this.<org.apache.commons.csv.CSVParser: long recordNumber>;
+
+        specialinvoke $stack32.<org.apache.commons.csv.CSVRecord: void <init>(java.lang.String[],java.util.Map,java.lang.String,long)>($stack40, $stack39, $stack31, $stack38);
+
+        result = $stack32;
+
+     label12:
+        return result;
+    }
+
+    public java.util.List getRecords() throws java.io.IOException
+    {
+        org.apache.commons.csv.CSVParser this;
+        java.util.ArrayList $stack3;
+        org.apache.commons.csv.CSVRecord $stack4;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        $stack3 = new java.util.ArrayList;
+
+        specialinvoke $stack3.<java.util.ArrayList: void <init>()>();
+
+     label1:
+        $stack4 = virtualinvoke this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.CSVRecord nextRecord()>();
+
+        if $stack4 == null goto label2;
+
+        interfaceinvoke $stack3.<java.util.List: boolean add(java.lang.Object)>($stack4);
+
+        goto label1;
+
+     label2:
+        return $stack3;
+    }
+
+    private java.util.Map initializeHeader(org.apache.commons.csv.CSVFormat) throws java.io.IOException
+    {
+        org.apache.commons.csv.CSVRecord $stack17;
+        java.lang.String[] $stack5, $stack7, header;
+        java.lang.Integer $stack13;
+        java.util.LinkedHashMap $stack6, hdrMap;
+        org.apache.commons.csv.CSVFormat format;
+        int $stack8, $stack11, record;
+        org.apache.commons.csv.CSVParser this;
+        java.lang.String $stack12;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        format := @parameter0: org.apache.commons.csv.CSVFormat;
+
+        hdrMap = null;
+
+        $stack5 = virtualinvoke format.<org.apache.commons.csv.CSVFormat: java.lang.String[] getHeader()>();
+
+        if $stack5 == null goto label5;
+
+        $stack6 = new java.util.LinkedHashMap;
+
+        specialinvoke $stack6.<java.util.LinkedHashMap: void <init>()>();
+
+        hdrMap = $stack6;
+
+        header = null;
+
+        $stack7 = virtualinvoke format.<org.apache.commons.csv.CSVFormat: java.lang.String[] getHeader()>();
+
+        $stack8 = lengthof $stack7;
+
+        if $stack8 != 0 goto label2;
+
+        $stack17 = virtualinvoke this.<org.apache.commons.csv.CSVParser: org.apache.commons.csv.CSVRecord nextRecord()>();
+
+        if $stack17 == null goto label1;
+
+        header = virtualinvoke $stack17.<org.apache.commons.csv.CSVRecord: java.lang.String[] values()>();
+
+     label1:
+        goto label3;
+
+     label2:
+        header = virtualinvoke format.<org.apache.commons.csv.CSVFormat: java.lang.String[] getHeader()>();
+
+     label3:
+        if header == null goto label5;
+
+        record = 0;
+
+     label4:
+        $stack11 = lengthof header;
+
+        if record >= $stack11 goto label5;
+
+        $stack12 = header[record];
+
+        $stack13 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(record);
+
+        interfaceinvoke $stack6.<java.util.Map: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack12, $stack13);
+
+        record = record + 1;
+
+        goto label4;
+
+     label5:
+        return hdrMap;
+    }
+
+    public java.util.Iterator iterator()
+    {
+        org.apache.commons.csv.CSVParser this;
+        org.apache.commons.csv.CSVParser$1 $stack1;
+
+        this := @this: org.apache.commons.csv.CSVParser;
+
+        $stack1 = new org.apache.commons.csv.CSVParser$1;
+
+        specialinvoke $stack1.<org.apache.commons.csv.CSVParser$1: void <init>(org.apache.commons.csv.CSVParser)>(this);
+
+        return $stack1;
+    }
+}

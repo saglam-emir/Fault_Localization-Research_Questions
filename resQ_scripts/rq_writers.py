@@ -37,8 +37,27 @@ RQ2_FIELDS = ["Project", "BugID", "Full_Execution_Size", "Union_Passing_Slices",
 # pipeline.
 RQ3_FIELDS = ["Project", "BugID", "Baseline_Time_(s)", "SBFL_Time_(s)", "Hybrid_Time_(s)",
               "Avg_Slice_Time_(s)", "Peak_Memory_(KB)"]
-RQ4_FIELDS = ["Project", "BugID", "Total_Faults", "Included_In_Slice", "Fault_Inclusion_Rate"]
-RQ5_FIELDS = ["Project", "BugID", "SBFL_Top_Rank", "Hybrid_Top_Rank", "SBFL_AP", "Hybrid_AP"]
+RQ4_FIELDS = ["Project", "BugID", "Total_Faults", "Included_In_Slice", "Fault_Inclusion_Rate",
+              # Fail_Assert_Count/Not_All_Faulty_Stmts_In_Slice/No_Faulty_Stmts_In_Slice are
+              # computed ENTIRELY from virtual_columns/Target Pool data (see _write_rq4) -
+              # deliberately independent of rq1.csv's Fail_Assert (rq1_dynamic_asserts.py's
+              # bytecode-trace mechanism), which answers a different question. Never import
+              # or reference that module/value here.
+              "Fail_Assert_Count", "Not_All_Faulty_Stmts_In_Slice", "No_Faulty_Stmts_In_Slice"]
+# One row per (bug, ground-truth fault LINE), not per bug - a bug with N fault
+# lines produces N consecutive rows. Column names are lowercase/underscored by
+# deliberate one-off request, unlike every other RQ csv's PascalCase/Title_Case
+# schema - not a typo. RQ5_KEY_FIELDS (not the shared RQ_KEY_FIELDS) is required
+# because "Project"+"BugID" alone is no longer a unique row key - see
+# _write_rq5's docstring.
+RQ5_FIELDS = ["project", "bug_id", "file_name", "line_no",
+              "rank_best_trace", "tie_size_trace", "rank_best_slice", "tie_size_slice"]
+RQ5_KEY_FIELDS = ["project", "bug_id", "file_name", "line_no"]
+# Written into rank_best_*/tie_size_* when a fault line is absent from that
+# matrix's ranking entirely (never covered/sliced) - a literal, unambiguous
+# marker distinct from both a real numeric rank and an empty/blank cell (see
+# _write_rq5's docstring for why 0 is wrong here too).
+RQ5_MISSING = "None"
 # Kept deliberately separate from rq1-rq5's existing schemas (no columns
 # added to those) so nothing already reading them breaks. This is the join
 # key any cross-bug aggregate analysis should filter on (WHERE NOT
@@ -145,13 +164,26 @@ def _write_rq3(ctx, outputs_dir):
 
 def _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_result):
     per_column = ochiai_result["per_column_statements"]
+    # slice_universe intersection added for consistency with the actual
+    # (slice) observation matrix / RQ2's Union_Failing_Slices: per_column
+    # (ochiai_result["per_column_statements"]) is captured BEFORE Step 3b's
+    # bracket-only-line filtering, so without this intersection union_fail
+    # could contain statements that never appear as a column in
+    # slice_observation_matrix.csv (i.e. were never actually scored/ranked).
+    # slice_observation_matrix.csv's own cell values are defined as exactly
+    # "statement in per_column[virtual_test_id], for statement in
+    # sorted(slice_universe)" (see step3_matrices.build_slice_matrix), so
+    # this intersection reproduces the matrix's own membership test exactly
+    # - not a re-read of the CSV file (redundant I/O for identical data
+    # already in memory), but the same underlying definition.
+    slice_universe = set(ochiai_result["slice_universe"])
     union_fail = set()
     for row in virtual_columns:
         if row["virtual_status"] == "Virtual_Fail":
-            union_fail |= per_column.get(row["virtual_test_id"], set())
+            union_fail |= per_column.get(row["virtual_test_id"], set()) & slice_universe
 
     # Match on statement_line (normalized), same convention as
-    # step4_ranking.py's AP/rank matching - a multi-line statement's
+    # step4_ranking.py's rank matching - a multi-line statement's
     # coverage/slice hit lands on its first physical line, not necessarily
     # the diff's edit line (see ground_truth.normalize_statement_line).
     faults = sorted({(Path(f["file"]).name, f.get("statement_line", f["line"])) for f in ground_truth_faults})
@@ -159,8 +191,32 @@ def _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_re
     included = sum(1 for f in faults if f in union_fail)
     rate = (included / total) if total else 0.0
 
+    # Fail_Assert_Count: count of Virtual_Fail virtual columns (Step 2's
+    # failing-assertion slicing criteria) that fed union_fail above -
+    # computed ENTIRELY from virtual_columns/Target Pool data, deliberately
+    # NOT rq1.csv's Fail_Assert (rq1_dynamic_asserts.py's independent
+    # bytecode-trace mechanism - see RQ4_FIELDS's comment). Provides the
+    # "how many failing-assertion criteria contributed" context for
+    # Included_In_Slice/Fault_Inclusion_Rate above.
+    fail_assert_count = sum(1 for row in virtual_columns if row["virtual_status"] == "Virtual_Fail")
+
+    # Not_All_Faulty_Stmts_In_Slice: ground truth ⊄ slice (at least one
+    # fault statement missing from union_fail). No_Faulty_Stmts_In_Slice:
+    # ground truth ∩ slice = ∅ (none of them are). Both are deterministic
+    # functions of included/total above (not independent data), kept as
+    # explicit columns for readability/filtering. With an empty ground
+    # truth (total==0) both are forced False rather than the vacuously-true
+    # set-theory answer for "none in slice" (∅∩X=∅) - there is nothing to
+    # check, so asserting "none of the faults are covered" would be
+    # misleading, not merely technically true.
+    not_all_faulty_stmts_in_slice = (included < total) if total else False
+    no_faulty_stmts_in_slice = (included == 0) if total else False
+
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Total_Faults": total,
-           "Included_In_Slice": included, "Fault_Inclusion_Rate": round(rate, 6)}
+           "Included_In_Slice": included, "Fault_Inclusion_Rate": round(rate, 6),
+           "Fail_Assert_Count": fail_assert_count,
+           "Not_All_Faulty_Stmts_In_Slice": not_all_faulty_stmts_in_slice,
+           "No_Faulty_Stmts_In_Slice": no_faulty_stmts_in_slice}
     common.upsert_csv_row(outputs_dir / "rq4.csv", RQ4_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
@@ -175,14 +231,51 @@ def _write_rq0(ctx, outputs_dir, answerability):
     return row
 
 
-def _write_rq5(ctx, outputs_dir, ranking_result):
-    row = {"Project": ctx.project_id, "BugID": ctx.vid,
-           "SBFL_Top_Rank": ranking_result["sbfl_top_rank"],
-           "Hybrid_Top_Rank": ranking_result["hybrid_top_rank"],
-           "SBFL_AP": round(ranking_result["sbfl_ap"], 6),
-           "Hybrid_AP": round(ranking_result["hybrid_ap"], 6)}
-    common.upsert_csv_row(outputs_dir / "rq5.csv", RQ5_FIELDS, row, key_fields=RQ_KEY_FIELDS)
-    return row
+def _write_rq5(ctx, outputs_dir, ground_truth_faults, ranking_result):
+    """One row per ground-truth fault LINE (not one row per bug - see
+    RQ5_FIELDS's comment). rank_best_*/tie_size_* are read directly off
+    step4_ranking.build_ranking()'s already-computed trace_ranked/
+    slice_ranked lists (ranking_result) - no ranking math happens here, and
+    nothing is re-derived from the raw matrices, per the approved plan.
+    AP is deliberately NOT computed here anymore (approved for deletion -
+    see step4_ranking.py); this file carries exactly the rank_best/tie_size
+    data an external AP computation needs (rank_best + tie_size together
+    give r_worst = rank_best + tie_size - 1, the task's tie-break rule).
+
+    Matches ground-truth faults against the ranked lists on the NORMALIZED
+    statement_line (see ground_truth.normalize_statement_line), the same
+    convention step4_ranking.run() and RQ4 already use - trace_ranked/
+    slice_ranked's own "line" field is the coverage/slice tools' bytecode
+    line-number-table convention, so matching on the raw diff line would
+    silently miss any multi-line-statement fault the technique actually did
+    find (verified concretely on Csv-13: diff line 319, statement line
+    318). file_name/line_no below are therefore this normalized statement
+    line, not the raw patch line.
+
+    A fault line absent from a given ranking (never covered/sliced by
+    anything in that matrix) gets RQ5_MISSING ("None") in that ranking's
+    two cells - not 0 (0 would misrepresent it as "found at the very best
+    rank") and not blank (ambiguous with a genuinely empty/unset cell).
+    """
+    trace_by_pos = {(r["file"], r["line"]): r for r in ranking_result["trace_ranked"]}
+    slice_by_pos = {(r["file"], r["line"]): r for r in ranking_result["slice_ranked"]}
+
+    faults = sorted({(Path(f["file"]).name, f.get("statement_line", f["line"])) for f in ground_truth_faults})
+
+    rows = []
+    for file_name, line_no in faults:
+        t = trace_by_pos.get((file_name, line_no))
+        s = slice_by_pos.get((file_name, line_no))
+        row = {
+            "project": ctx.project_id, "bug_id": ctx.vid, "file_name": file_name, "line_no": line_no,
+            "rank_best_trace": t["rank"] if t else RQ5_MISSING,
+            "tie_size_trace": t["tie_size"] if t else RQ5_MISSING,
+            "rank_best_slice": s["rank"] if s else RQ5_MISSING,
+            "tie_size_slice": s["tie_size"] if s else RQ5_MISSING,
+        }
+        common.upsert_csv_row(outputs_dir / "rq5.csv", RQ5_FIELDS, row, key_fields=RQ5_KEY_FIELDS)
+        rows.append(row)
+    return rows
 
 
 def write_all(ctx, outputs_dir, *, test_results, assert_counts,
@@ -192,5 +285,5 @@ def write_all(ctx, outputs_dir, *, test_results, assert_counts,
     rq2 = _write_rq2(ctx, outputs_dir, test_results, virtual_columns, ochiai_result)
     rq3 = _write_rq3(ctx, outputs_dir)
     rq4 = _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_result)
-    rq5 = _write_rq5(ctx, outputs_dir, ranking_result)
+    rq5 = _write_rq5(ctx, outputs_dir, ground_truth_faults, ranking_result)
     ctx.logger.info(f"RQ rows written for {ctx.name}: rq0={rq0} rq1={rq1} rq2={rq2} rq3={rq3} rq4={rq4} rq5={rq5}")

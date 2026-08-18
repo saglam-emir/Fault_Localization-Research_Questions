@@ -115,7 +115,7 @@ def rerun_one_target(target: dict) -> bool:
     # is a live measurement, not something to fabricate from a re-run).
     rq0 = rq_writers._write_rq0(ctx, OUTPUTS_DIR, answerability)
     rq4 = rq_writers._write_rq4(ctx, OUTPUTS_DIR, gt_faults, virtual_columns, ochiai_result)
-    rq5 = rq_writers._write_rq5(ctx, OUTPUTS_DIR, ranking_result)
+    rq5 = rq_writers._write_rq5(ctx, OUTPUTS_DIR, gt_faults, ranking_result)
     logger.info(f"{name}: ranking-only re-run complete. rq0={rq0} rq4={rq4} rq5={rq5}")
     return True
 

@@ -1,0 +1,1179 @@
+public class com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream extends java.lang.Object
+{
+    public static final int XML_START_ELEMENT;
+    public static final int XML_END_ELEMENT;
+    public static final int XML_ATTRIBUTE_NAME;
+    public static final int XML_ATTRIBUTE_VALUE;
+    public static final int XML_TEXT;
+    public static final int XML_END;
+    private static final int REPLAY_START_DUP;
+    private static final int REPLAY_END;
+    private static final int REPLAY_START_DELAYED;
+    protected final org.codehaus.stax2.XMLStreamReader2 _xmlReader;
+    protected final java.lang.Object _sourceReference;
+    protected int _currentState;
+    protected int _attributeCount;
+    protected int _nextAttributeIndex;
+    protected java.lang.String _localName;
+    protected java.lang.String _namespaceURI;
+    protected java.lang.String _textValue;
+    protected int _repeatElement;
+    protected com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper;
+    protected java.lang.String _nextLocalName;
+    protected java.lang.String _nextNamespaceURI;
+
+    public void <init>(javax.xml.stream.XMLStreamReader, java.lang.Object)
+    {
+        org.codehaus.stax2.XMLStreamReader2 $stack4, $stack5, $stack7, $stack9;
+        javax.xml.stream.XMLStreamReader xmlReader;
+        int $stack3, $stack10, $stack14;
+        java.lang.String $stack6, $stack8, $stack16;
+        java.lang.IllegalArgumentException $stack11;
+        java.lang.Object sourceRef;
+        java.lang.StringBuilder $stack12, $stack13, $stack15;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        xmlReader := @parameter0: javax.xml.stream.XMLStreamReader;
+
+        sourceRef := @parameter1: java.lang.Object;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex> = 0;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.Object _sourceReference> = sourceRef;
+
+        $stack3 = interfaceinvoke xmlReader.<javax.xml.stream.XMLStreamReader: int getEventType()>();
+
+        if $stack3 == 1 goto label1;
+
+        $stack11 = new java.lang.IllegalArgumentException;
+
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid XMLStreamReader passed: should be pointing to START_ELEMENT (1), instead got ");
+
+        $stack14 = interfaceinvoke xmlReader.<javax.xml.stream.XMLStreamReader: int getEventType()>();
+
+        $stack15 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack14);
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack11.<java.lang.IllegalArgumentException: void <init>(java.lang.String)>($stack16);
+
+        throw $stack11;
+
+     label1:
+        $stack4 = staticinvoke <org.codehaus.stax2.ri.Stax2ReaderAdapter: org.codehaus.stax2.XMLStreamReader2 wrapIfNecessary(javax.xml.stream.XMLStreamReader)>(xmlReader);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader> = $stack4;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 1;
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack6 = interfaceinvoke $stack5.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getLocalName()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName> = $stack6;
+
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack8 = interfaceinvoke $stack7.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getNamespaceURI()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI> = $stack8;
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack10 = interfaceinvoke $stack9.<org.codehaus.stax2.XMLStreamReader2: int getAttributeCount()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _attributeCount> = $stack10;
+
+        return;
+    }
+
+    public org.codehaus.stax2.XMLStreamReader2 getXmlReader()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        org.codehaus.stax2.XMLStreamReader2 $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        return $stack1;
+    }
+
+    public int next() throws java.io.IOException
+    {
+        javax.xml.stream.XMLStreamException $stack5;
+        int $stack2, $stack3, $stack4, $i0;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _repeatElement>;
+
+        if $stack2 == 0 goto label1;
+
+        $stack4 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _handleRepeatElement()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = $stack4;
+
+        return $stack4;
+
+     label1:
+        $stack3 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _next()>();
+
+     label2:
+        return $stack3;
+
+     label3:
+        $stack5 := @caughtexception;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwXmlAsIOException(javax.xml.stream.XMLStreamException)>($stack5);
+
+        $i0 = (int) -1;
+
+        return $i0;
+
+        catch javax.xml.stream.XMLStreamException from label1 to label2 with label3;
+    }
+
+    public void skipEndElement() throws java.io.IOException
+    {
+        int $stack2;
+        java.io.IOException $stack3;
+        java.lang.StringBuilder $stack4, $stack5, $stack6;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        java.lang.String $stack7;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack2 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int next()>();
+
+        if $stack2 == 2 goto label1;
+
+        $stack3 = new java.io.IOException;
+
+        $stack4 = new java.lang.StringBuilder;
+
+        specialinvoke $stack4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Expected END_ELEMENT, got event of type ");
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack2);
+
+        $stack7 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack3.<java.io.IOException: void <init>(java.lang.String)>($stack7);
+
+        throw $stack3;
+
+     label1:
+        return;
+    }
+
+    public int getCurrentToken()
+    {
+        int $stack1;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getText()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        java.lang.String $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _textValue>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getLocalName()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        java.lang.String $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName>;
+
+        return $stack1;
+    }
+
+    public java.lang.String getNamespaceURI()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        java.lang.String $stack1;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI>;
+
+        return $stack1;
+    }
+
+    public boolean hasAttributes()
+    {
+        int $stack1, $stack2;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        boolean $stack3;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        if $stack1 != 1 goto label1;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _attributeCount>;
+
+        if $stack2 <= 0 goto label1;
+
+        $stack3 = 1;
+
+        goto label2;
+
+     label1:
+        $stack3 = 0;
+
+     label2:
+        return $stack3;
+    }
+
+    public void closeCompletely() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        org.codehaus.stax2.XMLStreamReader2 $stack2;
+        javax.xml.stream.XMLStreamException $stack3;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+     label1:
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        interfaceinvoke $stack2.<org.codehaus.stax2.XMLStreamReader2: void closeCompletely()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack3 := @caughtexception;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwXmlAsIOException(javax.xml.stream.XMLStreamException)>($stack3);
+
+     label4:
+        return;
+
+        catch javax.xml.stream.XMLStreamException from label1 to label2 with label3;
+    }
+
+    public void close() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        org.codehaus.stax2.XMLStreamReader2 $stack2;
+        javax.xml.stream.XMLStreamException $stack3;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+     label1:
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        interfaceinvoke $stack2.<org.codehaus.stax2.XMLStreamReader2: void close()>();
+
+     label2:
+        goto label4;
+
+     label3:
+        $stack3 := @caughtexception;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwXmlAsIOException(javax.xml.stream.XMLStreamException)>($stack3);
+
+     label4:
+        return;
+
+        catch javax.xml.stream.XMLStreamException from label1 to label2 with label3;
+    }
+
+    public com.fasterxml.jackson.core.JsonLocation getCurrentLocation()
+    {
+        com.fasterxml.jackson.core.JsonLocation $stack4;
+        org.codehaus.stax2.XMLStreamReader2 $stack1;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        org.codehaus.stax2.LocationInfo $stack2;
+        org.codehaus.stax2.XMLStreamLocation2 $stack3;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack2 = interfaceinvoke $stack1.<org.codehaus.stax2.XMLStreamReader2: org.codehaus.stax2.LocationInfo getLocationInfo()>();
+
+        $stack3 = interfaceinvoke $stack2.<org.codehaus.stax2.LocationInfo: org.codehaus.stax2.XMLStreamLocation2 getCurrentLocation()>();
+
+        $stack4 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.core.JsonLocation _extractLocation(org.codehaus.stax2.XMLStreamLocation2)>($stack3);
+
+        return $stack4;
+    }
+
+    public com.fasterxml.jackson.core.JsonLocation getTokenLocation()
+    {
+        com.fasterxml.jackson.core.JsonLocation $stack4;
+        org.codehaus.stax2.XMLStreamReader2 $stack1;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        org.codehaus.stax2.LocationInfo $stack2;
+        org.codehaus.stax2.XMLStreamLocation2 $stack3;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack2 = interfaceinvoke $stack1.<org.codehaus.stax2.XMLStreamReader2: org.codehaus.stax2.LocationInfo getLocationInfo()>();
+
+        $stack3 = interfaceinvoke $stack2.<org.codehaus.stax2.LocationInfo: org.codehaus.stax2.XMLStreamLocation2 getStartLocation()>();
+
+        $stack4 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.core.JsonLocation _extractLocation(org.codehaus.stax2.XMLStreamLocation2)>($stack3);
+
+        return $stack4;
+    }
+
+    protected void repeatStartElement()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper $stack2, $stack3, $stack4, $stack7, $stack10, $stack11;
+        java.lang.IllegalStateException $stack14;
+        int $stack1, $stack17;
+        java.lang.String $stack5, $stack6, $stack8, $stack9, $stack19;
+        java.lang.StringBuilder $stack15, $stack16, $stack18;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        if $stack1 == 1 goto label1;
+
+        $stack14 = new java.lang.IllegalStateException;
+
+        $stack15 = new java.lang.StringBuilder;
+
+        specialinvoke $stack15.<java.lang.StringBuilder: void <init>()>();
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current state not XML_START_ELEMENT (1) but ");
+
+        $stack17 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        $stack18 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack17);
+
+        $stack19 = virtualinvoke $stack18.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack14.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack19);
+
+        throw $stack14;
+
+     label1:
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        if $stack2 != null goto label2;
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName>;
+
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI>;
+
+        $stack11 = staticinvoke <com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper matchingWrapper(com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper,java.lang.String,java.lang.String)>($stack10, $stack9, $stack8);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack11;
+
+        goto label3;
+
+     label2:
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack4 = virtualinvoke $stack3.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper getParent()>();
+
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName>;
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI>;
+
+        $stack7 = staticinvoke <com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper matchingWrapper(com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper,java.lang.String,java.lang.String)>($stack4, $stack6, $stack5);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack7;
+
+     label3:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _repeatElement> = 1;
+
+        return;
+    }
+
+    protected void skipAttributes()
+    {
+        java.lang.IllegalStateException $stack4;
+        int $stack1, $stack2, $stack3, $stack7;
+        java.lang.StringBuilder $stack5, $stack6, $stack8;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        java.lang.String $stack9;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        if $stack1 != 3 goto label1;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _attributeCount> = 0;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 1;
+
+        goto label4;
+
+     label1:
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        if $stack2 != 1 goto label2;
+
+        goto label4;
+
+     label2:
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        if $stack3 != 5 goto label3;
+
+        goto label4;
+
+     label3:
+        $stack4 = new java.lang.IllegalStateException;
+
+        $stack5 = new java.lang.StringBuilder;
+
+        specialinvoke $stack5.<java.lang.StringBuilder: void <init>()>();
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Current state not XML_START_ELEMENT or XML_ATTRIBUTE_NAME (1) but ");
+
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        $stack8 = virtualinvoke $stack6.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack7);
+
+        $stack9 = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack4.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack9);
+
+        throw $stack4;
+
+     label4:
+        return;
+    }
+
+    protected java.lang.String convertToString() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper $stack7, $stack12, $stack13;
+        org.codehaus.stax2.XMLStreamReader2 $stack5, $stack8, $stack10;
+        javax.xml.stream.XMLStreamException $stack27;
+        int $stack2, $stack3, $stack6;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        java.lang.String $stack4, $stack9, $stack11, text;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        if $stack2 != 3 goto label1;
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex>;
+
+        if $stack3 == 0 goto label2;
+
+     label1:
+        return null;
+
+     label2:
+        $stack4 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _collectUntilTag()>();
+
+        text = $stack4;
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack6 = interfaceinvoke $stack5.<org.codehaus.stax2.XMLStreamReader2: int getEventType()>();
+
+        if $stack6 != 2 goto label6;
+
+        if $stack4 != null goto label3;
+
+        text = "";
+
+     label3:
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        if $stack7 == null goto label4;
+
+        $stack12 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack13 = virtualinvoke $stack12.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack13;
+
+     label4:
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack9 = interfaceinvoke $stack8.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getLocalName()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName> = $stack9;
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack11 = interfaceinvoke $stack10.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getNamespaceURI()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI> = $stack11;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _attributeCount> = 0;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 5;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _textValue> = text;
+
+     label5:
+        return text;
+
+     label6:
+        goto label8;
+
+     label7:
+        $stack27 := @caughtexception;
+
+        staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Object throwXmlAsIOException(javax.xml.stream.XMLStreamException)>($stack27);
+
+     label8:
+        return null;
+
+        catch javax.xml.stream.XMLStreamException from label2 to label5 with label7;
+    }
+
+    private final int _next() throws javax.xml.stream.XMLStreamException
+    {
+        org.codehaus.stax2.XMLStreamReader2 $stack9, $stack15, $stack18, $stack21;
+        int $stack2, $stack3, $stack4, $stack5, $stack6, $stack7, $stack10, $stack11, $stack13, $stack14, $stack17, $stack20, $stack27, $stack29, $stack30;
+        java.lang.String $stack8, $stack16, $stack19, $stack22;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        tableswitch($stack2)
+        {
+            case 1: goto label02;
+            case 2: goto label09;
+            case 3: goto label06;
+            case 4: goto label01;
+            case 5: goto label07;
+            case 6: goto label08;
+            default: goto label09;
+        };
+
+     label01:
+        $stack4 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex>;
+
+        $stack5 = $stack4 + 1;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex> = $stack5;
+
+     label02:
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex>;
+
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _attributeCount>;
+
+        if $stack7 >= $stack6 goto label03;
+
+        $stack15 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack14 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex>;
+
+        $stack16 = interfaceinvoke $stack15.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getAttributeLocalName(int)>($stack14);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName> = $stack16;
+
+        $stack18 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack17 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex>;
+
+        $stack19 = interfaceinvoke $stack18.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getAttributeNamespace(int)>($stack17);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI> = $stack19;
+
+        $stack21 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack20 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex>;
+
+        $stack22 = interfaceinvoke $stack21.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getAttributeValue(int)>($stack20);
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _textValue> = $stack22;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 3;
+
+        return 3;
+
+     label03:
+        $stack8 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _collectUntilTag()>();
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack10 = interfaceinvoke $stack9.<org.codehaus.stax2.XMLStreamReader2: int getEventType()>();
+
+        if $stack10 != 1 goto label04;
+
+        $stack13 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _initStartElement()>();
+
+        return $stack13;
+
+     label04:
+        if $stack8 == null goto label05;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _textValue> = $stack8;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 5;
+
+        return 5;
+
+     label05:
+        $stack11 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _handleEndElement()>();
+
+        return $stack11;
+
+     label06:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 4;
+
+        return 4;
+
+     label07:
+        $stack3 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _handleEndElement()>();
+
+        return $stack3;
+
+     label08:
+        return 6;
+
+     label09:
+        $stack27 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _skipUntilTag()>();
+
+        lookupswitch($stack27)
+        {
+            case 2: goto label11;
+            case 8: goto label10;
+            default: goto label12;
+        };
+
+     label10:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 6;
+
+        return 6;
+
+     label11:
+        $stack29 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _handleEndElement()>();
+
+        return $stack29;
+
+     label12:
+        $stack30 = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _initStartElement()>();
+
+        return $stack30;
+    }
+
+    private final java.lang.String _collectUntilTag() throws javax.xml.stream.XMLStreamException
+    {
+        org.codehaus.stax2.XMLStreamReader2 $stack6, $stack11, $stack2;
+        int $stack3;
+        java.lang.StringBuilder $stack4, $stack5, $stack8;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        java.lang.String $stack7, text;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        text = null;
+
+     label1:
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack3 = interfaceinvoke $stack2.<org.codehaus.stax2.XMLStreamReader2: int next()>();
+
+        tableswitch($stack3)
+        {
+            case 1: goto label2;
+            case 2: goto label2;
+            case 3: goto label5;
+            case 4: goto label3;
+            case 5: goto label5;
+            case 6: goto label5;
+            case 7: goto label5;
+            case 8: goto label2;
+            case 9: goto label5;
+            case 10: goto label5;
+            case 11: goto label5;
+            case 12: goto label3;
+            default: goto label5;
+        };
+
+     label2:
+        return text;
+
+     label3:
+        if text != null goto label4;
+
+        $stack11 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        text = interfaceinvoke $stack11.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getText()>();
+
+        goto label1;
+
+     label4:
+        $stack4 = new java.lang.StringBuilder;
+
+        specialinvoke $stack4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(text);
+
+        $stack6 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack7 = interfaceinvoke $stack6.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getText()>();
+
+        $stack8 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack7);
+
+        text = virtualinvoke $stack8.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        goto label1;
+
+     label5:
+        goto label1;
+    }
+
+    private final int _skipUntilTag() throws javax.xml.stream.XMLStreamException
+    {
+        java.lang.IllegalStateException $stack4;
+        org.codehaus.stax2.XMLStreamReader2 $stack2, $stack5;
+        int $stack6;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        boolean $stack3;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+     label1:
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack3 = interfaceinvoke $stack2.<org.codehaus.stax2.XMLStreamReader2: boolean hasNext()>();
+
+        if $stack3 == 0 goto label4;
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack6 = interfaceinvoke $stack5.<org.codehaus.stax2.XMLStreamReader2: int next()>();
+
+        lookupswitch($stack6)
+        {
+            case 1: goto label2;
+            case 2: goto label2;
+            case 8: goto label2;
+            default: goto label3;
+        };
+
+     label2:
+        return $stack6;
+
+     label3:
+        goto label1;
+
+     label4:
+        $stack4 = new java.lang.IllegalStateException;
+
+        specialinvoke $stack4.<java.lang.IllegalStateException: void <init>(java.lang.String)>("Expected to find a tag, instead reached end of input");
+
+        throw $stack4;
+    }
+
+    private final int _initStartElement() throws javax.xml.stream.XMLStreamException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper $stack9, $stack11, $stack13, $stack15, $stack17, $stack18, $stack20, $stack21;
+        org.codehaus.stax2.XMLStreamReader2 $stack3, $stack5, $stack7;
+        int $stack8;
+        java.lang.String $stack4, $stack6, $stack14, $stack16;
+        boolean $stack12;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack4 = interfaceinvoke $stack3.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getNamespaceURI()>();
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack6 = interfaceinvoke $stack5.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getLocalName()>();
+
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack8 = interfaceinvoke $stack7.<org.codehaus.stax2.XMLStreamReader2: int getAttributeCount()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _attributeCount> = $stack8;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex> = 0;
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        if $stack9 == null goto label2;
+
+        $stack11 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack12 = virtualinvoke $stack11.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: boolean matchesWrapper(java.lang.String,java.lang.String)>($stack6, $stack4);
+
+        if $stack12 == 0 goto label1;
+
+        $stack20 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack21 = virtualinvoke $stack20.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper intermediateWrapper()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack21;
+
+        goto label2;
+
+     label1:
+        $stack13 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack14 = virtualinvoke $stack13.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: java.lang.String getWrapperLocalName()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName> = $stack14;
+
+        $stack15 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack16 = virtualinvoke $stack15.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: java.lang.String getWrapperNamespace()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI> = $stack16;
+
+        $stack17 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack18 = virtualinvoke $stack17.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack18;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _nextLocalName> = $stack6;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _nextNamespaceURI> = $stack4;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _repeatElement> = 3;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 2;
+
+        return 2;
+
+     label2:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName> = $stack6;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI> = $stack4;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 1;
+
+        return 1;
+    }
+
+    protected int _handleRepeatElement() throws java.io.IOException
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper $stack7, $stack10, $stack11, $stack25, $stack26, $stack27, $stack29, $stack30;
+        java.lang.IllegalStateException $stack2;
+        org.codehaus.stax2.XMLStreamReader2 $stack21, $stack23;
+        int type;
+        java.lang.String $stack6, $stack8, $stack9, $stack22, $stack24;
+        java.lang.StringBuilder $stack3, $stack4, $stack5;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        type = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _repeatElement>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _repeatElement> = 0;
+
+        if type != 1 goto label1;
+
+        $stack29 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack30 = virtualinvoke $stack29.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper intermediateWrapper()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack30;
+
+        return 1;
+
+     label1:
+        if type != 2 goto label3;
+
+        $stack21 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack22 = interfaceinvoke $stack21.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getLocalName()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName> = $stack22;
+
+        $stack23 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: org.codehaus.stax2.XMLStreamReader2 _xmlReader>;
+
+        $stack24 = interfaceinvoke $stack23.<org.codehaus.stax2.XMLStreamReader2: java.lang.String getNamespaceURI()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI> = $stack24;
+
+        $stack25 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        if $stack25 == null goto label2;
+
+        $stack26 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack27 = virtualinvoke $stack26.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack27;
+
+     label2:
+        return 2;
+
+     label3:
+        if type != 3 goto label5;
+
+        $stack7 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        if $stack7 == null goto label4;
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack11 = virtualinvoke $stack10.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper intermediateWrapper()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack11;
+
+     label4:
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _nextLocalName>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName> = $stack8;
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _nextNamespaceURI>;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI> = $stack9;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _nextLocalName> = null;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _nextNamespaceURI> = null;
+
+        return 1;
+
+     label5:
+        $stack2 = new java.lang.IllegalStateException;
+
+        $stack3 = new java.lang.StringBuilder;
+
+        specialinvoke $stack3.<java.lang.StringBuilder: void <init>()>();
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unrecognized type to repeat: ");
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>(type);
+
+        $stack6 = virtualinvoke $stack5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack2.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack6);
+
+        throw $stack2;
+    }
+
+    private final int _handleEndElement()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper $stack2, w, $stack5, $stack6, $stack10, $stack11;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        java.lang.String $stack8, $stack9;
+        boolean $stack4;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack2 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        if $stack2 == null goto label2;
+
+        w = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack4 = virtualinvoke w.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: boolean isMatching()>();
+
+        if $stack4 == 0 goto label1;
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _repeatElement> = 2;
+
+        $stack8 = virtualinvoke w.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: java.lang.String getWrapperLocalName()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName> = $stack8;
+
+        $stack9 = virtualinvoke w.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: java.lang.String getWrapperNamespace()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _namespaceURI> = $stack9;
+
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack11 = virtualinvoke $stack10.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack11;
+
+        goto label2;
+
+     label1:
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        $stack6 = virtualinvoke $stack5.<com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper getParent()>();
+
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper> = $stack6;
+
+     label2:
+        this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState> = 2;
+
+        return 2;
+    }
+
+    private com.fasterxml.jackson.core.JsonLocation _extractLocation(org.codehaus.stax2.XMLStreamLocation2)
+    {
+        com.fasterxml.jackson.core.JsonLocation $u0, $u1;
+        long $stack5;
+        int $stack4, $stack6, $stack7, $i0, $i1;
+        java.lang.Object $stack3, $stack9;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+        org.codehaus.stax2.XMLStreamLocation2 location;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        location := @parameter0: org.codehaus.stax2.XMLStreamLocation2;
+
+        if location != null goto label1;
+
+        $u0 = new com.fasterxml.jackson.core.JsonLocation;
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.Object _sourceReference>;
+
+        $i0 = (int) -1;
+
+        $i1 = (int) -1;
+
+        specialinvoke $u0.<com.fasterxml.jackson.core.JsonLocation: void <init>(java.lang.Object,long,int,int)>($stack9, -1L, $i0, $i1);
+
+        return $u0;
+
+     label1:
+        $u1 = new com.fasterxml.jackson.core.JsonLocation;
+
+        $stack3 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.Object _sourceReference>;
+
+        $stack4 = interfaceinvoke location.<org.codehaus.stax2.XMLStreamLocation2: int getCharacterOffset()>();
+
+        $stack5 = (long) $stack4;
+
+        $stack6 = interfaceinvoke location.<org.codehaus.stax2.XMLStreamLocation2: int getLineNumber()>();
+
+        $stack7 = interfaceinvoke location.<org.codehaus.stax2.XMLStreamLocation2: int getColumnNumber()>();
+
+        specialinvoke $u1.<com.fasterxml.jackson.core.JsonLocation: void <init>(java.lang.Object,long,int,int)>($stack3, $stack5, $stack6, $stack7);
+
+        return $u1;
+    }
+
+    public java.lang.String toString()
+    {
+        com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper $stack23;
+        int $stack5, $stack8, $stack11, $stack20, $stack26;
+        java.lang.String $stack14, $stack17, $stack29, $stack32;
+        java.lang.StringBuilder $stack2, $stack4, $stack7, $stack10, $stack13, $stack16, $stack19, $stack22, $stack25, $stack28;
+        com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream;
+
+        $stack2 = new java.lang.StringBuilder;
+
+        specialinvoke $stack2.<java.lang.StringBuilder: void <init>()>();
+
+        virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("(Token stream:");
+
+        $stack4 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" state=");
+
+        $stack5 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _currentState>;
+
+        virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack5);
+
+        $stack7 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" attr#=");
+
+        $stack8 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _attributeCount>;
+
+        virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack8);
+
+        $stack10 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" nextAttr#=");
+
+        $stack11 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _nextAttributeIndex>;
+
+        virtualinvoke $stack10.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack11);
+
+        $stack13 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" name=");
+
+        $stack14 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _localName>;
+
+        virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack14);
+
+        $stack16 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" text=");
+
+        $stack17 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _textValue>;
+
+        virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack17);
+
+        $stack19 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" repeat?=");
+
+        $stack20 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _repeatElement>;
+
+        virtualinvoke $stack19.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack20);
+
+        $stack22 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" wrapper=[");
+
+        $stack23 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: com.fasterxml.jackson.dataformat.xml.deser.ElementWrapper _currentWrapper>;
+
+        virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack23);
+
+        $stack25 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("] repeatElement=");
+
+        $stack26 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int _repeatElement>;
+
+        virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack26);
+
+        $stack28 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" nextName=");
+
+        $stack29 = this.<com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: java.lang.String _nextLocalName>;
+
+        virtualinvoke $stack28.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack29);
+
+        virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $stack32 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack32;
+    }
+
+    public static void <clinit>()
+    {
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int REPLAY_START_DELAYED> = 3;
+
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int REPLAY_END> = 2;
+
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int REPLAY_START_DUP> = 1;
+
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int XML_END> = 6;
+
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int XML_TEXT> = 5;
+
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int XML_ATTRIBUTE_VALUE> = 4;
+
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int XML_ATTRIBUTE_NAME> = 3;
+
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int XML_END_ELEMENT> = 2;
+
+        <com.fasterxml.jackson.dataformat.xml.deser.XmlTokenStream: int XML_START_ELEMENT> = 1;
+
+        return;
+    }
+}

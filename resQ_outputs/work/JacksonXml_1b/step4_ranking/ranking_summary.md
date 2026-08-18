@@ -5,8 +5,8 @@ Ground truth faulty statement(s) (diff line): [('FromXmlParser.java', 512), ('Fr
 Ground_Truth_Answerable: True
 Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java', 512)]
 
-- SBFL   top rank: 1, AP: 0.6717
-- Hybrid top rank: 125, AP: 0.0000
+- SBFL   ranked 1198 statement(s)
+- Hybrid ranked 124 statement(s)
 
 ## Top 10 - Trace-Based SBFL
 

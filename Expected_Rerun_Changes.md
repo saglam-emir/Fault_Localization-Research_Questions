@@ -2,14 +2,15 @@
 
 **Update, 2026-08-14:** the rq1/rq2/rq3 predictions below (as they stood on
 2026-08-13) were checked against a completed full 4-target rerun and
-confirmed materialized - see "STATUS: VERIFIED" notes inline. That rerun's
-`rq2.csv` is now itself superseded by a same-day schema change (§ "rq2.csv
-v2" below), which has **not** been rerun yet. Everything under the v2
-heading is a prediction of the *next* full rerun
-(`python3 run_pipeline.py` with no target arg, covering all 4 targets:
-`Csv_3b`, `Csv_13b`, `JacksonXml_1b`, `JacksonXml_6b`), not a record of an
-actual run. Delete this file once that rerun has happened and
-`resQ_outputs/rq2.csv` has been checked against the v2 predictions.
+confirmed materialized - see "STATUS: VERIFIED" notes inline. Since then,
+`rq2.csv` (v1→v2), `rq4.csv`, and `rq5.csv` (full schema rewrite) all
+picked up same-day code changes that have **not** been rerun yet.
+Everything under the "not yet rerun" headings below is a prediction of the
+*next* full rerun (`python3 run_pipeline.py` with no target arg, covering
+all 4 targets: `Csv_3b`, `Csv_13b`, `JacksonXml_1b`, `JacksonXml_6b`), not
+a record of an actual run. Delete this file once that rerun has happened
+and `resQ_outputs/rq2.csv`, `rq4.csv`, and `rq5.csv` have all been checked
+against their predictions below.
 
 ## rq1.csv — dynamic assertion counting (`rq1_dynamic_asserts.py`, commit `c133ac1`)
 
@@ -195,7 +196,16 @@ they're rerun too. Rerunning all 4 targets together (the normal
 no-arg `run_pipeline.py` invocation) avoids ever observing that
 intermediate blanked state.
 
-## rq2.csv v2 — "Statements executed" deleted; the two "assertions" columns redefined (2026-08-14, not yet rerun)
+## rq2.csv v2 — "Statements executed" deleted; the two "assertions" columns redefined (2026-08-14, VERIFIED)
+
+**STATUS: VERIFIED (2026-08-14, second rerun).** `Statements executed` gone from the header as
+expected. `Pass_TC_Slices`/`Fail_TC_Slices` matched the predicted table exactly for all 4
+targets (201/148, 1/59, 120/107, 65/4), confirming both the divergence cases (`Csv_3b`,
+`JacksonXml_1b`) and the non-divergence cases (`Csv_13b`, `JacksonXml_6b`). Note: this run's
+`Union_Passing_Slices`/`Union_Failing_Slices` for `JacksonXml_6b` landed on 65/4 (the *original*
+pre-drift values), not the 60/4 seen in the intermediate verified rerun - pure Slicer4J
+run-to-run nondeterminism cutting the other way this time, exactly the caveat already flagged
+below, not a new issue.
 
 **Why v1 needed fixing:** v1 (above) aliased `Union statements in slices
 of passing assertions` / `...failing assertions` onto the *exact same*
@@ -287,3 +297,119 @@ nondeterminism). `Statements executed` gone from the header entirely.
 this is the concrete, checkable proof the two groupings are genuinely
 different - **not** expected to equal `Union_Passing_Slices`/
 `Union_Failing_Slices` for `Csv_3b` and `JacksonXml_1b`.
+
+## rq4.csv — slice_universe consistency fix + 3 new columns (2026-08-14, VERIFIED)
+
+**STATUS: VERIFIED (2026-08-14, second rerun).** All 4 targets matched the predicted table
+exactly, cell for cell, including the 3 new columns - `Csv_3b` 3/0/0.0/2/True/True, `Csv_13b`
+2/2/1.0/2/False/False, `JacksonXml_1b` 6/0/0.0/3/True/True, `JacksonXml_6b` 10/0/0.0/5/True/True.
+Confirms the `slice_universe` consistency fix changed nothing observable, as predicted.
+
+**Consistency fix:** `union_fail` (feeding `Included_In_Slice`) is now intersected with
+`ochiai_result["slice_universe"]`, exactly mirroring RQ2's `Union_Failing_Slices` and the
+actual `(slice) observation matrix`'s own column membership (`slice_observation_matrix.csv`'s
+cells are defined as `statement in per_column[virtual_test_id]` for `statement in
+sorted(slice_universe)` - see `step3_matrices.build_slice_matrix`). Previously `union_fail`
+used `per_column_statements` unfiltered, which could in principle include bracket-only
+statements the matrix itself never scores. Predicted (and verified below) to change nothing
+for the current 4 targets, since fault lines are never bracket-only lines - it's a
+forward-looking correctness fix, not a fix for an observed wrong number.
+
+**3 new columns**, computed entirely from `virtual_columns`/Target Pool data - independent of
+`rq1.csv`'s `Fail_Assert`/`rq1_dynamic_asserts.py` by strict requirement (verified: `_write_rq4`
+does not import or reference that module):
+- `Fail_Assert_Count` = count of `Virtual_Fail` virtual columns (the failing-assertion slicing
+  criteria that fed `union_fail`).
+- `Not_All_Faulty_Stmts_In_Slice` = `Included_In_Slice < Total_Faults` (ground truth ⊄ slice).
+- `No_Faulty_Stmts_In_Slice` = `Included_In_Slice == 0` (ground truth ∩ slice = ∅).
+
+**Predicted values after the next rerun** (computed offline against the already-materialized
+Step 2/3 artifacts on disk - `slice_observation_matrix.csv`, `virtual_test_status.csv`,
+`slice_statement_mapping.csv` - via `ground_truth.load_ground_truth_faults`, not a guess).
+`Total_Faults`/`Included_In_Slice`/`Fault_Inclusion_Rate` recomputed this way matched the
+current `rq4.csv` exactly (3/0, 2/2, 6/0, 10/0), confirming the fix changes nothing for these
+4 targets before trusting the 3 new columns:
+
+| Project | BugID | Total_Faults | Included_In_Slice | Fault_Inclusion_Rate | Fail_Assert_Count | Not_All_Faulty_Stmts_In_Slice | No_Faulty_Stmts_In_Slice |
+|---|---|---|---|---|---|---|---|
+| Csv | 3b | 3 | 0 | 0.0 | 2 | True | True |
+| Csv | 13b | 2 | 2 | 1.0 | 2 | False | False |
+| JacksonXml | 1b | 6 | 0 | 0.0 | 3 | True | True |
+| JacksonXml | 6b | 10 | 0 | 0.0 | 5 | True | True |
+
+## rq5.csv — full schema rewrite: one row per fault LINE, AP deleted (2026-08-14, VERIFIED)
+
+**STATUS: VERIFIED (2026-08-14, second rerun).** 21 rows written (3+2+6+10), header and all 21
+rows matched the predicted table exactly, including every `"None"` cell and every numeric
+rank_best/tie_size value - both trace-side and (this time) slice-side, with no nondeterminism
+drift observed on this run. Legacy schema handling worked cleanly: `rq5.csv` started fresh under
+the new 8-column lowercase header, no orphaned blank rows.
+
+**Schema:** `project, bug_id, file_name, line_no, rank_best_trace, tie_size_trace,
+rank_best_slice, tie_size_slice` (lowercase/underscored, one-off deviation from every other RQ
+csv by explicit request). Key is `RQ5_KEY_FIELDS = [project, bug_id, file_name, line_no]`, not
+the shared `Project+BugID` key - required because this is no longer one row per bug.
+
+**Row count changes from 4 (one per bug) to 21** (3 + 2 + 6 + 10, one row per ground-truth
+fault line, matching `rq4.csv`'s `Total_Faults` per bug exactly - every fault line is scanned
+and gets a row, per the approved plan).
+
+**Data source:** `rank_best_*`/`tie_size_*` are read directly off `step4_ranking.build_ranking()`'s
+already-computed `trace_ranked`/`slice_ranked` lists (via `ranking_result`) - no re-derivation
+from the raw matrices. Matched against ground truth on the **normalized** `statement_line`
+(same convention `step4_ranking.py`/`rq4.csv` already use), not the raw diff line - chosen as
+"most compatible with the technique" per your instruction, since `trace_ranked`/`slice_ranked`'s
+own `line` field already uses that same bytecode-line-number convention; matching on the raw
+diff line would silently miss any multi-line-statement fault the technique actually found.
+
+**Missing values:** a fault line absent from a ranking (never covered/sliced) gets the literal
+string `"None"` in that ranking's `rank_best_*`/`tie_size_*` cells - not `0`, not blank, per
+your explicit instruction (`RQ5_MISSING = "None"` in `rq_writers.py`).
+
+**AP deleted:** `step4_ranking.average_precision_and_top_rank()` removed entirely (top_rank had
+no remaining consumer once AP was removed). `ranking_result` no longer carries
+`sbfl_top_rank/hybrid_top_rank/sbfl_ap/hybrid_ap`. `ranking_summary.md`'s AP/top-rank lines and
+warning-text references were reworded to describe conditions directly (e.g. "ranked N
+statement(s)") instead of via a number that no longer exists; the Top-10 tables, answerability
+section, and degenerate-state warnings themselves are unchanged.
+
+**`rerun_ranking.py`** (the ranking-only re-entry point) had its `_write_rq5` call site updated
+to pass `gt_faults` - would have broken silently otherwise, since it calls `rq_writers._write_rq5`
+directly.
+
+**Legacy file handling:** the old `rq5.csv` (`Project,BugID,SBFL_Top_Rank,Hybrid_Top_Rank,
+SBFL_AP,Hybrid_AP`, 4 rows) shared no column names with the new key, so `upsert_csv_row` could
+not have recognized old rows as related - they would have survived as blank-celled orphan rows
+under the new 8-column header. Backed up to
+`<scratchpad>/legacy_rq5_schema/rq5.csv.old_schema_2026-08-14.bak` (also recoverable from git
+history, commit `7456dec`) and deleted from `resQ_outputs/`, so the next rerun starts `rq5.csv`
+completely fresh.
+
+**Predicted values after the next rerun** (computed offline against the already-materialized
+`trace_ranking.csv`/`slice_ranking.csv`/ground-truth data on disk - not a guess):
+
+| Project | BugID | file_name | line_no | rank_best_trace | tie_size_trace | rank_best_slice | tie_size_slice |
+|---|---|---|---|---|---|---|---|
+| Csv | 3b | Lexer.java | 111 | 1 | 1 | 58 | 151 |
+| Csv | 3b | Lexer.java | 112 | None | None | None | None |
+| Csv | 3b | Lexer.java | 113 | None | None | None | None |
+| Csv | 13b | CSVFormat.java | 318 | 37 | 53 | 1 | 1 |
+| Csv | 13b | CSVPrinter.java | 139 | 92 | 7 | 2 | 57 |
+| JacksonXml | 1b | FromXmlParser.java | 512 | None | None | None | None |
+| JacksonXml | 1b | FromXmlParser.java | 514 | 165 | 2 | None | None |
+| JacksonXml | 1b | FromXmlParser.java | 550 | 1 | 4 | None | None |
+| JacksonXml | 1b | FromXmlParser.java | 551 | 1 | 4 | None | None |
+| JacksonXml | 1b | FromXmlParser.java | 552 | 1 | 4 | None | None |
+| JacksonXml | 1b | FromXmlParser.java | 553 | 1 | 4 | None | None |
+| JacksonXml | 6b | ToXmlGenerator.java | 843/844/845/846/847/848/849/851/866/867 | None (all 10) | None (all 10) | None (all 10) | None (all 10) |
+
+(`JacksonXml_6b`'s 10 rows collapsed to one line for readability - every one of its 10 fault
+lines is `None` across all 4 rank/tie columns, consistent with `rq0_answerability.csv`'s
+`Bug_Fully_Unanswerable=True` for this bug: dead code no line-level technique can find.)
+
+**Caveat:** as with RQ2 v2's predictions, these are computed from the *current* on-disk
+ranking artifacts (themselves the product of one particular Slicer4J run); the hybrid-side
+(`rank_best_slice`/`tie_size_slice`) values are subject to the same run-to-run slice
+nondeterminism already observed for `JacksonXml_6b` in RQ2's rerun (65→60) - the trace-side
+(`rank_best_trace`/`tie_size_trace`) values, being derived from `defects4j coverage` rather
+than Slicer4J, are expected to be stable.

@@ -9,28 +9,12 @@ best/top position of that tied group). Each row also carries `tie_size`, so
 the group's `r_worst = rank + tie_size - 1` (the task's tie-breaking
 formula) is always derivable.
 
-Average Precision (RQ5), per the task's formula
-`AP = sum(P@rank(d_i)) / |Relevant|`:
-  - `Relevant` = the ground-truth faulty statements (from ground_truth.py),
-    deduplicated by (file, line).
-  - `rank(d_i)` uses r_worst (the pessimistic/worst-case position within a
-    tied group) - the only tie-break rule the task specifies, so it is used
-    consistently everywhere a single rank number is needed for a tied
-    ground-truth statement.
-  - `P@k = (# Relevant statements ranked within the first k positions) / k`.
-    Because tied statements share one `rank` value equal to their group's
-    r_best, and a later group's rank is always > any earlier group's
-    r_worst, "rows with rank <= k" is exactly the first k ranked positions
-    whenever k itself is some group's r_worst - which is always true here
-    since k is always taken as some d_i's own r_worst.
-  - A ground-truth statement absent from the ranking entirely (never
-    covered/sliced by any test) contributes P=0 to the sum.
-
-`*_Top_Rank` (SBFL_Top_Rank / Hybrid_Top_Rank) reports the best (minimum)
-r_best among the ground-truth statements that do appear in the ranking -
-the earliest position a real fault is first encountered while reading down
-the list. If no ground-truth statement appears in the ranking at all, it is
-reported as one past the last ranked statement (worse than everything).
+Average Precision is deliberately NOT computed in this module (removed by
+request - AP is now computed externally, off rq5.csv's per-fault-line
+rank_best_*/tie_size_* columns, which together give every r_worst an
+external AP formula needs; see rq_writers._write_rq5's docstring). This
+module's job ends at producing the ranked lists (trace_ranked/slice_ranked)
+- rq_writers.py reads rank/tie_size straight off them, no re-derivation.
 """
 
 from pathlib import Path
@@ -68,44 +52,6 @@ def build_ranking(scores, mapping_rows, logger, label):
     return ranked
 
 
-def average_precision_and_top_rank(ranked, ground_truth_faults, logger, label):
-    """ground_truth_faults: [{"file": <basename>, "line": int}, ...]."""
-    relevant = sorted({(f["file"], f["line"]) for f in ground_truth_faults})
-    if not relevant:
-        return 0.0, ""
-
-    by_pos = {(r["file"], r["line"]): r for r in ranked}
-    relevant_ranks = sorted(by_pos[k]["rank"] for k in relevant if k in by_pos)
-    missing = [k for k in relevant if k not in by_pos]
-    if missing:
-        logger.info(f"{label}: {len(missing)}/{len(relevant)} ground-truth statement(s) not present "
-                    f"in this ranking (never covered/sliced): {missing}")
-
-    ap_terms = []
-    for key in relevant:
-        row = by_pos.get(key)
-        if row is None:
-            ap_terms.append(0.0)
-            continue
-        k = row["r_worst"]
-        hits_within_k = sum(1 for rk in relevant_ranks if rk <= k)
-        ap_terms.append(hits_within_k / k)
-    ap = sum(ap_terms) / len(relevant)
-
-    if relevant_ranks:
-        top_rank = min(relevant_ranks)
-    elif ranked:
-        # The ranking exists but contains none of the ground-truth
-        # statements - "worse than every ranked statement" is a meaningful,
-        # comparable sentinel.
-        top_rank = len(ranked) + 1
-    else:
-        # Nothing was ranked at all (e.g. every dynamic slice came back
-        # empty) - there is no rank to report, not even a worst-case one.
-        top_rank = ""
-    return ap, top_rank
-
-
 def _write_ranking_csv(path, ranked):
     common.write_csv(path, ["rank", "statement_id", "file", "line", "code", "ochiai_score", "tie_size", "r_worst"], ranked)
 
@@ -139,8 +85,17 @@ def run(ctx, ochiai_result, ground_truth_faults, answerability=None):
     _write_ranking_csv(ctx.step4_dir / "trace_ranking.csv", trace_ranked)
     _write_ranking_csv(ctx.step4_dir / "slice_ranking.csv", slice_ranked)
 
-    trace_ap, trace_top = average_precision_and_top_rank(trace_ranked, gt, logger, "trace (SBFL)")
-    slice_ap, slice_top = average_precision_and_top_rank(slice_ranked, gt, logger, "slice (hybrid)")
+    # Diagnostic only (no AP/rank math - see module docstring): which
+    # ground-truth statements this matrix's ranking doesn't contain at all
+    # (never covered/sliced by anything). rq5.csv carries the authoritative,
+    # per-fault-line version of this (RQ5_MISSING cells).
+    relevant = sorted({(f["file"], f["line"]) for f in gt})
+    for label, ranked in (("trace (SBFL)", trace_ranked), ("slice (hybrid)", slice_ranked)):
+        by_pos = {(r["file"], r["line"]) for r in ranked}
+        missing = [k for k in relevant if k not in by_pos]
+        if missing:
+            logger.info(f"{label}: {len(missing)}/{len(relevant)} ground-truth statement(s) not present "
+                        f"in this ranking (never covered/sliced): {missing}")
 
     bug_fully_unanswerable = bool(answerability) and all(not f["answerable"] for f in answerability)
     if answerability is not None:
@@ -163,22 +118,23 @@ def run(ctx, ochiai_result, ground_truth_faults, answerability=None):
         summary += ["> **WARNING**: every ground-truth fault line for this bug is an approximate "
                      "pure-deletion anchor that never executed in any test (dead code in the buggy "
                      "build, not a wrong-but-live statement - typically an entire deleted method). No "
-                     "line-level SBFL or slicing technique can find this by construction. The top "
-                     "rank/AP numbers below are not a meaningful measure of either technique's "
-                     "capability for this bug and should be excluded from primary cross-bug scoring "
+                     "line-level SBFL or slicing technique can find this by construction. The rank_best "
+                     "values in rq5.csv for this bug are not a meaningful measure of either technique's "
+                     "capability and should be excluded from primary cross-bug scoring "
                      "(see rq0_answerability.csv).", ""]
-    summary += [f"- SBFL   top rank: {trace_top}, AP: {trace_ap:.4f}",
-               f"- Hybrid top rank: {slice_top}, AP: {slice_ap:.4f}", ""]
+    summary += [f"- SBFL   ranked {len(trace_ranked)} statement(s)",
+               f"- Hybrid ranked {len(slice_ranked)} statement(s)", ""]
     if ochiai_result.get("slice_universe_empty"):
         summary += ["> **WARNING**: the hybrid slice matrix's statement universe was empty for this "
-                     "target (every virtual column's dynamic slice was empty or test-code-only). The "
-                     "Hybrid numbers above reflect a slicing failure, not a genuine 0%/rank-1 result - "
-                     "see step2_slicing's log and step3_matrices/slice_matrix_status.csv.", ""]
+                     "target (every virtual column's dynamic slice was empty or test-code-only). Any "
+                     "rq5.csv rank_best_slice/tie_size_slice values for this bug reflect a slicing "
+                     "failure, not a genuine result - see step2_slicing's log and "
+                     "step3_matrices/slice_matrix_status.csv.", ""]
     if ochiai_result.get("slice_fail_side_empty"):
         summary += ["> **WARNING**: every Virtual_Fail column covers zero statements in the slice "
                      "universe (only passing-test slices contributed). Every statement therefore "
-                     "scores Ochiai=0.0 and ties for rank 1 - Hybrid top rank/AP above are a "
-                     "degenerate tie-break artifact, not genuine localization - see "
+                     "scores Ochiai=0.0 and ties for rank 1 - any rq5.csv rank_best_slice=1 for this "
+                     "bug is a degenerate tie-break artifact, not genuine localization - see "
                      "step3_matrices/slice_matrix_status.csv.", ""]
     for title, ranked in (("Trace-Based SBFL", trace_ranked), ("Slice-Based Hybrid", slice_ranked)):
         summary += [f"## Top 10 - {title}", "", "| Rank | Tie Size | File:Line | Ochiai | Code |",
@@ -189,11 +145,10 @@ def run(ctx, ochiai_result, ground_truth_faults, answerability=None):
         summary.append("")
     (ctx.step4_dir / "ranking_summary.md").write_text("\n".join(summary) + "\n", encoding="utf-8")
 
-    logger.info(f"Step4: SBFL top_rank={trace_top} AP={trace_ap:.4f} | Hybrid top_rank={slice_top} AP={slice_ap:.4f}")
+    logger.info(f"Step4: SBFL ranked {len(trace_ranked)} statement(s) | "
+                f"Hybrid ranked {len(slice_ranked)} statement(s) (AP no longer computed here - see rq5.csv)")
 
     return {
         "trace_ranked": trace_ranked, "slice_ranked": slice_ranked,
-        "sbfl_top_rank": trace_top, "hybrid_top_rank": slice_top,
-        "sbfl_ap": trace_ap, "hybrid_ap": slice_ap,
         "bug_fully_unanswerable": bug_fully_unanswerable,
     }

@@ -5,10 +5,10 @@ Ground truth faulty statement(s) (diff line): [('ToXmlGenerator.java', 843), ('T
 Ground_Truth_Answerable: False
 Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 843), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 844), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 845), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 846), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 847), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 848), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 849), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 851), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 866), ('src/main/java/com/fasterxml/jackson/dataformat/xml/ser/ToXmlGenerator.java', 867)]
 
-> **WARNING**: every ground-truth fault line for this bug is an approximate pure-deletion anchor that never executed in any test (dead code in the buggy build, not a wrong-but-live statement - typically an entire deleted method). No line-level SBFL or slicing technique can find this by construction. The top rank/AP numbers below are not a meaningful measure of either technique's capability for this bug and should be excluded from primary cross-bug scoring (see rq0_answerability.csv).
+> **WARNING**: every ground-truth fault line for this bug is an approximate pure-deletion anchor that never executed in any test (dead code in the buggy build, not a wrong-but-live statement - typically an entire deleted method). No line-level SBFL or slicing technique can find this by construction. The rank_best values in rq5.csv for this bug are not a meaningful measure of either technique's capability and should be excluded from primary cross-bug scoring (see rq0_answerability.csv).
 
-- SBFL   top rank: 1335, AP: 0.0000
-- Hybrid top rank: 61, AP: 0.0000
+- SBFL   ranked 1334 statement(s)
+- Hybrid ranked 65 statement(s)
 
 ## Top 10 - Trace-Based SBFL
 
@@ -29,14 +29,14 @@ Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answ
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 3 | JacksonXmlAnnotationIntrospector.java:34 | 0.48795 | `public JacksonXmlAnnotationIntrospector(boolean defaultUseWrapper) {` |
-| 1 | 3 | JacksonXmlModule.java:65 | 0.48795 | `context.insertAnnotationIntrospector(_constructIntrospector());` |
-| 1 | 3 | JacksonXmlModule.java:126 | 0.48795 | `return new JacksonXmlAnnotationIntrospector(_cfgDefaultUseWrapper);` |
-| 4 | 1 | JacksonXmlModule.java:75 | 0.46188 | `super.setupModule(context);` |
-| 5 | 56 | DefaultXmlPrettyPrinter.java:106 | 0.0 | `public DefaultXmlPrettyPrinter() { }` |
-| 5 | 56 | FromXmlParser.java:50 | 0.0 | `EMPTY_ELEMENT_AS_NULL(true)` |
-| 5 | 56 | FromXmlParser.java:62 | 0.0 | `int flags = 0;` |
-| 5 | 56 | FromXmlParser.java:64 | 0.0 | `if (f.enabledByDefault()) {` |
-| 5 | 56 | FromXmlParser.java:65 | 0.0 | `flags |= f.getMask();` |
-| 5 | 56 | FromXmlParser.java:68 | 0.0 | `return flags;` |
+| 1 | 3 | JacksonXmlAnnotationIntrospector.java:34 | 0.476731 | `public JacksonXmlAnnotationIntrospector(boolean defaultUseWrapper) {` |
+| 1 | 3 | JacksonXmlModule.java:65 | 0.476731 | `context.insertAnnotationIntrospector(_constructIntrospector());` |
+| 1 | 3 | JacksonXmlModule.java:126 | 0.476731 | `return new JacksonXmlAnnotationIntrospector(_cfgDefaultUseWrapper);` |
+| 4 | 1 | JacksonXmlModule.java:75 | 0.433861 | `super.setupModule(context);` |
+| 5 | 61 | DefaultXmlPrettyPrinter.java:106 | 0.0 | `public DefaultXmlPrettyPrinter() { }` |
+| 5 | 61 | FromXmlParser.java:50 | 0.0 | `EMPTY_ELEMENT_AS_NULL(true)` |
+| 5 | 61 | FromXmlParser.java:62 | 0.0 | `int flags = 0;` |
+| 5 | 61 | FromXmlParser.java:64 | 0.0 | `if (f.enabledByDefault()) {` |
+| 5 | 61 | FromXmlParser.java:65 | 0.0 | `flags |= f.getMask();` |
+| 5 | 61 | FromXmlParser.java:68 | 0.0 | `return flags;` |
 

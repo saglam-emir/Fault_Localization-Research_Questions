@@ -1,0 +1,293 @@
+public class com.fasterxml.jackson.dataformat.xml.util.StaxUtil extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        com.fasterxml.jackson.dataformat.xml.util.StaxUtil this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.util.StaxUtil;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static java.lang.Object throwXmlAsIOException(javax.xml.stream.XMLStreamException) throws java.io.IOException
+    {
+        java.lang.Throwable $stack2;
+        java.io.IOException $stack3;
+        javax.xml.stream.XMLStreamException e;
+
+        e := @parameter0: javax.xml.stream.XMLStreamException;
+
+        $stack2 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Throwable _unwrap(java.lang.Throwable)>(e);
+
+        $stack3 = new java.io.IOException;
+
+        specialinvoke $stack3.<java.io.IOException: void <init>(java.lang.Throwable)>($stack2);
+
+        throw $stack3;
+    }
+
+    public static java.lang.Object throwAsParseException(javax.xml.stream.XMLStreamException, com.fasterxml.jackson.core.JsonParser) throws java.io.IOException
+    {
+        java.lang.Throwable $stack3, $r0;
+        com.fasterxml.jackson.core.JsonParser p;
+        javax.xml.stream.XMLStreamException e;
+        java.lang.String $stack5;
+        com.fasterxml.jackson.core.JsonParseException $u0;
+
+        e := @parameter0: javax.xml.stream.XMLStreamException;
+
+        p := @parameter1: com.fasterxml.jackson.core.JsonParser;
+
+        $stack3 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Throwable _unwrap(java.lang.Throwable)>(e);
+
+        $u0 = new com.fasterxml.jackson.core.JsonParseException;
+
+        $stack5 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.String _message(java.lang.Throwable,java.lang.Throwable)>($stack3, e);
+
+        specialinvoke $u0.<com.fasterxml.jackson.core.JsonParseException: void <init>(com.fasterxml.jackson.core.JsonParser,java.lang.String,java.lang.Throwable)>(p, $stack5, $stack3);
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+    }
+
+    public static java.lang.Object throwAsGenerationException(javax.xml.stream.XMLStreamException, com.fasterxml.jackson.core.JsonGenerator) throws java.io.IOException
+    {
+        java.lang.Throwable $stack3, $r0;
+        com.fasterxml.jackson.core.JsonGenerator g;
+        javax.xml.stream.XMLStreamException e;
+        com.fasterxml.jackson.core.JsonGenerationException $u0;
+        java.lang.String $stack5;
+
+        e := @parameter0: javax.xml.stream.XMLStreamException;
+
+        g := @parameter1: com.fasterxml.jackson.core.JsonGenerator;
+
+        $stack3 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.Throwable _unwrap(java.lang.Throwable)>(e);
+
+        $u0 = new com.fasterxml.jackson.core.JsonGenerationException;
+
+        $stack5 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.String _message(java.lang.Throwable,java.lang.Throwable)>($stack3, e);
+
+        specialinvoke $u0.<com.fasterxml.jackson.core.JsonGenerationException: void <init>(java.lang.String,java.lang.Throwable,com.fasterxml.jackson.core.JsonGenerator)>($stack5, $stack3, g);
+
+        $r0 = (java.lang.Throwable) $u0;
+
+        throw $r0;
+    }
+
+    private static java.lang.Throwable _unwrap(java.lang.Throwable)
+    {
+        java.lang.Throwable $stack1, t;
+        java.lang.Error $stack5;
+        java.lang.RuntimeException $stack4;
+        boolean $stack2, $stack3;
+
+        t := @parameter0: java.lang.Throwable;
+
+     label1:
+        $stack1 = virtualinvoke t.<java.lang.Throwable: java.lang.Throwable getCause()>();
+
+        if $stack1 == null goto label2;
+
+        t = virtualinvoke t.<java.lang.Throwable: java.lang.Throwable getCause()>();
+
+        goto label1;
+
+     label2:
+        $stack2 = t instanceof java.lang.Error;
+
+        if $stack2 == 0 goto label3;
+
+        $stack5 = (java.lang.Error) t;
+
+        throw $stack5;
+
+     label3:
+        $stack3 = t instanceof java.lang.RuntimeException;
+
+        if $stack3 == 0 goto label4;
+
+        $stack4 = (java.lang.RuntimeException) t;
+
+        throw $stack4;
+
+     label4:
+        return t;
+    }
+
+    private static java.lang.String _message(java.lang.Throwable, java.lang.Throwable)
+    {
+        java.lang.Throwable t1, t2;
+        java.lang.String $stack3, msg;
+
+        t1 := @parameter0: java.lang.Throwable;
+
+        t2 := @parameter1: java.lang.Throwable;
+
+        $stack3 = virtualinvoke t1.<java.lang.Throwable: java.lang.String getMessage()>();
+
+        msg = $stack3;
+
+        if $stack3 != null goto label1;
+
+        msg = virtualinvoke t2.<java.lang.Throwable: java.lang.String getMessage()>();
+
+     label1:
+        return msg;
+    }
+
+    public static java.lang.String sanitizeXmlTypeName(java.lang.String)
+    {
+        int $stack20, $stack21, changes, i, $stack8, $i0, $i1, $i2, $i3, $i4, $i5, $i6, $i7, $i8, $i9, $i10;
+        java.lang.String $stack9, $stack22, name;
+        boolean $stack6, $stack23, $stack30;
+        char $stack10;
+        java.lang.StringBuilder sb, $u0, $u1;
+
+        name := @parameter0: java.lang.String;
+
+        changes = 0;
+
+        $stack6 = virtualinvoke name.<java.lang.String: boolean endsWith(java.lang.String)>("[]");
+
+        if $stack6 == 0 goto label03;
+
+     label01:
+        $stack20 = virtualinvoke name.<java.lang.String: int length()>();
+
+        $stack21 = $stack20 - 2;
+
+        $stack22 = virtualinvoke name.<java.lang.String: java.lang.String substring(int,int)>(0, $stack21);
+
+        name = $stack22;
+
+        changes = changes + 1;
+
+        $stack23 = virtualinvoke $stack22.<java.lang.String: boolean endsWith(java.lang.String)>("[]");
+
+        if $stack23 != 0 goto label01;
+
+        $u0 = new java.lang.StringBuilder;
+
+        specialinvoke $u0.<java.lang.StringBuilder: void <init>(java.lang.String)>($stack22);
+
+        sb = $u0;
+
+        $stack30 = virtualinvoke $stack22.<java.lang.String: boolean endsWith(java.lang.String)>("s");
+
+        if $stack30 == 0 goto label02;
+
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("es");
+
+        goto label04;
+
+     label02:
+        virtualinvoke $u0.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>(115);
+
+        goto label04;
+
+     label03:
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>(java.lang.String)>(name);
+
+        sb = $u1;
+
+     label04:
+        i = 0;
+
+        $stack8 = virtualinvoke name.<java.lang.String: int length()>();
+
+     label05:
+        if i >= $stack8 goto label13;
+
+        $stack10 = virtualinvoke name.<java.lang.String: char charAt(int)>(i);
+
+        $i0 = (int) $stack10;
+
+        if $i0 <= 127 goto label06;
+
+        goto label12;
+
+     label06:
+        $i1 = (int) $stack10;
+
+        if $i1 < 97 goto label07;
+
+        $i2 = (int) $stack10;
+
+        if $i2 > 122 goto label07;
+
+        goto label12;
+
+     label07:
+        $i3 = (int) $stack10;
+
+        if $i3 < 65 goto label08;
+
+        $i4 = (int) $stack10;
+
+        if $i4 > 90 goto label08;
+
+        goto label12;
+
+     label08:
+        $i5 = (int) $stack10;
+
+        if $i5 < 48 goto label09;
+
+        $i6 = (int) $stack10;
+
+        if $i6 > 57 goto label09;
+
+        goto label12;
+
+     label09:
+        $i7 = (int) $stack10;
+
+        if $i7 == 95 goto label12;
+
+        $i8 = (int) $stack10;
+
+        if $i8 == 46 goto label12;
+
+        $i9 = (int) $stack10;
+
+        if $i9 != 45 goto label10;
+
+        goto label12;
+
+     label10:
+        changes = changes + 1;
+
+        $i10 = (int) $stack10;
+
+        if $i10 != 36 goto label11;
+
+        virtualinvoke sb.<java.lang.StringBuilder: void setCharAt(int,char)>(i, 46);
+
+        goto label12;
+
+     label11:
+        virtualinvoke sb.<java.lang.StringBuilder: void setCharAt(int,char)>(i, 95);
+
+     label12:
+        i = i + 1;
+
+        goto label05;
+
+     label13:
+        if changes != 0 goto label14;
+
+        return name;
+
+     label14:
+        $stack9 = virtualinvoke sb.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        return $stack9;
+    }
+}

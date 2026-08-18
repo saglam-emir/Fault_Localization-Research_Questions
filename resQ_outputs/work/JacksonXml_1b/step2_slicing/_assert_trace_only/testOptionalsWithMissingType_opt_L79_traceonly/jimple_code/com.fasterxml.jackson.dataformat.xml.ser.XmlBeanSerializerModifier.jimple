@@ -1,0 +1,169 @@
+public class com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerModifier extends com.fasterxml.jackson.databind.ser.BeanSerializerModifier implements java.io.Serializable
+{
+    private static final long serialVersionUID;
+
+    public void <init>()
+    {
+        com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerModifier this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerModifier;
+
+        specialinvoke this.<com.fasterxml.jackson.databind.ser.BeanSerializerModifier: void <init>()>();
+
+        return;
+    }
+
+    public java.util.List changeProperties(com.fasterxml.jackson.databind.SerializationConfig, com.fasterxml.jackson.databind.BeanDescription, java.util.List)
+    {
+        com.fasterxml.jackson.databind.AnnotationIntrospector $stack16;
+        com.fasterxml.jackson.databind.SerializationConfig config;
+        int $stack17, $stack38, i;
+        com.fasterxml.jackson.databind.introspect.AnnotatedMember $stack19;
+        java.lang.Boolean $stack21, $stack22, $stack23;
+        com.fasterxml.jackson.databind.BeanDescription beanDesc;
+        java.lang.String $stack20, $stack25, $stack29, $stack35;
+        com.fasterxml.jackson.databind.JavaType $stack27;
+        boolean $stack28;
+        com.fasterxml.jackson.dataformat.xml.util.XmlInfo $stack24;
+        com.fasterxml.jackson.databind.ser.BeanPropertyWriter bpw;
+        com.fasterxml.jackson.databind.PropertyName $stack30, $stack31, $stack34, wrapperName;
+        com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerModifier this;
+        com.fasterxml.jackson.dataformat.xml.ser.XmlBeanPropertyWriter $stack36;
+        java.util.List beanProperties;
+        java.lang.Object $stack18;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerModifier;
+
+        config := @parameter0: com.fasterxml.jackson.databind.SerializationConfig;
+
+        beanDesc := @parameter1: com.fasterxml.jackson.databind.BeanDescription;
+
+        beanProperties := @parameter2: java.util.List;
+
+        $stack16 = virtualinvoke config.<com.fasterxml.jackson.databind.SerializationConfig: com.fasterxml.jackson.databind.AnnotationIntrospector getAnnotationIntrospector()>();
+
+        i = 0;
+
+        $stack17 = interfaceinvoke beanProperties.<java.util.List: int size()>();
+
+     label1:
+        if i >= $stack17 goto label7;
+
+        $stack18 = interfaceinvoke beanProperties.<java.util.List: java.lang.Object get(int)>(i);
+
+        bpw = (com.fasterxml.jackson.databind.ser.BeanPropertyWriter) $stack18;
+
+        $stack19 = virtualinvoke bpw.<com.fasterxml.jackson.databind.ser.BeanPropertyWriter: com.fasterxml.jackson.databind.introspect.AnnotatedMember getMember()>();
+
+        $stack20 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.AnnotationUtil: java.lang.String findNamespaceAnnotation(com.fasterxml.jackson.databind.AnnotationIntrospector,com.fasterxml.jackson.databind.introspect.AnnotatedMember)>($stack16, $stack19);
+
+        $stack21 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.AnnotationUtil: java.lang.Boolean findIsAttributeAnnotation(com.fasterxml.jackson.databind.AnnotationIntrospector,com.fasterxml.jackson.databind.introspect.AnnotatedMember)>($stack16, $stack19);
+
+        $stack22 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.AnnotationUtil: java.lang.Boolean findIsTextAnnotation(com.fasterxml.jackson.databind.AnnotationIntrospector,com.fasterxml.jackson.databind.introspect.AnnotatedMember)>($stack16, $stack19);
+
+        $stack23 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.AnnotationUtil: java.lang.Boolean findIsCDataAnnotation(com.fasterxml.jackson.databind.AnnotationIntrospector,com.fasterxml.jackson.databind.introspect.AnnotatedMember)>($stack16, $stack19);
+
+        $stack25 = <com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerBase: java.lang.String KEY_XML_INFO>;
+
+        $stack24 = new com.fasterxml.jackson.dataformat.xml.util.XmlInfo;
+
+        specialinvoke $stack24.<com.fasterxml.jackson.dataformat.xml.util.XmlInfo: void <init>(java.lang.Boolean,java.lang.String,java.lang.Boolean,java.lang.Boolean)>($stack21, $stack20, $stack22, $stack23);
+
+        virtualinvoke bpw.<com.fasterxml.jackson.databind.ser.BeanPropertyWriter: java.lang.Object setInternalSetting(java.lang.Object,java.lang.Object)>($stack25, $stack24);
+
+        $stack27 = virtualinvoke bpw.<com.fasterxml.jackson.databind.ser.BeanPropertyWriter: com.fasterxml.jackson.databind.JavaType getType()>();
+
+        $stack28 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.TypeUtil: boolean isIndexedType(com.fasterxml.jackson.databind.JavaType)>($stack27);
+
+        if $stack28 != 0 goto label2;
+
+        goto label6;
+
+     label2:
+        $stack29 = virtualinvoke bpw.<com.fasterxml.jackson.databind.ser.BeanPropertyWriter: java.lang.String getName()>();
+
+        $stack30 = staticinvoke <com.fasterxml.jackson.databind.PropertyName: com.fasterxml.jackson.databind.PropertyName construct(java.lang.String,java.lang.String)>($stack29, $stack20);
+
+        $stack31 = virtualinvoke bpw.<com.fasterxml.jackson.databind.ser.BeanPropertyWriter: com.fasterxml.jackson.databind.PropertyName getWrapperName()>();
+
+        wrapperName = $stack31;
+
+        if $stack31 == null goto label6;
+
+        $stack34 = <com.fasterxml.jackson.databind.PropertyName: com.fasterxml.jackson.databind.PropertyName NO_NAME>;
+
+        if $stack31 != $stack34 goto label3;
+
+        goto label6;
+
+     label3:
+        $stack35 = virtualinvoke $stack31.<com.fasterxml.jackson.databind.PropertyName: java.lang.String getSimpleName()>();
+
+        if $stack35 == null goto label4;
+
+        $stack38 = virtualinvoke $stack35.<java.lang.String: int length()>();
+
+        if $stack38 != 0 goto label5;
+
+     label4:
+        wrapperName = $stack30;
+
+     label5:
+        $stack36 = new com.fasterxml.jackson.dataformat.xml.ser.XmlBeanPropertyWriter;
+
+        specialinvoke $stack36.<com.fasterxml.jackson.dataformat.xml.ser.XmlBeanPropertyWriter: void <init>(com.fasterxml.jackson.databind.ser.BeanPropertyWriter,com.fasterxml.jackson.databind.PropertyName,com.fasterxml.jackson.databind.PropertyName)>(bpw, wrapperName, $stack30);
+
+        interfaceinvoke beanProperties.<java.util.List: java.lang.Object set(int,java.lang.Object)>(i, $stack36);
+
+     label6:
+        i = i + 1;
+
+        goto label1;
+
+     label7:
+        return beanProperties;
+    }
+
+    public com.fasterxml.jackson.databind.JsonSerializer modifySerializer(com.fasterxml.jackson.databind.SerializationConfig, com.fasterxml.jackson.databind.BeanDescription, com.fasterxml.jackson.databind.JsonSerializer)
+    {
+        com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerModifier this;
+        com.fasterxml.jackson.databind.SerializationConfig config;
+        com.fasterxml.jackson.databind.ser.std.BeanSerializerBase $stack6;
+        com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializer $u0;
+        com.fasterxml.jackson.databind.JsonSerializer serializer, $r0;
+        com.fasterxml.jackson.databind.BeanDescription beanDesc;
+        boolean $stack4;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerModifier;
+
+        config := @parameter0: com.fasterxml.jackson.databind.SerializationConfig;
+
+        beanDesc := @parameter1: com.fasterxml.jackson.databind.BeanDescription;
+
+        serializer := @parameter2: com.fasterxml.jackson.databind.JsonSerializer;
+
+        $stack4 = serializer instanceof com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
+
+        if $stack4 != 0 goto label1;
+
+        return serializer;
+
+     label1:
+        $u0 = new com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializer;
+
+        $stack6 = (com.fasterxml.jackson.databind.ser.std.BeanSerializerBase) serializer;
+
+        specialinvoke $u0.<com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializer: void <init>(com.fasterxml.jackson.databind.ser.std.BeanSerializerBase)>($stack6);
+
+        $r0 = (com.fasterxml.jackson.databind.JsonSerializer) $u0;
+
+        return $r0;
+    }
+
+    public static void <clinit>()
+    {
+        <com.fasterxml.jackson.dataformat.xml.ser.XmlBeanSerializerModifier: long serialVersionUID> = 1L;
+
+        return;
+    }
+}

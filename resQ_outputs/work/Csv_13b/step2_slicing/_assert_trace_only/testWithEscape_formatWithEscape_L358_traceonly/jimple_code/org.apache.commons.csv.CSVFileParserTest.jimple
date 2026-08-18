@@ -1,0 +1,379 @@
+public class org.apache.commons.csv.CSVFileParserTest extends java.lang.Object
+{
+    private static final java.io.File BASE;
+    private final java.io.BufferedReader testData;
+    private final java.lang.String testName;
+
+    public void <init>(java.io.File) throws java.io.FileNotFoundException
+    {
+        java.lang.String $stack2;
+        java.io.BufferedReader $stack3;
+        java.io.FileReader $stack4;
+        java.io.File file;
+        org.apache.commons.csv.CSVFileParserTest this;
+
+        this := @this: org.apache.commons.csv.CSVFileParserTest;
+
+        file := @parameter0: java.io.File;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $stack2 = virtualinvoke file.<java.io.File: java.lang.String getName()>();
+
+        this.<org.apache.commons.csv.CSVFileParserTest: java.lang.String testName> = $stack2;
+
+        $stack3 = new java.io.BufferedReader;
+
+        $stack4 = new java.io.FileReader;
+
+        specialinvoke $stack4.<java.io.FileReader: void <init>(java.io.File)>(file);
+
+        specialinvoke $stack3.<java.io.BufferedReader: void <init>(java.io.Reader)>($stack4);
+
+        this.<org.apache.commons.csv.CSVFileParserTest: java.io.BufferedReader testData> = $stack3;
+
+        return;
+    }
+
+    private java.lang.String readTestData() throws java.io.IOException
+    {
+        java.io.BufferedReader $stack2;
+        java.lang.String $stack3;
+        org.apache.commons.csv.CSVFileParserTest this;
+        boolean $stack4;
+
+        this := @this: org.apache.commons.csv.CSVFileParserTest;
+
+     label1:
+        $stack2 = this.<org.apache.commons.csv.CSVFileParserTest: java.io.BufferedReader testData>;
+
+        $stack3 = virtualinvoke $stack2.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        if $stack3 == null goto label2;
+
+        $stack4 = virtualinvoke $stack3.<java.lang.String: boolean startsWith(java.lang.String)>("#");
+
+        if $stack4 != 0 goto label1;
+
+     label2:
+        return $stack3;
+    }
+
+    public static java.util.Collection generateData()
+    {
+        java.lang.Object[] $stack12;
+        java.io.File $stack9, f;
+        java.util.ArrayList $stack7;
+        org.apache.commons.csv.CSVFileParserTest$1 $stack8;
+        int len$, i$;
+        java.io.File[] $stack10;
+
+        $stack7 = new java.util.ArrayList;
+
+        specialinvoke $stack7.<java.util.ArrayList: void <init>()>();
+
+        $stack8 = new org.apache.commons.csv.CSVFileParserTest$1;
+
+        specialinvoke $stack8.<org.apache.commons.csv.CSVFileParserTest$1: void <init>()>();
+
+        $stack9 = <org.apache.commons.csv.CSVFileParserTest: java.io.File BASE>;
+
+        $stack10 = virtualinvoke $stack9.<java.io.File: java.io.File[] listFiles(java.io.FilenameFilter)>($stack8);
+
+        if $stack10 == null goto label2;
+
+        len$ = lengthof $stack10;
+
+        i$ = 0;
+
+     label1:
+        if i$ >= len$ goto label2;
+
+        f = $stack10[i$];
+
+        $stack12 = newarray (java.lang.Object)[1];
+
+        $stack12[0] = f;
+
+        interfaceinvoke $stack7.<java.util.List: boolean add(java.lang.Object)>($stack12);
+
+        i$ = i$ + 1;
+
+        goto label1;
+
+     label2:
+        return $stack7;
+    }
+
+    public void testCSVFile() throws java.lang.Exception
+    {
+        org.apache.commons.csv.CSVFormat $stack18, format;
+        org.apache.commons.csv.CSVParser $stack32;
+        org.apache.commons.csv.CSVFileParserTest this;
+        java.lang.StringBuilder $stack12, $stack14, $stack15, $stack22, $stack24, $stack25, $stack55, $stack56, $stack57, $stack58, $stack73, $stack75, $stack76, $stack77, $stack41, $stack42, $stack43, $stack44;
+        java.lang.String $stack10, $stack13, $stack16, $stack21, $stack23, $stack26, $stack27, $stack29, $stack37, $stack47, $stack48, $stack61, $stack62, $stack64, $stack65, $stack67, $stack68, $stack70, $stack71, $stack74, $stack78, $stack81, $stack84, $stack87, option, parsed, $stack39, $stack40, $stack45;
+        java.io.File $stack28, $stack30;
+        org.apache.commons.csv.CSVRecord option_parts;
+        boolean $stack34, $stack63, $stack66, $stack69, $stack72, $stack85, $stack88, $stack90, checkComments;
+        java.lang.String[] $stack11, $stack36, $stack60;
+        java.nio.charset.Charset $stack31;
+        int $stack17, i, $stack20, $stack38;
+        java.util.Iterator $stack33;
+        char $stack82;
+        java.lang.Object $stack35;
+
+        this := @this: org.apache.commons.csv.CSVFileParserTest;
+
+        $stack10 = specialinvoke this.<org.apache.commons.csv.CSVFileParserTest: java.lang.String readTestData()>();
+
+        staticinvoke <org.junit.Assert: void assertNotNull(java.lang.String,java.lang.Object)>("file must contain config line", $stack10);
+
+        $stack11 = virtualinvoke $stack10.<java.lang.String: java.lang.String[] split(java.lang.String)>(" ");
+
+        $stack12 = new java.lang.StringBuilder;
+
+        specialinvoke $stack12.<java.lang.StringBuilder: void <init>()>();
+
+        $stack13 = this.<org.apache.commons.csv.CSVFileParserTest: java.lang.String testName>;
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" require 1 param");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack17 = lengthof $stack11;
+
+        if $stack17 < 1 goto label01;
+
+        $stack90 = 1;
+
+        goto label02;
+
+     label01:
+        $stack90 = 0;
+
+     label02:
+        staticinvoke <org.junit.Assert: void assertTrue(java.lang.String,boolean)>($stack16, $stack90);
+
+        $stack18 = staticinvoke <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat newFormat(char)>(44);
+
+        format = virtualinvoke $stack18.<org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat withQuote(char)>(34);
+
+        checkComments = 0;
+
+        i = 1;
+
+     label03:
+        $stack20 = lengthof $stack11;
+
+        if i >= $stack20 goto label09;
+
+        option = $stack11[i];
+
+        $stack60 = virtualinvoke option.<java.lang.String: java.lang.String[] split(java.lang.String,int)>("=", 2);
+
+        $stack62 = "IgnoreEmpty";
+
+        $stack61 = $stack60[0];
+
+        $stack63 = virtualinvoke $stack62.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack61);
+
+        if $stack63 == 0 goto label04;
+
+        $stack87 = $stack60[1];
+
+        $stack88 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>($stack87);
+
+        format = virtualinvoke format.<org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat withIgnoreEmptyLines(boolean)>($stack88);
+
+        goto label08;
+
+     label04:
+        $stack65 = "IgnoreSpaces";
+
+        $stack64 = $stack60[0];
+
+        $stack66 = virtualinvoke $stack65.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack64);
+
+        if $stack66 == 0 goto label05;
+
+        $stack84 = $stack60[1];
+
+        $stack85 = staticinvoke <java.lang.Boolean: boolean parseBoolean(java.lang.String)>($stack84);
+
+        format = virtualinvoke format.<org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat withIgnoreSurroundingSpaces(boolean)>($stack85);
+
+        goto label08;
+
+     label05:
+        $stack68 = "CommentStart";
+
+        $stack67 = $stack60[0];
+
+        $stack69 = virtualinvoke $stack68.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack67);
+
+        if $stack69 == 0 goto label06;
+
+        $stack81 = $stack60[1];
+
+        $stack82 = virtualinvoke $stack81.<java.lang.String: char charAt(int)>(0);
+
+        format = virtualinvoke format.<org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat withCommentMarker(char)>($stack82);
+
+        goto label08;
+
+     label06:
+        $stack71 = "CheckComments";
+
+        $stack70 = $stack60[0];
+
+        $stack72 = virtualinvoke $stack71.<java.lang.String: boolean equalsIgnoreCase(java.lang.String)>($stack70);
+
+        if $stack72 == 0 goto label07;
+
+        checkComments = 1;
+
+        goto label08;
+
+     label07:
+        $stack73 = new java.lang.StringBuilder;
+
+        specialinvoke $stack73.<java.lang.StringBuilder: void <init>()>();
+
+        $stack74 = this.<org.apache.commons.csv.CSVFileParserTest: java.lang.String testName>;
+
+        $stack75 = virtualinvoke $stack73.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack74);
+
+        $stack76 = virtualinvoke $stack75.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" unexpected option: ");
+
+        $stack77 = virtualinvoke $stack76.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(option);
+
+        $stack78 = virtualinvoke $stack77.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void fail(java.lang.String)>($stack78);
+
+     label08:
+        i = i + 1;
+
+        goto label03;
+
+     label09:
+        $stack21 = specialinvoke this.<org.apache.commons.csv.CSVFileParserTest: java.lang.String readTestData()>();
+
+        $stack22 = new java.lang.StringBuilder;
+
+        specialinvoke $stack22.<java.lang.StringBuilder: void <init>()>();
+
+        $stack23 = this.<org.apache.commons.csv.CSVFileParserTest: java.lang.String testName>;
+
+        $stack24 = virtualinvoke $stack22.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack23);
+
+        $stack25 = virtualinvoke $stack24.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" Expected format ");
+
+        $stack26 = virtualinvoke $stack25.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack27 = virtualinvoke format.<org.apache.commons.csv.CSVFormat: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.String,java.lang.Object,java.lang.Object)>($stack26, $stack21, $stack27);
+
+        $stack28 = new java.io.File;
+
+        $stack30 = <org.apache.commons.csv.CSVFileParserTest: java.io.File BASE>;
+
+        $stack29 = $stack11[0];
+
+        specialinvoke $stack28.<java.io.File: void <init>(java.io.File,java.lang.String)>($stack30, $stack29);
+
+        $stack31 = staticinvoke <java.nio.charset.Charset: java.nio.charset.Charset defaultCharset()>();
+
+        $stack32 = staticinvoke <org.apache.commons.csv.CSVParser: org.apache.commons.csv.CSVParser parse(java.io.File,java.nio.charset.Charset,org.apache.commons.csv.CSVFormat)>($stack28, $stack31, format);
+
+        $stack33 = virtualinvoke $stack32.<org.apache.commons.csv.CSVParser: java.util.Iterator iterator()>();
+
+     label10:
+        $stack34 = interfaceinvoke $stack33.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack34 == 0 goto label12;
+
+        $stack35 = interfaceinvoke $stack33.<java.util.Iterator: java.lang.Object next()>();
+
+        option_parts = (org.apache.commons.csv.CSVRecord) $stack35;
+
+        $stack36 = virtualinvoke option_parts.<org.apache.commons.csv.CSVRecord: java.lang.String[] values()>();
+
+        $stack37 = staticinvoke <java.util.Arrays: java.lang.String toString(java.lang.Object[])>($stack36);
+
+        parsed = $stack37;
+
+        if checkComments == 0 goto label11;
+
+        $stack47 = virtualinvoke option_parts.<org.apache.commons.csv.CSVRecord: java.lang.String getComment()>();
+
+        $stack48 = virtualinvoke $stack47.<java.lang.String: java.lang.String replace(java.lang.CharSequence,java.lang.CharSequence)>("\n", "\\n");
+
+        if $stack48 == null goto label11;
+
+        $stack55 = new java.lang.StringBuilder;
+
+        specialinvoke $stack55.<java.lang.StringBuilder: void <init>()>();
+
+        $stack56 = virtualinvoke $stack55.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack37);
+
+        $stack57 = virtualinvoke $stack56.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("#");
+
+        $stack58 = virtualinvoke $stack57.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack48);
+
+        parsed = virtualinvoke $stack58.<java.lang.StringBuilder: java.lang.String toString()>();
+
+     label11:
+        $stack38 = virtualinvoke option_parts.<org.apache.commons.csv.CSVRecord: int size()>();
+
+        $stack39 = this.<org.apache.commons.csv.CSVFileParserTest: java.lang.String testName>;
+
+        $stack40 = specialinvoke this.<org.apache.commons.csv.CSVFileParserTest: java.lang.String readTestData()>();
+
+        $stack41 = new java.lang.StringBuilder;
+
+        specialinvoke $stack41.<java.lang.StringBuilder: void <init>()>();
+
+        $stack42 = virtualinvoke $stack41.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack38);
+
+        $stack43 = virtualinvoke $stack42.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(":");
+
+        $stack44 = virtualinvoke $stack43.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(parsed);
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.junit.Assert: void assertEquals(java.lang.String,java.lang.Object,java.lang.Object)>($stack39, $stack40, $stack45);
+
+        goto label10;
+
+     label12:
+        virtualinvoke $stack32.<org.apache.commons.csv.CSVParser: void close()>();
+
+        return;
+    }
+
+    public void testCSVUrl()
+    {
+        org.apache.commons.csv.CSVFileParserTest this;
+
+        this := @this: org.apache.commons.csv.CSVFileParserTest;
+
+        return;
+    }
+
+    static void <clinit>()
+    {
+        java.io.File $stack0;
+
+        $stack0 = new java.io.File;
+
+        specialinvoke $stack0.<java.io.File: void <init>(java.lang.String)>("src/test/resources/CSVFileParser");
+
+        <org.apache.commons.csv.CSVFileParserTest: java.io.File BASE> = $stack0;
+
+        return;
+    }
+}

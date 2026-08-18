@@ -211,10 +211,10 @@ def build_slice_matrix(ctx, virtual_columns):
     # passing-criteria slices did not). ochiai_score's failed_covered term
     # is then 0 for every single statement, so every statement scores 0.0
     # and ties for rank 1 (see build_ranking's tie logic in
-    # step4_ranking.py) - Hybrid_Top_Rank=1 in that state is a tie-break
-    # artifact of zero failing-side data, not a genuine top-1 localization,
-    # and is otherwise indistinguishable from a real hit by anyone just
-    # reading rq5.csv.
+    # step4_ranking.py) - any rq5.csv rank_best_slice=1 in that state is a
+    # tie-break artifact of zero failing-side data, not a genuine top-1
+    # localization, and is otherwise indistinguishable from a real hit by
+    # anyone just reading rq5.csv.
     fail_ids = [r["virtual_test_id"] for r in virtual_columns if r["virtual_status"] == "Virtual_Fail"]
     fail_side_empty = bool(fail_ids) and not universe_empty and all(
         not (per_column.get(vtid, set()) & universe) for vtid in fail_ids
@@ -223,8 +223,8 @@ def build_slice_matrix(ctx, virtual_columns):
         logger.warning(
             f"Step3b: all {len(fail_ids)} Virtual_Fail column(s) cover ZERO statements in the slice "
             f"universe (only Virtual_Pass columns contributed statements). Every Ochiai score will be "
-            f"0.0 and the entire universe will tie for rank 1 - any 'Hybrid_Top_Rank=1' this produces "
-            f"is a degenerate tie-break artifact, not a real top-1 localization."
+            f"0.0 and the entire universe will tie for rank 1 - any rq5.csv rank_best_slice=1 this "
+            f"produces is a degenerate tie-break artifact, not a real top-1 localization."
         )
 
     # Written unconditionally, with a fixed schema regardless of outcome -

@@ -6,8 +6,8 @@ Statement-line-normalized for matching (multi-line statement, first-line attribu
 
 Ground_Truth_Answerable: True
 
-- SBFL   top rank: 37, AP: 0.0158
-- Hybrid top rank: 1, AP: 0.5172
+- SBFL   ranked 609 statement(s)
+- Hybrid ranked 59 statement(s)
 
 ## Top 10 - Trace-Based SBFL
 

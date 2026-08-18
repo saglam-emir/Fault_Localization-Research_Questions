@@ -1,0 +1,287 @@
+public class com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup extends java.lang.Object implements java.io.Serializable
+{
+    private static final long serialVersionUID;
+    protected final transient com.fasterxml.jackson.databind.util.LRUMap _rootNames;
+
+    public void <init>()
+    {
+        com.fasterxml.jackson.databind.util.LRUMap $stack1;
+        com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup this;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        $stack1 = new com.fasterxml.jackson.databind.util.LRUMap;
+
+        specialinvoke $stack1.<com.fasterxml.jackson.databind.util.LRUMap: void <init>(int,int)>(40, 200);
+
+        this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: com.fasterxml.jackson.databind.util.LRUMap _rootNames> = $stack1;
+
+        return;
+    }
+
+    protected java.lang.Object readResolve()
+    {
+        com.fasterxml.jackson.databind.util.LRUMap $stack1;
+        com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup this, $stack2;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup;
+
+        $stack1 = this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: com.fasterxml.jackson.databind.util.LRUMap _rootNames>;
+
+        if $stack1 != null goto label1;
+
+        $stack2 = new com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup;
+
+        specialinvoke $stack2.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: void <init>()>();
+
+        return $stack2;
+
+     label1:
+        return this;
+    }
+
+    public javax.xml.namespace.QName findRootName(com.fasterxml.jackson.databind.JavaType, com.fasterxml.jackson.databind.cfg.MapperConfig)
+    {
+        com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup this;
+        com.fasterxml.jackson.databind.cfg.MapperConfig config;
+        java.lang.Class $stack3;
+        com.fasterxml.jackson.databind.JavaType rootType;
+        javax.xml.namespace.QName $stack4;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup;
+
+        rootType := @parameter0: com.fasterxml.jackson.databind.JavaType;
+
+        config := @parameter1: com.fasterxml.jackson.databind.cfg.MapperConfig;
+
+        $stack3 = virtualinvoke rootType.<com.fasterxml.jackson.databind.JavaType: java.lang.Class getRawClass()>();
+
+        $stack4 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: javax.xml.namespace.QName findRootName(java.lang.Class,com.fasterxml.jackson.databind.cfg.MapperConfig)>($stack3, config);
+
+        return $stack4;
+    }
+
+    public javax.xml.namespace.QName findRootName(java.lang.Class, com.fasterxml.jackson.databind.cfg.MapperConfig)
+    {
+        java.lang.Throwable $stack18, $stack20;
+        com.fasterxml.jackson.databind.type.ClassKey $stack8;
+        com.fasterxml.jackson.databind.util.LRUMap $stack9, $stack10, $stack14, $stack15;
+        com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup this;
+        com.fasterxml.jackson.databind.cfg.MapperConfig config;
+        java.lang.Class rootType;
+        java.lang.Object $stack11;
+        javax.xml.namespace.QName $stack13, name;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup;
+
+        rootType := @parameter0: java.lang.Class;
+
+        config := @parameter1: com.fasterxml.jackson.databind.cfg.MapperConfig;
+
+        $stack8 = new com.fasterxml.jackson.databind.type.ClassKey;
+
+        specialinvoke $stack8.<com.fasterxml.jackson.databind.type.ClassKey: void <init>(java.lang.Class)>(rootType);
+
+        $stack9 = this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: com.fasterxml.jackson.databind.util.LRUMap _rootNames>;
+
+        entermonitor $stack9;
+
+     label01:
+        $stack10 = this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: com.fasterxml.jackson.databind.util.LRUMap _rootNames>;
+
+        $stack11 = virtualinvoke $stack10.<com.fasterxml.jackson.databind.util.LRUMap: java.lang.Object get(java.lang.Object)>($stack8);
+
+        name = (javax.xml.namespace.QName) $stack11;
+
+        exitmonitor $stack9;
+
+     label02:
+        goto label05;
+
+     label03:
+        $stack20 := @caughtexception;
+
+        exitmonitor $stack9;
+
+     label04:
+        throw $stack20;
+
+     label05:
+        if name == null goto label06;
+
+        return name;
+
+     label06:
+        $stack13 = virtualinvoke this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: javax.xml.namespace.QName _findRootName(java.lang.Class,com.fasterxml.jackson.databind.cfg.MapperConfig)>(rootType, config);
+
+        $stack14 = this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: com.fasterxml.jackson.databind.util.LRUMap _rootNames>;
+
+        entermonitor $stack14;
+
+     label07:
+        $stack15 = this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: com.fasterxml.jackson.databind.util.LRUMap _rootNames>;
+
+        virtualinvoke $stack15.<com.fasterxml.jackson.databind.util.LRUMap: java.lang.Object put(java.lang.Object,java.lang.Object)>($stack8, $stack13);
+
+        exitmonitor $stack14;
+
+     label08:
+        goto label11;
+
+     label09:
+        $stack18 := @caughtexception;
+
+        exitmonitor $stack14;
+
+     label10:
+        throw $stack18;
+
+     label11:
+        return $stack13;
+
+        catch java.lang.Throwable from label01 to label02 with label03;
+        catch java.lang.Throwable from label03 to label04 with label03;
+        catch java.lang.Throwable from label07 to label08 with label09;
+        catch java.lang.Throwable from label09 to label10 with label09;
+    }
+
+    protected javax.xml.namespace.QName _findRootName(java.lang.Class, com.fasterxml.jackson.databind.cfg.MapperConfig)
+    {
+        com.fasterxml.jackson.databind.AnnotationIntrospector $stack10;
+        com.fasterxml.jackson.databind.PropertyName $stack12;
+        com.fasterxml.jackson.databind.introspect.AnnotatedClass $stack11;
+        int $stack16, $stack21;
+        com.fasterxml.jackson.databind.cfg.MapperConfig config;
+        com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup this;
+        java.lang.Class rootType;
+        com.fasterxml.jackson.databind.BeanDescription $stack9;
+        java.lang.String $stack13, $stack14, localName, ns;
+        javax.xml.namespace.QName $stack15, $stack18;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup;
+
+        rootType := @parameter0: java.lang.Class;
+
+        config := @parameter1: com.fasterxml.jackson.databind.cfg.MapperConfig;
+
+        $stack9 = virtualinvoke config.<com.fasterxml.jackson.databind.cfg.MapperConfig: com.fasterxml.jackson.databind.BeanDescription introspectClassAnnotations(java.lang.Class)>(rootType);
+
+        $stack10 = virtualinvoke config.<com.fasterxml.jackson.databind.cfg.MapperConfig: com.fasterxml.jackson.databind.AnnotationIntrospector getAnnotationIntrospector()>();
+
+        $stack11 = virtualinvoke $stack9.<com.fasterxml.jackson.databind.BeanDescription: com.fasterxml.jackson.databind.introspect.AnnotatedClass getClassInfo()>();
+
+        localName = null;
+
+        ns = null;
+
+        $stack12 = virtualinvoke $stack10.<com.fasterxml.jackson.databind.AnnotationIntrospector: com.fasterxml.jackson.databind.PropertyName findRootName(com.fasterxml.jackson.databind.introspect.AnnotatedClass)>($stack11);
+
+        if $stack12 == null goto label1;
+
+        localName = virtualinvoke $stack12.<com.fasterxml.jackson.databind.PropertyName: java.lang.String getSimpleName()>();
+
+        ns = virtualinvoke $stack12.<com.fasterxml.jackson.databind.PropertyName: java.lang.String getNamespace()>();
+
+     label1:
+        if localName == null goto label2;
+
+        $stack16 = virtualinvoke localName.<java.lang.String: int length()>();
+
+        if $stack16 != 0 goto label3;
+
+     label2:
+        $stack13 = virtualinvoke rootType.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack14 = staticinvoke <com.fasterxml.jackson.dataformat.xml.util.StaxUtil: java.lang.String sanitizeXmlTypeName(java.lang.String)>($stack13);
+
+        $stack15 = new javax.xml.namespace.QName;
+
+        specialinvoke $stack15.<javax.xml.namespace.QName: void <init>(java.lang.String,java.lang.String)>("", $stack14);
+
+        return $stack15;
+
+     label3:
+        if ns == null goto label4;
+
+        $stack21 = virtualinvoke ns.<java.lang.String: int length()>();
+
+        if $stack21 != 0 goto label5;
+
+     label4:
+        ns = specialinvoke this.<com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: java.lang.String findNamespace(com.fasterxml.jackson.databind.AnnotationIntrospector,com.fasterxml.jackson.databind.introspect.AnnotatedClass)>($stack10, $stack11);
+
+     label5:
+        if ns != null goto label6;
+
+        ns = "";
+
+     label6:
+        $stack18 = new javax.xml.namespace.QName;
+
+        specialinvoke $stack18.<javax.xml.namespace.QName: void <init>(java.lang.String,java.lang.String)>(ns, localName);
+
+        return $stack18;
+    }
+
+    private java.lang.String findNamespace(com.fasterxml.jackson.databind.AnnotationIntrospector, com.fasterxml.jackson.databind.introspect.AnnotatedClass)
+    {
+        java.util.Iterator $stack7;
+        com.fasterxml.jackson.databind.AnnotationIntrospector ai, intr;
+        java.util.Collection $stack6;
+        com.fasterxml.jackson.databind.introspect.Annotated $r0;
+        com.fasterxml.jackson.databind.introspect.AnnotatedClass ann;
+        com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup this;
+        java.lang.Object $stack9;
+        com.fasterxml.jackson.dataformat.xml.XmlAnnotationIntrospector $stack12;
+        java.lang.String $stack13;
+        boolean $stack8, $stack10;
+
+        this := @this: com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup;
+
+        ai := @parameter0: com.fasterxml.jackson.databind.AnnotationIntrospector;
+
+        ann := @parameter1: com.fasterxml.jackson.databind.introspect.AnnotatedClass;
+
+        $stack6 = virtualinvoke ai.<com.fasterxml.jackson.databind.AnnotationIntrospector: java.util.Collection allIntrospectors()>();
+
+        $stack7 = interfaceinvoke $stack6.<java.util.Collection: java.util.Iterator iterator()>();
+
+     label1:
+        $stack8 = interfaceinvoke $stack7.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack8 == 0 goto label3;
+
+        $stack9 = interfaceinvoke $stack7.<java.util.Iterator: java.lang.Object next()>();
+
+        intr = (com.fasterxml.jackson.databind.AnnotationIntrospector) $stack9;
+
+        $stack10 = intr instanceof com.fasterxml.jackson.dataformat.xml.XmlAnnotationIntrospector;
+
+        if $stack10 == 0 goto label2;
+
+        $stack12 = (com.fasterxml.jackson.dataformat.xml.XmlAnnotationIntrospector) intr;
+
+        $r0 = (com.fasterxml.jackson.databind.introspect.Annotated) ann;
+
+        $stack13 = interfaceinvoke $stack12.<com.fasterxml.jackson.dataformat.xml.XmlAnnotationIntrospector: java.lang.String findNamespace(com.fasterxml.jackson.databind.introspect.Annotated)>($r0);
+
+        if $stack13 == null goto label2;
+
+        return $stack13;
+
+     label2:
+        goto label1;
+
+     label3:
+        return null;
+    }
+
+    public static void <clinit>()
+    {
+        <com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup: long serialVersionUID> = 1L;
+
+        return;
+    }
+}

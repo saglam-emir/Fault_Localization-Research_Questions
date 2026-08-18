@@ -1,0 +1,1148 @@
+public class org.apache.commons.csv.PerformanceTest extends java.lang.Object
+{
+    private static final java.lang.String[] PROPS;
+    private static int max;
+    private static int num;
+    private static long[] elapsedTimes;
+    private static final org.apache.commons.csv.CSVFormat format;
+    private static final java.io.File BIG_FILE;
+
+    public void <init>()
+    {
+        org.apache.commons.csv.PerformanceTest this;
+
+        this := @this: org.apache.commons.csv.PerformanceTest;
+
+        specialinvoke this.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void main(java.lang.String[]) throws java.lang.Exception
+    {
+        java.util.zip.GZIPInputStream $stack16;
+        java.lang.Long $stack28, $stack89;
+        java.lang.StringBuilder $stack9, $stack11, $stack13, $stack14, $stack31, $stack33, $stack35, $stack36, $stack53, $stack55, $stack56, $stack60, $stack62, $stack63, $stack65;
+        java.lang.Object[] $stack21, $stack82;
+        long $stack27, $stack88;
+        java.lang.String $stack15, $stack29, $stack37, $stack38, $stack40, $stack42, $stack44, $stack46, $stack49, $stack51, $stack57, $stack64, $stack66, $stack74, $stack78, $stack90, p;
+        java.io.FileOutputStream $stack18;
+        java.io.File $stack7, $stack12, $stack19, $stack22, $stack23, $stack83, $stack84;
+        boolean $stack8, $stack39, $stack41, $stack43, $stack45, $stack47, $stack48, $stack50, $stack52;
+        java.lang.String[] args, $stack30, $stack70, output, i#14;
+        int $stack34, $stack69, $stack72, $stack75, $stack79, $stack92, i, i$, len$;
+        java.io.PrintStream $stack10, $stack24, $stack32, $stack54, $stack61, $stack85;
+        java.io.FileInputStream $stack17;
+
+        args := @parameter0: java.lang.String[];
+
+        $stack7 = <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE>;
+
+        $stack8 = virtualinvoke $stack7.<java.io.File: boolean exists()>();
+
+        if $stack8 == 0 goto label01;
+
+        $stack85 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack82 = newarray (java.lang.Object)[2];
+
+        $stack83 = <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE>;
+
+        $stack82[0] = $stack83;
+
+        $stack84 = <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE>;
+
+        $stack88 = virtualinvoke $stack84.<java.io.File: long length()>();
+
+        $stack89 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($stack88);
+
+        $stack82[1] = $stack89;
+
+        $stack90 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Found test fixture %s: %,d bytes.", $stack82);
+
+        virtualinvoke $stack85.<java.io.PrintStream: void println(java.lang.String)>($stack90);
+
+        goto label02;
+
+     label01:
+        $stack10 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack9 = new java.lang.StringBuilder;
+
+        specialinvoke $stack9.<java.lang.StringBuilder: void <init>()>();
+
+        $stack11 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Decompressing test fixture ");
+
+        $stack12 = <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE>;
+
+        $stack13 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack12);
+
+        $stack14 = virtualinvoke $stack13.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("...");
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack10.<java.io.PrintStream: void println(java.lang.String)>($stack15);
+
+        $stack16 = new java.util.zip.GZIPInputStream;
+
+        $stack17 = new java.io.FileInputStream;
+
+        specialinvoke $stack17.<java.io.FileInputStream: void <init>(java.lang.String)>("src/test/resources/perf/worldcitiespop.txt.gz");
+
+        specialinvoke $stack16.<java.util.zip.GZIPInputStream: void <init>(java.io.InputStream)>($stack17);
+
+        $stack18 = new java.io.FileOutputStream;
+
+        $stack19 = <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE>;
+
+        specialinvoke $stack18.<java.io.FileOutputStream: void <init>(java.io.File)>($stack19);
+
+        staticinvoke <org.apache.commons.io.IOUtils: int copy(java.io.InputStream,java.io.OutputStream)>($stack16, $stack18);
+
+        virtualinvoke $stack16.<java.io.InputStream: void close()>();
+
+        virtualinvoke $stack18.<java.io.OutputStream: void close()>();
+
+        $stack24 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack21 = newarray (java.lang.Object)[2];
+
+        $stack22 = <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE>;
+
+        $stack21[0] = $stack22;
+
+        $stack23 = <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE>;
+
+        $stack27 = virtualinvoke $stack23.<java.io.File: long length()>();
+
+        $stack28 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($stack27);
+
+        $stack21[1] = $stack28;
+
+        $stack29 = staticinvoke <java.lang.String: java.lang.String format(java.lang.String,java.lang.Object[])>("Decompressed test fixture %s: %,d bytes.", $stack21);
+
+        virtualinvoke $stack24.<java.io.PrintStream: void println(java.lang.String)>($stack29);
+
+     label02:
+        $stack92 = lengthof args;
+
+        if $stack92 <= 0 goto label03;
+
+        $stack78 = args[0];
+
+        $stack79 = staticinvoke <java.lang.Integer: int parseInt(java.lang.String)>($stack78);
+
+        <org.apache.commons.csv.PerformanceTest: int max> = $stack79;
+
+     label03:
+        if $stack92 <= 1 goto label06;
+
+        $stack69 = $stack92 - 1;
+
+        output = newarray (java.lang.String)[$stack69];
+
+        i = 1;
+
+     label04:
+        if i >= $stack92 goto label05;
+
+        $stack75 = i - 1;
+
+        $stack74 = args[i];
+
+        output[$stack75] = $stack74;
+
+        i = i + 1;
+
+        goto label04;
+
+     label05:
+        goto label07;
+
+     label06:
+        $stack30 = newarray (java.lang.String)[7];
+
+        $stack30[0] = "file";
+
+        $stack30[1] = "split";
+
+        $stack30[2] = "extb";
+
+        $stack30[3] = "exts";
+
+        $stack30[4] = "csv";
+
+        $stack30[5] = "lexreset";
+
+        $stack30[6] = "lexnew";
+
+        output = $stack30;
+
+     label07:
+        $stack70 = <org.apache.commons.csv.PerformanceTest: java.lang.String[] PROPS>;
+
+        $stack72 = lengthof $stack70;
+
+        i$ = 0;
+
+     label08:
+        if i$ >= $stack72 goto label09;
+
+        p = $stack70[i$];
+
+        $stack61 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack60 = new java.lang.StringBuilder;
+
+        specialinvoke $stack60.<java.lang.StringBuilder: void <init>()>();
+
+        $stack62 = virtualinvoke $stack60.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(p);
+
+        $stack63 = virtualinvoke $stack62.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("=");
+
+        $stack64 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>(p);
+
+        $stack65 = virtualinvoke $stack63.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack64);
+
+        $stack66 = virtualinvoke $stack65.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack61.<java.io.PrintStream: void println(java.lang.String)>($stack66);
+
+        i$ = i$ + 1;
+
+        goto label08;
+
+     label09:
+        $stack32 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack31 = new java.lang.StringBuilder;
+
+        specialinvoke $stack31.<java.lang.StringBuilder: void <init>()>();
+
+        $stack33 = virtualinvoke $stack31.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Max count: ");
+
+        $stack34 = <org.apache.commons.csv.PerformanceTest: int max>;
+
+        $stack35 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack34);
+
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("\n");
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack32.<java.io.PrintStream: void println(java.lang.String)>($stack37);
+
+        i#14 = output;
+
+        len$ = lengthof output;
+
+        i$ = 0;
+
+     label10:
+        if i$ >= len$ goto label20;
+
+        p = i#14[i$];
+
+        $stack38 = "file";
+
+        $stack39 = virtualinvoke $stack38.<java.lang.String: boolean equals(java.lang.Object)>(p);
+
+        if $stack39 == 0 goto label11;
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void testReadBigFile(boolean)>(0);
+
+        goto label19;
+
+     label11:
+        $stack40 = "split";
+
+        $stack41 = virtualinvoke $stack40.<java.lang.String: boolean equals(java.lang.Object)>(p);
+
+        if $stack41 == 0 goto label12;
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void testReadBigFile(boolean)>(1);
+
+        goto label19;
+
+     label12:
+        $stack42 = "csv";
+
+        $stack43 = virtualinvoke $stack42.<java.lang.String: boolean equals(java.lang.Object)>(p);
+
+        if $stack43 == 0 goto label13;
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void testParseCommonsCSV()>();
+
+        goto label19;
+
+     label13:
+        $stack44 = "lexreset";
+
+        $stack45 = virtualinvoke $stack44.<java.lang.String: boolean equals(java.lang.Object)>(p);
+
+        if $stack45 == 0 goto label14;
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void testCSVLexer(boolean,java.lang.String)>(0, p);
+
+        goto label19;
+
+     label14:
+        $stack46 = "lexnew";
+
+        $stack47 = virtualinvoke $stack46.<java.lang.String: boolean equals(java.lang.Object)>(p);
+
+        if $stack47 == 0 goto label15;
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void testCSVLexer(boolean,java.lang.String)>(1, p);
+
+        goto label19;
+
+     label15:
+        $stack48 = virtualinvoke p.<java.lang.String: boolean startsWith(java.lang.String)>("CSVLexer");
+
+        if $stack48 == 0 goto label16;
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void testCSVLexer(boolean,java.lang.String)>(0, p);
+
+        goto label19;
+
+     label16:
+        $stack49 = "extb";
+
+        $stack50 = virtualinvoke $stack49.<java.lang.String: boolean equals(java.lang.Object)>(p);
+
+        if $stack50 == 0 goto label17;
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void testExtendedBuffer(boolean)>(0);
+
+        goto label19;
+
+     label17:
+        $stack51 = "exts";
+
+        $stack52 = virtualinvoke $stack51.<java.lang.String: boolean equals(java.lang.Object)>(p);
+
+        if $stack52 == 0 goto label18;
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void testExtendedBuffer(boolean)>(1);
+
+        goto label19;
+
+     label18:
+        $stack54 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack53 = new java.lang.StringBuilder;
+
+        specialinvoke $stack53.<java.lang.StringBuilder: void <init>()>();
+
+        $stack55 = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Invalid test name: ");
+
+        $stack56 = virtualinvoke $stack55.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(p);
+
+        $stack57 = virtualinvoke $stack56.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        virtualinvoke $stack54.<java.io.PrintStream: void println(java.lang.String)>($stack57);
+
+     label19:
+        i$ = i$ + 1;
+
+        goto label10;
+
+     label20:
+        return;
+    }
+
+    private static java.io.BufferedReader getReader() throws java.io.IOException
+    {
+        java.io.BufferedReader $stack0;
+        java.io.FileReader $stack1;
+        java.io.File $stack2;
+
+        $stack0 = new java.io.BufferedReader;
+
+        $stack1 = new java.io.FileReader;
+
+        $stack2 = <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE>;
+
+        specialinvoke $stack1.<java.io.FileReader: void <init>(java.io.File)>($stack2);
+
+        specialinvoke $stack0.<java.io.BufferedReader: void <init>(java.io.Reader)>($stack1);
+
+        return $stack0;
+    }
+
+    private static void show(java.lang.String, org.apache.commons.csv.PerformanceTest$Stats, long)
+    {
+        java.lang.Object[] $stack17;
+        long $stack6, start, elapsed;
+        long[] $stack23;
+        java.lang.Long $stack19;
+        int $stack10, $stack13, $stack21, $stack22;
+        java.lang.String $stack16, msg;
+        java.io.PrintStream $stack8;
+        org.apache.commons.csv.PerformanceTest$Stats s;
+        java.lang.StringBuilder $stack7, $stack9, $stack11, $stack12, $stack14, $stack15;
+
+        msg := @parameter0: java.lang.String;
+
+        s := @parameter1: org.apache.commons.csv.PerformanceTest$Stats;
+
+        start := @parameter2: long;
+
+        $stack6 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        elapsed = $stack6 - start;
+
+        $stack8 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack7 = new java.lang.StringBuilder;
+
+        specialinvoke $stack7.<java.lang.StringBuilder: void <init>()>();
+
+        $stack9 = virtualinvoke $stack7.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("%-20s: %5dms ");
+
+        $stack10 = s.<org.apache.commons.csv.PerformanceTest$Stats: int count>;
+
+        $stack11 = virtualinvoke $stack9.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack10);
+
+        $stack12 = virtualinvoke $stack11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" lines ");
+
+        $stack13 = s.<org.apache.commons.csv.PerformanceTest$Stats: int fields>;
+
+        $stack14 = virtualinvoke $stack12.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($stack13);
+
+        $stack15 = virtualinvoke $stack14.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" fields%n");
+
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack17 = newarray (java.lang.Object)[2];
+
+        $stack17[0] = msg;
+
+        $stack19 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>(elapsed);
+
+        $stack17[1] = $stack19;
+
+        virtualinvoke $stack8.<java.io.PrintStream: java.io.PrintStream printf(java.lang.String,java.lang.Object[])>($stack16, $stack17);
+
+        $stack23 = <org.apache.commons.csv.PerformanceTest: long[] elapsedTimes>;
+
+        $stack21 = <org.apache.commons.csv.PerformanceTest: int num>;
+
+        $stack22 = $stack21 + 1;
+
+        <org.apache.commons.csv.PerformanceTest: int num> = $stack22;
+
+        $stack23[$stack21] = elapsed;
+
+        return;
+    }
+
+    private static void show()
+    {
+        java.io.PrintStream $stack10;
+        java.lang.Object[] $stack5;
+        long $stack8, $stack9, $stack17, tot;
+        long[] $stack16;
+        java.lang.Long $stack13;
+        int $stack3, $stack4, $stack6, $stack7, i;
+
+        tot = 0L;
+
+        $stack3 = <org.apache.commons.csv.PerformanceTest: int num>;
+
+        if $stack3 <= 1 goto label3;
+
+        i = 1;
+
+     label1:
+        $stack4 = <org.apache.commons.csv.PerformanceTest: int num>;
+
+        if i >= $stack4 goto label2;
+
+        $stack16 = <org.apache.commons.csv.PerformanceTest: long[] elapsedTimes>;
+
+        $stack17 = $stack16[i];
+
+        tot = tot + $stack17;
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        $stack10 = <java.lang.System: java.io.PrintStream out>;
+
+        $stack5 = newarray (java.lang.Object)[2];
+
+        $stack5[0] = "Average(not first)";
+
+        $stack6 = <org.apache.commons.csv.PerformanceTest: int num>;
+
+        $stack7 = $stack6 - 1;
+
+        $stack8 = (long) $stack7;
+
+        $stack9 = tot / $stack8;
+
+        $stack13 = staticinvoke <java.lang.Long: java.lang.Long valueOf(long)>($stack9);
+
+        $stack5[1] = $stack13;
+
+        virtualinvoke $stack10.<java.io.PrintStream: java.io.PrintStream printf(java.lang.String,java.lang.Object[])>("%-20s: %5dms%n%n", $stack5);
+
+     label3:
+        <org.apache.commons.csv.PerformanceTest: int num> = 0;
+
+        return;
+    }
+
+    private static void testReadBigFile(boolean) throws java.lang.Exception
+    {
+        org.apache.commons.csv.PerformanceTest$Stats $stack9;
+        int $stack6, i;
+        long $stack8;
+        java.io.BufferedReader $stack7;
+        java.lang.String $stack11;
+        boolean split;
+
+        split := @parameter0: boolean;
+
+        i = 0;
+
+     label1:
+        $stack6 = <org.apache.commons.csv.PerformanceTest: int max>;
+
+        if i >= $stack6 goto label4;
+
+        $stack7 = staticinvoke <org.apache.commons.csv.PerformanceTest: java.io.BufferedReader getReader()>();
+
+        $stack8 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $stack9 = staticinvoke <org.apache.commons.csv.PerformanceTest: org.apache.commons.csv.PerformanceTest$Stats readAll(java.io.BufferedReader,boolean)>($stack7, split);
+
+        virtualinvoke $stack7.<java.io.BufferedReader: void close()>();
+
+        if split == 0 goto label2;
+
+        $stack11 = "file+split";
+
+        goto label3;
+
+     label2:
+        $stack11 = "file";
+
+     label3:
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void show(java.lang.String,org.apache.commons.csv.PerformanceTest$Stats,long)>($stack11, $stack9, $stack8);
+
+        i = i + 1;
+
+        goto label1;
+
+     label4:
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void show()>();
+
+        return;
+    }
+
+    private static org.apache.commons.csv.PerformanceTest$Stats readAll(java.io.BufferedReader, boolean) throws java.io.IOException
+    {
+        java.lang.String[] $stack8;
+        org.apache.commons.csv.PerformanceTest$Stats $stack6;
+        int $stack10, count, fields, $stack9;
+        java.io.BufferedReader in;
+        java.lang.String $stack5;
+        boolean split;
+
+        in := @parameter0: java.io.BufferedReader;
+
+        split := @parameter1: boolean;
+
+        count = 0;
+
+        fields = 0;
+
+     label1:
+        $stack5 = virtualinvoke in.<java.io.BufferedReader: java.lang.String readLine()>();
+
+        if $stack5 == null goto label4;
+
+        count = count + 1;
+
+        $stack10 = fields;
+
+        if split == 0 goto label2;
+
+        $stack8 = virtualinvoke $stack5.<java.lang.String: java.lang.String[] split(java.lang.String)>(",");
+
+        $stack9 = lengthof $stack8;
+
+        goto label3;
+
+     label2:
+        $stack9 = 1;
+
+     label3:
+        fields = $stack10 + $stack9;
+
+        goto label1;
+
+     label4:
+        $stack6 = new org.apache.commons.csv.PerformanceTest$Stats;
+
+        specialinvoke $stack6.<org.apache.commons.csv.PerformanceTest$Stats: void <init>(int,int)>(count, fields);
+
+        return $stack6;
+    }
+
+    private static void testExtendedBuffer(boolean) throws java.lang.Exception
+    {
+        long $stack12;
+        int $stack9, $stack30, i, fields, lines, $stack27, $stack13, $i0, $i1;
+        java.lang.String $stack17, $stack20;
+        org.apache.commons.csv.ExtendedBufferedReader $u0;
+        boolean makeString;
+        char $stack34;
+        org.apache.commons.csv.PerformanceTest$Stats $u5;
+        java.lang.StringBuilder $stack15, $stack16, sb, $u1, $u2, $u3, $u4;
+        java.io.BufferedReader $stack11;
+
+        makeString := @parameter0: boolean;
+
+        i = 0;
+
+     label01:
+        $stack9 = <org.apache.commons.csv.PerformanceTest: int max>;
+
+        if i >= $stack9 goto label10;
+
+        $u0 = new org.apache.commons.csv.ExtendedBufferedReader;
+
+        $stack11 = staticinvoke <org.apache.commons.csv.PerformanceTest: java.io.BufferedReader getReader()>();
+
+        specialinvoke $u0.<org.apache.commons.csv.ExtendedBufferedReader: void <init>(java.io.Reader)>($stack11);
+
+        $stack12 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        fields = 0;
+
+        lines = 0;
+
+        if makeString == 0 goto label05;
+
+        $u1 = new java.lang.StringBuilder;
+
+        specialinvoke $u1.<java.lang.StringBuilder: void <init>()>();
+
+        sb = $u1;
+
+     label02:
+        $stack27 = virtualinvoke $u0.<org.apache.commons.csv.ExtendedBufferedReader: int read()>();
+
+        $i0 = (int) -1;
+
+        if $stack27 == $i0 goto label04;
+
+        $stack34 = (char) $stack27;
+
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.StringBuilder append(char)>($stack34);
+
+        if $stack27 != 44 goto label03;
+
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u2 = new java.lang.StringBuilder;
+
+        specialinvoke $u2.<java.lang.StringBuilder: void <init>()>();
+
+        sb = $u2;
+
+        fields = fields + 1;
+
+        goto label02;
+
+     label03:
+        if $stack27 != 10 goto label02;
+
+        virtualinvoke sb.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u3 = new java.lang.StringBuilder;
+
+        specialinvoke $u3.<java.lang.StringBuilder: void <init>()>();
+
+        sb = $u3;
+
+        lines = lines + 1;
+
+        goto label02;
+
+     label04:
+        goto label07;
+
+     label05:
+        $stack13 = virtualinvoke $u0.<org.apache.commons.csv.ExtendedBufferedReader: int read()>();
+
+        $i1 = (int) -1;
+
+        if $stack13 == $i1 goto label07;
+
+        if $stack13 != 44 goto label06;
+
+        fields = fields + 1;
+
+        goto label05;
+
+     label06:
+        if $stack13 != 10 goto label05;
+
+        lines = lines + 1;
+
+        goto label05;
+
+     label07:
+        $stack30 = fields + lines;
+
+        virtualinvoke $u0.<org.apache.commons.csv.ExtendedBufferedReader: void close()>();
+
+        $u4 = new java.lang.StringBuilder;
+
+        specialinvoke $u4.<java.lang.StringBuilder: void <init>()>();
+
+        $stack15 = virtualinvoke $u4.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Extended");
+
+        if makeString == 0 goto label08;
+
+        $stack20 = " toString";
+
+        goto label09;
+
+     label08:
+        $stack20 = "";
+
+     label09:
+        $stack16 = virtualinvoke $stack15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack20);
+
+        $stack17 = virtualinvoke $stack16.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $u5 = new org.apache.commons.csv.PerformanceTest$Stats;
+
+        specialinvoke $u5.<org.apache.commons.csv.PerformanceTest$Stats: void <init>(int,int)>(lines, $stack30);
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void show(java.lang.String,org.apache.commons.csv.PerformanceTest$Stats,long)>($stack17, $u5, $stack12);
+
+        i = i + 1;
+
+        goto label01;
+
+     label10:
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void show()>();
+
+        return;
+    }
+
+    private static void testParseCommonsCSV() throws java.lang.Exception
+    {
+        org.apache.commons.csv.CSVFormat $stack9;
+        org.apache.commons.csv.PerformanceTest$Stats $stack11;
+        int $stack6, i;
+        org.apache.commons.csv.CSVParser $stack8;
+        long $stack10;
+        java.io.BufferedReader $stack7;
+
+        i = 0;
+
+     label1:
+        $stack6 = <org.apache.commons.csv.PerformanceTest: int max>;
+
+        if i >= $stack6 goto label2;
+
+        $stack7 = staticinvoke <org.apache.commons.csv.PerformanceTest: java.io.BufferedReader getReader()>();
+
+        $stack8 = new org.apache.commons.csv.CSVParser;
+
+        $stack9 = <org.apache.commons.csv.PerformanceTest: org.apache.commons.csv.CSVFormat format>;
+
+        specialinvoke $stack8.<org.apache.commons.csv.CSVParser: void <init>(java.io.Reader,org.apache.commons.csv.CSVFormat)>($stack7, $stack9);
+
+        $stack10 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+        $stack11 = staticinvoke <org.apache.commons.csv.PerformanceTest: org.apache.commons.csv.PerformanceTest$Stats iterate(java.lang.Iterable)>($stack8);
+
+        virtualinvoke $stack7.<java.io.BufferedReader: void close()>();
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void show(java.lang.String,org.apache.commons.csv.PerformanceTest$Stats,long)>("CSV", $stack11, $stack10);
+
+        virtualinvoke $stack8.<org.apache.commons.csv.CSVParser: void close()>();
+
+        i = i + 1;
+
+        goto label1;
+
+     label2:
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void show()>();
+
+        return;
+    }
+
+    private static java.lang.reflect.Constructor getLexerCtor(java.lang.String) throws java.lang.Exception
+    {
+        java.lang.Class[] $stack7;
+        java.lang.reflect.Constructor $stack8;
+        java.lang.StringBuilder $stack2, $stack3, $stack4;
+        java.lang.Class $stack6;
+        java.lang.String clazz, $stack5;
+
+        clazz := @parameter0: java.lang.String;
+
+        $stack2 = new java.lang.StringBuilder;
+
+        specialinvoke $stack2.<java.lang.StringBuilder: void <init>()>();
+
+        $stack3 = virtualinvoke $stack2.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("org.apache.commons.csv.");
+
+        $stack4 = virtualinvoke $stack3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(clazz);
+
+        $stack5 = virtualinvoke $stack4.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack6 = staticinvoke <java.lang.Class: java.lang.Class forName(java.lang.String)>($stack5);
+
+        $stack7 = newarray (java.lang.Class)[2];
+
+        $stack7[0] = class "Lorg/apache/commons/csv/CSVFormat;";
+
+        $stack7[1] = class "Lorg/apache/commons/csv/ExtendedBufferedReader;";
+
+        $stack8 = virtualinvoke $stack6.<java.lang.Class: java.lang.reflect.Constructor getConstructor(java.lang.Class[])>($stack7);
+
+        return $stack8;
+    }
+
+    private static void testCSVLexer(boolean, java.lang.String) throws java.lang.Exception
+    {
+        java.lang.IllegalStateException $stack51;
+        org.apache.commons.csv.Token $stack12, $stack57, token;
+        org.apache.commons.csv.CSVFormat $stack18, $stack63;
+        int[] $stack22;
+        boolean $stack16, newToken, $stack27;
+        org.apache.commons.csv.Lexer $stack17, lexer;
+        org.apache.commons.csv.PerformanceTest$Stats $stack29;
+        org.apache.commons.csv.Token$Type $stack21, $stack54, $stack26, $stack25;
+        java.lang.StringBuilder $stack30, $stack33, $stack34, $stack35, $stack36, $stack44, $stack45, $stack46, $stack48, $stack49, $stack52, $stack53, $stack55;
+        java.lang.Object[] $stack62;
+        long $stack19;
+        java.lang.reflect.Constructor $stack61;
+        int $stack13, $stack23, $stack24, i, count, fields;
+        java.lang.String test, $stack32, $stack37, $stack47, $stack50, $stack56, dynamic, $stack39;
+        org.apache.commons.csv.ExtendedBufferedReader $stack14;
+        java.io.IOException $stack43;
+        java.lang.Class $stack31;
+        java.lang.Object $stack64;
+        java.io.BufferedReader $stack15;
+
+        newToken := @parameter0: boolean;
+
+        test := @parameter1: java.lang.String;
+
+        $stack12 = new org.apache.commons.csv.Token;
+
+        specialinvoke $stack12.<org.apache.commons.csv.Token: void <init>()>();
+
+        token = $stack12;
+
+        dynamic = "";
+
+        i = 0;
+
+     label01:
+        $stack13 = <org.apache.commons.csv.PerformanceTest: int max>;
+
+        if i >= $stack13 goto label16;
+
+        $stack14 = new org.apache.commons.csv.ExtendedBufferedReader;
+
+        $stack15 = staticinvoke <org.apache.commons.csv.PerformanceTest: java.io.BufferedReader getReader()>();
+
+        specialinvoke $stack14.<org.apache.commons.csv.ExtendedBufferedReader: void <init>(java.io.Reader)>($stack15);
+
+        $stack16 = virtualinvoke test.<java.lang.String: boolean startsWith(java.lang.String)>("CSVLexer");
+
+        if $stack16 == 0 goto label02;
+
+        dynamic = "!";
+
+        $stack61 = staticinvoke <org.apache.commons.csv.PerformanceTest: java.lang.reflect.Constructor getLexerCtor(java.lang.String)>(test);
+
+        $stack62 = newarray (java.lang.Object)[2];
+
+        $stack63 = <org.apache.commons.csv.PerformanceTest: org.apache.commons.csv.CSVFormat format>;
+
+        $stack62[0] = $stack63;
+
+        $stack62[1] = $stack14;
+
+        $stack64 = virtualinvoke $stack61.<java.lang.reflect.Constructor: java.lang.Object newInstance(java.lang.Object[])>($stack62);
+
+        lexer = (org.apache.commons.csv.Lexer) $stack64;
+
+        goto label03;
+
+     label02:
+        $stack17 = new org.apache.commons.csv.Lexer;
+
+        $stack18 = <org.apache.commons.csv.PerformanceTest: org.apache.commons.csv.CSVFormat format>;
+
+        specialinvoke $stack17.<org.apache.commons.csv.Lexer: void <init>(org.apache.commons.csv.CSVFormat,org.apache.commons.csv.ExtendedBufferedReader)>($stack18, $stack14);
+
+        lexer = $stack17;
+
+     label03:
+        count = 0;
+
+        fields = 0;
+
+        $stack19 = staticinvoke <java.lang.System: long currentTimeMillis()>();
+
+     label04:
+        if newToken == 0 goto label05;
+
+        $stack57 = new org.apache.commons.csv.Token;
+
+        specialinvoke $stack57.<org.apache.commons.csv.Token: void <init>()>();
+
+        token = $stack57;
+
+        goto label06;
+
+     label05:
+        virtualinvoke token.<org.apache.commons.csv.Token: void reset()>();
+
+     label06:
+        virtualinvoke lexer.<org.apache.commons.csv.Lexer: org.apache.commons.csv.Token nextToken(org.apache.commons.csv.Token)>(token);
+
+        $stack22 = <org.apache.commons.csv.PerformanceTest$1: int[] $SwitchMap$org$apache$commons$csv$Token$Type>;
+
+        $stack21 = token.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type>;
+
+        $stack23 = virtualinvoke $stack21.<org.apache.commons.csv.Token$Type: int ordinal()>();
+
+        $stack24 = $stack22[$stack23];
+
+        tableswitch($stack24)
+        {
+            case 1: goto label07;
+            case 2: goto label08;
+            case 3: goto label09;
+            case 4: goto label10;
+            case 5: goto label11;
+            default: goto label12;
+        };
+
+     label07:
+        goto label13;
+
+     label08:
+        fields = fields + 1;
+
+        count = count + 1;
+
+        goto label13;
+
+     label09:
+        $stack43 = new java.io.IOException;
+
+        $stack44 = new java.lang.StringBuilder;
+
+        specialinvoke $stack44.<java.lang.StringBuilder: void <init>()>();
+
+        $stack45 = virtualinvoke $stack44.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("invalid parse sequence <");
+
+        $stack46 = token.<org.apache.commons.csv.Token: java.lang.StringBuilder content>;
+
+        $stack47 = virtualinvoke $stack46.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        $stack48 = virtualinvoke $stack45.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack47);
+
+        $stack49 = virtualinvoke $stack48.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(">");
+
+        $stack50 = virtualinvoke $stack49.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack43.<java.io.IOException: void <init>(java.lang.String)>($stack50);
+
+        throw $stack43;
+
+     label10:
+        fields = fields + 1;
+
+        goto label13;
+
+     label11:
+        goto label13;
+
+     label12:
+        $stack51 = new java.lang.IllegalStateException;
+
+        $stack52 = new java.lang.StringBuilder;
+
+        specialinvoke $stack52.<java.lang.StringBuilder: void <init>()>();
+
+        $stack53 = virtualinvoke $stack52.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Unexpected Token type: ");
+
+        $stack54 = token.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type>;
+
+        $stack55 = virtualinvoke $stack53.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($stack54);
+
+        $stack56 = virtualinvoke $stack55.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke $stack51.<java.lang.IllegalStateException: void <init>(java.lang.String)>($stack56);
+
+        throw $stack51;
+
+     label13:
+        $stack26 = token.<org.apache.commons.csv.Token: org.apache.commons.csv.Token$Type type>;
+
+        $stack25 = <org.apache.commons.csv.Token$Type: org.apache.commons.csv.Token$Type EOF>;
+
+        $stack27 = virtualinvoke $stack26.<org.apache.commons.csv.Token$Type: boolean equals(java.lang.Object)>($stack25);
+
+        if $stack27 == 0 goto label04;
+
+        $stack29 = new org.apache.commons.csv.PerformanceTest$Stats;
+
+        specialinvoke $stack29.<org.apache.commons.csv.PerformanceTest$Stats: void <init>(int,int)>(count, fields);
+
+        virtualinvoke $stack14.<org.apache.commons.csv.ExtendedBufferedReader: void close()>();
+
+        $stack30 = new java.lang.StringBuilder;
+
+        specialinvoke $stack30.<java.lang.StringBuilder: void <init>()>();
+
+        $stack31 = virtualinvoke lexer.<java.lang.Object: java.lang.Class getClass()>();
+
+        $stack32 = virtualinvoke $stack31.<java.lang.Class: java.lang.String getSimpleName()>();
+
+        $stack33 = virtualinvoke $stack30.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack32);
+
+        $stack34 = virtualinvoke $stack33.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(dynamic);
+
+        $stack35 = virtualinvoke $stack34.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" ");
+
+        if newToken == 0 goto label14;
+
+        $stack39 = "new";
+
+        goto label15;
+
+     label14:
+        $stack39 = "reset";
+
+     label15:
+        $stack36 = virtualinvoke $stack35.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($stack39);
+
+        $stack37 = virtualinvoke $stack36.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void show(java.lang.String,org.apache.commons.csv.PerformanceTest$Stats,long)>($stack37, $stack29, $stack19);
+
+        i = i + 1;
+
+        goto label01;
+
+     label16:
+        staticinvoke <org.apache.commons.csv.PerformanceTest: void show()>();
+
+        return;
+    }
+
+    private static org.apache.commons.csv.PerformanceTest$Stats iterate(java.lang.Iterable)
+    {
+        java.util.Iterator $stack5;
+        org.apache.commons.csv.CSVRecord record;
+        java.lang.Iterable it;
+        org.apache.commons.csv.PerformanceTest$Stats $stack7;
+        int $stack9, count, fields;
+        java.lang.Object $stack8;
+        boolean $stack6;
+
+        it := @parameter0: java.lang.Iterable;
+
+        count = 0;
+
+        fields = 0;
+
+        $stack5 = interfaceinvoke it.<java.lang.Iterable: java.util.Iterator iterator()>();
+
+     label1:
+        $stack6 = interfaceinvoke $stack5.<java.util.Iterator: boolean hasNext()>();
+
+        if $stack6 == 0 goto label2;
+
+        $stack8 = interfaceinvoke $stack5.<java.util.Iterator: java.lang.Object next()>();
+
+        record = (org.apache.commons.csv.CSVRecord) $stack8;
+
+        count = count + 1;
+
+        $stack9 = virtualinvoke record.<org.apache.commons.csv.CSVRecord: int size()>();
+
+        fields = fields + $stack9;
+
+        goto label1;
+
+     label2:
+        $stack7 = new org.apache.commons.csv.PerformanceTest$Stats;
+
+        specialinvoke $stack7.<org.apache.commons.csv.PerformanceTest$Stats: void <init>(int,int)>(count, fields);
+
+        return $stack7;
+    }
+
+    static void <clinit>()
+    {
+        long[] $stack2;
+        org.apache.commons.csv.CSVFormat $stack3;
+        int $stack1;
+        java.lang.String[] $stack0;
+        java.lang.String $stack5;
+        java.io.File $stack4;
+
+        $stack0 = newarray (java.lang.String)[7];
+
+        $stack0[0] = "java.version";
+
+        $stack0[1] = "java.vendor";
+
+        $stack0[2] = "java.vm.version";
+
+        $stack0[3] = "java.vm.name";
+
+        $stack0[4] = "os.name";
+
+        $stack0[5] = "os.arch";
+
+        $stack0[6] = "os.version";
+
+        <org.apache.commons.csv.PerformanceTest: java.lang.String[] PROPS> = $stack0;
+
+        <org.apache.commons.csv.PerformanceTest: int max> = 10;
+
+        <org.apache.commons.csv.PerformanceTest: int num> = 0;
+
+        $stack1 = <org.apache.commons.csv.PerformanceTest: int max>;
+
+        $stack2 = newarray (long)[$stack1];
+
+        <org.apache.commons.csv.PerformanceTest: long[] elapsedTimes> = $stack2;
+
+        $stack3 = <org.apache.commons.csv.CSVFormat: org.apache.commons.csv.CSVFormat EXCEL>;
+
+        <org.apache.commons.csv.PerformanceTest: org.apache.commons.csv.CSVFormat format> = $stack3;
+
+        $stack4 = new java.io.File;
+
+        $stack5 = staticinvoke <java.lang.System: java.lang.String getProperty(java.lang.String)>("java.io.tmpdir");
+
+        specialinvoke $stack4.<java.io.File: void <init>(java.lang.String,java.lang.String)>($stack5, "worldcitiespop.txt");
+
+        <org.apache.commons.csv.PerformanceTest: java.io.File BIG_FILE> = $stack4;
+
+        return;
+    }
+}
