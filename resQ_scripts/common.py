@@ -243,10 +243,20 @@ def upsert_csv_row(path, fieldnames, row, key_fields) -> None:
     matter how many times or in what combination the pipeline is invoked,
     while still writing the row to disk the moment its target finishes (a
     crash on a later target does not lose earlier targets' rows).
+
+    Key comparison is done on str(...) of every key field, not the raw
+    values: `row` (freshly built in-process, e.g. rq_writers._write_rq5's
+    `line_no`) can carry a real int, while every row read back via
+    read_csv/csv.DictReader is str-only by construction - comparing the two
+    directly (int 90 != str "90") silently never matches an on-disk row from
+    a PRIOR run, so old rows never get replaced, only ever added to. This
+    bit only rq5.csv in practice (its line_no key field is the sole non-string
+    key across all RQ csvs; Project/BugID elsewhere are already strings), but
+    would silently corrupt any future int-keyed RQ file too.
     """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    key = tuple(row.get(k) for k in key_fields)
-    kept = [r for r in read_csv(path) if tuple(r.get(k) for k in key_fields) != key]
+    key = tuple(str(row.get(k)) for k in key_fields)
+    kept = [r for r in read_csv(path) if tuple(str(r.get(k)) for k in key_fields) != key]
     kept.append(row)
     write_csv(path, fieldnames, kept)

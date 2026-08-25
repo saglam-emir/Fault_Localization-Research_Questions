@@ -29,10 +29,10 @@ Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answ
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 3 | JacksonXmlAnnotationIntrospector.java:34 | 0.476731 | `public JacksonXmlAnnotationIntrospector(boolean defaultUseWrapper) {` |
-| 1 | 3 | JacksonXmlModule.java:65 | 0.476731 | `context.insertAnnotationIntrospector(_constructIntrospector());` |
-| 1 | 3 | JacksonXmlModule.java:126 | 0.476731 | `return new JacksonXmlAnnotationIntrospector(_cfgDefaultUseWrapper);` |
-| 4 | 1 | JacksonXmlModule.java:75 | 0.433861 | `super.setupModule(context);` |
+| 1 | 3 | JacksonXmlAnnotationIntrospector.java:34 | 0.48795 | `public JacksonXmlAnnotationIntrospector(boolean defaultUseWrapper) {` |
+| 1 | 3 | JacksonXmlModule.java:65 | 0.48795 | `context.insertAnnotationIntrospector(_constructIntrospector());` |
+| 1 | 3 | JacksonXmlModule.java:126 | 0.48795 | `return new JacksonXmlAnnotationIntrospector(_cfgDefaultUseWrapper);` |
+| 4 | 1 | JacksonXmlModule.java:75 | 0.46188 | `super.setupModule(context);` |
 | 5 | 61 | DefaultXmlPrettyPrinter.java:106 | 0.0 | `public DefaultXmlPrettyPrinter() { }` |
 | 5 | 61 | FromXmlParser.java:50 | 0.0 | `EMPTY_ELEMENT_AS_NULL(true)` |
 | 5 | 61 | FromXmlParser.java:62 | 0.0 | `int flags = 0;` |

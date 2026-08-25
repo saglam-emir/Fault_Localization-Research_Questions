@@ -10,10 +10,10 @@ that single pass, derives the data for all 5 RQs:
             Pool construction (RQ2/RQ4/RQ5's slicing-criterion raw data)
     Step 2  Dynamic slicing: failing-test criteria + selective passing-test
             criteria -> virtual test columns (RQ2/RQ3/RQ4 raw data)
-    RQ1    True dynamic assertion-execution counts (Pass_Assert/Fail_Assert),
-            read off Slicer4J's own per-test bytecode trace - see
-            rq1_dynamic_asserts.py's module docstring. Independent of Step
-            2's Target-Pool/virtual-column methodology above.
+    RQ1    Static assertion-level Pass_Assert/Fail_Assert: every assertX(...)
+            call site in every PASSING test, plus Step 1's Target Pool
+            Correct/Incorrect rows for FAILING tests - see
+            rq1_dynamic_asserts.py's module docstring.
     Step 3  Trace matrix (traditional SBFL baseline) + slice matrix
             (hybrid) + Ochiai scoring for both
     Step 4  Ranking with tie-break (r_worst) + Average Precision (RQ5)
@@ -72,9 +72,17 @@ def run_one_target(target: dict) -> bool:
     try:
         step1_out = step1_tests.run(ctx)
         step2_out = step2_slicing.run(ctx, step1_out["test_results"], step1_out["target_pool"])
-        assert_counts = rq1_dynamic_asserts.compute(ctx, step1_out["test_results"])
+        assert_counts = rq1_dynamic_asserts.compute(ctx, step1_out["test_results"], step1_out["target_pool"])
         step3_out = step3_matrices.run(ctx, step1_out["test_results"], step2_out["virtual_columns"])
         gt_faults = ground_truth.load_ground_truth_faults(ctx.project_id, ctx.bug_id, logger, ctx.checkout_dir)
+        # Correction roadmap Step 2 (omission faults): before classifying
+        # answerability, give every otherwise-dead approx anchor one chance
+        # to resolve to its nearest executed control-dependence ancestor
+        # (the guard whose wrong outcome caused the missing code) instead of
+        # a guaranteed miss. Rewrites gt_faults' statement_line in place when
+        # found; everything downstream (RQ0/RQ4/RQ5) reads statement_line
+        # exactly as before - no new columns, no separate code path.
+        gt_faults = ground_truth.apply_control_dependence_proxy(gt_faults, ctx.checkout_dir, step3_out["trace_universe"], logger)
         # Answerability must be classified against the TRACE matrix's statement
         # universe (broadest "did this line execute in any test" signal this
         # pipeline computes), not the (narrower, criteria-dependent) slice

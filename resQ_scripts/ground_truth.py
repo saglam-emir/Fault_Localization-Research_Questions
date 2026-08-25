@@ -238,6 +238,109 @@ def load_ground_truth_faults(project_id: str, bug_id: str, logger, checkout_dir=
     return faults
 
 
+_CONTROL_HEADER_RE = re.compile(r"^\s*\}?\s*(?:else\s+)?(?:if|for|while|switch|catch)\s*\(")
+_MAX_CONTROL_ANCESTOR_LEVELS = 5
+
+
+def find_enclosing_executed_control_line(src_path, anchor_line: int, file_basename: str, trace_universe):
+    """Correction roadmap Step 2 (omission faults): for an `approx` anchor
+    that never executed (see classify_answerability's dead-code check), walk
+    OUTWARD through its enclosing brace blocks looking for the nearest
+    `if`/`for`/`while`/`switch`/`catch` header that DID execute (appears in
+    `trace_universe`).
+
+    Rationale: dynamic slicing/coverage can only ever report on statements
+    that ran. A pure-deletion anchor sitting inside dead code (e.g. an
+    entirely deleted method - JacksonXml-6) has no live statement to point
+    to at all. But a "wrong branch taken" fault (e.g. JacksonXml-1: the
+    `if` that should have led to one more call *did* execute, just took the
+    wrong path) has a real, executed, structurally-locatable proxy one or
+    more brace-levels up from the dead anchor - the guard whose outcome
+    controls the missing code. This mirrors normalize_statement_line's
+    existing "diff-perspective line vs. bytecode/coverage-perspective line"
+    translation, one level higher (nearest live control ancestor instead of
+    nearest statement start).
+
+    Bounded to `_MAX_CONTROL_ANCESTOR_LEVELS` enclosing blocks, same
+    conservative-lookback philosophy as normalize_statement_line's
+    max_lookback - a misidentified boundary can never run away across
+    unrelated code. Returns None if the source is unavailable, the anchor
+    is out of range, or no executed control ancestor is found within the
+    bound (this is a legitimate outcome for truly dead code, e.g.
+    JacksonXml-6's deleted method - not every dead anchor has a live
+    ancestor to fall back to).
+    """
+    if not src_path or not Path(src_path).exists():
+        return None
+    lines = Path(src_path).read_text(encoding=ENCODING, errors="replace").splitlines()
+    if not (1 <= anchor_line <= len(lines)):
+        return None
+    universe = {ln for fn, ln in trace_universe if fn == file_basename}
+
+    depth, levels = 0, 0
+    i = anchor_line - 2  # 0-based index of the line just above the anchor
+    while i >= 0 and levels < _MAX_CONTROL_ANCESTOR_LEVELS:
+        text = lines[i]
+        depth += text.count("}") - text.count("{")
+        if depth < 0:
+            # `text` (1-based line i+1) carries the unmatched '{' that opens
+            # the block directly enclosing our current search point.
+            header_line_no, header_text = i + 1, text
+            if not _CONTROL_HEADER_RE.search(header_text) and i > 0:
+                # Allman style: bare '{' on its own line, header above it.
+                header_line_no, header_text = i, lines[i - 1]
+            if _CONTROL_HEADER_RE.search(header_text):
+                stmt_line = normalize_statement_line(src_path, header_line_no)
+                if stmt_line in universe:
+                    return stmt_line
+                if header_line_no in universe:
+                    return header_line_no
+                # Header found but not executed either (e.g. an outer `if`
+                # that also never ran) - keep climbing to the next level.
+            depth = 0
+            levels += 1
+        i -= 1
+    return None
+
+
+def apply_control_dependence_proxy(faults, checkout_dir, trace_universe, logger):
+    """For every fault that classify_answerability would otherwise mark
+    unanswerable (an `approx` pure-deletion anchor that never executed
+    anywhere), try find_enclosing_executed_control_line and, if it finds a
+    live control ancestor, adopt it as this fault's `statement_line` -
+    exactly the same field normalize_statement_line already sets and that
+    step4_ranking.py / rq_writers._write_rq4 already match against, so this
+    flows through the existing RQ0/RQ4/RQ5 logic and CSV schemas completely
+    unchanged; no new columns, no separate code path.
+
+    Faults that are not `approx`, or whose current statement_line already
+    executed somewhere, are left untouched - this only ever improves a
+    fault that would otherwise be a guaranteed, unrecoverable miss.
+    """
+    universe = {(file, int(line)) for file, line in trace_universe}
+    out, upgraded = [], []
+    for f in faults:
+        basename = Path(f["file"]).name
+        stmt_line = f.get("statement_line", f["line"])
+        already_live = (basename, f["line"]) in universe or (basename, stmt_line) in universe
+        if not f["approx"] or already_live:
+            out.append(f)
+            continue
+        src_path = Path(checkout_dir) / f["file"] if checkout_dir is not None else None
+        proxy_line = find_enclosing_executed_control_line(src_path, stmt_line, basename, trace_universe)
+        if proxy_line is None:
+            out.append(f)
+            continue
+        upgraded.append((f["file"], f["line"], proxy_line))
+        out.append({**f, "statement_line": proxy_line})
+
+    if upgraded:
+        logger.info(f"{len(upgraded)} otherwise-unanswerable ground-truth fault line(s) matched to their "
+                    f"nearest executed control-dependence ancestor instead (control_dependence_proxy): "
+                    f"{upgraded}")
+    return out
+
+
 def classify_answerability(faults, trace_universe, logger):
     """Per-fault `answerable` flag + bug-level `bug_fully_unanswerable` verdict.
 

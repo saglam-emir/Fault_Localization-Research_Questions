@@ -2,8 +2,9 @@
 
 Ground truth faulty statement(s) (diff line): [('FromXmlParser.java', 512), ('FromXmlParser.java', 514), ('FromXmlParser.java', 550), ('FromXmlParser.java', 551), ('FromXmlParser.java', 552), ('FromXmlParser.java', 553)]
 
+Statement-line-normalized for matching (multi-line statement, first-line attribution - see ground_truth.normalize_statement_line): [('FromXmlParser.java', 512, '->', 510)]
+
 Ground_Truth_Answerable: True
-Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/com/fasterxml/jackson/dataformat/xml/deser/FromXmlParser.java', 512)]
 
 - SBFL   ranked 1198 statement(s)
 - Hybrid ranked 124 statement(s)

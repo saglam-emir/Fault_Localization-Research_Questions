@@ -26,8 +26,8 @@ RQ2_FIELDS = ["Project", "BugID", "Full_Execution_Size", "Union_Passing_Slices",
               "Union_Failing_Slices", "Union_All_Slices", "Reduction_Ratio",
               # Pass_TC_Slices/Fail_TC_Slices are a GENUINELY DIFFERENT grouping from
               # Union_Passing_Slices/Union_Failing_Slices above, not aliases of them - see
-              # _write_rq2's docstring for the exact distinction (assertion-outcome grouping
-              # vs source-test-case-outcome grouping) and why they can diverge.
+              # _write_rq2's docstring for the exact distinction (source-test-case-outcome
+              # grouping vs assertion-outcome grouping) and why they can diverge.
               "Pass_TC_Slices", "Fail_TC_Slices"]
 # Suffixed with the actual unit each value is computed/rounded in - all four
 # time fields are wall-clock seconds (context.Metrics.*_time_sec, timed via
@@ -41,8 +41,8 @@ RQ4_FIELDS = ["Project", "BugID", "Total_Faults", "Included_In_Slice", "Fault_In
               # Fail_Assert_Count/Not_All_Faulty_Stmts_In_Slice/No_Faulty_Stmts_In_Slice are
               # computed ENTIRELY from virtual_columns/Target Pool data (see _write_rq4) -
               # deliberately independent of rq1.csv's Fail_Assert (rq1_dynamic_asserts.py's
-              # bytecode-trace mechanism), which answers a different question. Never import
-              # or reference that module/value here.
+              # static assertion-count mechanism), which answers a different question. Never
+              # import or reference that module/value here.
               "Fail_Assert_Count", "Not_All_Faulty_Stmts_In_Slice", "No_Faulty_Stmts_In_Slice"]
 # One row per (bug, ground-truth fault LINE), not per bug - a bug with N fault
 # lines produces N consecutive rows. Column names are lowercase/underscored by
@@ -70,12 +70,16 @@ RQ0_FIELDS = ["Project", "BugID", "Total_Fault_Lines", "Unanswerable_Fault_Lines
 def _write_rq1(ctx, outputs_dir, test_results, assert_counts):
     pass_tc = sum(1 for r in test_results if r["result"] == "PASS")
     fail_tc = sum(1 for r in test_results if r["result"] == "FAIL")
-    # Pass_Assert/Fail_Assert are TRUE dynamic assertion-execution counts
-    # (loop iterations counted per iteration actually run, short-circuited
-    # assertions after a failure correctly excluded because they never ran)
-    # - see rq1_dynamic_asserts.compute's docstring. Deliberately NOT Step
-    # 1/2's Target Variable Pool, which is a selective slicing-criterion set
-    # scoped to RQ2/RQ4/RQ5's needs, not a full assertion-execution count.
+    # Pass_Assert/Fail_Assert are STATIC assertX(...) call-site counts (one
+    # assertion = one potential slice, never a per-loop-iteration execution
+    # count) - see rq1_dynamic_asserts.compute's docstring. Fail_Assert
+    # reuses Step 1's Target Pool Incorrect rows as-is (so it can never
+    # disagree with what Step 2 actually sliced on); Pass_Assert adds every
+    # PASSING test's own full assertion set on top of the Target Pool's
+    # Correct rows, deliberately wider than Step 2's 2b/2c selective
+    # passing-test scan (which only keeps assertions whose variable matches
+    # something already in the Target Pool - a slicing-criterion subset,
+    # not a full per-test assertion count).
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Pass_TC": pass_tc, "Fail_TC": fail_tc,
            "Pass_Assert": assert_counts["pass_assert"], "Fail_Assert": assert_counts["fail_assert"]}
     common.upsert_csv_row(outputs_dir / "rq1.csv", RQ1_FIELDS, row, key_fields=RQ_KEY_FIELDS)
@@ -92,41 +96,13 @@ def _write_rq2(ctx, outputs_dir, test_results, virtual_columns, ochiai_result):
     # against Full_Execution_Size (also bracket-only-filtered).
     slice_universe = set(ochiai_result["slice_universe"])
 
-    # Union_Passing_Slices/Union_Failing_Slices: grouped by the OUTCOME OF
-    # THE ASSERTION ITSELF (virtual_status). Virtual_Pass means this exact
-    # criterion evaluated true at runtime; Virtual_Fail means it is the one
-    # assertion whose failure ended the test. A single FAILING test
-    # contributes BOTH: every assertion JUnit reached before the failure
-    # line is individually "Correct"/Virtual_Pass (see step1_tests.py's
-    # Target Variable Pool construction, status="Correct"/"Incorrect"),
-    # and only the one at the failure line is Virtual_Fail.
-    union_pass, union_fail = set(), set()
-    for row in virtual_columns:
-        stmts = per_column.get(row["virtual_test_id"], set()) & slice_universe
-        if row["virtual_status"] == "Virtual_Pass":
-            union_pass |= stmts
-        else:
-            union_fail |= stmts
-    union_all = union_pass | union_fail
-
-    reduction_ratio = (1 - (len(union_all) / full_execution_size)) if full_execution_size else 0.0
-
-    # Pass_TC_Slices/Fail_TC_Slices: a DIFFERENT grouping of the same
-    # per-column statement sets, by whether the virtual column's SOURCE
-    # TEST CASE - taken as a whole, per Step 1's test_results - passed or
-    # failed, not by the individual assertion's own outcome above. Every
-    # virtual column Step 2 built from a passing test's assertion scan
-    # (2b/2c) is trivially Virtual_Pass AND from a passing test case, so it
-    # agrees with Union_Passing_Slices either way. The two groupings can
-    # only diverge on virtual columns Step 2 built from a FAILING test's
-    # Target Pool rows (2a): a "Correct"/Virtual_Pass assertion drawn from
-    # an otherwise-FAILING test counts toward Union_Passing_Slices above,
-    # but toward Fail_TC_Slices here, since its source test still failed.
-    # This is deliberately independent of RQ1's own dynamic assertion-hit
-    # trace (rq1_dynamic_asserts.py) - see that module's docstring on why
-    # it stays decoupled from Step 2's virtual-column methodology; this
-    # reuses only Step 1's plain per-test PASS/FAIL, already computed and
-    # passed in for RQ1 anyway.
+    # Union_Passing_Slices/Union_Failing_Slices: grouped by whether the
+    # virtual column's SOURCE TEST CASE - taken as a whole, per Step 1's
+    # test_results - passed or failed. This reuses only Step 1's plain
+    # per-test PASS/FAIL, already computed and passed in for RQ1 anyway;
+    # deliberately independent of RQ1's own static assertion-count
+    # mechanism (rq1_dynamic_asserts.py) - see that module's docstring on
+    # why it stays decoupled from Step 2's virtual-column methodology.
     tc_result = {r["test_case"]: r["result"] for r in test_results}
     tc_pass, tc_fail = set(), set()
     for row in virtual_columns:
@@ -139,13 +115,41 @@ def _write_rq2(ctx, outputs_dir, test_results, virtual_columns, ochiai_result):
         else:
             ctx.logger.warning(f"RQ2: virtual column {row['virtual_test_id']!r}'s source test case "
                                 f"{row['test_case']!r} has no Step 1 test_results entry; excluded from "
-                                f"Pass_TC_Slices/Fail_TC_Slices (should not happen - every virtual column "
-                                f"is built from either a failing or a passing Step 1 test).")
+                                f"Union_Passing_Slices/Union_Failing_Slices (should not happen - every "
+                                f"virtual column is built from either a failing or a passing Step 1 test).")
+    union_all = tc_pass | tc_fail
+
+    reduction_ratio = (1 - (len(union_all) / full_execution_size)) if full_execution_size else 0.0
+
+    # Pass_TC_Slices/Fail_TC_Slices: a DIFFERENT grouping of the same
+    # per-column statement sets, by the OUTCOME OF THE ASSERTION ITSELF
+    # (virtual_status), not by its source test case's outcome above.
+    # Virtual_Pass means this exact criterion evaluated true at runtime;
+    # Virtual_Fail means it is the one assertion whose failure ended the
+    # test. A single FAILING test contributes BOTH: every assertion JUnit
+    # reached before the failure line is individually "Correct"/
+    # Virtual_Pass (see step1_tests.py's Target Variable Pool construction,
+    # status="Correct"/"Incorrect"), and only the one at the failure line
+    # is Virtual_Fail. Every virtual column Step 2 built from a passing
+    # test's assertion scan (2b/2c) is trivially Virtual_Pass AND from a
+    # passing test case, so it agrees with Union_Passing_Slices either way.
+    # The two groupings can only diverge on virtual columns Step 2 built
+    # from a FAILING test's Target Pool rows (2a): a "Correct"/Virtual_Pass
+    # assertion drawn from an otherwise-FAILING test counts toward
+    # Pass_TC_Slices here (its own outcome is Virtual_Pass), but toward
+    # Union_Failing_Slices above, since its source test still failed.
+    assertion_pass, assertion_fail = set(), set()
+    for row in virtual_columns:
+        stmts = per_column.get(row["virtual_test_id"], set()) & slice_universe
+        if row["virtual_status"] == "Virtual_Pass":
+            assertion_pass |= stmts
+        else:
+            assertion_fail |= stmts
 
     row = {"Project": ctx.project_id, "BugID": ctx.vid, "Full_Execution_Size": full_execution_size,
-           "Union_Passing_Slices": len(union_pass), "Union_Failing_Slices": len(union_fail),
+           "Union_Passing_Slices": len(tc_pass), "Union_Failing_Slices": len(tc_fail),
            "Union_All_Slices": len(union_all), "Reduction_Ratio": round(reduction_ratio, 6),
-           "Pass_TC_Slices": len(tc_pass), "Fail_TC_Slices": len(tc_fail)}
+           "Pass_TC_Slices": len(assertion_pass), "Fail_TC_Slices": len(assertion_fail)}
     common.upsert_csv_row(outputs_dir / "rq2.csv", RQ2_FIELDS, row, key_fields=RQ_KEY_FIELDS)
     return row
 
@@ -195,7 +199,7 @@ def _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_re
     # failing-assertion slicing criteria) that fed union_fail above -
     # computed ENTIRELY from virtual_columns/Target Pool data, deliberately
     # NOT rq1.csv's Fail_Assert (rq1_dynamic_asserts.py's independent
-    # bytecode-trace mechanism - see RQ4_FIELDS's comment). Provides the
+    # static assertion-count mechanism - see RQ4_FIELDS's comment). Provides the
     # "how many failing-assertion criteria contributed" context for
     # Included_In_Slice/Fault_Inclusion_Rate above.
     fail_assert_count = sum(1 for row in virtual_columns if row["virtual_status"] == "Virtual_Fail")

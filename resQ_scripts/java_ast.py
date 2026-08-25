@@ -114,9 +114,6 @@ _DECL_OR_ASSIGN_RE = re.compile(
 )
 
 
-_RECEIVER_CALL_RE = re.compile(r"^\s*([A-Za-z_$][\w$]*)\s*\.")
-
-
 def find_aliasing_seed_candidates(src_file: Path, method_name: str, seed_variable: str, before_line: int,
                                    max_lookback_lines: int = 15, max_candidates: int = 3):
     """Statements preceding `before_line` (within the same test method) that

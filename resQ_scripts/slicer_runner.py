@@ -74,6 +74,13 @@ _JIMPLE_RETRY_MAX_CANDIDATES = 4
 
 _STACK_LOCAL_RE = re.compile(r"\$(stack\d+)")
 
+# Correction roadmap Step 1 (real-naming reprioritization): a $stackN
+# appearing as the RECEIVER of an invoke expression (immediately before
+# ".<...>") is the Jimple counterpart of "the object the source-level seed
+# variable refers to" - not the call's own freshly-computed return value.
+# See _jimple_local_candidates' docstring for why this ordering matters.
+_INVOKE_RECEIVER_RE = re.compile(r"(?:virtualinvoke|interfaceinvoke|specialinvoke)\s+\$(stack\d+)\.")
+
 
 def get_test_source_dir(project_dir: Path, cache_dir: Path, logger) -> Path:
     return project_dir / common.export_d4j_prop(project_dir, "dir.src.tests", cache_dir, "_dir_src_tests.tmp.txt", logger)
@@ -230,22 +237,31 @@ def _is_trivial_slice(raw_slice_path: Path, line_no: int) -> bool:
 
 def _jimple_local_candidates(raw_slice_path: Path):
     """Distinct Soot-generated `$stackN` local names appearing in
-    raw-slice.log's Jimple statement text, in first-seen order - the only
-    names that can ever literally match a Jimple local via `-v` (see point 3
-    of the module docstring). Used to retry a trivial slice with the actual
-    operand(s) of the criterion statement instead of the unresolvable
-    source-level name that was originally guessed.
+    raw-slice.log's Jimple statement text - the only names that can ever
+    literally match a Jimple local via `-v` (see point 3 of the module
+    docstring). Used to retry a trivial slice with the actual operand(s) of
+    the criterion statement instead of the unresolvable source-level name
+    that was originally guessed.
+
+    Ordered receiver-role candidates first, not plain first-seen-in-text
+    order: verified concretely on Csv-13's `assertEquals(expected,
+    writer.toString())` - the criterion's only Jimple statement is
+    `$stack15 = virtualinvoke $stack13.<...toString()>()`. Textually
+    $stack15 (the call's own freshly-computed return value) appears before
+    $stack13 (the receiver - i.e. `writer`'s actual runtime value) despite
+    $stack13 being the one whose backward walk finds `writer`'s allocation
+    site; $stack15 has nowhere useful to walk back to beyond the call itself
+    and just re-produces a trivial slice, burning a retry attempt for
+    nothing. Every candidate this function would previously have returned is
+    still returned, in the same relative order within each group - this only
+    reprioritizes which one is tried first, never drops one.
     """
     if not raw_slice_path.exists():
         return []
     text = raw_slice_path.read_text(encoding=ENCODING, errors="replace")
-    seen, out = set(), []
-    for m in _STACK_LOCAL_RE.finditer(text):
-        name = m.group(1)
-        if name not in seen:
-            seen.add(name)
-            out.append(name)
-    return out
+    receivers = dict.fromkeys(m.group(1) for m in _INVOKE_RECEIVER_RE.finditer(text))
+    all_candidates = dict.fromkeys(m.group(1) for m in _STACK_LOCAL_RE.finditer(text))
+    return list(receivers) + [c for c in all_candidates if c not in receivers]
 
 
 def run_slicer4j_criterion(ctx, jar_path, dep_dir, class_name, line_no, variable,
