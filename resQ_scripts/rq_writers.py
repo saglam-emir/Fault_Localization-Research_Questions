@@ -22,13 +22,13 @@ import common
 RQ_KEY_FIELDS = ["Project", "BugID"]  # one row per target; reruns upsert on this key, never duplicate
 
 RQ1_FIELDS = ["Project", "BugID", "Pass_TC", "Fail_TC", "Pass_Assert", "Fail_Assert"]
-RQ2_FIELDS = ["Project", "BugID", "Full_Execution_Size", "Union_Passing_Slices",
-              "Union_Failing_Slices", "Union_All_Slices", "Reduction_Ratio",
-              # Pass_TC_Slices/Fail_TC_Slices are a GENUINELY DIFFERENT grouping from
-              # Union_Passing_Slices/Union_Failing_Slices above, not aliases of them - see
-              # _write_rq2's docstring for the exact distinction (source-test-case-outcome
-              # grouping vs assertion-outcome grouping) and why they can diverge.
-              "Pass_TC_Slices", "Fail_TC_Slices"]
+# lowercase/underscored per the RQ2 task spec (like RQ5_FIELDS below, this
+# schema is fixed by that spec verbatim - not PascalCase like RQ1/3/4).
+# project+bug_id is therefore its own key list (RQ2_KEY_FIELDS), not the
+# shared RQ_KEY_FIELDS (which is "Project"/"BugID").
+RQ2_FIELDS = ["project", "bug_id", "full_execution_size", "passing_TC_size", "failing_TC_size",
+              "union_passing_slice", "union_failing_slice", "union_all_slice", "all_reduction_ratio"]
+RQ2_KEY_FIELDS = ["project", "bug_id"]
 # Suffixed with the actual unit each value is computed/rounded in - all four
 # time fields are wall-clock seconds (context.Metrics.*_time_sec, timed via
 # time.time() in common.run_cmd_timed), Peak_Memory is kilobytes (parsed
@@ -87,70 +87,73 @@ def _write_rq1(ctx, outputs_dir, test_results, assert_counts):
 
 
 def _write_rq2(ctx, outputs_dir, test_results, virtual_columns, ochiai_result):
+    """RQ2 = how much dynamic slicing shrinks the statement search space
+    versus the full (unsliced) execution spectrum - see the RQ2 task spec
+    for the exact per-column definitions. Every set below is a set of
+    unique statements (file, line), never an execution-event count, so
+    unioning them is plain set union throughout.
+    """
     full_execution_size = len(ochiai_result["trace_universe"])
+
+    # passing_TC_size/failing_TC_size: the RAW (unsliced) execution
+    # spectrum - unique statements covered by the union of all PASSING
+    # test cases, and separately all FAILING test cases - straight off the
+    # trace matrix (Step 3a), before slicing enters the picture at all.
+    # Every trace_matrix_rows row is one test_case with a 1/0 cell per
+    # trace-universe statement plus its PASS/FAIL "result" (test_results is
+    # not reused directly here since the matrix already carries "result"
+    # per row keyed the same way).
+    trace_rows = ochiai_result["trace_matrix_rows"]
+    stmt_cols = [k for k in trace_rows[0].keys() if k not in ("test_case", "result")] if trace_rows else []
+    passing_stmts, failing_stmts = set(), set()
+    for row in trace_rows:
+        covered = {sid for sid in stmt_cols if row.get(sid) in (1, "1")}
+        if row["result"] == "PASS":
+            passing_stmts |= covered
+        elif row["result"] == "FAIL":
+            failing_stmts |= covered
+
     per_column = ochiai_result["per_column_statements"]
     # per_column_statements is captured before step3's bracket-only-line
     # filtering; intersect with the slice matrix's own (already-filtered)
-    # statement universe so Union_All_Slices always matches what the slice
-    # matrix/ranking actually scored, and Reduction_Ratio is apples-to-apples
-    # against Full_Execution_Size (also bracket-only-filtered).
+    # statement universe so union_all_slice always matches what the slice
+    # matrix/ranking actually scored, and all_reduction_ratio is
+    # apples-to-apples against full_execution_size (also bracket-filtered).
     slice_universe = set(ochiai_result["slice_universe"])
 
-    # Union_Passing_Slices/Union_Failing_Slices: grouped by whether the
-    # virtual column's SOURCE TEST CASE - taken as a whole, per Step 1's
-    # test_results - passed or failed. This reuses only Step 1's plain
+    # union_passing_slice/union_failing_slice: union of the dynamic slices
+    # of every executed assertion, grouped by whether the virtual column's
+    # SOURCE TEST CASE - taken as a whole, per Step 1's test_results -
+    # passed or failed (per the RQ2 spec's "assertions belonging to
+    # passing/failing test cases"). This reuses only Step 1's plain
     # per-test PASS/FAIL, already computed and passed in for RQ1 anyway;
     # deliberately independent of RQ1's own static assertion-count
     # mechanism (rq1_dynamic_asserts.py) - see that module's docstring on
     # why it stays decoupled from Step 2's virtual-column methodology.
     tc_result = {r["test_case"]: r["result"] for r in test_results}
-    tc_pass, tc_fail = set(), set()
+    union_passing_slice, union_failing_slice = set(), set()
     for row in virtual_columns:
         stmts = per_column.get(row["virtual_test_id"], set()) & slice_universe
         outcome = tc_result.get(row["test_case"])
         if outcome == "PASS":
-            tc_pass |= stmts
+            union_passing_slice |= stmts
         elif outcome == "FAIL":
-            tc_fail |= stmts
+            union_failing_slice |= stmts
         else:
             ctx.logger.warning(f"RQ2: virtual column {row['virtual_test_id']!r}'s source test case "
                                 f"{row['test_case']!r} has no Step 1 test_results entry; excluded from "
-                                f"Union_Passing_Slices/Union_Failing_Slices (should not happen - every "
+                                f"union_passing_slice/union_failing_slice (should not happen - every "
                                 f"virtual column is built from either a failing or a passing Step 1 test).")
-    union_all = tc_pass | tc_fail
+    union_all_slice = union_passing_slice | union_failing_slice
 
-    reduction_ratio = (1 - (len(union_all) / full_execution_size)) if full_execution_size else 0.0
+    all_reduction_ratio = (1 - (len(union_all_slice) / full_execution_size)) if full_execution_size else 0.0
 
-    # Pass_TC_Slices/Fail_TC_Slices: a DIFFERENT grouping of the same
-    # per-column statement sets, by the OUTCOME OF THE ASSERTION ITSELF
-    # (virtual_status), not by its source test case's outcome above.
-    # Virtual_Pass means this exact criterion evaluated true at runtime;
-    # Virtual_Fail means it is the one assertion whose failure ended the
-    # test. A single FAILING test contributes BOTH: every assertion JUnit
-    # reached before the failure line is individually "Correct"/
-    # Virtual_Pass (see step1_tests.py's Target Variable Pool construction,
-    # status="Correct"/"Incorrect"), and only the one at the failure line
-    # is Virtual_Fail. Every virtual column Step 2 built from a passing
-    # test's assertion scan (2b/2c) is trivially Virtual_Pass AND from a
-    # passing test case, so it agrees with Union_Passing_Slices either way.
-    # The two groupings can only diverge on virtual columns Step 2 built
-    # from a FAILING test's Target Pool rows (2a): a "Correct"/Virtual_Pass
-    # assertion drawn from an otherwise-FAILING test counts toward
-    # Pass_TC_Slices here (its own outcome is Virtual_Pass), but toward
-    # Union_Failing_Slices above, since its source test still failed.
-    assertion_pass, assertion_fail = set(), set()
-    for row in virtual_columns:
-        stmts = per_column.get(row["virtual_test_id"], set()) & slice_universe
-        if row["virtual_status"] == "Virtual_Pass":
-            assertion_pass |= stmts
-        else:
-            assertion_fail |= stmts
-
-    row = {"Project": ctx.project_id, "BugID": ctx.vid, "Full_Execution_Size": full_execution_size,
-           "Union_Passing_Slices": len(tc_pass), "Union_Failing_Slices": len(tc_fail),
-           "Union_All_Slices": len(union_all), "Reduction_Ratio": round(reduction_ratio, 6),
-           "Pass_TC_Slices": len(assertion_pass), "Fail_TC_Slices": len(assertion_fail)}
-    common.upsert_csv_row(outputs_dir / "rq2.csv", RQ2_FIELDS, row, key_fields=RQ_KEY_FIELDS)
+    row = {"project": ctx.project_id, "bug_id": ctx.vid,
+           "full_execution_size": full_execution_size,
+           "passing_TC_size": len(passing_stmts), "failing_TC_size": len(failing_stmts),
+           "union_passing_slice": len(union_passing_slice), "union_failing_slice": len(union_failing_slice),
+           "union_all_slice": len(union_all_slice), "all_reduction_ratio": round(all_reduction_ratio, 6)}
+    common.upsert_csv_row(outputs_dir / "rq2.csv", RQ2_FIELDS, row, key_fields=RQ2_KEY_FIELDS)
     return row
 
 
@@ -169,7 +172,7 @@ def _write_rq3(ctx, outputs_dir):
 def _write_rq4(ctx, outputs_dir, ground_truth_faults, virtual_columns, ochiai_result):
     per_column = ochiai_result["per_column_statements"]
     # slice_universe intersection added for consistency with the actual
-    # (slice) observation matrix / RQ2's Union_Failing_Slices: per_column
+    # (slice) observation matrix / RQ2's union_failing_slice: per_column
     # (ochiai_result["per_column_statements"]) is captured BEFORE Step 3b's
     # bracket-only-line filtering, so without this intersection union_fail
     # could contain statements that never appear as a column in

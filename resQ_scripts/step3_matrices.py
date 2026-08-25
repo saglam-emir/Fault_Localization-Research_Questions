@@ -330,6 +330,12 @@ def run(ctx, test_results, virtual_columns):
     return {
         "trace_mapping": trace["mapping_rows"], "trace_scores": trace_scores,
         "trace_universe": trace["statement_universe"],
+        # Per-test-case coverage rows (test_case, one 1/0 column per trace
+        # statement, plus "result") - RQ2's passing_TC_size/failing_TC_size
+        # need this to split the RAW (unsliced) execution spectrum by
+        # source-test-case outcome; nothing else currently reads it back out
+        # of the ochiai_result dict.
+        "trace_matrix_rows": trace["matrix_rows"],
         "slice_mapping": slice_["mapping_rows"], "slice_scores": slice_scores,
         "slice_universe": slice_["statement_universe"],
         "per_column_statements": slice_["per_column_statements"],
