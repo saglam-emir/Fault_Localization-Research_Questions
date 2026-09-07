@@ -1,0 +1,496 @@
+statement_id,file,line,code
+S1,JsonParser.java,45,return parse(new StringReader(json));
+S2,JsonParser.java,58,JsonReader jsonReader = new JsonReader(json);
+S3,JsonParser.java,59,JsonElement element = parse(jsonReader);
+S4,JsonParser.java,82,json.setLenient(true);
+S5,JsonParser.java,84,return Streams.parse(json);
+S6,JsonPrimitive.java,56,setValue(number);
+S7,JsonPrimitive.java,65,setValue(string);
+S8,JsonPrimitive.java,94,if (primitive instanceof Character) {
+S9,JsonPrimitive.java,100,$Gson$Preconditions.checkArgument(primitive instanceof Number
+S10,JsonPrimitive.java,102,this.value = primitive;
+S11,JsonPrimitive.java,112,return value instanceof Boolean;
+S12,JsonPrimitive.java,166,return value instanceof String;
+S13,JsonPrimitive.java,274,if (target instanceof String) {
+S14,JsonReader.java,192,"private static final char[] NON_EXECUTE_PREFIX = "")]}'\n"".toCharArray();"
+S15,JsonReader.java,230,private boolean lenient = false;
+S16,JsonReader.java,238,private final char[] buffer = new char[1024];
+S17,JsonReader.java,239,private int pos = 0;
+S18,JsonReader.java,240,private int limit = 0;
+S19,JsonReader.java,242,private int lineNumber = 0;
+S20,JsonReader.java,243,private int lineStart = 0;
+S21,JsonReader.java,245,int peeked = PEEKED_NONE;
+S22,JsonReader.java,269,private int[] stack = new int[32];
+S23,JsonReader.java,270,private int stackSize = 0;
+S24,JsonReader.java,272,stack[stackSize++] = JsonScope.EMPTY_DOCUMENT;
+S25,JsonReader.java,283,private String[] pathNames = new String[32];
+S26,JsonReader.java,284,private int[] pathIndices = new int[32];
+S27,JsonReader.java,289,public JsonReader(Reader in) {
+S28,JsonReader.java,293,this.in = in;
+S29,JsonReader.java,326,this.lenient = lenient;
+S30,JsonReader.java,333,return lenient;
+S31,JsonReader.java,341,int p = peeked;
+S32,JsonReader.java,342,if (p == PEEKED_NONE) {
+S33,JsonReader.java,343,p = doPeek();
+S34,JsonReader.java,346,push(JsonScope.EMPTY_ARRAY);
+S35,JsonReader.java,348,peeked = PEEKED_NONE;
+S36,JsonReader.java,359,int p = peeked;
+S37,JsonReader.java,360,if (p == PEEKED_NONE) {
+S38,JsonReader.java,361,p = doPeek();
+S39,JsonReader.java,364,stackSize--;
+S40,JsonReader.java,366,peeked = PEEKED_NONE;
+S41,JsonReader.java,377,int p = peeked;
+S42,JsonReader.java,378,if (p == PEEKED_NONE) {
+S43,JsonReader.java,379,p = doPeek();
+S44,JsonReader.java,382,push(JsonScope.EMPTY_OBJECT);
+S45,JsonReader.java,383,peeked = PEEKED_NONE;
+S46,JsonReader.java,394,int p = peeked;
+S47,JsonReader.java,395,if (p == PEEKED_NONE) {
+S48,JsonReader.java,396,p = doPeek();
+S49,JsonReader.java,399,stackSize--;
+S50,JsonReader.java,402,peeked = PEEKED_NONE;
+S51,JsonReader.java,412,int p = peeked;
+S52,JsonReader.java,413,if (p == PEEKED_NONE) {
+S53,JsonReader.java,414,p = doPeek();
+S54,JsonReader.java,416,return p != PEEKED_END_OBJECT && p != PEEKED_END_ARRAY;
+S55,JsonReader.java,423,int p = peeked;
+S56,JsonReader.java,424,if (p == PEEKED_NONE) {
+S57,JsonReader.java,425,p = doPeek();
+S58,JsonReader.java,428,switch (p) {
+S59,JsonReader.java,430,return JsonToken.BEGIN_OBJECT;
+S60,JsonReader.java,434,return JsonToken.BEGIN_ARRAY;
+S61,JsonReader.java,450,return JsonToken.STRING;
+S62,JsonReader.java,462,int peekStack = stack[stackSize - 1];
+S63,JsonReader.java,463,if (peekStack == JsonScope.EMPTY_ARRAY) {
+S64,JsonReader.java,464,stack[stackSize - 1] = JsonScope.NONEMPTY_ARRAY;
+S65,JsonReader.java,465,} else if (peekStack == JsonScope.NONEMPTY_ARRAY) {
+S66,JsonReader.java,467,int c = nextNonWhitespace(true);
+S67,JsonReader.java,468,switch (c) {
+S68,JsonReader.java,470,return peeked = PEEKED_END_ARRAY;
+S69,JsonReader.java,472,checkLenient(); // fall-through
+S70,JsonReader.java,478,} else if (peekStack == JsonScope.EMPTY_OBJECT || peekStack == JsonScope.NONEMPTY_OBJECT) {
+S71,JsonReader.java,481,if (peekStack == JsonScope.NONEMPTY_OBJECT) {
+S72,JsonReader.java,482,int c = nextNonWhitespace(true);
+S73,JsonReader.java,483,switch (c) {
+S74,JsonReader.java,485,return peeked = PEEKED_END_OBJECT;
+S75,JsonReader.java,487,checkLenient(); // fall-through
+S76,JsonReader.java,489,break;
+S77,JsonReader.java,494,int c = nextNonWhitespace(true);
+S78,JsonReader.java,495,switch (c) {
+S79,JsonReader.java,497,return peeked = PEEKED_DOUBLE_QUOTED_NAME;
+S80,JsonReader.java,499,checkLenient();
+S81,JsonReader.java,500,return peeked = PEEKED_SINGLE_QUOTED_NAME;
+S82,JsonReader.java,502,if (peekStack != JsonScope.NONEMPTY_OBJECT) {
+S83,JsonReader.java,503,return peeked = PEEKED_END_OBJECT;
+S84,JsonReader.java,508,checkLenient();
+S85,JsonReader.java,509,pos--; // Don't consume the first character in an unquoted string.
+S86,JsonReader.java,510,if (isLiteral((char) c)) {
+S87,JsonReader.java,511,return peeked = PEEKED_UNQUOTED_NAME;
+S88,JsonReader.java,516,} else if (peekStack == JsonScope.DANGLING_NAME) {
+S89,JsonReader.java,519,int c = nextNonWhitespace(true);
+S90,JsonReader.java,524,checkLenient();
+S91,JsonReader.java,526,pos++;
+S92,JsonReader.java,532,} else if (peekStack == JsonScope.EMPTY_DOCUMENT) {
+S93,JsonReader.java,533,if (lenient) {
+S94,JsonReader.java,534,consumeNonExecutePrefix();
+S95,JsonReader.java,536,stack[stackSize - 1] = JsonScope.NONEMPTY_DOCUMENT;
+S96,JsonReader.java,537,} else if (peekStack == JsonScope.NONEMPTY_DOCUMENT) {
+S97,JsonReader.java,538,int c = nextNonWhitespace(false);
+S98,JsonReader.java,540,return peeked = PEEKED_EOF;
+S99,JsonReader.java,542,checkLenient();
+S100,JsonReader.java,543,pos--;
+S101,JsonReader.java,545,} else if (peekStack == JsonScope.CLOSED) {
+S102,JsonReader.java,549,int c = nextNonWhitespace(true);
+S103,JsonReader.java,550,switch (c) {
+S104,JsonReader.java,552,if (peekStack == JsonScope.EMPTY_ARRAY) {
+S105,JsonReader.java,553,return peeked = PEEKED_END_ARRAY;
+S106,JsonReader.java,559,if (peekStack == JsonScope.EMPTY_ARRAY || peekStack == JsonScope.NONEMPTY_ARRAY) {
+S107,JsonReader.java,560,checkLenient();
+S108,JsonReader.java,561,pos--;
+S109,JsonReader.java,562,return peeked = PEEKED_NULL;
+S110,JsonReader.java,567,checkLenient();
+S111,JsonReader.java,568,return peeked = PEEKED_SINGLE_QUOTED;
+S112,JsonReader.java,570,return peeked = PEEKED_DOUBLE_QUOTED;
+S113,JsonReader.java,572,return peeked = PEEKED_BEGIN_ARRAY;
+S114,JsonReader.java,574,return peeked = PEEKED_BEGIN_OBJECT;
+S115,JsonReader.java,576,pos--; // Don't consume the first character in a literal value.
+S116,JsonReader.java,579,int result = peekKeyword();
+S117,JsonReader.java,580,if (result != PEEKED_NONE) {
+S118,JsonReader.java,581,return result;
+S119,JsonReader.java,584,result = peekNumber();
+S120,JsonReader.java,585,if (result != PEEKED_NONE) {
+S121,JsonReader.java,586,return result;
+S122,JsonReader.java,589,if (!isLiteral(buffer[pos])) {
+S123,JsonReader.java,593,checkLenient();
+S124,JsonReader.java,594,return peeked = PEEKED_UNQUOTED;
+S125,JsonReader.java,599,char c = buffer[pos];
+S126,JsonReader.java,603,if (c == 't' || c == 'T') {
+S127,JsonReader.java,604,"keyword = ""true"";"
+S128,JsonReader.java,606,peeking = PEEKED_TRUE;
+S129,JsonReader.java,608,"keyword = ""false"";"
+S130,JsonReader.java,610,peeking = PEEKED_FALSE;
+S131,JsonReader.java,612,"keyword = ""null"";"
+S132,JsonReader.java,614,peeking = PEEKED_NULL;
+S133,JsonReader.java,616,return PEEKED_NONE;
+S134,JsonReader.java,620,int length = keyword.length();
+S135,JsonReader.java,627,return PEEKED_NONE;
+S136,JsonReader.java,631,if ((pos + length < limit || fillBuffer(length + 1))
+S137,JsonReader.java,633,"return PEEKED_NONE; // Don't match trues, falsey or nullsoft!"
+S138,JsonReader.java,637,pos += length;
+S139,JsonReader.java,638,return peeked = peeking;
+S140,JsonReader.java,643,char[] buffer = this.buffer;
+S141,JsonReader.java,644,int p = pos;
+S142,JsonReader.java,645,int l = limit;
+S143,JsonReader.java,649,boolean fitsInLong = true;
+S144,JsonReader.java,652,int i = 0;
+S145,JsonReader.java,655,for (; true; i++) {
+S146,JsonReader.java,656,if (p + i == l) {
+S147,JsonReader.java,657,if (i == buffer.length) {
+S148,JsonReader.java,660,return PEEKED_NONE;
+S149,JsonReader.java,662,if (!fillBuffer(i + 1)) {
+S150,JsonReader.java,663,break;
+S151,JsonReader.java,665,p = pos;
+S152,JsonReader.java,666,l = limit;
+S153,JsonReader.java,669,char c = buffer[p + i];
+S154,JsonReader.java,670,switch (c) {
+S155,JsonReader.java,672,if (last == NUMBER_CHAR_NONE) {
+S156,JsonReader.java,673,negative = true;
+S157,JsonReader.java,675,continue;
+S158,JsonReader.java,676,} else if (last == NUMBER_CHAR_EXP_E) {
+S159,JsonReader.java,678,continue;
+S160,JsonReader.java,691,if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {
+S161,JsonReader.java,693,continue;
+S162,JsonReader.java,700,continue;
+S163,JsonReader.java,706,if (!isLiteral(c)) {
+S164,JsonReader.java,709,return PEEKED_NONE;
+S165,JsonReader.java,711,if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {
+S166,JsonReader.java,712,value = -(c - '0');
+S167,JsonReader.java,714,} else if (last == NUMBER_CHAR_DIGIT) {
+S168,JsonReader.java,715,if (value == 0) {
+S169,JsonReader.java,718,long newValue = value * 10 - (c - '0');
+S170,JsonReader.java,719,fitsInLong &= value > MIN_INCOMPLETE_INTEGER
+S171,JsonReader.java,721,value = newValue;
+S172,JsonReader.java,722,} else if (last == NUMBER_CHAR_DECIMAL) {
+S173,JsonReader.java,723,last = NUMBER_CHAR_FRACTION_DIGIT;
+S174,JsonReader.java,724,} else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {
+S175,JsonReader.java,731,if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != Long.MIN_VALUE || negative)) {
+S176,JsonReader.java,732,peekedLong = negative ? value : -value;
+S177,JsonReader.java,733,pos += i;
+S178,JsonReader.java,734,return peeked = PEEKED_LONG;
+S179,JsonReader.java,735,} else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT
+S180,JsonReader.java,737,peekedNumberLength = i;
+S181,JsonReader.java,738,return peeked = PEEKED_NUMBER;
+S182,JsonReader.java,740,return PEEKED_NONE;
+S183,JsonReader.java,745,switch (c) {
+S184,JsonReader.java,751,checkLenient(); // fall-through
+S185,JsonReader.java,765,return true;
+S186,JsonReader.java,777,int p = peeked;
+S187,JsonReader.java,778,if (p == PEEKED_NONE) {
+S188,JsonReader.java,779,p = doPeek();
+S189,JsonReader.java,782,if (p == PEEKED_UNQUOTED_NAME) {
+S190,JsonReader.java,783,result = nextUnquotedValue();
+S191,JsonReader.java,784,} else if (p == PEEKED_SINGLE_QUOTED_NAME) {
+S192,JsonReader.java,785,result = nextQuotedValue('\'');
+S193,JsonReader.java,786,} else if (p == PEEKED_DOUBLE_QUOTED_NAME) {
+S194,JsonReader.java,787,"result = nextQuotedValue('""');"
+S195,JsonReader.java,791,peeked = PEEKED_NONE;
+S196,JsonReader.java,805,int p = peeked;
+S197,JsonReader.java,806,if (p == PEEKED_NONE) {
+S198,JsonReader.java,807,p = doPeek();
+S199,JsonReader.java,810,if (p == PEEKED_UNQUOTED) {
+S200,JsonReader.java,811,result = nextUnquotedValue();
+S201,JsonReader.java,812,} else if (p == PEEKED_SINGLE_QUOTED) {
+S202,JsonReader.java,813,result = nextQuotedValue('\'');
+S203,JsonReader.java,814,} else if (p == PEEKED_DOUBLE_QUOTED) {
+S204,JsonReader.java,815,"result = nextQuotedValue('""');"
+S205,JsonReader.java,816,} else if (p == PEEKED_BUFFERED) {
+S206,JsonReader.java,818,peekedString = null;
+S207,JsonReader.java,819,} else if (p == PEEKED_LONG) {
+S208,JsonReader.java,820,result = Long.toString(peekedLong);
+S209,JsonReader.java,827,peeked = PEEKED_NONE;
+S210,JsonReader.java,829,return result;
+S211,JsonReader.java,840,int p = peeked;
+S212,JsonReader.java,841,if (p == PEEKED_NONE) {
+S213,JsonReader.java,842,p = doPeek();
+S214,JsonReader.java,844,if (p == PEEKED_TRUE) {
+S215,JsonReader.java,845,peeked = PEEKED_NONE;
+S216,JsonReader.java,847,return true;
+S217,JsonReader.java,849,peeked = PEEKED_NONE;
+S218,JsonReader.java,864,int p = peeked;
+S219,JsonReader.java,865,if (p == PEEKED_NONE) {
+S220,JsonReader.java,866,p = doPeek();
+S221,JsonReader.java,869,peeked = PEEKED_NONE;
+S222,JsonReader.java,886,int p = peeked;
+S223,JsonReader.java,887,if (p == PEEKED_NONE) {
+S224,JsonReader.java,888,p = doPeek();
+S225,JsonReader.java,891,if (p == PEEKED_LONG) {
+S226,JsonReader.java,892,peeked = PEEKED_NONE;
+S227,JsonReader.java,894,return (double) peekedLong;
+S228,JsonReader.java,897,if (p == PEEKED_NUMBER) {
+S229,JsonReader.java,898,"peekedString = new String(buffer, pos, peekedNumberLength);"
+S230,JsonReader.java,899,pos += peekedNumberLength;
+S231,JsonReader.java,900,} else if (p == PEEKED_SINGLE_QUOTED || p == PEEKED_DOUBLE_QUOTED) {
+S232,JsonReader.java,901,"peekedString = nextQuotedValue(p == PEEKED_SINGLE_QUOTED ? '\'' : '""');"
+S233,JsonReader.java,902,} else if (p == PEEKED_UNQUOTED) {
+S234,JsonReader.java,903,peekedString = nextUnquotedValue();
+S235,JsonReader.java,908,peeked = PEEKED_BUFFERED;
+S236,JsonReader.java,909,double result = Double.parseDouble(peekedString); // don't catch this NumberFormatException.
+S237,JsonReader.java,914,peekedString = null;
+S238,JsonReader.java,915,peeked = PEEKED_NONE;
+S239,JsonReader.java,931,int p = peeked;
+S240,JsonReader.java,932,if (p == PEEKED_NONE) {
+S241,JsonReader.java,933,p = doPeek();
+S242,JsonReader.java,936,if (p == PEEKED_LONG) {
+S243,JsonReader.java,937,peeked = PEEKED_NONE;
+S244,JsonReader.java,939,return peekedLong;
+S245,JsonReader.java,942,if (p == PEEKED_NUMBER) {
+S246,JsonReader.java,943,"peekedString = new String(buffer, pos, peekedNumberLength);"
+S247,JsonReader.java,944,pos += peekedNumberLength;
+S248,JsonReader.java,963,peeked = PEEKED_BUFFERED;
+S249,JsonReader.java,964,double asDouble = Double.parseDouble(peekedString); // don't catch this NumberFormatException.
+S250,JsonReader.java,965,long result = (long) asDouble;
+S251,JsonReader.java,966,if (result != asDouble) { // Make sure no precision was lost casting to 'long'.
+S252,JsonReader.java,967,"throw new NumberFormatException(""Expected a long but was "" + peekedString + locationString());"
+S253,JsonReader.java,969,peekedString = null;
+S254,JsonReader.java,970,peeked = PEEKED_NONE;
+S255,JsonReader.java,987,char[] buffer = this.buffer;
+S256,JsonReader.java,988,StringBuilder builder = null;
+S257,JsonReader.java,990,int p = pos;
+S258,JsonReader.java,991,int l = limit;
+S259,JsonReader.java,993,int start = p;
+S260,JsonReader.java,994,while (p < l) {
+S261,JsonReader.java,995,int c = buffer[p++];
+S262,JsonReader.java,998,pos = p;
+S263,JsonReader.java,999,int len = p - start - 1;
+S264,JsonReader.java,1000,if (builder == null) {
+S265,JsonReader.java,1001,"return new String(buffer, start, len);"
+S266,JsonReader.java,1007,pos = p;
+S267,JsonReader.java,1014,builder.append(readEscapeCharacter());
+S268,JsonReader.java,1015,p = pos;
+S269,JsonReader.java,1016,l = limit;
+S270,JsonReader.java,1029,pos = p;
+S271,JsonReader.java,1030,if (!fillBuffer(1)) {
+S272,JsonReader.java,1041,StringBuilder builder = null;
+S273,JsonReader.java,1042,int i = 0;
+S274,JsonReader.java,1046,for (; pos + i < limit; i++) {
+S275,JsonReader.java,1047,switch (buffer[pos + i]) {
+S276,JsonReader.java,1070,if (i < buffer.length) {
+S277,JsonReader.java,1071,if (fillBuffer(i + 1)) {
+S278,JsonReader.java,1079,if (builder == null) {
+S279,JsonReader.java,1080,builder = new StringBuilder();
+S280,JsonReader.java,1082,"builder.append(buffer, pos, i);"
+S281,JsonReader.java,1083,pos += i;
+S282,JsonReader.java,1084,i = 0;
+S283,JsonReader.java,1085,if (!fillBuffer(1)) {
+S284,JsonReader.java,1091,if (builder == null) {
+S285,JsonReader.java,1092,"result = new String(buffer, pos, i);"
+S286,JsonReader.java,1094,"builder.append(buffer, pos, i);"
+S287,JsonReader.java,1095,result = builder.toString();
+S288,JsonReader.java,1097,pos += i;
+S289,JsonReader.java,1098,return result;
+S290,JsonReader.java,1105,int p = pos;
+S291,JsonReader.java,1106,int l = limit;
+S292,JsonReader.java,1108,while (p < l) {
+S293,JsonReader.java,1109,int c = buffer[p++];
+S294,JsonReader.java,1111,pos = p;
+S295,JsonReader.java,1123,pos = p;
+S296,JsonReader.java,1124,} while (fillBuffer(1));
+S297,JsonReader.java,1130,int i = 0;
+S298,JsonReader.java,1131,for (; pos + i < limit; i++) {
+S299,JsonReader.java,1132,switch (buffer[pos + i]) {
+S300,JsonReader.java,1154,pos += i;
+S301,JsonReader.java,1155,} while (fillBuffer(1));
+S302,JsonReader.java,1169,int p = peeked;
+S303,JsonReader.java,1170,if (p == PEEKED_NONE) {
+S304,JsonReader.java,1171,p = doPeek();
+S305,JsonReader.java,1175,if (p == PEEKED_LONG) {
+S306,JsonReader.java,1176,result = (int) peekedLong;
+S307,JsonReader.java,1180,peeked = PEEKED_NONE;
+S308,JsonReader.java,1182,return result;
+S309,JsonReader.java,1185,if (p == PEEKED_NUMBER) {
+S310,JsonReader.java,1186,"peekedString = new String(buffer, pos, peekedNumberLength);"
+S311,JsonReader.java,1187,pos += peekedNumberLength;
+S312,JsonReader.java,1189,if (p == PEEKED_UNQUOTED) {
+S313,JsonReader.java,1190,peekedString = nextUnquotedValue();
+S314,JsonReader.java,1192,"peekedString = nextQuotedValue(p == PEEKED_SINGLE_QUOTED ? '\'' : '""');"
+S315,JsonReader.java,1195,result = Integer.parseInt(peekedString);
+S316,JsonReader.java,1196,peeked = PEEKED_NONE;
+S317,JsonReader.java,1206,peeked = PEEKED_BUFFERED;
+S318,JsonReader.java,1207,double asDouble = Double.parseDouble(peekedString); // don't catch this NumberFormatException.
+S319,JsonReader.java,1208,result = (int) asDouble;
+S320,JsonReader.java,1209,if (result != asDouble) { // Make sure no precision was lost casting to 'int'.
+S321,JsonReader.java,1210,"throw new NumberFormatException(""Expected an int but was "" + peekedString + locationString());"
+S322,JsonReader.java,1212,peekedString = null;
+S323,JsonReader.java,1213,peeked = PEEKED_NONE;
+S324,JsonReader.java,1236,int p = peeked;
+S325,JsonReader.java,1237,if (p == PEEKED_NONE) {
+S326,JsonReader.java,1238,p = doPeek();
+S327,JsonReader.java,1241,if (p == PEEKED_BEGIN_ARRAY) {
+S328,JsonReader.java,1242,push(JsonScope.EMPTY_ARRAY);
+S329,JsonReader.java,1244,} else if (p == PEEKED_BEGIN_OBJECT) {
+S330,JsonReader.java,1245,push(JsonScope.EMPTY_OBJECT);
+S331,JsonReader.java,1247,} else if (p == PEEKED_END_ARRAY) {
+S332,JsonReader.java,1248,stackSize--;
+S333,JsonReader.java,1250,} else if (p == PEEKED_END_OBJECT) {
+S334,JsonReader.java,1251,stackSize--;
+S335,JsonReader.java,1253,} else if (p == PEEKED_UNQUOTED_NAME || p == PEEKED_UNQUOTED) {
+S336,JsonReader.java,1254,skipUnquotedValue();
+S337,JsonReader.java,1255,} else if (p == PEEKED_SINGLE_QUOTED || p == PEEKED_SINGLE_QUOTED_NAME) {
+S338,JsonReader.java,1257,} else if (p == PEEKED_DOUBLE_QUOTED || p == PEEKED_DOUBLE_QUOTED_NAME) {
+S339,JsonReader.java,1258,"skipQuotedValue('""');"
+S340,JsonReader.java,1259,} else if (p == PEEKED_NUMBER) {
+S341,JsonReader.java,1260,pos += peekedNumberLength;
+S342,JsonReader.java,1262,peeked = PEEKED_NONE;
+S343,JsonReader.java,1270,if (stackSize == stack.length) {
+S344,JsonReader.java,1271,int[] newStack = new int[stackSize * 2];
+S345,JsonReader.java,1272,int[] newPathIndices = new int[stackSize * 2];
+S346,JsonReader.java,1273,String[] newPathNames = new String[stackSize * 2];
+S347,JsonReader.java,1274,"System.arraycopy(stack, 0, newStack, 0, stackSize);"
+S348,JsonReader.java,1275,"System.arraycopy(pathIndices, 0, newPathIndices, 0, stackSize);"
+S349,JsonReader.java,1276,"System.arraycopy(pathNames, 0, newPathNames, 0, stackSize);"
+S350,JsonReader.java,1277,stack = newStack;
+S351,JsonReader.java,1278,pathIndices = newPathIndices;
+S352,JsonReader.java,1279,pathNames = newPathNames;
+S353,JsonReader.java,1281,stack[stackSize++] = newTop;
+S354,JsonReader.java,1290,char[] buffer = this.buffer;
+S355,JsonReader.java,1291,lineStart -= pos;
+S356,JsonReader.java,1292,if (limit != pos) {
+S357,JsonReader.java,1293,limit -= pos;
+S358,JsonReader.java,1294,"System.arraycopy(buffer, pos, buffer, 0, limit);"
+S359,JsonReader.java,1296,limit = 0;
+S360,JsonReader.java,1299,pos = 0;
+S361,JsonReader.java,1301,"while ((total = in.read(buffer, limit, buffer.length - limit)) != -1) {"
+S362,JsonReader.java,1302,limit += total;
+S363,JsonReader.java,1311,if (limit >= minimum) {
+S364,JsonReader.java,1312,return true;
+S365,JsonReader.java,1315,return false;
+S366,JsonReader.java,1333,char[] buffer = this.buffer;
+S367,JsonReader.java,1334,int p = pos;
+S368,JsonReader.java,1335,int l = limit;
+S369,JsonReader.java,1337,if (p == l) {
+S370,JsonReader.java,1338,pos = p;
+S371,JsonReader.java,1339,if (!fillBuffer(1)) {
+S372,JsonReader.java,1342,p = pos;
+S373,JsonReader.java,1343,l = limit;
+S374,JsonReader.java,1346,int c = buffer[p++];
+S375,JsonReader.java,1347,if (c == '\n') {
+S376,JsonReader.java,1348,lineNumber++;
+S377,JsonReader.java,1349,lineStart = p;
+S378,JsonReader.java,1356,pos = p;
+S379,JsonReader.java,1357,if (p == l) {
+S380,JsonReader.java,1366,checkLenient();
+S381,JsonReader.java,1371,pos++;
+S382,JsonReader.java,1372,"if (!skipTo(""*/"")) {"
+S383,JsonReader.java,1375,p = pos + 2;
+S384,JsonReader.java,1376,l = limit;
+S385,JsonReader.java,1381,pos++;
+S386,JsonReader.java,1382,skipToEndOfLine();
+S387,JsonReader.java,1383,p = pos;
+S388,JsonReader.java,1384,l = limit;
+S389,JsonReader.java,1391,pos = p;
+S390,JsonReader.java,1397,checkLenient();
+S391,JsonReader.java,1398,skipToEndOfLine();
+S392,JsonReader.java,1399,p = pos;
+S393,JsonReader.java,1400,l = limit;
+S394,JsonReader.java,1402,pos = p;
+S395,JsonReader.java,1403,return c;
+S396,JsonReader.java,1425,while (pos < limit || fillBuffer(1)) {
+S397,JsonReader.java,1426,char c = buffer[pos++];
+S398,JsonReader.java,1428,lineNumber++;
+S399,JsonReader.java,1429,lineStart = pos;
+S400,JsonReader.java,1442,for (; pos + toFind.length() <= limit || fillBuffer(toFind.length()); pos++) {
+S401,JsonReader.java,1443,if (buffer[pos] == '\n') {
+S402,JsonReader.java,1448,for (int c = 0; c < toFind.length(); c++) {
+S403,JsonReader.java,1449,if (buffer[pos + c] != toFind.charAt(c)) {
+S404,JsonReader.java,1450,continue outer;
+S405,JsonReader.java,1453,return true;
+S406,JsonReader.java,1513,char escaped = buffer[pos++];
+S407,JsonReader.java,1514,switch (escaped) {
+S408,JsonReader.java,1534,pos += 4;
+S409,JsonReader.java,1581,nextNonWhitespace(true);
+S410,JsonReader.java,1582,pos--;
+S411,JsonReader.java,1584,if (pos + NON_EXECUTE_PREFIX.length > limit && !fillBuffer(NON_EXECUTE_PREFIX.length)) {
+S412,JsonReader.java,1588,for (int i = 0; i < NON_EXECUTE_PREFIX.length; i++) {
+S413,JsonReader.java,1589,if (buffer[pos + i] != NON_EXECUTE_PREFIX[i]) {
+S414,JsonToken.java,25,public enum JsonToken {
+S415,JsonToken.java,31,"BEGIN_ARRAY,"
+S416,JsonToken.java,37,"END_ARRAY,"
+S417,JsonToken.java,43,"BEGIN_OBJECT,"
+S418,JsonToken.java,49,"END_OBJECT,"
+S419,JsonToken.java,56,"NAME,"
+S420,JsonToken.java,61,"STRING,"
+S421,JsonToken.java,67,"NUMBER,"
+S422,JsonToken.java,72,"BOOLEAN,"
+S423,JsonToken.java,77,"NULL,"
+S424,JsonToken.java,84,END_DOCUMENT
+S425,JsonTreeReader.java,38,private static final Reader UNREADABLE_READER = new Reader() {
+S426,JsonTreeReader.java,51,private Object[] stack = new Object[32];
+S427,JsonTreeReader.java,52,private int stackSize = 0;
+S428,JsonTreeReader.java,62,private String[] pathNames = new String[32];
+S429,JsonTreeReader.java,63,private int[] pathIndices = new int[32];
+S430,JsonTreeReader.java,66,super(UNREADABLE_READER);
+S431,JsonTreeReader.java,67,push(element);
+S432,JsonTreeReader.java,71,expect(JsonToken.BEGIN_ARRAY);
+S433,JsonTreeReader.java,73,push(array.iterator());
+S434,JsonTreeReader.java,78,expect(JsonToken.END_ARRAY);
+S435,JsonTreeReader.java,79,popStack(); // empty iterator
+S436,JsonTreeReader.java,80,popStack(); // array
+S437,JsonTreeReader.java,87,expect(JsonToken.BEGIN_OBJECT);
+S438,JsonTreeReader.java,89,push(object.entrySet().iterator());
+S439,JsonTreeReader.java,93,expect(JsonToken.END_OBJECT);
+S440,JsonTreeReader.java,94,popStack(); // empty iterator
+S441,JsonTreeReader.java,95,popStack(); // object
+S442,JsonTreeReader.java,107,if (stackSize == 0) {
+S443,JsonTreeReader.java,111,Object o = peekStack();
+S444,JsonTreeReader.java,112,if (o instanceof Iterator) {
+S445,JsonTreeReader.java,113,boolean isObject = stack[stackSize - 2] instanceof JsonObject;
+S446,JsonTreeReader.java,116,if (isObject) {
+S447,JsonTreeReader.java,119,push(iterator.next());
+S448,JsonTreeReader.java,120,return peek();
+S449,JsonTreeReader.java,125,} else if (o instanceof JsonObject) {
+S450,JsonTreeReader.java,126,return JsonToken.BEGIN_OBJECT;
+S451,JsonTreeReader.java,127,} else if (o instanceof JsonArray) {
+S452,JsonTreeReader.java,128,return JsonToken.BEGIN_ARRAY;
+S453,JsonTreeReader.java,129,} else if (o instanceof JsonPrimitive) {
+S454,JsonTreeReader.java,131,if (primitive.isString()) {
+S455,JsonTreeReader.java,132,return JsonToken.STRING;
+S456,JsonTreeReader.java,133,} else if (primitive.isBoolean()) {
+S457,JsonTreeReader.java,136,return JsonToken.NUMBER;
+S458,JsonTreeReader.java,150,return stack[stackSize - 1];
+S459,JsonTreeReader.java,154,Object result = stack[--stackSize];
+S460,JsonTreeReader.java,156,return result;
+S461,JsonTreeReader.java,160,if (peek() != expected) {
+S462,JsonTreeReader.java,161,throw new IllegalStateException(
+S463,JsonTreeReader.java,167,expect(JsonToken.NAME);
+S464,JsonTreeReader.java,172,push(entry.getValue());
+S465,JsonTreeReader.java,177,JsonToken token = peek();
+S466,JsonTreeReader.java,178,if (token != JsonToken.STRING && token != JsonToken.NUMBER) {
+S467,JsonTreeReader.java,182,String result = ((JsonPrimitive) popStack()).getAsString();
+S468,JsonTreeReader.java,190,expect(JsonToken.BOOLEAN);
+S469,JsonTreeReader.java,191,boolean result = ((JsonPrimitive) popStack()).getAsBoolean();
+S470,JsonTreeReader.java,199,expect(JsonToken.NULL);
+S471,JsonTreeReader.java,207,JsonToken token = peek();
+S472,JsonTreeReader.java,208,if (token != JsonToken.NUMBER && token != JsonToken.STRING) {
+S473,JsonTreeReader.java,213,if (!isLenient() && (Double.isNaN(result) || Double.isInfinite(result))) {
+S474,JsonTreeReader.java,216,popStack();
+S475,JsonTreeReader.java,224,JsonToken token = peek();
+S476,JsonTreeReader.java,225,if (token != JsonToken.NUMBER && token != JsonToken.STRING) {
+S477,JsonTreeReader.java,230,popStack();
+S478,JsonTreeReader.java,238,JsonToken token = peek();
+S479,JsonTreeReader.java,239,if (token != JsonToken.NUMBER && token != JsonToken.STRING) {
+S480,JsonTreeReader.java,244,popStack();
+S481,JsonTreeReader.java,257,if (peek() == JsonToken.NAME) {
+S482,JsonTreeReader.java,261,popStack();
+S483,JsonTreeReader.java,295,stack[stackSize++] = newTop;
+S484,Streams.java,46,reader.peek();
+S485,Streams.java,48,return TypeAdapters.JSON_ELEMENT.read(reader);
+S486,TypeAdapters.java,92,switch (tokenType) {
+S487,TypeAdapters.java,697,public static final TypeAdapter<JsonElement> JSON_ELEMENT = new TypeAdapter<JsonElement>() {
+S488,TypeAdapters.java,699,switch (in.peek()) {
+S489,TypeAdapters.java,701,return new JsonPrimitive(in.nextString());
+S490,TypeAdapters.java,704,return new JsonPrimitive(new LazilyParsedNumber(number));
+S491,TypeAdapters.java,712,in.beginArray();
+S492,TypeAdapters.java,713,while (in.hasNext()) {
+S493,TypeAdapters.java,714,array.add(read(in));
+S494,TypeAdapters.java,721,while (in.hasNext()) {
+S495,TypeAdapters.java,722,"object.add(in.nextName(), read(in));"

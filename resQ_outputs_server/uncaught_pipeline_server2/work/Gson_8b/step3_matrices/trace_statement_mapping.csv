@@ -1,0 +1,2375 @@
+statement_id,file,line,code
+S1,$Gson$Preconditions.java,38,if (obj == null) {
+S2,$Gson$Preconditions.java,41,return obj;
+S3,$Gson$Preconditions.java,45,if (!condition) {
+S4,$Gson$Types.java,44,static final Type[] EMPTY_TYPE_ARRAY = new Type[] {};
+S5,$Gson$Types.java,58,"return new ParameterizedTypeImpl(ownerType, rawType, typeArguments);"
+S6,$Gson$Types.java,68,return new GenericArrayTypeImpl(componentType);
+S7,$Gson$Types.java,78,"return new WildcardTypeImpl(new Type[] { bound }, EMPTY_TYPE_ARRAY);"
+S8,$Gson$Types.java,96,if (type instanceof Class) {
+S9,$Gson$Types.java,97,Class<?> c = (Class<?>) type;
+S10,$Gson$Types.java,98,return c.isArray() ? new GenericArrayTypeImpl(canonicalize(c.getComponentType())) : c;
+S11,$Gson$Types.java,100,} else if (type instanceof ParameterizedType) {
+S12,$Gson$Types.java,101,ParameterizedType p = (ParameterizedType) type;
+S13,$Gson$Types.java,102,"return new ParameterizedTypeImpl(p.getOwnerType(),"
+S14,$Gson$Types.java,105,} else if (type instanceof GenericArrayType) {
+S15,$Gson$Types.java,106,GenericArrayType g = (GenericArrayType) type;
+S16,$Gson$Types.java,107,return new GenericArrayTypeImpl(g.getGenericComponentType());
+S17,$Gson$Types.java,109,} else if (type instanceof WildcardType) {
+S18,$Gson$Types.java,110,WildcardType w = (WildcardType) type;
+S19,$Gson$Types.java,111,"return new WildcardTypeImpl(w.getUpperBounds(), w.getLowerBounds());"
+S20,$Gson$Types.java,115,return type;
+S21,$Gson$Types.java,120,if (type instanceof Class<?>) {
+S22,$Gson$Types.java,122,return (Class<?>) type;
+S23,$Gson$Types.java,124,} else if (type instanceof ParameterizedType) {
+S24,$Gson$Types.java,125,ParameterizedType parameterizedType = (ParameterizedType) type;
+S25,$Gson$Types.java,130,Type rawType = parameterizedType.getRawType();
+S26,$Gson$Types.java,131,checkArgument(rawType instanceof Class);
+S27,$Gson$Types.java,132,return (Class<?>) rawType;
+S28,$Gson$Types.java,134,} else if (type instanceof GenericArrayType) {
+S29,$Gson$Types.java,135,Type componentType = ((GenericArrayType)type).getGenericComponentType();
+S30,$Gson$Types.java,136,"return Array.newInstance(getRawType(componentType), 0).getClass();"
+S31,$Gson$Types.java,138,} else if (type instanceof TypeVariable) {
+S32,$Gson$Types.java,141,return Object.class;
+S33,$Gson$Types.java,143,} else if (type instanceof WildcardType) {
+S34,$Gson$Types.java,144,return getRawType(((WildcardType) type).getUpperBounds()[0]);
+S35,$Gson$Types.java,154,return a == b || (a != null && a.equals(b));
+S36,$Gson$Types.java,161,if (a == b) {
+S37,$Gson$Types.java,163,return true;
+S38,$Gson$Types.java,165,} else if (a instanceof Class) {
+S39,$Gson$Types.java,167,return a.equals(b);
+S40,$Gson$Types.java,169,} else if (a instanceof ParameterizedType) {
+S41,$Gson$Types.java,170,if (!(b instanceof ParameterizedType)) {
+S42,$Gson$Types.java,171,return false;
+S43,$Gson$Types.java,175,ParameterizedType pa = (ParameterizedType) a;
+S44,$Gson$Types.java,176,ParameterizedType pb = (ParameterizedType) b;
+S45,$Gson$Types.java,177,"return equal(pa.getOwnerType(), pb.getOwnerType())"
+S46,$Gson$Types.java,181,} else if (a instanceof GenericArrayType) {
+S47,$Gson$Types.java,182,if (!(b instanceof GenericArrayType)) {
+S48,$Gson$Types.java,183,return false;
+S49,$Gson$Types.java,186,GenericArrayType ga = (GenericArrayType) a;
+S50,$Gson$Types.java,187,GenericArrayType gb = (GenericArrayType) b;
+S51,$Gson$Types.java,188,"return equals(ga.getGenericComponentType(), gb.getGenericComponentType());"
+S52,$Gson$Types.java,190,} else if (a instanceof WildcardType) {
+S53,$Gson$Types.java,191,if (!(b instanceof WildcardType)) {
+S54,$Gson$Types.java,195,WildcardType wa = (WildcardType) a;
+S55,$Gson$Types.java,196,WildcardType wb = (WildcardType) b;
+S56,$Gson$Types.java,197,"return Arrays.equals(wa.getUpperBounds(), wb.getUpperBounds())"
+S57,$Gson$Types.java,216,return o != null ? o.hashCode() : 0;
+S58,$Gson$Types.java,229,if (toResolve == rawType) {
+S59,$Gson$Types.java,230,return context;
+S60,$Gson$Types.java,234,if (toResolve.isInterface()) {
+S61,$Gson$Types.java,235,Class<?>[] interfaces = rawType.getInterfaces();
+S62,$Gson$Types.java,236,"for (int i = 0, length = interfaces.length; i < length; i++) {"
+S63,$Gson$Types.java,237,if (interfaces[i] == toResolve) {
+S64,$Gson$Types.java,238,return rawType.getGenericInterfaces()[i];
+S65,$Gson$Types.java,239,} else if (toResolve.isAssignableFrom(interfaces[i])) {
+S66,$Gson$Types.java,240,"return getGenericSupertype(rawType.getGenericInterfaces()[i], interfaces[i], toResolve);"
+S67,$Gson$Types.java,246,if (!rawType.isInterface()) {
+S68,$Gson$Types.java,247,while (rawType != Object.class) {
+S69,$Gson$Types.java,248,Class<?> rawSupertype = rawType.getSuperclass();
+S70,$Gson$Types.java,249,if (rawSupertype == toResolve) {
+S71,$Gson$Types.java,250,return rawType.getGenericSuperclass();
+S72,$Gson$Types.java,251,} else if (toResolve.isAssignableFrom(rawSupertype)) {
+S73,$Gson$Types.java,252,"return getGenericSupertype(rawType.getGenericSuperclass(), rawSupertype, toResolve);"
+S74,$Gson$Types.java,270,checkArgument(supertype.isAssignableFrom(contextRawType));
+S75,$Gson$Types.java,271,"return resolve(context, contextRawType,"
+S76,$Gson$Types.java,280,return array instanceof GenericArrayType
+S77,$Gson$Types.java,290,"Type collectionType = getSupertype(context, contextRawType, Collection.class);"
+S78,$Gson$Types.java,292,if (collectionType instanceof WildcardType) {
+S79,$Gson$Types.java,293,collectionType = ((WildcardType)collectionType).getUpperBounds()[0];
+S80,$Gson$Types.java,295,if (collectionType instanceof ParameterizedType) {
+S81,$Gson$Types.java,296,return ((ParameterizedType) collectionType).getActualTypeArguments()[0];
+S82,$Gson$Types.java,298,return Object.class;
+S83,$Gson$Types.java,311,if (context == Properties.class) {
+S84,$Gson$Types.java,312,"return new Type[] { String.class, String.class }; // TODO: test subclasses of Properties!"
+S85,$Gson$Types.java,315,"Type mapType = getSupertype(context, contextRawType, Map.class);"
+S86,$Gson$Types.java,317,if (mapType instanceof ParameterizedType) {
+S87,$Gson$Types.java,318,ParameterizedType mapParameterizedType = (ParameterizedType) mapType;
+S88,$Gson$Types.java,319,return mapParameterizedType.getActualTypeArguments();
+S89,$Gson$Types.java,321,"return new Type[] { Object.class, Object.class };"
+S90,$Gson$Types.java,327,if (toResolve instanceof TypeVariable) {
+S91,$Gson$Types.java,328,TypeVariable<?> typeVariable = (TypeVariable<?>) toResolve;
+S92,$Gson$Types.java,329,"toResolve = resolveTypeVariable(context, contextRawType, typeVariable);"
+S93,$Gson$Types.java,330,if (toResolve == typeVariable) {
+S94,$Gson$Types.java,331,return toResolve;
+S95,$Gson$Types.java,334,} else if (toResolve instanceof Class && ((Class<?>) toResolve).isArray()) {
+S96,$Gson$Types.java,335,Class<?> original = (Class<?>) toResolve;
+S97,$Gson$Types.java,336,Type componentType = original.getComponentType();
+S98,$Gson$Types.java,337,"Type newComponentType = resolve(context, contextRawType, componentType);"
+S99,$Gson$Types.java,338,return componentType == newComponentType
+S100,$Gson$Types.java,342,} else if (toResolve instanceof GenericArrayType) {
+S101,$Gson$Types.java,343,GenericArrayType original = (GenericArrayType) toResolve;
+S102,$Gson$Types.java,344,Type componentType = original.getGenericComponentType();
+S103,$Gson$Types.java,345,"Type newComponentType = resolve(context, contextRawType, componentType);"
+S104,$Gson$Types.java,346,return componentType == newComponentType
+S105,$Gson$Types.java,350,} else if (toResolve instanceof ParameterizedType) {
+S106,$Gson$Types.java,351,ParameterizedType original = (ParameterizedType) toResolve;
+S107,$Gson$Types.java,352,Type ownerType = original.getOwnerType();
+S108,$Gson$Types.java,353,"Type newOwnerType = resolve(context, contextRawType, ownerType);"
+S109,$Gson$Types.java,354,boolean changed = newOwnerType != ownerType;
+S110,$Gson$Types.java,356,Type[] args = original.getActualTypeArguments();
+S111,$Gson$Types.java,357,"for (int t = 0, length = args.length; t < length; t++) {"
+S112,$Gson$Types.java,358,"Type resolvedTypeArgument = resolve(context, contextRawType, args[t]);"
+S113,$Gson$Types.java,359,if (resolvedTypeArgument != args[t]) {
+S114,$Gson$Types.java,360,if (!changed) {
+S115,$Gson$Types.java,361,args = args.clone();
+S116,$Gson$Types.java,362,changed = true;
+S117,$Gson$Types.java,364,args[t] = resolvedTypeArgument;
+S118,$Gson$Types.java,368,return changed
+S119,$Gson$Types.java,372,} else if (toResolve instanceof WildcardType) {
+S120,$Gson$Types.java,373,WildcardType original = (WildcardType) toResolve;
+S121,$Gson$Types.java,374,Type[] originalLowerBound = original.getLowerBounds();
+S122,$Gson$Types.java,375,Type[] originalUpperBound = original.getUpperBounds();
+S123,$Gson$Types.java,377,if (originalLowerBound.length == 1) {
+S124,$Gson$Types.java,383,"Type upperBound = resolve(context, contextRawType, originalUpperBound[0]);"
+S125,$Gson$Types.java,384,if (upperBound != originalUpperBound[0]) {
+S126,$Gson$Types.java,385,return subtypeOf(upperBound);
+S127,$Gson$Types.java,388,return original;
+S128,$Gson$Types.java,391,return toResolve;
+S129,$Gson$Types.java,397,Class<?> declaredByRaw = declaringClassOf(unknown);
+S130,$Gson$Types.java,400,if (declaredByRaw == null) {
+S131,$Gson$Types.java,404,"Type declaredBy = getGenericSupertype(context, contextRawType, declaredByRaw);"
+S132,$Gson$Types.java,405,if (declaredBy instanceof ParameterizedType) {
+S133,$Gson$Types.java,406,"int index = indexOf(declaredByRaw.getTypeParameters(), unknown);"
+S134,$Gson$Types.java,407,return ((ParameterizedType) declaredBy).getActualTypeArguments()[index];
+S135,$Gson$Types.java,410,return unknown;
+S136,$Gson$Types.java,414,for (int i = 0; i < array.length; i++) {
+S137,$Gson$Types.java,415,if (toFind.equals(array[i])) {
+S138,$Gson$Types.java,416,return i;
+S139,$Gson$Types.java,427,GenericDeclaration genericDeclaration = typeVariable.getGenericDeclaration();
+S140,$Gson$Types.java,428,return genericDeclaration instanceof Class
+S141,$Gson$Types.java,434,checkArgument(!(type instanceof Class<?>) || !((Class<?>) type).isPrimitive());
+S142,$Gson$Types.java,442,"public ParameterizedTypeImpl(Type ownerType, Type rawType, Type... typeArguments) {"
+S143,$Gson$Types.java,444,if (rawType instanceof Class<?>) {
+S144,$Gson$Types.java,445,Class<?> rawTypeAsClass = (Class<?>) rawType;
+S145,$Gson$Types.java,446,boolean isStaticOrTopLevelClass = Modifier.isStatic(rawTypeAsClass.getModifiers())
+S146,$Gson$Types.java,448,checkArgument(ownerType != null || isStaticOrTopLevelClass);
+S147,$Gson$Types.java,451,this.ownerType = ownerType == null ? null : canonicalize(ownerType);
+S148,$Gson$Types.java,452,this.rawType = canonicalize(rawType);
+S149,$Gson$Types.java,453,this.typeArguments = typeArguments.clone();
+S150,$Gson$Types.java,454,for (int t = 0; t < this.typeArguments.length; t++) {
+S151,$Gson$Types.java,455,checkNotNull(this.typeArguments[t]);
+S152,$Gson$Types.java,456,checkNotPrimitive(this.typeArguments[t]);
+S153,$Gson$Types.java,457,this.typeArguments[t] = canonicalize(this.typeArguments[t]);
+S154,$Gson$Types.java,462,return typeArguments.clone();
+S155,$Gson$Types.java,466,return rawType;
+S156,$Gson$Types.java,470,return ownerType;
+S157,$Gson$Types.java,474,return other instanceof ParameterizedType
+S158,$Gson$Types.java,479,return Arrays.hashCode(typeArguments)
+S159,$Gson$Types.java,505,public GenericArrayTypeImpl(Type componentType) {
+S160,$Gson$Types.java,506,this.componentType = canonicalize(componentType);
+S161,$Gson$Types.java,510,return componentType;
+S162,$Gson$Types.java,519,return componentType.hashCode();
+S163,$Gson$Types.java,538,"public WildcardTypeImpl(Type[] upperBounds, Type[] lowerBounds) {"
+S164,$Gson$Types.java,539,checkArgument(lowerBounds.length <= 1);
+S165,$Gson$Types.java,540,checkArgument(upperBounds.length == 1);
+S166,$Gson$Types.java,542,if (lowerBounds.length == 1) {
+S167,$Gson$Types.java,550,checkNotNull(upperBounds[0]);
+S168,$Gson$Types.java,551,checkNotPrimitive(upperBounds[0]);
+S169,$Gson$Types.java,552,this.lowerBound = null;
+S170,$Gson$Types.java,553,this.upperBound = canonicalize(upperBounds[0]);
+S171,$Gson$Types.java,558,return new Type[] { upperBound };
+S172,$Gson$Types.java,562,return lowerBound != null ? new Type[] { lowerBound } : EMPTY_TYPE_ARRAY;
+S173,$Gson$Types.java,566,return other instanceof WildcardType
+S174,$Gson$Types.java,572,return (lowerBound != null ? 31 + lowerBound.hashCode() : 1)
+S175,ArrayTypeAdapter.java,39,public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+S176,ArrayTypeAdapter.java,42,Type type = typeToken.getType();
+S177,ArrayTypeAdapter.java,43,if (!(type instanceof GenericArrayType || type instanceof Class && ((Class<?>) type).isArray())) {
+S178,ArrayTypeAdapter.java,44,return null;
+S179,ArrayTypeAdapter.java,47,Type componentType = $Gson$Types.getArrayComponentType(type);
+S180,ArrayTypeAdapter.java,48,TypeAdapter<?> componentTypeAdapter = gson.getAdapter(TypeToken.get(componentType));
+S181,ArrayTypeAdapter.java,49,return new ArrayTypeAdapter(
+S182,ArrayTypeAdapter.java,57,"public ArrayTypeAdapter(Gson context, TypeAdapter<E> componentTypeAdapter, Class<E> componentType) {"
+S183,ArrayTypeAdapter.java,58,this.componentTypeAdapter =
+S184,ArrayTypeAdapter.java,60,this.componentType = componentType;
+S185,ArrayTypeAdapter.java,64,if (in.peek() == JsonToken.NULL) {
+S186,ArrayTypeAdapter.java,65,in.nextNull();
+S187,ArrayTypeAdapter.java,66,return null;
+S188,ArrayTypeAdapter.java,69,List<E> list = new ArrayList<E>();
+S189,ArrayTypeAdapter.java,70,in.beginArray();
+S190,ArrayTypeAdapter.java,71,while (in.hasNext()) {
+S191,ArrayTypeAdapter.java,72,E instance = componentTypeAdapter.read(in);
+S192,ArrayTypeAdapter.java,73,list.add(instance);
+S193,ArrayTypeAdapter.java,75,in.endArray();
+S194,ArrayTypeAdapter.java,76,"Object array = Array.newInstance(componentType, list.size());"
+S195,ArrayTypeAdapter.java,77,for (int i = 0; i < list.size(); i++) {
+S196,ArrayTypeAdapter.java,78,"Array.set(array, i, list.get(i));"
+S197,ArrayTypeAdapter.java,80,return array;
+S198,ArrayTypeAdapter.java,85,if (array == null) {
+S199,ArrayTypeAdapter.java,86,out.nullValue();
+S200,ArrayTypeAdapter.java,87,return;
+S201,ArrayTypeAdapter.java,90,out.beginArray();
+S202,ArrayTypeAdapter.java,91,"for (int i = 0, length = Array.getLength(array); i < length; i++) {"
+S203,ArrayTypeAdapter.java,92,"E value = (E) Array.get(array, i);"
+S204,ArrayTypeAdapter.java,93,"componentTypeAdapter.write(out, value);"
+S205,ArrayTypeAdapter.java,95,out.endArray();
+S206,CollectionTypeAdapterFactory.java,39,public CollectionTypeAdapterFactory(ConstructorConstructor constructorConstructor) {
+S207,CollectionTypeAdapterFactory.java,40,this.constructorConstructor = constructorConstructor;
+S208,CollectionTypeAdapterFactory.java,45,Type type = typeToken.getType();
+S209,CollectionTypeAdapterFactory.java,47,Class<? super T> rawType = typeToken.getRawType();
+S210,CollectionTypeAdapterFactory.java,48,if (!Collection.class.isAssignableFrom(rawType)) {
+S211,CollectionTypeAdapterFactory.java,49,return null;
+S212,CollectionTypeAdapterFactory.java,52,"Type elementType = $Gson$Types.getCollectionElementType(type, rawType);"
+S213,CollectionTypeAdapterFactory.java,53,TypeAdapter<?> elementTypeAdapter = gson.getAdapter(TypeToken.get(elementType));
+S214,CollectionTypeAdapterFactory.java,54,ObjectConstructor<T> constructor = constructorConstructor.get(typeToken);
+S215,CollectionTypeAdapterFactory.java,57,"TypeAdapter<T> result = new Adapter(gson, elementType, elementTypeAdapter, constructor);"
+S216,CollectionTypeAdapterFactory.java,58,return result;
+S217,CollectionTypeAdapterFactory.java,61,private static final class Adapter<E> extends TypeAdapter<Collection<E>> {
+S218,CollectionTypeAdapterFactory.java,67,ObjectConstructor<? extends Collection<E>> constructor) {
+S219,CollectionTypeAdapterFactory.java,68,this.elementTypeAdapter =
+S220,CollectionTypeAdapterFactory.java,70,this.constructor = constructor;
+S221,CollectionTypeAdapterFactory.java,74,if (in.peek() == JsonToken.NULL) {
+S222,CollectionTypeAdapterFactory.java,75,in.nextNull();
+S223,CollectionTypeAdapterFactory.java,76,return null;
+S224,CollectionTypeAdapterFactory.java,79,Collection<E> collection = constructor.construct();
+S225,CollectionTypeAdapterFactory.java,80,in.beginArray();
+S226,CollectionTypeAdapterFactory.java,81,while (in.hasNext()) {
+S227,CollectionTypeAdapterFactory.java,82,E instance = elementTypeAdapter.read(in);
+S228,CollectionTypeAdapterFactory.java,83,collection.add(instance);
+S229,CollectionTypeAdapterFactory.java,85,in.endArray();
+S230,CollectionTypeAdapterFactory.java,86,return collection;
+S231,CollectionTypeAdapterFactory.java,90,if (collection == null) {
+S232,CollectionTypeAdapterFactory.java,91,out.nullValue();
+S233,CollectionTypeAdapterFactory.java,92,return;
+S234,CollectionTypeAdapterFactory.java,95,out.beginArray();
+S235,CollectionTypeAdapterFactory.java,96,for (E element : collection) {
+S236,CollectionTypeAdapterFactory.java,97,"elementTypeAdapter.write(out, element);"
+S237,CollectionTypeAdapterFactory.java,99,out.endArray();
+S238,ConstructorConstructor.java,51,"public ConstructorConstructor(Map<Type, InstanceCreator<?>> instanceCreators) {"
+S239,ConstructorConstructor.java,52,this.instanceCreators = instanceCreators;
+S240,ConstructorConstructor.java,56,final Type type = typeToken.getType();
+S241,ConstructorConstructor.java,57,final Class<? super T> rawType = typeToken.getRawType();
+S242,ConstructorConstructor.java,62,final InstanceCreator<T> typeCreator = (InstanceCreator<T>) instanceCreators.get(type);
+S243,ConstructorConstructor.java,63,if (typeCreator != null) {
+S244,ConstructorConstructor.java,64,return new ObjectConstructor<T>() {
+S245,ConstructorConstructor.java,66,return typeCreator.createInstance(type);
+S246,ConstructorConstructor.java,73,final InstanceCreator<T> rawTypeCreator =
+S247,ConstructorConstructor.java,75,if (rawTypeCreator != null) {
+S248,ConstructorConstructor.java,76,return new ObjectConstructor<T>() {
+S249,ConstructorConstructor.java,78,return rawTypeCreator.createInstance(type);
+S250,ConstructorConstructor.java,83,ObjectConstructor<T> defaultConstructor = newDefaultConstructor(rawType);
+S251,ConstructorConstructor.java,84,if (defaultConstructor != null) {
+S252,ConstructorConstructor.java,85,return defaultConstructor;
+S253,ConstructorConstructor.java,88,"ObjectConstructor<T> defaultImplementation = newDefaultImplementationConstructor(type, rawType);"
+S254,ConstructorConstructor.java,89,if (defaultImplementation != null) {
+S255,ConstructorConstructor.java,90,return defaultImplementation;
+S256,ConstructorConstructor.java,94,"return newUnsafeAllocator(type, rawType);"
+S257,ConstructorConstructor.java,99,final Constructor<? super T> constructor = rawType.getDeclaredConstructor();
+S258,ConstructorConstructor.java,100,if (!constructor.isAccessible()) {
+S259,ConstructorConstructor.java,101,constructor.setAccessible(true);
+S260,ConstructorConstructor.java,103,return new ObjectConstructor<T>() {
+S261,ConstructorConstructor.java,107,Object[] args = null;
+S262,ConstructorConstructor.java,108,return (T) constructor.newInstance(args);
+S263,ConstructorConstructor.java,122,} catch (NoSuchMethodException e) {
+S264,ConstructorConstructor.java,123,return null;
+S265,ConstructorConstructor.java,134,if (Collection.class.isAssignableFrom(rawType)) {
+S266,ConstructorConstructor.java,135,if (SortedSet.class.isAssignableFrom(rawType)) {
+S267,ConstructorConstructor.java,136,return new ObjectConstructor<T>() {
+S268,ConstructorConstructor.java,138,return (T) new TreeSet<Object>();
+S269,ConstructorConstructor.java,141,} else if (EnumSet.class.isAssignableFrom(rawType)) {
+S270,ConstructorConstructor.java,157,} else if (Set.class.isAssignableFrom(rawType)) {
+S271,ConstructorConstructor.java,158,return new ObjectConstructor<T>() {
+S272,ConstructorConstructor.java,160,return (T) new LinkedHashSet<Object>();
+S273,ConstructorConstructor.java,163,} else if (Queue.class.isAssignableFrom(rawType)) {
+S274,ConstructorConstructor.java,164,return new ObjectConstructor<T>() {
+S275,ConstructorConstructor.java,166,return (T) new LinkedList<Object>();
+S276,ConstructorConstructor.java,170,return new ObjectConstructor<T>() {
+S277,ConstructorConstructor.java,172,return (T) new ArrayList<Object>();
+S278,ConstructorConstructor.java,178,if (Map.class.isAssignableFrom(rawType)) {
+S279,ConstructorConstructor.java,179,if (ConcurrentNavigableMap.class.isAssignableFrom(rawType)) {
+S280,ConstructorConstructor.java,180,return new ObjectConstructor<T>() {
+S281,ConstructorConstructor.java,182,"return (T) new ConcurrentSkipListMap<Object, Object>();"
+S282,ConstructorConstructor.java,185,} else if (ConcurrentMap.class.isAssignableFrom(rawType)) {
+S283,ConstructorConstructor.java,186,return new ObjectConstructor<T>() {
+S284,ConstructorConstructor.java,188,"return (T) new ConcurrentHashMap<Object, Object>();"
+S285,ConstructorConstructor.java,191,} else if (SortedMap.class.isAssignableFrom(rawType)) {
+S286,ConstructorConstructor.java,192,return new ObjectConstructor<T>() {
+S287,ConstructorConstructor.java,194,"return (T) new TreeMap<Object, Object>();"
+S288,ConstructorConstructor.java,197,} else if (type instanceof ParameterizedType && !(String.class.isAssignableFrom(
+S289,ConstructorConstructor.java,199,return new ObjectConstructor<T>() {
+S290,ConstructorConstructor.java,201,"return (T) new LinkedHashMap<Object, Object>();"
+S291,ConstructorConstructor.java,205,return new ObjectConstructor<T>() {
+S292,ConstructorConstructor.java,207,"return (T) new LinkedTreeMap<String, Object>();"
+S293,ConstructorConstructor.java,213,return null;
+S294,ConstructorConstructor.java,218,return new ObjectConstructor<T>() {
+S295,ConstructorConstructor.java,219,private final UnsafeAllocator unsafeAllocator = UnsafeAllocator.create();
+S296,ConstructorConstructor.java,223,Object newInstance = unsafeAllocator.newInstance(rawType);
+S297,ConstructorConstructor.java,224,return (T) newInstance;
+S298,DateTypeAdapter.java,41,public final class DateTypeAdapter extends TypeAdapter<Date> {
+S299,DateTypeAdapter.java,42,public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+S300,DateTypeAdapter.java,45,return typeToken.getRawType() == Date.class ? (TypeAdapter<T>) new DateTypeAdapter() : null;
+S301,DateTypeAdapter.java,49,private final DateFormat enUsFormat
+S302,DateTypeAdapter.java,51,private final DateFormat localFormat
+S303,DateTypeAdapter.java,55,if (in.peek() == JsonToken.NULL) {
+S304,DateTypeAdapter.java,56,in.nextNull();
+S305,DateTypeAdapter.java,57,return null;
+S306,DateTypeAdapter.java,59,return deserializeToDate(in.nextString());
+S307,DateTypeAdapter.java,64,return localFormat.parse(json);
+S308,DateTypeAdapter.java,79,if (value == null) {
+S309,DateTypeAdapter.java,80,out.nullValue();
+S310,DateTypeAdapter.java,81,return;
+S311,DateTypeAdapter.java,83,String dateFormatAsString = enUsFormat.format(value);
+S312,DateTypeAdapter.java,84,out.value(dateFormatAsString);
+S313,DefaultDateTypeAdapter.java,38,"final class DefaultDateTypeAdapter implements JsonSerializer<Date>, JsonDeserializer<Date> {"
+S314,DefaultDateTypeAdapter.java,51,"this(new SimpleDateFormat(datePattern, Locale.US), new SimpleDateFormat(datePattern));"
+S315,DefaultDateTypeAdapter.java,63,"DefaultDateTypeAdapter(DateFormat enUsFormat, DateFormat localFormat) {"
+S316,DefaultDateTypeAdapter.java,64,this.enUsFormat = enUsFormat;
+S317,DefaultDateTypeAdapter.java,65,this.localFormat = localFormat;
+S318,DefaultDateTypeAdapter.java,72,synchronized (localFormat) {
+S319,DefaultDateTypeAdapter.java,73,String dateFormatAsString = enUsFormat.format(src);
+S320,DefaultDateTypeAdapter.java,74,return new JsonPrimitive(dateFormatAsString);
+S321,DefaultDateTypeAdapter.java,81,if (!(json instanceof JsonPrimitive)) {
+S322,DefaultDateTypeAdapter.java,84,Date date = deserializeToDate(json);
+S323,DefaultDateTypeAdapter.java,85,if (typeOfT == Date.class) {
+S324,DefaultDateTypeAdapter.java,86,return date;
+S325,DefaultDateTypeAdapter.java,87,} else if (typeOfT == Timestamp.class) {
+S326,DefaultDateTypeAdapter.java,88,return new Timestamp(date.getTime());
+S327,DefaultDateTypeAdapter.java,89,} else if (typeOfT == java.sql.Date.class) {
+S328,DefaultDateTypeAdapter.java,90,return new java.sql.Date(date.getTime());
+S329,DefaultDateTypeAdapter.java,97,synchronized (localFormat) {
+S330,DefaultDateTypeAdapter.java,99,return localFormat.parse(json.getAsString());
+S331,Excluder.java,50,"public final class Excluder implements TypeAdapterFactory, Cloneable {"
+S332,Excluder.java,52,public static final Excluder DEFAULT = new Excluder();
+S333,Excluder.java,54,private double version = IGNORE_VERSIONS;
+S334,Excluder.java,55,private int modifiers = Modifier.TRANSIENT | Modifier.STATIC;
+S335,Excluder.java,56,private boolean serializeInnerClasses = true;
+S336,Excluder.java,58,private List<ExclusionStrategy> serializationStrategies = Collections.emptyList();
+S337,Excluder.java,59,private List<ExclusionStrategy> deserializationStrategies = Collections.emptyList();
+S338,Excluder.java,63,return (Excluder) super.clone();
+S339,Excluder.java,85,Excluder result = clone();
+S340,Excluder.java,86,result.serializeInnerClasses = false;
+S341,Excluder.java,87,return result;
+S342,Excluder.java,91,Excluder result = clone();
+S343,Excluder.java,92,result.requireExpose = true;
+S344,Excluder.java,93,return result;
+S345,Excluder.java,112,Class<?> rawType = type.getRawType();
+S346,Excluder.java,113,"final boolean skipSerialize = excludeClass(rawType, true);"
+S347,Excluder.java,114,"final boolean skipDeserialize = excludeClass(rawType, false);"
+S348,Excluder.java,116,if (!skipSerialize && !skipDeserialize) {
+S349,Excluder.java,117,return null;
+S350,Excluder.java,120,return new TypeAdapter<T>() {
+S351,Excluder.java,133,if (skipSerialize) {
+S352,Excluder.java,134,out.nullValue();
+S353,Excluder.java,135,return;
+S354,Excluder.java,150,if ((modifiers & field.getModifiers()) != 0) {
+S355,Excluder.java,151,return true;
+S356,Excluder.java,154,if (version != Excluder.IGNORE_VERSIONS
+S357,Excluder.java,159,if (field.isSynthetic()) {
+S358,Excluder.java,160,return true;
+S359,Excluder.java,163,if (requireExpose) {
+S360,Excluder.java,164,Expose annotation = field.getAnnotation(Expose.class);
+S361,Excluder.java,165,if (annotation == null || (serialize ? !annotation.serialize() : !annotation.deserialize())) {
+S362,Excluder.java,166,return true;
+S363,Excluder.java,170,if (!serializeInnerClasses && isInnerClass(field.getType())) {
+S364,Excluder.java,174,if (isAnonymousOrLocal(field.getType())) {
+S365,Excluder.java,178,List<ExclusionStrategy> list = serialize ? serializationStrategies : deserializationStrategies;
+S366,Excluder.java,179,if (!list.isEmpty()) {
+S367,Excluder.java,188,return false;
+S368,Excluder.java,192,if (version != Excluder.IGNORE_VERSIONS
+S369,Excluder.java,197,if (!serializeInnerClasses && isInnerClass(clazz)) {
+S370,Excluder.java,198,return true;
+S371,Excluder.java,201,if (isAnonymousOrLocal(clazz)) {
+S372,Excluder.java,202,return true;
+S373,Excluder.java,205,List<ExclusionStrategy> list = serialize ? serializationStrategies : deserializationStrategies;
+S374,Excluder.java,206,for (ExclusionStrategy exclusionStrategy : list) {
+S375,Excluder.java,212,return false;
+S376,Excluder.java,216,return !Enum.class.isAssignableFrom(clazz)
+S377,Excluder.java,221,return clazz.isMemberClass() && !isStatic(clazz);
+S378,Excluder.java,225,return (clazz.getModifiers() & Modifier.STATIC) != 0;
+S379,FieldNamingPolicy.java,31,public enum FieldNamingPolicy implements FieldNamingStrategy {
+S380,FieldNamingPolicy.java,37,IDENTITY() {
+S381,FieldNamingPolicy.java,39,return f.getName();
+S382,FieldNamingPolicy.java,53,UPPER_CAMEL_CASE() {
+S383,FieldNamingPolicy.java,55,return upperCaseFirstLetter(f.getName());
+S384,FieldNamingPolicy.java,72,UPPER_CAMEL_CASE_WITH_SPACES() {
+S385,FieldNamingPolicy.java,74,"return upperCaseFirstLetter(separateCamelCase(f.getName(), "" ""));"
+S386,FieldNamingPolicy.java,90,LOWER_CASE_WITH_UNDERSCORES() {
+S387,FieldNamingPolicy.java,92,"return separateCamelCase(f.getName(), ""_"").toLowerCase(Locale.ENGLISH);"
+S388,FieldNamingPolicy.java,113,LOWER_CASE_WITH_DASHES() {
+S389,FieldNamingPolicy.java,115,"return separateCamelCase(f.getName(), ""-"").toLowerCase(Locale.ENGLISH);"
+S390,FieldNamingPolicy.java,124,StringBuilder translation = new StringBuilder();
+S391,FieldNamingPolicy.java,125,for (int i = 0; i < name.length(); i++) {
+S392,FieldNamingPolicy.java,126,char character = name.charAt(i);
+S393,FieldNamingPolicy.java,127,if (Character.isUpperCase(character) && translation.length() != 0) {
+S394,FieldNamingPolicy.java,128,translation.append(separator);
+S395,FieldNamingPolicy.java,130,translation.append(character);
+S396,FieldNamingPolicy.java,132,return translation.toString();
+S397,FieldNamingPolicy.java,139,StringBuilder fieldNameBuilder = new StringBuilder();
+S398,FieldNamingPolicy.java,140,int index = 0;
+S399,FieldNamingPolicy.java,141,char firstCharacter = name.charAt(index);
+S400,FieldNamingPolicy.java,143,while (index < name.length() - 1) {
+S401,FieldNamingPolicy.java,144,if (Character.isLetter(firstCharacter)) {
+S402,FieldNamingPolicy.java,145,break;
+S403,FieldNamingPolicy.java,152,if (index == name.length()) {
+S404,FieldNamingPolicy.java,156,if (!Character.isUpperCase(firstCharacter)) {
+S405,FieldNamingPolicy.java,157,"String modifiedTarget = modifyString(Character.toUpperCase(firstCharacter), name, ++index);"
+S406,FieldNamingPolicy.java,158,return fieldNameBuilder.append(modifiedTarget).toString();
+S407,FieldNamingPolicy.java,165,return (indexOfSubstring < srcString.length())
+S408,Gson.java,112,private static final TypeToken<?> NULL_KEY_SURROGATE = new TypeToken<Object>() {};
+S409,Gson.java,122,"private final ThreadLocal<Map<TypeToken<?>, FutureTypeAdapter<?>>> calls"
+S410,Gson.java,125,"private final Map<TypeToken<?>, TypeAdapter<?>> typeTokenCache = new ConcurrentHashMap<TypeToken<?>, TypeAdapter<?>>();"
+S411,Gson.java,171,"this(Excluder.DEFAULT, FieldNamingPolicy.IDENTITY,"
+S412,Gson.java,183,List<TypeAdapterFactory> typeAdapterFactories) {
+S413,Gson.java,184,this.constructorConstructor = new ConstructorConstructor(instanceCreators);
+S414,Gson.java,185,this.serializeNulls = serializeNulls;
+S415,Gson.java,186,this.generateNonExecutableJson = generateNonExecutableGson;
+S416,Gson.java,187,this.htmlSafe = htmlSafe;
+S417,Gson.java,188,this.prettyPrinting = prettyPrinting;
+S418,Gson.java,189,this.lenient = lenient;
+S419,Gson.java,191,List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
+S420,Gson.java,194,factories.add(TypeAdapters.JSON_ELEMENT_FACTORY);
+S421,Gson.java,195,factories.add(ObjectTypeAdapter.FACTORY);
+S422,Gson.java,198,factories.add(excluder);
+S423,Gson.java,201,factories.addAll(typeAdapterFactories);
+S424,Gson.java,204,factories.add(TypeAdapters.STRING_FACTORY);
+S425,Gson.java,205,factories.add(TypeAdapters.INTEGER_FACTORY);
+S426,Gson.java,206,factories.add(TypeAdapters.BOOLEAN_FACTORY);
+S427,Gson.java,207,factories.add(TypeAdapters.BYTE_FACTORY);
+S428,Gson.java,208,factories.add(TypeAdapters.SHORT_FACTORY);
+S429,Gson.java,209,TypeAdapter<Number> longAdapter = longAdapter(longSerializationPolicy);
+S430,Gson.java,210,"factories.add(TypeAdapters.newFactory(long.class, Long.class, longAdapter));"
+S431,Gson.java,211,"factories.add(TypeAdapters.newFactory(double.class, Double.class,"
+S432,Gson.java,213,"factories.add(TypeAdapters.newFactory(float.class, Float.class,"
+S433,Gson.java,215,factories.add(TypeAdapters.NUMBER_FACTORY);
+S434,Gson.java,216,factories.add(TypeAdapters.ATOMIC_INTEGER_FACTORY);
+S435,Gson.java,217,factories.add(TypeAdapters.ATOMIC_BOOLEAN_FACTORY);
+S436,Gson.java,218,"factories.add(TypeAdapters.newFactory(AtomicLong.class, atomicLongAdapter(longAdapter)));"
+S437,Gson.java,219,"factories.add(TypeAdapters.newFactory(AtomicLongArray.class, atomicLongArrayAdapter(longAdapter)));"
+S438,Gson.java,220,factories.add(TypeAdapters.ATOMIC_INTEGER_ARRAY_FACTORY);
+S439,Gson.java,221,factories.add(TypeAdapters.CHARACTER_FACTORY);
+S440,Gson.java,222,factories.add(TypeAdapters.STRING_BUILDER_FACTORY);
+S441,Gson.java,223,factories.add(TypeAdapters.STRING_BUFFER_FACTORY);
+S442,Gson.java,224,"factories.add(TypeAdapters.newFactory(BigDecimal.class, TypeAdapters.BIG_DECIMAL));"
+S443,Gson.java,225,"factories.add(TypeAdapters.newFactory(BigInteger.class, TypeAdapters.BIG_INTEGER));"
+S444,Gson.java,226,factories.add(TypeAdapters.URL_FACTORY);
+S445,Gson.java,227,factories.add(TypeAdapters.URI_FACTORY);
+S446,Gson.java,228,factories.add(TypeAdapters.UUID_FACTORY);
+S447,Gson.java,229,factories.add(TypeAdapters.CURRENCY_FACTORY);
+S448,Gson.java,230,factories.add(TypeAdapters.LOCALE_FACTORY);
+S449,Gson.java,231,factories.add(TypeAdapters.INET_ADDRESS_FACTORY);
+S450,Gson.java,232,factories.add(TypeAdapters.BIT_SET_FACTORY);
+S451,Gson.java,233,factories.add(DateTypeAdapter.FACTORY);
+S452,Gson.java,234,factories.add(TypeAdapters.CALENDAR_FACTORY);
+S453,Gson.java,235,factories.add(TimeTypeAdapter.FACTORY);
+S454,Gson.java,236,factories.add(SqlDateTypeAdapter.FACTORY);
+S455,Gson.java,237,factories.add(TypeAdapters.TIMESTAMP_FACTORY);
+S456,Gson.java,238,factories.add(ArrayTypeAdapter.FACTORY);
+S457,Gson.java,239,factories.add(TypeAdapters.CLASS_FACTORY);
+S458,Gson.java,242,factories.add(new CollectionTypeAdapterFactory(constructorConstructor));
+S459,Gson.java,243,"factories.add(new MapTypeAdapterFactory(constructorConstructor, complexMapKeySerialization));"
+S460,Gson.java,244,factories.add(new JsonAdapterAnnotationTypeAdapterFactory(constructorConstructor));
+S461,Gson.java,245,factories.add(TypeAdapters.ENUM_FACTORY);
+S462,Gson.java,246,factories.add(new ReflectiveTypeAdapterFactory(
+S463,Gson.java,249,this.factories = Collections.unmodifiableList(factories);
+S464,Gson.java,253,if (serializeSpecialFloatingPointValues) {
+S465,Gson.java,254,return TypeAdapters.DOUBLE;
+S466,Gson.java,256,return new TypeAdapter<Number>() {
+S467,Gson.java,258,if (in.peek() == JsonToken.NULL) {
+S468,Gson.java,259,in.nextNull();
+S469,Gson.java,260,return null;
+S470,Gson.java,262,return in.nextDouble();
+S471,Gson.java,265,if (value == null) {
+S472,Gson.java,266,out.nullValue();
+S473,Gson.java,267,return;
+S474,Gson.java,269,double doubleValue = value.doubleValue();
+S475,Gson.java,270,checkValidFloatingPoint(doubleValue);
+S476,Gson.java,271,out.value(value);
+S477,Gson.java,277,if (serializeSpecialFloatingPointValues) {
+S478,Gson.java,278,return TypeAdapters.FLOAT;
+S479,Gson.java,280,return new TypeAdapter<Number>() {
+S480,Gson.java,282,if (in.peek() == JsonToken.NULL) {
+S481,Gson.java,283,in.nextNull();
+S482,Gson.java,284,return null;
+S483,Gson.java,286,return (float) in.nextDouble();
+S484,Gson.java,289,if (value == null) {
+S485,Gson.java,290,out.nullValue();
+S486,Gson.java,291,return;
+S487,Gson.java,293,float floatValue = value.floatValue();
+S488,Gson.java,294,checkValidFloatingPoint(floatValue);
+S489,Gson.java,295,out.value(value);
+S490,Gson.java,301,if (Double.isNaN(value) || Double.isInfinite(value)) {
+S491,Gson.java,302,throw new IllegalArgumentException(value
+S492,Gson.java,309,if (longSerializationPolicy == LongSerializationPolicy.DEFAULT) {
+S493,Gson.java,310,return TypeAdapters.LONG;
+S494,Gson.java,312,return new TypeAdapter<Number>() {
+S495,Gson.java,314,if (in.peek() == JsonToken.NULL) {
+S496,Gson.java,318,return in.nextLong();
+S497,Gson.java,321,if (value == null) {
+S498,Gson.java,325,out.value(value.toString());
+S499,Gson.java,331,return new TypeAdapter<AtomicLong>() {
+S500,Gson.java,343,return new TypeAdapter<AtomicLongArray>() {
+S501,Gson.java,377,TypeAdapter<?> cached = typeTokenCache.get(type == null ? NULL_KEY_SURROGATE : type);
+S502,Gson.java,378,if (cached != null) {
+S503,Gson.java,379,return (TypeAdapter<T>) cached;
+S504,Gson.java,382,"Map<TypeToken<?>, FutureTypeAdapter<?>> threadCalls = calls.get();"
+S505,Gson.java,383,boolean requiresThreadLocalCleanup = false;
+S506,Gson.java,384,if (threadCalls == null) {
+S507,Gson.java,385,"threadCalls = new HashMap<TypeToken<?>, FutureTypeAdapter<?>>();"
+S508,Gson.java,386,calls.set(threadCalls);
+S509,Gson.java,387,requiresThreadLocalCleanup = true;
+S510,Gson.java,391,FutureTypeAdapter<T> ongoingCall = (FutureTypeAdapter<T>) threadCalls.get(type);
+S511,Gson.java,392,if (ongoingCall != null) {
+S512,Gson.java,393,return ongoingCall;
+S513,Gson.java,397,FutureTypeAdapter<T> call = new FutureTypeAdapter<T>();
+S514,Gson.java,398,"threadCalls.put(type, call);"
+S515,Gson.java,400,for (TypeAdapterFactory factory : factories) {
+S516,Gson.java,401,"TypeAdapter<T> candidate = factory.create(this, type);"
+S517,Gson.java,402,if (candidate != null) {
+S518,Gson.java,403,call.setDelegate(candidate);
+S519,Gson.java,404,"typeTokenCache.put(type, candidate);"
+S520,Gson.java,405,return candidate;
+S521,Gson.java,410,threadCalls.remove(type);
+S522,Gson.java,412,if (requiresThreadLocalCleanup) {
+S523,Gson.java,413,calls.remove();
+S524,Gson.java,469,boolean skipPastFound = false;
+S525,Gson.java,473,if (!factories.contains(skipPast)) skipPastFound = true;
+S526,Gson.java,475,for (TypeAdapterFactory factory : factories) {
+S527,Gson.java,476,if (!skipPastFound) {
+S528,Gson.java,477,if (factory == skipPast) {
+S529,Gson.java,478,skipPastFound = true;
+S530,Gson.java,483,"TypeAdapter<T> candidate = factory.create(this, type);"
+S531,Gson.java,484,if (candidate != null) {
+S532,Gson.java,485,return candidate;
+S533,Gson.java,498,return getAdapter(TypeToken.get(type));
+S534,Gson.java,515,if (src == null) {
+S535,Gson.java,518,"return toJsonTree(src, src.getClass());"
+S536,Gson.java,538,JsonTreeWriter writer = new JsonTreeWriter();
+S537,Gson.java,539,"toJson(src, typeOfSrc, writer);"
+S538,Gson.java,540,return writer.get();
+S539,Gson.java,557,if (src == null) {
+S540,Gson.java,560,"return toJson(src, src.getClass());"
+S541,Gson.java,579,StringWriter writer = new StringWriter();
+S542,Gson.java,580,"toJson(src, typeOfSrc, writer);"
+S543,Gson.java,581,return writer.toString();
+S544,Gson.java,624,JsonWriter jsonWriter = newJsonWriter(Streams.writerForAppendable(writer));
+S545,Gson.java,625,"toJson(src, typeOfSrc, jsonWriter);"
+S546,Gson.java,638,TypeAdapter<?> adapter = getAdapter(TypeToken.get(typeOfSrc));
+S547,Gson.java,639,boolean oldLenient = writer.isLenient();
+S548,Gson.java,640,writer.setLenient(true);
+S549,Gson.java,641,boolean oldHtmlSafe = writer.isHtmlSafe();
+S550,Gson.java,642,writer.setHtmlSafe(htmlSafe);
+S551,Gson.java,643,boolean oldSerializeNulls = writer.getSerializeNulls();
+S552,Gson.java,644,writer.setSerializeNulls(serializeNulls);
+S553,Gson.java,646,"((TypeAdapter<Object>) adapter).write(writer, src);"
+S554,Gson.java,650,writer.setLenient(oldLenient);
+S555,Gson.java,651,writer.setHtmlSafe(oldHtmlSafe);
+S556,Gson.java,652,writer.setSerializeNulls(oldSerializeNulls);
+S557,Gson.java,664,StringWriter writer = new StringWriter();
+S558,Gson.java,665,"toJson(jsonElement, writer);"
+S559,Gson.java,666,return writer.toString();
+S560,Gson.java,679,JsonWriter jsonWriter = newJsonWriter(Streams.writerForAppendable(writer));
+S561,Gson.java,680,"toJson(jsonElement, jsonWriter);"
+S562,Gson.java,690,if (generateNonExecutableJson) {
+S563,Gson.java,693,JsonWriter jsonWriter = new JsonWriter(writer);
+S564,Gson.java,694,if (prettyPrinting) {
+S565,Gson.java,695,"jsonWriter.setIndent(""  "");"
+S566,Gson.java,697,jsonWriter.setSerializeNulls(serializeNulls);
+S567,Gson.java,698,return jsonWriter;
+S568,Gson.java,705,JsonReader jsonReader = new JsonReader(reader);
+S569,Gson.java,706,jsonReader.setLenient(lenient);
+S570,Gson.java,707,return jsonReader;
+S571,Gson.java,715,boolean oldLenient = writer.isLenient();
+S572,Gson.java,716,writer.setLenient(true);
+S573,Gson.java,717,boolean oldHtmlSafe = writer.isHtmlSafe();
+S574,Gson.java,718,writer.setHtmlSafe(htmlSafe);
+S575,Gson.java,719,boolean oldSerializeNulls = writer.getSerializeNulls();
+S576,Gson.java,720,writer.setSerializeNulls(serializeNulls);
+S577,Gson.java,722,"Streams.write(jsonElement, writer);"
+S578,Gson.java,726,writer.setLenient(oldLenient);
+S579,Gson.java,727,writer.setHtmlSafe(oldHtmlSafe);
+S580,Gson.java,728,writer.setSerializeNulls(oldSerializeNulls);
+S581,Gson.java,750,"Object object = fromJson(json, (Type) classOfT);"
+S582,Gson.java,751,return Primitives.wrap(classOfT).cast(object);
+S583,Gson.java,774,if (json == null) {
+S584,Gson.java,775,return null;
+S585,Gson.java,777,StringReader reader = new StringReader(json);
+S586,Gson.java,778,"T target = (T) fromJson(reader, typeOfT);"
+S587,Gson.java,779,return target;
+S588,Gson.java,801,JsonReader jsonReader = newJsonReader(json);
+S589,Gson.java,802,"Object object = fromJson(jsonReader, classOfT);"
+S590,Gson.java,803,"assertFullConsumption(object, jsonReader);"
+S591,Gson.java,804,return Primitives.wrap(classOfT).cast(object);
+S592,Gson.java,828,JsonReader jsonReader = newJsonReader(json);
+S593,Gson.java,829,"T object = (T) fromJson(jsonReader, typeOfT);"
+S594,Gson.java,830,"assertFullConsumption(object, jsonReader);"
+S595,Gson.java,831,return object;
+S596,Gson.java,836,if (obj != null && reader.peek() != JsonToken.END_DOCUMENT) {
+S597,Gson.java,839,} catch (MalformedJsonException e) {
+S598,Gson.java,840,throw new JsonSyntaxException(e);
+S599,Gson.java,856,boolean isEmpty = true;
+S600,Gson.java,857,boolean oldLenient = reader.isLenient();
+S601,Gson.java,858,reader.setLenient(true);
+S602,Gson.java,860,reader.peek();
+S603,Gson.java,861,isEmpty = false;
+S604,Gson.java,862,TypeToken<T> typeToken = (TypeToken<T>) TypeToken.get(typeOfT);
+S605,Gson.java,863,TypeAdapter<T> typeAdapter = getAdapter(typeToken);
+S606,Gson.java,864,T object = typeAdapter.read(reader);
+S607,Gson.java,865,return object;
+S608,Gson.java,866,} catch (EOFException e) {
+S609,Gson.java,871,if (isEmpty) {
+S610,Gson.java,872,return null;
+S611,Gson.java,874,throw new JsonSyntaxException(e);
+S612,Gson.java,875,} catch (IllegalStateException e) {
+S613,Gson.java,876,throw new JsonSyntaxException(e);
+S614,Gson.java,881,reader.setLenient(oldLenient);
+S615,Gson.java,902,"Object object = fromJson(json, (Type) classOfT);"
+S616,Gson.java,903,return Primitives.wrap(classOfT).cast(object);
+S617,Gson.java,926,if (json == null) {
+S618,Gson.java,929,"return (T) fromJson(new JsonTreeReader(json), typeOfT);"
+S619,Gson.java,932,static class FutureTypeAdapter<T> extends TypeAdapter<T> {
+S620,Gson.java,936,if (delegate != null) {
+S621,Gson.java,939,delegate = typeAdapter;
+S622,Gson.java,950,if (delegate == null) {
+S623,Gson.java,953,"delegate.write(out, value);"
+S624,GsonBuilder.java,79,private Excluder excluder = Excluder.DEFAULT;
+S625,GsonBuilder.java,80,private LongSerializationPolicy longSerializationPolicy = LongSerializationPolicy.DEFAULT;
+S626,GsonBuilder.java,81,private FieldNamingStrategy fieldNamingPolicy = FieldNamingPolicy.IDENTITY;
+S627,GsonBuilder.java,82,"private final Map<Type, InstanceCreator<?>> instanceCreators"
+S628,GsonBuilder.java,84,private final List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
+S629,GsonBuilder.java,86,private final List<TypeAdapterFactory> hierarchyFactories = new ArrayList<TypeAdapterFactory>();
+S630,GsonBuilder.java,87,private boolean serializeNulls = DEFAULT_SERIALIZE_NULLS;
+S631,GsonBuilder.java,89,private int dateStyle = DateFormat.DEFAULT;
+S632,GsonBuilder.java,90,private int timeStyle = DateFormat.DEFAULT;
+S633,GsonBuilder.java,91,private boolean complexMapKeySerialization = DEFAULT_COMPLEX_MAP_KEYS;
+S634,GsonBuilder.java,92,private boolean serializeSpecialFloatingPointValues = DEFAULT_SPECIALIZE_FLOAT_VALUES;
+S635,GsonBuilder.java,93,private boolean escapeHtmlChars = DEFAULT_ESCAPE_HTML;
+S636,GsonBuilder.java,94,private boolean prettyPrinting = DEFAULT_PRETTY_PRINT;
+S637,GsonBuilder.java,95,private boolean generateNonExecutableJson = DEFAULT_JSON_NON_EXECUTABLE;
+S638,GsonBuilder.java,96,private boolean lenient = DEFAULT_LENIENT;
+S639,GsonBuilder.java,104,public GsonBuilder() {
+S640,GsonBuilder.java,156,excluder = excluder.excludeFieldsWithoutExposeAnnotation();
+S641,GsonBuilder.java,157,return this;
+S642,GsonBuilder.java,168,this.serializeNulls = true;
+S643,GsonBuilder.java,169,return this;
+S644,GsonBuilder.java,249,complexMapKeySerialization = true;
+S645,GsonBuilder.java,250,return this;
+S646,GsonBuilder.java,260,excluder = excluder.disableInnerClassSerialization();
+S647,GsonBuilder.java,261,return this;
+S648,GsonBuilder.java,273,this.longSerializationPolicy = serializationPolicy;
+S649,GsonBuilder.java,274,return this;
+S650,GsonBuilder.java,286,this.fieldNamingPolicy = namingConvention;
+S651,GsonBuilder.java,287,return this;
+S652,GsonBuilder.java,299,this.fieldNamingPolicy = fieldNamingStrategy;
+S653,GsonBuilder.java,300,return this;
+S654,GsonBuilder.java,361,prettyPrinting = true;
+S655,GsonBuilder.java,362,return this;
+S656,GsonBuilder.java,386,this.escapeHtmlChars = false;
+S657,GsonBuilder.java,387,return this;
+S658,GsonBuilder.java,408,this.datePattern = pattern;
+S659,GsonBuilder.java,409,return this;
+S660,GsonBuilder.java,427,this.dateStyle = style;
+S661,GsonBuilder.java,428,this.datePattern = null;
+S662,GsonBuilder.java,429,return this;
+S663,GsonBuilder.java,472,$Gson$Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?>
+S664,GsonBuilder.java,476,if (typeAdapter instanceof InstanceCreator<?>) {
+S665,GsonBuilder.java,477,"instanceCreators.put(type, (InstanceCreator) typeAdapter);"
+S666,GsonBuilder.java,479,if (typeAdapter instanceof JsonSerializer<?> || typeAdapter instanceof JsonDeserializer<?>) {
+S667,GsonBuilder.java,480,TypeToken<?> typeToken = TypeToken.get(type);
+S668,GsonBuilder.java,481,"factories.add(TreeTypeAdapter.newFactoryWithMatchRawType(typeToken, typeAdapter));"
+S669,GsonBuilder.java,483,if (typeAdapter instanceof TypeAdapter<?>) {
+S670,GsonBuilder.java,484,"factories.add(TypeAdapters.newFactory(TypeToken.get(type), (TypeAdapter)typeAdapter));"
+S671,GsonBuilder.java,486,return this;
+S672,GsonBuilder.java,518,$Gson$Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?>
+S673,GsonBuilder.java,521,if (typeAdapter instanceof JsonDeserializer || typeAdapter instanceof JsonSerializer) {
+S674,GsonBuilder.java,522,"hierarchyFactories.add(0,"
+S675,GsonBuilder.java,525,if (typeAdapter instanceof TypeAdapter<?>) {
+S676,GsonBuilder.java,528,return this;
+S677,GsonBuilder.java,552,this.serializeSpecialFloatingPointValues = true;
+S678,GsonBuilder.java,553,return this;
+S679,GsonBuilder.java,563,List<TypeAdapterFactory> factories = new ArrayList<TypeAdapterFactory>();
+S680,GsonBuilder.java,564,factories.addAll(this.factories);
+S681,GsonBuilder.java,565,Collections.reverse(factories);
+S682,GsonBuilder.java,566,factories.addAll(this.hierarchyFactories);
+S683,GsonBuilder.java,567,"addTypeAdaptersForDate(datePattern, dateStyle, timeStyle, factories);"
+S684,GsonBuilder.java,569,"return new Gson(excluder, fieldNamingPolicy, instanceCreators,"
+S685,GsonBuilder.java,578,"if (datePattern != null && !"""".equals(datePattern.trim())) {"
+S686,GsonBuilder.java,579,dateTypeAdapter = new DefaultDateTypeAdapter(datePattern);
+S687,GsonBuilder.java,580,} else if (dateStyle != DateFormat.DEFAULT && timeStyle != DateFormat.DEFAULT) {
+S688,GsonBuilder.java,583,return;
+S689,GsonBuilder.java,586,"factories.add(TreeTypeAdapter.newFactory(TypeToken.get(Date.class), dateTypeAdapter));"
+S690,GsonBuilder.java,587,"factories.add(TreeTypeAdapter.newFactory(TypeToken.get(Timestamp.class), dateTypeAdapter));"
+S691,GsonBuilder.java,588,"factories.add(TreeTypeAdapter.newFactory(TypeToken.get(java.sql.Date.class), dateTypeAdapter));"
+S692,JsonAdapterAnnotationTypeAdapterFactory.java,36,public JsonAdapterAnnotationTypeAdapterFactory(ConstructorConstructor constructorConstructor) {
+S693,JsonAdapterAnnotationTypeAdapterFactory.java,37,this.constructorConstructor = constructorConstructor;
+S694,JsonAdapterAnnotationTypeAdapterFactory.java,43,JsonAdapter annotation = targetType.getRawType().getAnnotation(JsonAdapter.class);
+S695,JsonAdapterAnnotationTypeAdapterFactory.java,44,if (annotation == null) {
+S696,JsonAdapterAnnotationTypeAdapterFactory.java,45,return null;
+S697,JsonAdapterAnnotationTypeAdapterFactory.java,47,"return (TypeAdapter<T>) getTypeAdapter(constructorConstructor, gson, targetType, annotation);"
+S698,JsonAdapterAnnotationTypeAdapterFactory.java,53,Class<?> value = annotation.value();
+S699,JsonAdapterAnnotationTypeAdapterFactory.java,55,if (TypeAdapter.class.isAssignableFrom(value)) {
+S700,JsonAdapterAnnotationTypeAdapterFactory.java,56,Class<TypeAdapter<?>> typeAdapterClass = (Class<TypeAdapter<?>>) value;
+S701,JsonAdapterAnnotationTypeAdapterFactory.java,57,typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterClass)).construct();
+S702,JsonAdapterAnnotationTypeAdapterFactory.java,58,} else if (TypeAdapterFactory.class.isAssignableFrom(value)) {
+S703,JsonAdapterAnnotationTypeAdapterFactory.java,59,Class<TypeAdapterFactory> typeAdapterFactory = (Class<TypeAdapterFactory>) value;
+S704,JsonAdapterAnnotationTypeAdapterFactory.java,60,typeAdapter = constructorConstructor.get(TypeToken.get(typeAdapterFactory))
+S705,JsonAdapterAnnotationTypeAdapterFactory.java,63,} else {
+S706,JsonAdapterAnnotationTypeAdapterFactory.java,67,if (typeAdapter != null) {
+S707,JsonAdapterAnnotationTypeAdapterFactory.java,68,typeAdapter = typeAdapter.nullSafe();
+S708,JsonAdapterAnnotationTypeAdapterFactory.java,70,return typeAdapter;
+S709,JsonArray.java,39,public JsonArray() {
+S710,JsonArray.java,40,elements = new ArrayList<JsonElement>();
+S711,JsonArray.java,94,if (element == null) {
+S712,JsonArray.java,97,elements.add(element);
+S713,JsonArray.java,171,return elements.iterator();
+S714,JsonArray.java,366,return (o == this) || (o instanceof JsonArray && ((JsonArray) o).elements.equals(elements));
+S715,JsonElement.java,33,public abstract class JsonElement {
+S716,JsonElement.java,46,return this instanceof JsonArray;
+S717,JsonElement.java,55,return this instanceof JsonObject;
+S718,JsonElement.java,64,return this instanceof JsonPrimitive;
+S719,JsonElement.java,74,return this instanceof JsonNull;
+S720,JsonElement.java,87,if (isJsonObject()) {
+S721,JsonElement.java,88,return (JsonObject) this;
+S722,JsonElement.java,103,if (isJsonArray()) {
+S723,JsonElement.java,104,return (JsonArray) this;
+S724,JsonElement.java,119,if (isJsonPrimitive()) {
+S725,JsonElement.java,120,return (JsonPrimitive) this;
+S726,JsonNull.java,32,public static final JsonNull INSTANCE = new JsonNull();
+S727,JsonNull.java,39,public JsonNull() {
+S728,JsonNull.java,61,return this == other || other instanceof JsonNull;
+S729,JsonObject.java,32,public final class JsonObject extends JsonElement {
+S730,JsonObject.java,33,"private final LinkedTreeMap<String, JsonElement> members ="
+S731,JsonObject.java,54,if (value == null) {
+S732,JsonObject.java,57,"members.put(property, value);"
+S733,JsonObject.java,79,"add(property, createJsonElement(value));"
+S734,JsonObject.java,90,"add(property, createJsonElement(value));"
+S735,JsonObject.java,122,return value == null ? JsonNull.INSTANCE : new JsonPrimitive(value);
+S736,JsonObject.java,132,return members.entrySet();
+S737,JsonObject.java,142,return members.containsKey(memberName);
+S738,JsonObject.java,152,return members.get(memberName);
+S739,JsonObject.java,187,return (o == this) || (o instanceof JsonObject
+S740,JsonParseException.java,42,super(msg);
+S741,JsonParseException.java,62,super(cause);
+S742,JsonParser.java,34,public final class JsonParser {
+S743,JsonParser.java,45,return parse(new StringReader(json));
+S744,JsonParser.java,58,JsonReader jsonReader = new JsonReader(json);
+S745,JsonParser.java,59,JsonElement element = parse(jsonReader);
+S746,JsonParser.java,60,if (!element.isJsonNull() && jsonReader.peek() != JsonToken.END_DOCUMENT) {
+S747,JsonParser.java,63,return element;
+S748,JsonParser.java,81,boolean lenient = json.isLenient();
+S749,JsonParser.java,82,json.setLenient(true);
+S750,JsonParser.java,84,return Streams.parse(json);
+S751,JsonParser.java,90,json.setLenient(lenient);
+S752,JsonPrimitive.java,35,"private static final Class<?>[] PRIMITIVE_TYPES = { int.class, long.class, short.class,"
+S753,JsonPrimitive.java,46,public JsonPrimitive(Boolean bool) {
+S754,JsonPrimitive.java,47,setValue(bool);
+S755,JsonPrimitive.java,55,public JsonPrimitive(Number number) {
+S756,JsonPrimitive.java,56,setValue(number);
+S757,JsonPrimitive.java,64,public JsonPrimitive(String string) {
+S758,JsonPrimitive.java,65,setValue(string);
+S759,JsonPrimitive.java,74,public JsonPrimitive(Character c) {
+S760,JsonPrimitive.java,75,setValue(c);
+S761,JsonPrimitive.java,84,JsonPrimitive(Object primitive) {
+S762,JsonPrimitive.java,85,setValue(primitive);
+S763,JsonPrimitive.java,94,if (primitive instanceof Character) {
+S764,JsonPrimitive.java,97,char c = ((Character) primitive).charValue();
+S765,JsonPrimitive.java,98,this.value = String.valueOf(c);
+S766,JsonPrimitive.java,99,} else {
+S767,JsonPrimitive.java,100,$Gson$Preconditions.checkArgument(primitive instanceof Number
+S768,JsonPrimitive.java,102,this.value = primitive;
+S769,JsonPrimitive.java,112,return value instanceof Boolean;
+S770,JsonPrimitive.java,122,return (Boolean) value;
+S771,JsonPrimitive.java,132,if (isBoolean()) {
+S772,JsonPrimitive.java,133,return getAsBooleanWrapper().booleanValue();
+S773,JsonPrimitive.java,146,return value instanceof Number;
+S774,JsonPrimitive.java,157,return value instanceof String ? new LazilyParsedNumber((String) value) : (Number) value;
+S775,JsonPrimitive.java,166,return value instanceof String;
+S776,JsonPrimitive.java,176,if (isNumber()) {
+S777,JsonPrimitive.java,178,} else if (isBoolean()) {
+S778,JsonPrimitive.java,181,return (String) value;
+S779,JsonPrimitive.java,193,return isNumber() ? getAsNumber().doubleValue() : Double.parseDouble(getAsString());
+S780,JsonPrimitive.java,238,return isNumber() ? getAsNumber().longValue() : Long.parseLong(getAsString());
+S781,JsonPrimitive.java,260,return isNumber() ? getAsNumber().intValue() : Integer.parseInt(getAsString());
+S782,JsonPrimitive.java,274,if (target instanceof String) {
+S783,JsonPrimitive.java,275,return true;
+S784,JsonPrimitive.java,278,Class<?> classOfPrimitive = target.getClass();
+S785,JsonPrimitive.java,279,for (Class<?> standardPrimitive : PRIMITIVE_TYPES) {
+S786,JsonPrimitive.java,280,if (standardPrimitive.isAssignableFrom(classOfPrimitive)) {
+S787,JsonPrimitive.java,281,return true;
+S788,JsonPrimitive.java,306,if (this == obj) {
+S789,JsonPrimitive.java,309,if (obj == null || getClass() != obj.getClass()) {
+S790,JsonPrimitive.java,312,JsonPrimitive other = (JsonPrimitive)obj;
+S791,JsonPrimitive.java,313,if (value == null) {
+S792,JsonPrimitive.java,316,if (isIntegral(this) && isIntegral(other)) {
+S793,JsonPrimitive.java,317,return getAsNumber().longValue() == other.getAsNumber().longValue();
+S794,JsonPrimitive.java,319,if (value instanceof Number && other.value instanceof Number) {
+S795,JsonPrimitive.java,320,double a = getAsNumber().doubleValue();
+S796,JsonPrimitive.java,323,double b = other.getAsNumber().doubleValue();
+S797,JsonPrimitive.java,324,return a == b || (Double.isNaN(a) && Double.isNaN(b));
+S798,JsonPrimitive.java,326,return value.equals(other.value);
+S799,JsonPrimitive.java,334,if (primitive.value instanceof Number) {
+S800,JsonPrimitive.java,335,Number number = (Number) primitive.value;
+S801,JsonPrimitive.java,336,return number instanceof BigInteger || number instanceof Long || number instanceof Integer
+S802,JsonPrimitive.java,339,return false;
+S803,JsonReader.java,192,"private static final char[] NON_EXECUTE_PREFIX = "")]}'\n"".toCharArray();"
+S804,JsonReader.java,230,private boolean lenient = false;
+S805,JsonReader.java,238,private final char[] buffer = new char[1024];
+S806,JsonReader.java,239,private int pos = 0;
+S807,JsonReader.java,240,private int limit = 0;
+S808,JsonReader.java,242,private int lineNumber = 0;
+S809,JsonReader.java,243,private int lineStart = 0;
+S810,JsonReader.java,245,int peeked = PEEKED_NONE;
+S811,JsonReader.java,269,private int[] stack = new int[32];
+S812,JsonReader.java,270,private int stackSize = 0;
+S813,JsonReader.java,272,stack[stackSize++] = JsonScope.EMPTY_DOCUMENT;
+S814,JsonReader.java,283,private String[] pathNames = new String[32];
+S815,JsonReader.java,284,private int[] pathIndices = new int[32];
+S816,JsonReader.java,289,public JsonReader(Reader in) {
+S817,JsonReader.java,290,if (in == null) {
+S818,JsonReader.java,293,this.in = in;
+S819,JsonReader.java,326,this.lenient = lenient;
+S820,JsonReader.java,333,return lenient;
+S821,JsonReader.java,341,int p = peeked;
+S822,JsonReader.java,342,if (p == PEEKED_NONE) {
+S823,JsonReader.java,345,if (p == PEEKED_BEGIN_ARRAY) {
+S824,JsonReader.java,346,push(JsonScope.EMPTY_ARRAY);
+S825,JsonReader.java,347,pathIndices[stackSize - 1] = 0;
+S826,JsonReader.java,348,peeked = PEEKED_NONE;
+S827,JsonReader.java,360,int p = peeked;
+S828,JsonReader.java,361,if (p == PEEKED_NONE) {
+S829,JsonReader.java,364,if (p == PEEKED_END_ARRAY) {
+S830,JsonReader.java,365,stackSize--;
+S831,JsonReader.java,366,pathIndices[stackSize - 1]++;
+S832,JsonReader.java,367,peeked = PEEKED_NONE;
+S833,JsonReader.java,379,int p = peeked;
+S834,JsonReader.java,380,if (p == PEEKED_NONE) {
+S835,JsonReader.java,383,if (p == PEEKED_BEGIN_OBJECT) {
+S836,JsonReader.java,384,push(JsonScope.EMPTY_OBJECT);
+S837,JsonReader.java,385,peeked = PEEKED_NONE;
+S838,JsonReader.java,387,"throw new IllegalStateException(""Expected BEGIN_OBJECT but was "" + peek()"
+S839,JsonReader.java,397,int p = peeked;
+S840,JsonReader.java,398,if (p == PEEKED_NONE) {
+S841,JsonReader.java,399,p = doPeek();
+S842,JsonReader.java,401,if (p == PEEKED_END_OBJECT) {
+S843,JsonReader.java,402,stackSize--;
+S844,JsonReader.java,403,pathNames[stackSize] = null; // Free the last path name so that it can be garbage collected!
+S845,JsonReader.java,404,pathIndices[stackSize - 1]++;
+S846,JsonReader.java,405,peeked = PEEKED_NONE;
+S847,JsonReader.java,416,int p = peeked;
+S848,JsonReader.java,417,if (p == PEEKED_NONE) {
+S849,JsonReader.java,418,p = doPeek();
+S850,JsonReader.java,420,return p != PEEKED_END_OBJECT && p != PEEKED_END_ARRAY;
+S851,JsonReader.java,427,int p = peeked;
+S852,JsonReader.java,428,if (p == PEEKED_NONE) {
+S853,JsonReader.java,429,p = doPeek();
+S854,JsonReader.java,432,switch (p) {
+S855,JsonReader.java,434,return JsonToken.BEGIN_OBJECT;
+S856,JsonReader.java,436,return JsonToken.END_OBJECT;
+S857,JsonReader.java,438,return JsonToken.BEGIN_ARRAY;
+S858,JsonReader.java,440,return JsonToken.END_ARRAY;
+S859,JsonReader.java,444,return JsonToken.NAME;
+S860,JsonReader.java,447,return JsonToken.BOOLEAN;
+S861,JsonReader.java,449,return JsonToken.NULL;
+S862,JsonReader.java,454,return JsonToken.STRING;
+S863,JsonReader.java,457,return JsonToken.NUMBER;
+S864,JsonReader.java,459,return JsonToken.END_DOCUMENT;
+S865,JsonReader.java,466,int peekStack = stack[stackSize - 1];
+S866,JsonReader.java,467,if (peekStack == JsonScope.EMPTY_ARRAY) {
+S867,JsonReader.java,468,stack[stackSize - 1] = JsonScope.NONEMPTY_ARRAY;
+S868,JsonReader.java,469,} else if (peekStack == JsonScope.NONEMPTY_ARRAY) {
+S869,JsonReader.java,471,int c = nextNonWhitespace(true);
+S870,JsonReader.java,472,switch (c) {
+S871,JsonReader.java,474,return peeked = PEEKED_END_ARRAY;
+S872,JsonReader.java,478,break;
+S873,JsonReader.java,482,} else if (peekStack == JsonScope.EMPTY_OBJECT || peekStack == JsonScope.NONEMPTY_OBJECT) {
+S874,JsonReader.java,483,stack[stackSize - 1] = JsonScope.DANGLING_NAME;
+S875,JsonReader.java,485,if (peekStack == JsonScope.NONEMPTY_OBJECT) {
+S876,JsonReader.java,486,int c = nextNonWhitespace(true);
+S877,JsonReader.java,487,switch (c) {
+S878,JsonReader.java,489,return peeked = PEEKED_END_OBJECT;
+S879,JsonReader.java,493,break;
+S880,JsonReader.java,498,int c = nextNonWhitespace(true);
+S881,JsonReader.java,499,switch (c) {
+S882,JsonReader.java,501,return peeked = PEEKED_DOUBLE_QUOTED_NAME;
+S883,JsonReader.java,503,checkLenient();
+S884,JsonReader.java,504,return peeked = PEEKED_SINGLE_QUOTED_NAME;
+S885,JsonReader.java,506,if (peekStack != JsonScope.NONEMPTY_OBJECT) {
+S886,JsonReader.java,507,return peeked = PEEKED_END_OBJECT;
+S887,JsonReader.java,512,checkLenient();
+S888,JsonReader.java,513,pos--; // Don't consume the first character in an unquoted string.
+S889,JsonReader.java,514,if (isLiteral((char) c)) {
+S890,JsonReader.java,515,return peeked = PEEKED_UNQUOTED_NAME;
+S891,JsonReader.java,520,} else if (peekStack == JsonScope.DANGLING_NAME) {
+S892,JsonReader.java,521,stack[stackSize - 1] = JsonScope.NONEMPTY_OBJECT;
+S893,JsonReader.java,523,int c = nextNonWhitespace(true);
+S894,JsonReader.java,524,switch (c) {
+S895,JsonReader.java,526,break;
+S896,JsonReader.java,528,checkLenient();
+S897,JsonReader.java,529,if ((pos < limit || fillBuffer(1)) && buffer[pos] == '>') {
+S898,JsonReader.java,536,} else if (peekStack == JsonScope.EMPTY_DOCUMENT) {
+S899,JsonReader.java,537,if (lenient) {
+S900,JsonReader.java,538,consumeNonExecutePrefix();
+S901,JsonReader.java,540,stack[stackSize - 1] = JsonScope.NONEMPTY_DOCUMENT;
+S902,JsonReader.java,541,} else if (peekStack == JsonScope.NONEMPTY_DOCUMENT) {
+S903,JsonReader.java,542,int c = nextNonWhitespace(false);
+S904,JsonReader.java,543,if (c == -1) {
+S905,JsonReader.java,544,return peeked = PEEKED_EOF;
+S906,JsonReader.java,546,checkLenient();
+S907,JsonReader.java,553,int c = nextNonWhitespace(true);
+S908,JsonReader.java,554,switch (c) {
+S909,JsonReader.java,556,if (peekStack == JsonScope.EMPTY_ARRAY) {
+S910,JsonReader.java,557,return peeked = PEEKED_END_ARRAY;
+S911,JsonReader.java,571,checkLenient();
+S912,JsonReader.java,572,return peeked = PEEKED_SINGLE_QUOTED;
+S913,JsonReader.java,574,return peeked = PEEKED_DOUBLE_QUOTED;
+S914,JsonReader.java,576,return peeked = PEEKED_BEGIN_ARRAY;
+S915,JsonReader.java,578,return peeked = PEEKED_BEGIN_OBJECT;
+S916,JsonReader.java,580,pos--; // Don't consume the first character in a literal value.
+S917,JsonReader.java,583,int result = peekKeyword();
+S918,JsonReader.java,584,if (result != PEEKED_NONE) {
+S919,JsonReader.java,585,return result;
+S920,JsonReader.java,588,result = peekNumber();
+S921,JsonReader.java,589,if (result != PEEKED_NONE) {
+S922,JsonReader.java,590,return result;
+S923,JsonReader.java,593,if (!isLiteral(buffer[pos])) {
+S924,JsonReader.java,597,checkLenient();
+S925,JsonReader.java,598,return peeked = PEEKED_UNQUOTED;
+S926,JsonReader.java,603,char c = buffer[pos];
+S927,JsonReader.java,607,if (c == 't' || c == 'T') {
+S928,JsonReader.java,608,"keyword = ""true"";"
+S929,JsonReader.java,609,"keywordUpper = ""TRUE"";"
+S930,JsonReader.java,610,peeking = PEEKED_TRUE;
+S931,JsonReader.java,611,} else if (c == 'f' || c == 'F') {
+S932,JsonReader.java,612,"keyword = ""false"";"
+S933,JsonReader.java,613,"keywordUpper = ""FALSE"";"
+S934,JsonReader.java,614,peeking = PEEKED_FALSE;
+S935,JsonReader.java,615,} else if (c == 'n' || c == 'N') {
+S936,JsonReader.java,616,"keyword = ""null"";"
+S937,JsonReader.java,617,"keywordUpper = ""NULL"";"
+S938,JsonReader.java,618,peeking = PEEKED_NULL;
+S939,JsonReader.java,620,return PEEKED_NONE;
+S940,JsonReader.java,624,int length = keyword.length();
+S941,JsonReader.java,625,for (int i = 1; i < length; i++) {
+S942,JsonReader.java,626,if (pos + i >= limit && !fillBuffer(i + 1)) {
+S943,JsonReader.java,629,c = buffer[pos + i];
+S944,JsonReader.java,630,if (c != keyword.charAt(i) && c != keywordUpper.charAt(i)) {
+S945,JsonReader.java,631,return PEEKED_NONE;
+S946,JsonReader.java,635,if ((pos + length < limit || fillBuffer(length + 1))
+S947,JsonReader.java,641,pos += length;
+S948,JsonReader.java,642,return peeked = peeking;
+S949,JsonReader.java,647,char[] buffer = this.buffer;
+S950,JsonReader.java,648,int p = pos;
+S951,JsonReader.java,649,int l = limit;
+S952,JsonReader.java,651,long value = 0; // Negative to accommodate Long.MIN_VALUE more easily.
+S953,JsonReader.java,652,boolean negative = false;
+S954,JsonReader.java,653,boolean fitsInLong = true;
+S955,JsonReader.java,654,int last = NUMBER_CHAR_NONE;
+S956,JsonReader.java,656,int i = 0;
+S957,JsonReader.java,659,for (; true; i++) {
+S958,JsonReader.java,660,if (p + i == l) {
+S959,JsonReader.java,661,if (i == buffer.length) {
+S960,JsonReader.java,666,if (!fillBuffer(i + 1)) {
+S961,JsonReader.java,667,break;
+S962,JsonReader.java,673,char c = buffer[p + i];
+S963,JsonReader.java,674,switch (c) {
+S964,JsonReader.java,676,if (last == NUMBER_CHAR_NONE) {
+S965,JsonReader.java,677,negative = true;
+S966,JsonReader.java,678,last = NUMBER_CHAR_SIGN;
+S967,JsonReader.java,679,continue;
+S968,JsonReader.java,680,} else if (last == NUMBER_CHAR_EXP_E) {
+S969,JsonReader.java,681,last = NUMBER_CHAR_EXP_SIGN;
+S970,JsonReader.java,682,continue;
+S971,JsonReader.java,687,if (last == NUMBER_CHAR_EXP_E) {
+S972,JsonReader.java,688,last = NUMBER_CHAR_EXP_SIGN;
+S973,JsonReader.java,689,continue;
+S974,JsonReader.java,695,if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT) {
+S975,JsonReader.java,696,last = NUMBER_CHAR_EXP_E;
+S976,JsonReader.java,697,continue;
+S977,JsonReader.java,702,if (last == NUMBER_CHAR_DIGIT) {
+S978,JsonReader.java,703,last = NUMBER_CHAR_DECIMAL;
+S979,JsonReader.java,704,continue;
+S980,JsonReader.java,706,return PEEKED_NONE;
+S981,JsonReader.java,709,if (c < '0' || c > '9') {
+S982,JsonReader.java,710,if (!isLiteral(c)) {
+S983,JsonReader.java,711,break charactersOfNumber;
+S984,JsonReader.java,713,return PEEKED_NONE;
+S985,JsonReader.java,715,if (last == NUMBER_CHAR_SIGN || last == NUMBER_CHAR_NONE) {
+S986,JsonReader.java,716,value = -(c - '0');
+S987,JsonReader.java,717,last = NUMBER_CHAR_DIGIT;
+S988,JsonReader.java,718,} else if (last == NUMBER_CHAR_DIGIT) {
+S989,JsonReader.java,719,if (value == 0) {
+S990,JsonReader.java,722,long newValue = value * 10 - (c - '0');
+S991,JsonReader.java,723,fitsInLong &= value > MIN_INCOMPLETE_INTEGER
+S992,JsonReader.java,725,value = newValue;
+S993,JsonReader.java,726,} else if (last == NUMBER_CHAR_DECIMAL) {
+S994,JsonReader.java,727,last = NUMBER_CHAR_FRACTION_DIGIT;
+S995,JsonReader.java,728,} else if (last == NUMBER_CHAR_EXP_E || last == NUMBER_CHAR_EXP_SIGN) {
+S996,JsonReader.java,729,last = NUMBER_CHAR_EXP_DIGIT;
+S997,JsonReader.java,735,if (last == NUMBER_CHAR_DIGIT && fitsInLong && (value != Long.MIN_VALUE || negative)) {
+S998,JsonReader.java,736,peekedLong = negative ? value : -value;
+S999,JsonReader.java,737,pos += i;
+S1000,JsonReader.java,738,return peeked = PEEKED_LONG;
+S1001,JsonReader.java,739,} else if (last == NUMBER_CHAR_DIGIT || last == NUMBER_CHAR_FRACTION_DIGIT
+S1002,JsonReader.java,741,peekedNumberLength = i;
+S1003,JsonReader.java,742,return peeked = PEEKED_NUMBER;
+S1004,JsonReader.java,749,switch (c) {
+S1005,JsonReader.java,767,return false;
+S1006,JsonReader.java,769,return true;
+S1007,JsonReader.java,781,int p = peeked;
+S1008,JsonReader.java,782,if (p == PEEKED_NONE) {
+S1009,JsonReader.java,783,p = doPeek();
+S1010,JsonReader.java,786,if (p == PEEKED_UNQUOTED_NAME) {
+S1011,JsonReader.java,787,result = nextUnquotedValue();
+S1012,JsonReader.java,788,} else if (p == PEEKED_SINGLE_QUOTED_NAME) {
+S1013,JsonReader.java,789,result = nextQuotedValue('\'');
+S1014,JsonReader.java,790,} else if (p == PEEKED_DOUBLE_QUOTED_NAME) {
+S1015,JsonReader.java,791,"result = nextQuotedValue('""');"
+S1016,JsonReader.java,796,peeked = PEEKED_NONE;
+S1017,JsonReader.java,797,pathNames[stackSize - 1] = result;
+S1018,JsonReader.java,798,return result;
+S1019,JsonReader.java,810,int p = peeked;
+S1020,JsonReader.java,811,if (p == PEEKED_NONE) {
+S1021,JsonReader.java,812,p = doPeek();
+S1022,JsonReader.java,815,if (p == PEEKED_UNQUOTED) {
+S1023,JsonReader.java,816,result = nextUnquotedValue();
+S1024,JsonReader.java,817,} else if (p == PEEKED_SINGLE_QUOTED) {
+S1025,JsonReader.java,818,result = nextQuotedValue('\'');
+S1026,JsonReader.java,819,} else if (p == PEEKED_DOUBLE_QUOTED) {
+S1027,JsonReader.java,820,"result = nextQuotedValue('""');"
+S1028,JsonReader.java,821,} else if (p == PEEKED_BUFFERED) {
+S1029,JsonReader.java,824,} else if (p == PEEKED_LONG) {
+S1030,JsonReader.java,825,result = Long.toString(peekedLong);
+S1031,JsonReader.java,826,} else if (p == PEEKED_NUMBER) {
+S1032,JsonReader.java,827,"result = new String(buffer, pos, peekedNumberLength);"
+S1033,JsonReader.java,828,pos += peekedNumberLength;
+S1034,JsonReader.java,830,"throw new IllegalStateException(""Expected a string but was "" + peek()"
+S1035,JsonReader.java,833,peeked = PEEKED_NONE;
+S1036,JsonReader.java,834,pathIndices[stackSize - 1]++;
+S1037,JsonReader.java,835,return result;
+S1038,JsonReader.java,846,int p = peeked;
+S1039,JsonReader.java,847,if (p == PEEKED_NONE) {
+S1040,JsonReader.java,850,if (p == PEEKED_TRUE) {
+S1041,JsonReader.java,851,peeked = PEEKED_NONE;
+S1042,JsonReader.java,852,pathIndices[stackSize - 1]++;
+S1043,JsonReader.java,853,return true;
+S1044,JsonReader.java,854,} else if (p == PEEKED_FALSE) {
+S1045,JsonReader.java,855,peeked = PEEKED_NONE;
+S1046,JsonReader.java,856,pathIndices[stackSize - 1]++;
+S1047,JsonReader.java,857,return false;
+S1048,JsonReader.java,859,"throw new IllegalStateException(""Expected a boolean but was "" + peek()"
+S1049,JsonReader.java,871,int p = peeked;
+S1050,JsonReader.java,872,if (p == PEEKED_NONE) {
+S1051,JsonReader.java,875,if (p == PEEKED_NULL) {
+S1052,JsonReader.java,876,peeked = PEEKED_NONE;
+S1053,JsonReader.java,877,pathIndices[stackSize - 1]++;
+S1054,JsonReader.java,894,int p = peeked;
+S1055,JsonReader.java,895,if (p == PEEKED_NONE) {
+S1056,JsonReader.java,899,if (p == PEEKED_LONG) {
+S1057,JsonReader.java,900,peeked = PEEKED_NONE;
+S1058,JsonReader.java,901,pathIndices[stackSize - 1]++;
+S1059,JsonReader.java,902,return (double) peekedLong;
+S1060,JsonReader.java,905,if (p == PEEKED_NUMBER) {
+S1061,JsonReader.java,906,"peekedString = new String(buffer, pos, peekedNumberLength);"
+S1062,JsonReader.java,907,pos += peekedNumberLength;
+S1063,JsonReader.java,908,} else if (p == PEEKED_SINGLE_QUOTED || p == PEEKED_DOUBLE_QUOTED) {
+S1064,JsonReader.java,909,"peekedString = nextQuotedValue(p == PEEKED_SINGLE_QUOTED ? '\'' : '""');"
+S1065,JsonReader.java,910,} else if (p == PEEKED_UNQUOTED) {
+S1066,JsonReader.java,911,peekedString = nextUnquotedValue();
+S1067,JsonReader.java,912,} else if (p != PEEKED_BUFFERED) {
+S1068,JsonReader.java,913,"throw new IllegalStateException(""Expected a double but was "" + peek()"
+S1069,JsonReader.java,917,peeked = PEEKED_BUFFERED;
+S1070,JsonReader.java,918,double result = Double.parseDouble(peekedString); // don't catch this NumberFormatException.
+S1071,JsonReader.java,919,if (!lenient && (Double.isNaN(result) || Double.isInfinite(result))) {
+S1072,JsonReader.java,923,peekedString = null;
+S1073,JsonReader.java,924,peeked = PEEKED_NONE;
+S1074,JsonReader.java,925,pathIndices[stackSize - 1]++;
+S1075,JsonReader.java,926,return result;
+S1076,JsonReader.java,940,int p = peeked;
+S1077,JsonReader.java,941,if (p == PEEKED_NONE) {
+S1078,JsonReader.java,945,if (p == PEEKED_LONG) {
+S1079,JsonReader.java,946,peeked = PEEKED_NONE;
+S1080,JsonReader.java,947,pathIndices[stackSize - 1]++;
+S1081,JsonReader.java,948,return peekedLong;
+S1082,JsonReader.java,951,if (p == PEEKED_NUMBER) {
+S1083,JsonReader.java,952,"peekedString = new String(buffer, pos, peekedNumberLength);"
+S1084,JsonReader.java,953,pos += peekedNumberLength;
+S1085,JsonReader.java,954,} else if (p == PEEKED_SINGLE_QUOTED || p == PEEKED_DOUBLE_QUOTED || p == PEEKED_UNQUOTED) {
+S1086,JsonReader.java,955,if (p == PEEKED_UNQUOTED) {
+S1087,JsonReader.java,956,peekedString = nextUnquotedValue();
+S1088,JsonReader.java,958,"peekedString = nextQuotedValue(p == PEEKED_SINGLE_QUOTED ? '\'' : '""');"
+S1089,JsonReader.java,961,long result = Long.parseLong(peekedString);
+S1090,JsonReader.java,962,peeked = PEEKED_NONE;
+S1091,JsonReader.java,963,pathIndices[stackSize - 1]++;
+S1092,JsonReader.java,964,return result;
+S1093,JsonReader.java,969,"throw new IllegalStateException(""Expected a long but was "" + peek()"
+S1094,JsonReader.java,973,peeked = PEEKED_BUFFERED;
+S1095,JsonReader.java,974,double asDouble = Double.parseDouble(peekedString); // don't catch this NumberFormatException.
+S1096,JsonReader.java,975,long result = (long) asDouble;
+S1097,JsonReader.java,976,if (result != asDouble) { // Make sure no precision was lost casting to 'long'.
+S1098,JsonReader.java,977,"throw new NumberFormatException(""Expected a long but was "" + peekedString"
+S1099,JsonReader.java,980,peekedString = null;
+S1100,JsonReader.java,981,peeked = PEEKED_NONE;
+S1101,JsonReader.java,982,pathIndices[stackSize - 1]++;
+S1102,JsonReader.java,983,return result;
+S1103,JsonReader.java,998,char[] buffer = this.buffer;
+S1104,JsonReader.java,999,StringBuilder builder = new StringBuilder();
+S1105,JsonReader.java,1001,int p = pos;
+S1106,JsonReader.java,1002,int l = limit;
+S1107,JsonReader.java,1004,int start = p;
+S1108,JsonReader.java,1005,while (p < l) {
+S1109,JsonReader.java,1006,int c = buffer[p++];
+S1110,JsonReader.java,1008,if (c == quote) {
+S1111,JsonReader.java,1009,pos = p;
+S1112,JsonReader.java,1010,"builder.append(buffer, start, p - start - 1);"
+S1113,JsonReader.java,1011,return builder.toString();
+S1114,JsonReader.java,1012,} else if (c == '\\') {
+S1115,JsonReader.java,1013,pos = p;
+S1116,JsonReader.java,1014,"builder.append(buffer, start, p - start - 1);"
+S1117,JsonReader.java,1015,builder.append(readEscapeCharacter());
+S1118,JsonReader.java,1016,p = pos;
+S1119,JsonReader.java,1017,l = limit;
+S1120,JsonReader.java,1018,start = p;
+S1121,JsonReader.java,1019,} else if (c == '\n') {
+S1122,JsonReader.java,1038,StringBuilder builder = null;
+S1123,JsonReader.java,1039,int i = 0;
+S1124,JsonReader.java,1043,for (; pos + i < limit; i++) {
+S1125,JsonReader.java,1044,switch (buffer[pos + i]) {
+S1126,JsonReader.java,1062,break findNonLiteralCharacter;
+S1127,JsonReader.java,1067,if (i < buffer.length) {
+S1128,JsonReader.java,1068,if (fillBuffer(i + 1)) {
+S1129,JsonReader.java,1088,if (builder == null) {
+S1130,JsonReader.java,1089,"result = new String(buffer, pos, i);"
+S1131,JsonReader.java,1094,pos += i;
+S1132,JsonReader.java,1095,return result;
+S1133,JsonReader.java,1100,char[] buffer = this.buffer;
+S1134,JsonReader.java,1102,int p = pos;
+S1135,JsonReader.java,1103,int l = limit;
+S1136,JsonReader.java,1105,while (p < l) {
+S1137,JsonReader.java,1106,int c = buffer[p++];
+S1138,JsonReader.java,1107,if (c == quote) {
+S1139,JsonReader.java,1108,pos = p;
+S1140,JsonReader.java,1109,return;
+S1141,JsonReader.java,1110,} else if (c == '\\') {
+S1142,JsonReader.java,1115,} else if (c == '\n') {
+S1143,JsonReader.java,1166,int p = peeked;
+S1144,JsonReader.java,1167,if (p == PEEKED_NONE) {
+S1145,JsonReader.java,1168,p = doPeek();
+S1146,JsonReader.java,1172,if (p == PEEKED_LONG) {
+S1147,JsonReader.java,1173,result = (int) peekedLong;
+S1148,JsonReader.java,1174,if (peekedLong != result) { // Make sure no precision was lost casting to 'int'.
+S1149,JsonReader.java,1178,peeked = PEEKED_NONE;
+S1150,JsonReader.java,1179,pathIndices[stackSize - 1]++;
+S1151,JsonReader.java,1180,return result;
+S1152,JsonReader.java,1183,if (p == PEEKED_NUMBER) {
+S1153,JsonReader.java,1184,"peekedString = new String(buffer, pos, peekedNumberLength);"
+S1154,JsonReader.java,1185,pos += peekedNumberLength;
+S1155,JsonReader.java,1186,} else if (p == PEEKED_SINGLE_QUOTED || p == PEEKED_DOUBLE_QUOTED || p == PEEKED_UNQUOTED) {
+S1156,JsonReader.java,1187,if (p == PEEKED_UNQUOTED) {
+S1157,JsonReader.java,1188,peekedString = nextUnquotedValue();
+S1158,JsonReader.java,1190,"peekedString = nextQuotedValue(p == PEEKED_SINGLE_QUOTED ? '\'' : '""');"
+S1159,JsonReader.java,1193,result = Integer.parseInt(peekedString);
+S1160,JsonReader.java,1194,peeked = PEEKED_NONE;
+S1161,JsonReader.java,1195,pathIndices[stackSize - 1]++;
+S1162,JsonReader.java,1196,return result;
+S1163,JsonReader.java,1201,"throw new IllegalStateException(""Expected an int but was "" + peek()"
+S1164,JsonReader.java,1205,peeked = PEEKED_BUFFERED;
+S1165,JsonReader.java,1206,double asDouble = Double.parseDouble(peekedString); // don't catch this NumberFormatException.
+S1166,JsonReader.java,1207,result = (int) asDouble;
+S1167,JsonReader.java,1208,if (result != asDouble) { // Make sure no precision was lost casting to 'int'.
+S1168,JsonReader.java,1209,"throw new NumberFormatException(""Expected an int but was "" + peekedString"
+S1169,JsonReader.java,1212,peekedString = null;
+S1170,JsonReader.java,1213,peeked = PEEKED_NONE;
+S1171,JsonReader.java,1214,pathIndices[stackSize - 1]++;
+S1172,JsonReader.java,1215,return result;
+S1173,JsonReader.java,1234,int count = 0;
+S1174,JsonReader.java,1236,int p = peeked;
+S1175,JsonReader.java,1237,if (p == PEEKED_NONE) {
+S1176,JsonReader.java,1238,p = doPeek();
+S1177,JsonReader.java,1241,if (p == PEEKED_BEGIN_ARRAY) {
+S1178,JsonReader.java,1244,} else if (p == PEEKED_BEGIN_OBJECT) {
+S1179,JsonReader.java,1247,} else if (p == PEEKED_END_ARRAY) {
+S1180,JsonReader.java,1250,} else if (p == PEEKED_END_OBJECT) {
+S1181,JsonReader.java,1253,} else if (p == PEEKED_UNQUOTED_NAME || p == PEEKED_UNQUOTED) {
+S1182,JsonReader.java,1255,} else if (p == PEEKED_SINGLE_QUOTED || p == PEEKED_SINGLE_QUOTED_NAME) {
+S1183,JsonReader.java,1256,skipQuotedValue('\'');
+S1184,JsonReader.java,1257,} else if (p == PEEKED_DOUBLE_QUOTED || p == PEEKED_DOUBLE_QUOTED_NAME) {
+S1185,JsonReader.java,1259,} else if (p == PEEKED_NUMBER) {
+S1186,JsonReader.java,1260,pos += peekedNumberLength;
+S1187,JsonReader.java,1262,peeked = PEEKED_NONE;
+S1188,JsonReader.java,1263,} while (count != 0);
+S1189,JsonReader.java,1265,pathIndices[stackSize - 1]++;
+S1190,JsonReader.java,1266,"pathNames[stackSize - 1] = ""null"";"
+S1191,JsonReader.java,1270,if (stackSize == stack.length) {
+S1192,JsonReader.java,1281,stack[stackSize++] = newTop;
+S1193,JsonReader.java,1290,char[] buffer = this.buffer;
+S1194,JsonReader.java,1291,lineStart -= pos;
+S1195,JsonReader.java,1292,if (limit != pos) {
+S1196,JsonReader.java,1293,limit -= pos;
+S1197,JsonReader.java,1294,"System.arraycopy(buffer, pos, buffer, 0, limit);"
+S1198,JsonReader.java,1296,limit = 0;
+S1199,JsonReader.java,1299,pos = 0;
+S1200,JsonReader.java,1301,"while ((total = in.read(buffer, limit, buffer.length - limit)) != -1) {"
+S1201,JsonReader.java,1302,limit += total;
+S1202,JsonReader.java,1305,if (lineNumber == 0 && lineStart == 0 && limit > 0 && buffer[0] == '\ufeff') {
+S1203,JsonReader.java,1311,if (limit >= minimum) {
+S1204,JsonReader.java,1312,return true;
+S1205,JsonReader.java,1315,return false;
+S1206,JsonReader.java,1319,return lineNumber + 1;
+S1207,JsonReader.java,1323,return pos - lineStart + 1;
+S1208,JsonReader.java,1341,char[] buffer = this.buffer;
+S1209,JsonReader.java,1342,int p = pos;
+S1210,JsonReader.java,1343,int l = limit;
+S1211,JsonReader.java,1345,if (p == l) {
+S1212,JsonReader.java,1346,pos = p;
+S1213,JsonReader.java,1347,if (!fillBuffer(1)) {
+S1214,JsonReader.java,1348,break;
+S1215,JsonReader.java,1350,p = pos;
+S1216,JsonReader.java,1351,l = limit;
+S1217,JsonReader.java,1354,int c = buffer[p++];
+S1218,JsonReader.java,1355,if (c == '\n') {
+S1219,JsonReader.java,1359,} else if (c == ' ' || c == '\r' || c == '\t') {
+S1220,JsonReader.java,1363,if (c == '/') {
+S1221,JsonReader.java,1398,} else if (c == '#') {
+S1222,JsonReader.java,1410,pos = p;
+S1223,JsonReader.java,1411,return c;
+S1224,JsonReader.java,1414,if (throwOnEof) {
+S1225,JsonReader.java,1415,"throw new EOFException(""End of input"""
+S1226,JsonReader.java,1418,return -1;
+S1227,JsonReader.java,1423,if (!lenient) {
+S1228,JsonReader.java,1424,"throw syntaxError(""Use JsonReader.setLenient(true) to accept malformed JSON"");"
+S1229,JsonReader.java,1477,StringBuilder result = new StringBuilder().append('$');
+S1230,JsonReader.java,1478,"for (int i = 0, size = stackSize; i < size; i++) {"
+S1231,JsonReader.java,1479,switch (stack[i]) {
+S1232,JsonReader.java,1482,result.append('[').append(pathIndices[i]).append(']');
+S1233,JsonReader.java,1483,break;
+S1234,JsonReader.java,1488,result.append('.');
+S1235,JsonReader.java,1489,if (pathNames[i] != null) {
+S1236,JsonReader.java,1490,result.append(pathNames[i]);
+S1237,JsonReader.java,1500,return result.toString();
+S1238,JsonReader.java,1513,if (pos == limit && !fillBuffer(1)) {
+S1239,JsonReader.java,1517,char escaped = buffer[pos++];
+S1240,JsonReader.java,1518,switch (escaped) {
+S1241,JsonReader.java,1565,return escaped;
+S1242,JsonReader.java,1574,throw new MalformedJsonException(message
+S1243,JsonReader.java,1583,nextNonWhitespace(true);
+S1244,JsonReader.java,1584,pos--;
+S1245,JsonReader.java,1586,if (pos + NON_EXECUTE_PREFIX.length > limit && !fillBuffer(NON_EXECUTE_PREFIX.length)) {
+S1246,JsonReader.java,1587,return;
+S1247,JsonReader.java,1590,for (int i = 0; i < NON_EXECUTE_PREFIX.length; i++) {
+S1248,JsonReader.java,1591,if (buffer[pos + i] != NON_EXECUTE_PREFIX[i]) {
+S1249,JsonReader.java,1592,return; // not a security token!
+S1250,JsonReader.java,1601,JsonReaderInternalAccess.INSTANCE = new JsonReaderInternalAccess() {
+S1251,JsonReader.java,1603,if (reader instanceof JsonTreeReader) {
+S1252,JsonReader.java,1604,((JsonTreeReader)reader).promoteNameToValue();
+S1253,JsonReader.java,1605,return;
+S1254,JsonReader.java,1607,int p = reader.peeked;
+S1255,JsonReader.java,1608,if (p == PEEKED_NONE) {
+S1256,JsonReader.java,1611,if (p == PEEKED_DOUBLE_QUOTED_NAME) {
+S1257,JsonReader.java,1612,reader.peeked = PEEKED_DOUBLE_QUOTED;
+S1258,JsonReader.java,1613,} else if (p == PEEKED_SINGLE_QUOTED_NAME) {
+S1259,JsonReader.java,1614,reader.peeked = PEEKED_SINGLE_QUOTED;
+S1260,JsonReader.java,1615,} else if (p == PEEKED_UNQUOTED_NAME) {
+S1261,JsonReader.java,1616,reader.peeked = PEEKED_UNQUOTED;
+S1262,JsonReaderInternalAccess.java,25,public abstract class JsonReaderInternalAccess {
+S1263,JsonSyntaxException.java,30,super(msg);
+S1264,JsonSyntaxException.java,45,super(cause);
+S1265,JsonToken.java,25,public enum JsonToken {
+S1266,JsonToken.java,31,"BEGIN_ARRAY,"
+S1267,JsonToken.java,37,"END_ARRAY,"
+S1268,JsonToken.java,43,"BEGIN_OBJECT,"
+S1269,JsonToken.java,49,"END_OBJECT,"
+S1270,JsonToken.java,56,"NAME,"
+S1271,JsonToken.java,61,"STRING,"
+S1272,JsonToken.java,67,"NUMBER,"
+S1273,JsonToken.java,72,"BOOLEAN,"
+S1274,JsonToken.java,77,"NULL,"
+S1275,JsonToken.java,84,END_DOCUMENT
+S1276,JsonTreeReader.java,40,private static final Reader UNREADABLE_READER = new Reader() {
+S1277,JsonTreeReader.java,48,private static final Object SENTINEL_CLOSED = new Object();
+S1278,JsonTreeReader.java,50,private final List<Object> stack = new ArrayList<Object>();
+S1279,JsonTreeReader.java,53,super(UNREADABLE_READER);
+S1280,JsonTreeReader.java,54,stack.add(element);
+S1281,JsonTreeReader.java,58,expect(JsonToken.BEGIN_ARRAY);
+S1282,JsonTreeReader.java,59,JsonArray array = (JsonArray) peekStack();
+S1283,JsonTreeReader.java,60,stack.add(array.iterator());
+S1284,JsonTreeReader.java,64,expect(JsonToken.END_ARRAY);
+S1285,JsonTreeReader.java,65,popStack(); // empty iterator
+S1286,JsonTreeReader.java,66,popStack(); // array
+S1287,JsonTreeReader.java,70,expect(JsonToken.BEGIN_OBJECT);
+S1288,JsonTreeReader.java,71,JsonObject object = (JsonObject) peekStack();
+S1289,JsonTreeReader.java,72,stack.add(object.entrySet().iterator());
+S1290,JsonTreeReader.java,76,expect(JsonToken.END_OBJECT);
+S1291,JsonTreeReader.java,77,popStack(); // empty iterator
+S1292,JsonTreeReader.java,78,popStack(); // object
+S1293,JsonTreeReader.java,82,JsonToken token = peek();
+S1294,JsonTreeReader.java,83,return token != JsonToken.END_OBJECT && token != JsonToken.END_ARRAY;
+S1295,JsonTreeReader.java,87,if (stack.isEmpty()) {
+S1296,JsonTreeReader.java,91,Object o = peekStack();
+S1297,JsonTreeReader.java,92,if (o instanceof Iterator) {
+S1298,JsonTreeReader.java,93,boolean isObject = stack.get(stack.size() - 2) instanceof JsonObject;
+S1299,JsonTreeReader.java,94,Iterator<?> iterator = (Iterator<?>) o;
+S1300,JsonTreeReader.java,95,if (iterator.hasNext()) {
+S1301,JsonTreeReader.java,96,if (isObject) {
+S1302,JsonTreeReader.java,97,return JsonToken.NAME;
+S1303,JsonTreeReader.java,99,stack.add(iterator.next());
+S1304,JsonTreeReader.java,100,return peek();
+S1305,JsonTreeReader.java,103,return isObject ? JsonToken.END_OBJECT : JsonToken.END_ARRAY;
+S1306,JsonTreeReader.java,105,} else if (o instanceof JsonObject) {
+S1307,JsonTreeReader.java,106,return JsonToken.BEGIN_OBJECT;
+S1308,JsonTreeReader.java,107,} else if (o instanceof JsonArray) {
+S1309,JsonTreeReader.java,108,return JsonToken.BEGIN_ARRAY;
+S1310,JsonTreeReader.java,109,} else if (o instanceof JsonPrimitive) {
+S1311,JsonTreeReader.java,110,JsonPrimitive primitive = (JsonPrimitive) o;
+S1312,JsonTreeReader.java,111,if (primitive.isString()) {
+S1313,JsonTreeReader.java,112,return JsonToken.STRING;
+S1314,JsonTreeReader.java,113,} else if (primitive.isBoolean()) {
+S1315,JsonTreeReader.java,115,} else if (primitive.isNumber()) {
+S1316,JsonTreeReader.java,116,return JsonToken.NUMBER;
+S1317,JsonTreeReader.java,130,return stack.get(stack.size() - 1);
+S1318,JsonTreeReader.java,134,return stack.remove(stack.size() - 1);
+S1319,JsonTreeReader.java,138,if (peek() != expected) {
+S1320,JsonTreeReader.java,144,expect(JsonToken.NAME);
+S1321,JsonTreeReader.java,145,Iterator<?> i = (Iterator<?>) peekStack();
+S1322,JsonTreeReader.java,146,"Map.Entry<?, ?> entry = (Map.Entry<?, ?>) i.next();"
+S1323,JsonTreeReader.java,147,stack.add(entry.getValue());
+S1324,JsonTreeReader.java,148,return (String) entry.getKey();
+S1325,JsonTreeReader.java,152,JsonToken token = peek();
+S1326,JsonTreeReader.java,153,if (token != JsonToken.STRING && token != JsonToken.NUMBER) {
+S1327,JsonTreeReader.java,156,return ((JsonPrimitive) popStack()).getAsString();
+S1328,JsonTreeReader.java,170,JsonToken token = peek();
+S1329,JsonTreeReader.java,171,if (token != JsonToken.NUMBER && token != JsonToken.STRING) {
+S1330,JsonTreeReader.java,174,double result = ((JsonPrimitive) peekStack()).getAsDouble();
+S1331,JsonTreeReader.java,175,if (!isLenient() && (Double.isNaN(result) || Double.isInfinite(result))) {
+S1332,JsonTreeReader.java,178,popStack();
+S1333,JsonTreeReader.java,179,return result;
+S1334,JsonTreeReader.java,193,JsonToken token = peek();
+S1335,JsonTreeReader.java,194,if (token != JsonToken.NUMBER && token != JsonToken.STRING) {
+S1336,JsonTreeReader.java,197,int result = ((JsonPrimitive) peekStack()).getAsInt();
+S1337,JsonTreeReader.java,198,popStack();
+S1338,JsonTreeReader.java,199,return result;
+S1339,JsonTreeReader.java,208,if (peek() == JsonToken.NAME) {
+S1340,JsonTreeReader.java,211,popStack();
+S1341,JsonTreeReader.java,220,expect(JsonToken.NAME);
+S1342,JsonTreeReader.java,221,Iterator<?> i = (Iterator<?>) peekStack();
+S1343,JsonTreeReader.java,222,"Map.Entry<?, ?> entry = (Map.Entry<?, ?>) i.next();"
+S1344,JsonTreeReader.java,223,stack.add(entry.getValue());
+S1345,JsonTreeReader.java,224,stack.add(new JsonPrimitive((String)entry.getKey()));
+S1346,JsonTreeWriter.java,34,private static final Writer UNWRITABLE_WRITER = new Writer() {
+S1347,JsonTreeWriter.java,46,"private static final JsonPrimitive SENTINEL_CLOSED = new JsonPrimitive(""closed"");"
+S1348,JsonTreeWriter.java,49,private final List<JsonElement> stack = new ArrayList<JsonElement>();
+S1349,JsonTreeWriter.java,55,private JsonElement product = JsonNull.INSTANCE; // TODO: is this really what we want?;
+S1350,JsonTreeWriter.java,58,super(UNWRITABLE_WRITER);
+S1351,JsonTreeWriter.java,65,if (!stack.isEmpty()) {
+S1352,JsonTreeWriter.java,68,return product;
+S1353,JsonTreeWriter.java,72,return stack.get(stack.size() - 1);
+S1354,JsonTreeWriter.java,76,if (pendingName != null) {
+S1355,JsonTreeWriter.java,77,if (!value.isJsonNull() || getSerializeNulls()) {
+S1356,JsonTreeWriter.java,78,JsonObject object = (JsonObject) peek();
+S1357,JsonTreeWriter.java,79,"object.add(pendingName, value);"
+S1358,JsonTreeWriter.java,81,pendingName = null;
+S1359,JsonTreeWriter.java,82,} else if (stack.isEmpty()) {
+S1360,JsonTreeWriter.java,83,product = value;
+S1361,JsonTreeWriter.java,85,JsonElement element = peek();
+S1362,JsonTreeWriter.java,86,if (element instanceof JsonArray) {
+S1363,JsonTreeWriter.java,87,((JsonArray) element).add(value);
+S1364,JsonTreeWriter.java,95,JsonArray array = new JsonArray();
+S1365,JsonTreeWriter.java,96,put(array);
+S1366,JsonTreeWriter.java,97,stack.add(array);
+S1367,JsonTreeWriter.java,98,return this;
+S1368,JsonTreeWriter.java,102,if (stack.isEmpty() || pendingName != null) {
+S1369,JsonTreeWriter.java,105,JsonElement element = peek();
+S1370,JsonTreeWriter.java,106,if (element instanceof JsonArray) {
+S1371,JsonTreeWriter.java,107,stack.remove(stack.size() - 1);
+S1372,JsonTreeWriter.java,108,return this;
+S1373,JsonTreeWriter.java,114,JsonObject object = new JsonObject();
+S1374,JsonTreeWriter.java,115,put(object);
+S1375,JsonTreeWriter.java,116,stack.add(object);
+S1376,JsonTreeWriter.java,117,return this;
+S1377,JsonTreeWriter.java,121,if (stack.isEmpty() || pendingName != null) {
+S1378,JsonTreeWriter.java,124,JsonElement element = peek();
+S1379,JsonTreeWriter.java,125,if (element instanceof JsonObject) {
+S1380,JsonTreeWriter.java,126,stack.remove(stack.size() - 1);
+S1381,JsonTreeWriter.java,127,return this;
+S1382,JsonTreeWriter.java,133,if (stack.isEmpty() || pendingName != null) {
+S1383,JsonTreeWriter.java,136,JsonElement element = peek();
+S1384,JsonTreeWriter.java,137,if (element instanceof JsonObject) {
+S1385,JsonTreeWriter.java,138,pendingName = name;
+S1386,JsonTreeWriter.java,139,return this;
+S1387,JsonTreeWriter.java,145,if (value == null) {
+S1388,JsonTreeWriter.java,146,return nullValue();
+S1389,JsonTreeWriter.java,148,put(new JsonPrimitive(value));
+S1390,JsonTreeWriter.java,149,return this;
+S1391,JsonTreeWriter.java,153,put(JsonNull.INSTANCE);
+S1392,JsonTreeWriter.java,154,return this;
+S1393,JsonTreeWriter.java,158,put(new JsonPrimitive(value));
+S1394,JsonTreeWriter.java,159,return this;
+S1395,JsonTreeWriter.java,176,if (value == null) {
+S1396,JsonTreeWriter.java,180,if (!isLenient()) {
+S1397,JsonTreeWriter.java,187,put(new JsonPrimitive(value));
+S1398,JsonTreeWriter.java,188,return this;
+S1399,JsonWriter.java,145,REPLACEMENT_CHARS = new String[128];
+S1400,JsonWriter.java,146,for (int i = 0; i <= 0x1f; i++) {
+S1401,JsonWriter.java,147,"REPLACEMENT_CHARS[i] = String.format(""\\u%04x"", (int) i);"
+S1402,JsonWriter.java,149,"REPLACEMENT_CHARS['""'] = ""\\\"""";"
+S1403,JsonWriter.java,150,"REPLACEMENT_CHARS['\\'] = ""\\\\"";"
+S1404,JsonWriter.java,151,"REPLACEMENT_CHARS['\t'] = ""\\t"";"
+S1405,JsonWriter.java,152,"REPLACEMENT_CHARS['\b'] = ""\\b"";"
+S1406,JsonWriter.java,153,"REPLACEMENT_CHARS['\n'] = ""\\n"";"
+S1407,JsonWriter.java,154,"REPLACEMENT_CHARS['\r'] = ""\\r"";"
+S1408,JsonWriter.java,155,"REPLACEMENT_CHARS['\f'] = ""\\f"";"
+S1409,JsonWriter.java,156,HTML_SAFE_REPLACEMENT_CHARS = REPLACEMENT_CHARS.clone();
+S1410,JsonWriter.java,157,"HTML_SAFE_REPLACEMENT_CHARS['<'] = ""\\u003c"";"
+S1411,JsonWriter.java,158,"HTML_SAFE_REPLACEMENT_CHARS['>'] = ""\\u003e"";"
+S1412,JsonWriter.java,159,"HTML_SAFE_REPLACEMENT_CHARS['&'] = ""\\u0026"";"
+S1413,JsonWriter.java,160,"HTML_SAFE_REPLACEMENT_CHARS['='] = ""\\u003d"";"
+S1414,JsonWriter.java,161,"HTML_SAFE_REPLACEMENT_CHARS['\''] = ""\\u0027"";"
+S1415,JsonWriter.java,167,private int[] stack = new int[32];
+S1416,JsonWriter.java,168,private int stackSize = 0;
+S1417,JsonWriter.java,170,push(EMPTY_DOCUMENT);
+S1418,JsonWriter.java,182,"private String separator = "":"";"
+S1419,JsonWriter.java,190,private boolean serializeNulls = true;
+S1420,JsonWriter.java,197,public JsonWriter(Writer out) {
+S1421,JsonWriter.java,198,if (out == null) {
+S1422,JsonWriter.java,201,this.out = out;
+S1423,JsonWriter.java,213,if (indent.length() == 0) {
+S1424,JsonWriter.java,217,this.indent = indent;
+S1425,JsonWriter.java,218,"this.separator = "": "";"
+S1426,JsonWriter.java,235,this.lenient = lenient;
+S1427,JsonWriter.java,242,return lenient;
+S1428,JsonWriter.java,253,this.htmlSafe = htmlSafe;
+S1429,JsonWriter.java,261,return htmlSafe;
+S1430,JsonWriter.java,269,this.serializeNulls = serializeNulls;
+S1431,JsonWriter.java,277,return serializeNulls;
+S1432,JsonWriter.java,287,writeDeferredName();
+S1433,JsonWriter.java,288,"return open(EMPTY_ARRAY, ""["");"
+S1434,JsonWriter.java,297,"return close(EMPTY_ARRAY, NONEMPTY_ARRAY, ""]"");"
+S1435,JsonWriter.java,307,writeDeferredName();
+S1436,JsonWriter.java,308,"return open(EMPTY_OBJECT, ""{"");"
+S1437,JsonWriter.java,317,"return close(EMPTY_OBJECT, NONEMPTY_OBJECT, ""}"");"
+S1438,JsonWriter.java,325,beforeValue();
+S1439,JsonWriter.java,326,push(empty);
+S1440,JsonWriter.java,327,out.write(openBracket);
+S1441,JsonWriter.java,328,return this;
+S1442,JsonWriter.java,337,int context = peek();
+S1443,JsonWriter.java,338,if (context != nonempty && context != empty) {
+S1444,JsonWriter.java,341,if (deferredName != null) {
+S1445,JsonWriter.java,345,stackSize--;
+S1446,JsonWriter.java,346,if (context == nonempty) {
+S1447,JsonWriter.java,347,newline();
+S1448,JsonWriter.java,349,out.write(closeBracket);
+S1449,JsonWriter.java,350,return this;
+S1450,JsonWriter.java,354,if (stackSize == stack.length) {
+S1451,JsonWriter.java,359,stack[stackSize++] = newTop;
+S1452,JsonWriter.java,366,if (stackSize == 0) {
+S1453,JsonWriter.java,369,return stack[stackSize - 1];
+S1454,JsonWriter.java,376,stack[stackSize - 1] = topOfStack;
+S1455,JsonWriter.java,386,if (name == null) {
+S1456,JsonWriter.java,389,if (deferredName != null) {
+S1457,JsonWriter.java,392,if (stackSize == 0) {
+S1458,JsonWriter.java,395,deferredName = name;
+S1459,JsonWriter.java,396,return this;
+S1460,JsonWriter.java,400,if (deferredName != null) {
+S1461,JsonWriter.java,401,beforeName();
+S1462,JsonWriter.java,402,string(deferredName);
+S1463,JsonWriter.java,403,deferredName = null;
+S1464,JsonWriter.java,414,if (value == null) {
+S1465,JsonWriter.java,415,return nullValue();
+S1466,JsonWriter.java,417,writeDeferredName();
+S1467,JsonWriter.java,418,beforeValue();
+S1468,JsonWriter.java,419,string(value);
+S1469,JsonWriter.java,420,return this;
+S1470,JsonWriter.java,446,if (deferredName != null) {
+S1471,JsonWriter.java,447,if (serializeNulls) {
+S1472,JsonWriter.java,448,writeDeferredName();
+S1473,JsonWriter.java,450,deferredName = null;
+S1474,JsonWriter.java,451,return this; // skip the name and the value
+S1475,JsonWriter.java,454,beforeValue();
+S1476,JsonWriter.java,455,"out.write(""null"");"
+S1477,JsonWriter.java,456,return this;
+S1478,JsonWriter.java,465,writeDeferredName();
+S1479,JsonWriter.java,466,beforeValue();
+S1480,JsonWriter.java,467,"out.write(value ? ""true"" : ""false"");"
+S1481,JsonWriter.java,468,return this;
+S1482,JsonWriter.java,494,writeDeferredName();
+S1483,JsonWriter.java,495,beforeValue();
+S1484,JsonWriter.java,496,out.write(Long.toString(value));
+S1485,JsonWriter.java,497,return this;
+S1486,JsonWriter.java,508,if (value == null) {
+S1487,JsonWriter.java,509,return nullValue();
+S1488,JsonWriter.java,512,writeDeferredName();
+S1489,JsonWriter.java,513,String string = value.toString();
+S1490,JsonWriter.java,514,if (!lenient
+S1491,JsonWriter.java,518,beforeValue();
+S1492,JsonWriter.java,519,out.append(string);
+S1493,JsonWriter.java,520,return this;
+S1494,JsonWriter.java,550,String[] replacements = htmlSafe ? HTML_SAFE_REPLACEMENT_CHARS : REPLACEMENT_CHARS;
+S1495,JsonWriter.java,551,"out.write(""\"""");"
+S1496,JsonWriter.java,552,int last = 0;
+S1497,JsonWriter.java,553,int length = value.length();
+S1498,JsonWriter.java,554,for (int i = 0; i < length; i++) {
+S1499,JsonWriter.java,555,char c = value.charAt(i);
+S1500,JsonWriter.java,557,if (c < 128) {
+S1501,JsonWriter.java,558,replacement = replacements[c];
+S1502,JsonWriter.java,559,if (replacement == null) {
+S1503,JsonWriter.java,560,continue;
+S1504,JsonWriter.java,569,if (last < i) {
+S1505,JsonWriter.java,570,"out.write(value, last, i - last);"
+S1506,JsonWriter.java,572,out.write(replacement);
+S1507,JsonWriter.java,573,last = i + 1;
+S1508,JsonWriter.java,575,if (last < length) {
+S1509,JsonWriter.java,576,"out.write(value, last, length - last);"
+S1510,JsonWriter.java,578,"out.write(""\"""");"
+S1511,JsonWriter.java,582,if (indent == null) {
+S1512,JsonWriter.java,583,return;
+S1513,JsonWriter.java,586,"out.write(""\n"");"
+S1514,JsonWriter.java,587,"for (int i = 1, size = stackSize; i < size; i++) {"
+S1515,JsonWriter.java,588,out.write(indent);
+S1516,JsonWriter.java,597,int context = peek();
+S1517,JsonWriter.java,598,if (context == NONEMPTY_OBJECT) { // first in object
+S1518,JsonWriter.java,599,"out.write(',');"
+S1519,JsonWriter.java,600,} else if (context != EMPTY_OBJECT) { // not in an object!
+S1520,JsonWriter.java,603,newline();
+S1521,JsonWriter.java,604,replaceTop(DANGLING_NAME);
+S1522,JsonWriter.java,614,switch (peek()) {
+S1523,JsonWriter.java,622,replaceTop(NONEMPTY_DOCUMENT);
+S1524,JsonWriter.java,623,break;
+S1525,JsonWriter.java,626,replaceTop(NONEMPTY_ARRAY);
+S1526,JsonWriter.java,627,newline();
+S1527,JsonWriter.java,628,break;
+S1528,JsonWriter.java,631,"out.append(',');"
+S1529,JsonWriter.java,632,newline();
+S1530,JsonWriter.java,633,break;
+S1531,JsonWriter.java,636,out.append(separator);
+S1532,JsonWriter.java,637,replaceTop(NONEMPTY_OBJECT);
+S1533,JsonWriter.java,638,break;
+S1534,LazilyParsedNumber.java,30,public LazilyParsedNumber(String value) {
+S1535,LazilyParsedNumber.java,31,this.value = value;
+S1536,LazilyParsedNumber.java,37,return Integer.parseInt(value);
+S1537,LazilyParsedNumber.java,50,return Long.parseLong(value);
+S1538,LazilyParsedNumber.java,51,} catch (NumberFormatException e) {
+S1539,LazilyParsedNumber.java,52,return new BigDecimal(value).longValue();
+S1540,LazilyParsedNumber.java,63,return Double.parseDouble(value);
+S1541,LinkedTreeMap.java,38,"public final class LinkedTreeMap<K, V> extends AbstractMap<K, V> implements Serializable {"
+S1542,LinkedTreeMap.java,40,private static final Comparator<Comparable> NATURAL_ORDER = new Comparator<Comparable>() {
+S1543,LinkedTreeMap.java,48,int size = 0;
+S1544,LinkedTreeMap.java,49,int modCount = 0;
+S1545,LinkedTreeMap.java,52,"final Node<K, V> header = new Node<K, V>();"
+S1546,LinkedTreeMap.java,60,this((Comparator<? super K>) NATURAL_ORDER);
+S1547,LinkedTreeMap.java,71,public LinkedTreeMap(Comparator<? super K> comparator) {
+S1548,LinkedTreeMap.java,72,this.comparator = comparator != null
+S1549,LinkedTreeMap.java,78,return size;
+S1550,LinkedTreeMap.java,82,"Node<K, V> node = findByObject(key);"
+S1551,LinkedTreeMap.java,83,return node != null ? node.value : null;
+S1552,LinkedTreeMap.java,87,return findByObject(key) != null;
+S1553,LinkedTreeMap.java,91,if (key == null) {
+S1554,LinkedTreeMap.java,94,"Node<K, V> created = find(key, true);"
+S1555,LinkedTreeMap.java,95,V result = created.value;
+S1556,LinkedTreeMap.java,96,created.value = value;
+S1557,LinkedTreeMap.java,97,return result;
+S1558,LinkedTreeMap.java,122,Comparator<? super K> comparator = this.comparator;
+S1559,LinkedTreeMap.java,123,"Node<K, V> nearest = root;"
+S1560,LinkedTreeMap.java,124,int comparison = 0;
+S1561,LinkedTreeMap.java,126,if (nearest != null) {
+S1562,LinkedTreeMap.java,129,Comparable<Object> comparableKey = (comparator == NATURAL_ORDER)
+S1563,LinkedTreeMap.java,134,comparison = (comparableKey != null)
+S1564,LinkedTreeMap.java,139,if (comparison == 0) {
+S1565,LinkedTreeMap.java,140,return nearest;
+S1566,LinkedTreeMap.java,144,"Node<K, V> child = (comparison < 0) ? nearest.left : nearest.right;"
+S1567,LinkedTreeMap.java,145,if (child == null) {
+S1568,LinkedTreeMap.java,146,break;
+S1569,LinkedTreeMap.java,149,nearest = child;
+S1570,LinkedTreeMap.java,154,if (!create) {
+S1571,LinkedTreeMap.java,155,return null;
+S1572,LinkedTreeMap.java,159,"Node<K, V> header = this.header;"
+S1573,LinkedTreeMap.java,161,if (nearest == null) {
+S1574,LinkedTreeMap.java,163,if (comparator == NATURAL_ORDER && !(key instanceof Comparable)) {
+S1575,LinkedTreeMap.java,166,"created = new Node<K, V>(nearest, key, header, header.prev);"
+S1576,LinkedTreeMap.java,167,root = created;
+S1577,LinkedTreeMap.java,169,"created = new Node<K, V>(nearest, key, header, header.prev);"
+S1578,LinkedTreeMap.java,170,if (comparison < 0) { // nearest.key is higher
+S1579,LinkedTreeMap.java,171,nearest.left = created;
+S1580,LinkedTreeMap.java,173,nearest.right = created;
+S1581,LinkedTreeMap.java,175,"rebalance(nearest, true);"
+S1582,LinkedTreeMap.java,177,size++;
+S1583,LinkedTreeMap.java,178,modCount++;
+S1584,LinkedTreeMap.java,180,return created;
+S1585,LinkedTreeMap.java,186,"return key != null ? find((K) key, false) : null;"
+S1586,LinkedTreeMap.java,285,"Node<K, V> parent = node.parent;"
+S1587,LinkedTreeMap.java,286,node.parent = null;
+S1588,LinkedTreeMap.java,287,if (replacement != null) {
+S1589,LinkedTreeMap.java,288,replacement.parent = parent;
+S1590,LinkedTreeMap.java,291,if (parent != null) {
+S1591,LinkedTreeMap.java,292,if (parent.left == node) {
+S1592,LinkedTreeMap.java,295,assert (parent.right == node);
+S1593,LinkedTreeMap.java,296,parent.right = replacement;
+S1594,LinkedTreeMap.java,299,root = replacement;
+S1595,LinkedTreeMap.java,311,"for (Node<K, V> node = unbalanced; node != null; node = node.parent) {"
+S1596,LinkedTreeMap.java,312,"Node<K, V> left = node.left;"
+S1597,LinkedTreeMap.java,313,"Node<K, V> right = node.right;"
+S1598,LinkedTreeMap.java,314,int leftHeight = left != null ? left.height : 0;
+S1599,LinkedTreeMap.java,315,int rightHeight = right != null ? right.height : 0;
+S1600,LinkedTreeMap.java,317,int delta = leftHeight - rightHeight;
+S1601,LinkedTreeMap.java,318,if (delta == -2) {
+S1602,LinkedTreeMap.java,319,"Node<K, V> rightLeft = right.left;"
+S1603,LinkedTreeMap.java,320,"Node<K, V> rightRight = right.right;"
+S1604,LinkedTreeMap.java,321,int rightRightHeight = rightRight != null ? rightRight.height : 0;
+S1605,LinkedTreeMap.java,322,int rightLeftHeight = rightLeft != null ? rightLeft.height : 0;
+S1606,LinkedTreeMap.java,324,int rightDelta = rightLeftHeight - rightRightHeight;
+S1607,LinkedTreeMap.java,325,if (rightDelta == -1 || (rightDelta == 0 && !insert)) {
+S1608,LinkedTreeMap.java,326,rotateLeft(node); // AVL right right
+S1609,LinkedTreeMap.java,328,assert (rightDelta == 1);
+S1610,LinkedTreeMap.java,329,rotateRight(right); // AVL right left
+S1611,LinkedTreeMap.java,330,rotateLeft(node);
+S1612,LinkedTreeMap.java,332,if (insert) {
+S1613,LinkedTreeMap.java,333,break; // no further rotations will be necessary
+S1614,LinkedTreeMap.java,337,"Node<K, V> leftLeft = left.left;"
+S1615,LinkedTreeMap.java,338,"Node<K, V> leftRight = left.right;"
+S1616,LinkedTreeMap.java,339,int leftRightHeight = leftRight != null ? leftRight.height : 0;
+S1617,LinkedTreeMap.java,340,int leftLeftHeight = leftLeft != null ? leftLeft.height : 0;
+S1618,LinkedTreeMap.java,342,int leftDelta = leftLeftHeight - leftRightHeight;
+S1619,LinkedTreeMap.java,343,if (leftDelta == 1 || (leftDelta == 0 && !insert)) {
+S1620,LinkedTreeMap.java,344,rotateRight(node); // AVL left left
+S1621,LinkedTreeMap.java,350,if (insert) {
+S1622,LinkedTreeMap.java,351,break; // no further rotations will be necessary
+S1623,LinkedTreeMap.java,355,node.height = leftHeight + 1; // leftHeight == rightHeight
+S1624,LinkedTreeMap.java,356,if (insert) {
+S1625,LinkedTreeMap.java,357,"break; // the insert caused balance, so rebalancing is done!"
+S1626,LinkedTreeMap.java,361,assert (delta == -1 || delta == 1);
+S1627,LinkedTreeMap.java,362,"node.height = Math.max(leftHeight, rightHeight) + 1;"
+S1628,LinkedTreeMap.java,363,if (!insert) {
+S1629,LinkedTreeMap.java,374,"Node<K, V> left = root.left;"
+S1630,LinkedTreeMap.java,375,"Node<K, V> pivot = root.right;"
+S1631,LinkedTreeMap.java,376,"Node<K, V> pivotLeft = pivot.left;"
+S1632,LinkedTreeMap.java,377,"Node<K, V> pivotRight = pivot.right;"
+S1633,LinkedTreeMap.java,380,root.right = pivotLeft;
+S1634,LinkedTreeMap.java,381,if (pivotLeft != null) {
+S1635,LinkedTreeMap.java,385,"replaceInParent(root, pivot);"
+S1636,LinkedTreeMap.java,388,pivot.left = root;
+S1637,LinkedTreeMap.java,389,root.parent = pivot;
+S1638,LinkedTreeMap.java,392,"root.height = Math.max(left != null ? left.height : 0,"
+S1639,LinkedTreeMap.java,394,"pivot.height = Math.max(root.height,"
+S1640,LinkedTreeMap.java,402,"Node<K, V> pivot = root.left;"
+S1641,LinkedTreeMap.java,403,"Node<K, V> right = root.right;"
+S1642,LinkedTreeMap.java,404,"Node<K, V> pivotLeft = pivot.left;"
+S1643,LinkedTreeMap.java,405,"Node<K, V> pivotRight = pivot.right;"
+S1644,LinkedTreeMap.java,408,root.left = pivotRight;
+S1645,LinkedTreeMap.java,409,if (pivotRight != null) {
+S1646,LinkedTreeMap.java,413,"replaceInParent(root, pivot);"
+S1647,LinkedTreeMap.java,416,pivot.right = root;
+S1648,LinkedTreeMap.java,417,root.parent = pivot;
+S1649,LinkedTreeMap.java,420,"root.height = Math.max(right != null ? right.height : 0,"
+S1650,LinkedTreeMap.java,422,"pivot.height = Math.max(root.height,"
+S1651,LinkedTreeMap.java,430,EntrySet result = entrySet;
+S1652,LinkedTreeMap.java,431,return result != null ? result : (entrySet = new EntrySet());
+S1653,LinkedTreeMap.java,450,Node() {
+S1654,LinkedTreeMap.java,451,key = null;
+S1655,LinkedTreeMap.java,452,next = prev = this;
+S1656,LinkedTreeMap.java,456,"Node(Node<K, V> parent, K key, Node<K, V> next, Node<K, V> prev) {"
+S1657,LinkedTreeMap.java,457,this.parent = parent;
+S1658,LinkedTreeMap.java,458,this.key = key;
+S1659,LinkedTreeMap.java,459,this.height = 1;
+S1660,LinkedTreeMap.java,460,this.next = next;
+S1661,LinkedTreeMap.java,461,this.prev = prev;
+S1662,LinkedTreeMap.java,462,prev.next = this;
+S1663,LinkedTreeMap.java,463,next.prev = this;
+S1664,LinkedTreeMap.java,467,return key;
+S1665,LinkedTreeMap.java,471,return value;
+S1666,LinkedTreeMap.java,527,"Node<K, V> next = header.next;"
+S1667,LinkedTreeMap.java,528,"Node<K, V> lastReturned = null;"
+S1668,LinkedTreeMap.java,529,int expectedModCount = modCount;
+S1669,LinkedTreeMap.java,531,LinkedTreeMapIterator() {
+S1670,LinkedTreeMap.java,535,return next != header;
+S1671,LinkedTreeMap.java,539,"Node<K, V> e = next;"
+S1672,LinkedTreeMap.java,540,if (e == header) {
+S1673,LinkedTreeMap.java,543,if (modCount != expectedModCount) {
+S1674,LinkedTreeMap.java,546,next = e.next;
+S1675,LinkedTreeMap.java,547,return lastReturned = e;
+S1676,LinkedTreeMap.java,560,"class EntrySet extends AbstractSet<Entry<K, V>> {"
+S1677,LinkedTreeMap.java,562,return size;
+S1678,LinkedTreeMap.java,566,"return new LinkedTreeMapIterator<Entry<K, V>>() {"
+S1679,LinkedTreeMap.java,568,return nextNode();
+S1680,LongSerializationPolicy.java,27,public enum LongSerializationPolicy {
+S1681,LongSerializationPolicy.java,34,DEFAULT() {
+S1682,LongSerializationPolicy.java,45,STRING() {
+S1683,MalformedJsonException.java,29,super(msg);
+S1684,MapTypeAdapterFactory.java,110,boolean complexMapKeySerialization) {
+S1685,MapTypeAdapterFactory.java,111,this.constructorConstructor = constructorConstructor;
+S1686,MapTypeAdapterFactory.java,112,this.complexMapKeySerialization = complexMapKeySerialization;
+S1687,MapTypeAdapterFactory.java,116,Type type = typeToken.getType();
+S1688,MapTypeAdapterFactory.java,118,Class<? super T> rawType = typeToken.getRawType();
+S1689,MapTypeAdapterFactory.java,119,if (!Map.class.isAssignableFrom(rawType)) {
+S1690,MapTypeAdapterFactory.java,120,return null;
+S1691,MapTypeAdapterFactory.java,123,Class<?> rawTypeOfSrc = $Gson$Types.getRawType(type);
+S1692,MapTypeAdapterFactory.java,124,"Type[] keyAndValueTypes = $Gson$Types.getMapKeyAndValueTypes(type, rawTypeOfSrc);"
+S1693,MapTypeAdapterFactory.java,125,"TypeAdapter<?> keyAdapter = getKeyAdapter(gson, keyAndValueTypes[0]);"
+S1694,MapTypeAdapterFactory.java,126,TypeAdapter<?> valueAdapter = gson.getAdapter(TypeToken.get(keyAndValueTypes[1]));
+S1695,MapTypeAdapterFactory.java,127,ObjectConstructor<T> constructor = constructorConstructor.get(typeToken);
+S1696,MapTypeAdapterFactory.java,131,"TypeAdapter<T> result = new Adapter(gson, keyAndValueTypes[0], keyAdapter,"
+S1697,MapTypeAdapterFactory.java,133,return result;
+S1698,MapTypeAdapterFactory.java,140,return (keyType == boolean.class || keyType == Boolean.class)
+S1699,MapTypeAdapterFactory.java,145,"private final class Adapter<K, V> extends TypeAdapter<Map<K, V>> {"
+S1700,MapTypeAdapterFactory.java,152,"ObjectConstructor<? extends Map<K, V>> constructor) {"
+S1701,MapTypeAdapterFactory.java,153,this.keyTypeAdapter =
+S1702,MapTypeAdapterFactory.java,155,this.valueTypeAdapter =
+S1703,MapTypeAdapterFactory.java,157,this.constructor = constructor;
+S1704,MapTypeAdapterFactory.java,161,JsonToken peek = in.peek();
+S1705,MapTypeAdapterFactory.java,162,if (peek == JsonToken.NULL) {
+S1706,MapTypeAdapterFactory.java,163,in.nextNull();
+S1707,MapTypeAdapterFactory.java,164,return null;
+S1708,MapTypeAdapterFactory.java,167,"Map<K, V> map = constructor.construct();"
+S1709,MapTypeAdapterFactory.java,169,if (peek == JsonToken.BEGIN_ARRAY) {
+S1710,MapTypeAdapterFactory.java,183,in.beginObject();
+S1711,MapTypeAdapterFactory.java,184,while (in.hasNext()) {
+S1712,MapTypeAdapterFactory.java,185,JsonReaderInternalAccess.INSTANCE.promoteNameToValue(in);
+S1713,MapTypeAdapterFactory.java,186,K key = keyTypeAdapter.read(in);
+S1714,MapTypeAdapterFactory.java,187,V value = valueTypeAdapter.read(in);
+S1715,MapTypeAdapterFactory.java,188,"V replaced = map.put(key, value);"
+S1716,MapTypeAdapterFactory.java,189,if (replaced != null) {
+S1717,MapTypeAdapterFactory.java,190,"throw new JsonSyntaxException(""duplicate key: "" + key);"
+S1718,MapTypeAdapterFactory.java,193,in.endObject();
+S1719,MapTypeAdapterFactory.java,195,return map;
+S1720,MapTypeAdapterFactory.java,199,if (map == null) {
+S1721,MapTypeAdapterFactory.java,200,out.nullValue();
+S1722,MapTypeAdapterFactory.java,201,return;
+S1723,MapTypeAdapterFactory.java,204,if (!complexMapKeySerialization) {
+S1724,MapTypeAdapterFactory.java,205,out.beginObject();
+S1725,MapTypeAdapterFactory.java,206,"for (Map.Entry<K, V> entry : map.entrySet()) {"
+S1726,MapTypeAdapterFactory.java,207,out.name(String.valueOf(entry.getKey()));
+S1727,MapTypeAdapterFactory.java,208,"valueTypeAdapter.write(out, entry.getValue());"
+S1728,MapTypeAdapterFactory.java,210,out.endObject();
+S1729,MapTypeAdapterFactory.java,211,return;
+S1730,MapTypeAdapterFactory.java,214,boolean hasComplexKeys = false;
+S1731,MapTypeAdapterFactory.java,215,List<JsonElement> keys = new ArrayList<JsonElement>(map.size());
+S1732,MapTypeAdapterFactory.java,217,List<V> values = new ArrayList<V>(map.size());
+S1733,MapTypeAdapterFactory.java,218,"for (Map.Entry<K, V> entry : map.entrySet()) {"
+S1734,MapTypeAdapterFactory.java,219,JsonElement keyElement = keyTypeAdapter.toJsonTree(entry.getKey());
+S1735,MapTypeAdapterFactory.java,220,keys.add(keyElement);
+S1736,MapTypeAdapterFactory.java,221,values.add(entry.getValue());
+S1737,MapTypeAdapterFactory.java,222,hasComplexKeys |= keyElement.isJsonArray() || keyElement.isJsonObject();
+S1738,MapTypeAdapterFactory.java,225,if (hasComplexKeys) {
+S1739,MapTypeAdapterFactory.java,235,out.beginObject();
+S1740,MapTypeAdapterFactory.java,236,for (int i = 0; i < keys.size(); i++) {
+S1741,MapTypeAdapterFactory.java,237,JsonElement keyElement = keys.get(i);
+S1742,MapTypeAdapterFactory.java,238,out.name(keyToString(keyElement));
+S1743,MapTypeAdapterFactory.java,239,"valueTypeAdapter.write(out, values.get(i));"
+S1744,MapTypeAdapterFactory.java,241,out.endObject();
+S1745,MapTypeAdapterFactory.java,246,if (keyElement.isJsonPrimitive()) {
+S1746,MapTypeAdapterFactory.java,247,JsonPrimitive primitive = keyElement.getAsJsonPrimitive();
+S1747,MapTypeAdapterFactory.java,248,if (primitive.isNumber()) {
+S1748,MapTypeAdapterFactory.java,250,} else if (primitive.isBoolean()) {
+S1749,MapTypeAdapterFactory.java,252,} else if (primitive.isString()) {
+S1750,MapTypeAdapterFactory.java,253,return primitive.getAsString();
+S1751,ObjectTypeAdapter.java,38,public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+S1752,ObjectTypeAdapter.java,41,if (type.getRawType() == Object.class) {
+S1753,ObjectTypeAdapter.java,42,return (TypeAdapter<T>) new ObjectTypeAdapter(gson);
+S1754,ObjectTypeAdapter.java,44,return null;
+S1755,ObjectTypeAdapter.java,50,ObjectTypeAdapter(Gson gson) {
+S1756,ObjectTypeAdapter.java,51,this.gson = gson;
+S1757,ObjectTypeAdapter.java,55,JsonToken token = in.peek();
+S1758,ObjectTypeAdapter.java,56,switch (token) {
+S1759,ObjectTypeAdapter.java,58,List<Object> list = new ArrayList<Object>();
+S1760,ObjectTypeAdapter.java,59,in.beginArray();
+S1761,ObjectTypeAdapter.java,60,while (in.hasNext()) {
+S1762,ObjectTypeAdapter.java,61,list.add(read(in));
+S1763,ObjectTypeAdapter.java,63,in.endArray();
+S1764,ObjectTypeAdapter.java,64,return list;
+S1765,ObjectTypeAdapter.java,67,"Map<String, Object> map = new LinkedTreeMap<String, Object>();"
+S1766,ObjectTypeAdapter.java,68,in.beginObject();
+S1767,ObjectTypeAdapter.java,69,while (in.hasNext()) {
+S1768,ObjectTypeAdapter.java,70,"map.put(in.nextName(), read(in));"
+S1769,ObjectTypeAdapter.java,72,in.endObject();
+S1770,ObjectTypeAdapter.java,73,return map;
+S1771,ObjectTypeAdapter.java,76,return in.nextString();
+S1772,ObjectTypeAdapter.java,79,return in.nextDouble();
+S1773,ObjectTypeAdapter.java,82,return in.nextBoolean();
+S1774,ObjectTypeAdapter.java,85,in.nextNull();
+S1775,ObjectTypeAdapter.java,86,return null;
+S1776,ObjectTypeAdapter.java,95,if (value == null) {
+S1777,ObjectTypeAdapter.java,96,out.nullValue();
+S1778,ObjectTypeAdapter.java,97,return;
+S1779,ObjectTypeAdapter.java,100,TypeAdapter<Object> typeAdapter = (TypeAdapter<Object>) gson.getAdapter(value.getClass());
+S1780,ObjectTypeAdapter.java,101,if (typeAdapter instanceof ObjectTypeAdapter) {
+S1781,ObjectTypeAdapter.java,102,out.beginObject();
+S1782,ObjectTypeAdapter.java,103,out.endObject();
+S1783,ObjectTypeAdapter.java,104,return;
+S1784,ObjectTypeAdapter.java,107,"typeAdapter.write(out, value);"
+S1785,Primitives.java,45,"Map<Class<?>, Class<?>> primToWrap = new HashMap<Class<?>, Class<?>>(16);"
+S1786,Primitives.java,46,"Map<Class<?>, Class<?>> wrapToPrim = new HashMap<Class<?>, Class<?>>(16);"
+S1787,Primitives.java,48,"add(primToWrap, wrapToPrim, boolean.class, Boolean.class);"
+S1788,Primitives.java,49,"add(primToWrap, wrapToPrim, byte.class, Byte.class);"
+S1789,Primitives.java,50,"add(primToWrap, wrapToPrim, char.class, Character.class);"
+S1790,Primitives.java,51,"add(primToWrap, wrapToPrim, double.class, Double.class);"
+S1791,Primitives.java,52,"add(primToWrap, wrapToPrim, float.class, Float.class);"
+S1792,Primitives.java,53,"add(primToWrap, wrapToPrim, int.class, Integer.class);"
+S1793,Primitives.java,54,"add(primToWrap, wrapToPrim, long.class, Long.class);"
+S1794,Primitives.java,55,"add(primToWrap, wrapToPrim, short.class, Short.class);"
+S1795,Primitives.java,56,"add(primToWrap, wrapToPrim, void.class, Void.class);"
+S1796,Primitives.java,58,PRIMITIVE_TO_WRAPPER_TYPE = Collections.unmodifiableMap(primToWrap);
+S1797,Primitives.java,59,WRAPPER_TO_PRIMITIVE_TYPE = Collections.unmodifiableMap(wrapToPrim);
+S1798,Primitives.java,64,"forward.put(key, value);"
+S1799,Primitives.java,65,"backward.put(value, key);"
+S1800,Primitives.java,72,return PRIMITIVE_TO_WRAPPER_TYPE.containsKey(type);
+S1801,Primitives.java,82,return WRAPPER_TO_PRIMITIVE_TYPE.containsKey(
+S1802,Primitives.java,98,Class<T> wrapped = (Class<T>) PRIMITIVE_TO_WRAPPER_TYPE.get(
+S1803,Primitives.java,100,return (wrapped == null) ? type : wrapped;
+S1804,Primitives.java,115,Class<T> unwrapped = (Class<T>) WRAPPER_TO_PRIMITIVE_TYPE.get(
+S1805,Primitives.java,117,return (unwrapped == null) ? type : unwrapped;
+S1806,ReflectiveTypeAdapterFactory.java,54,"FieldNamingStrategy fieldNamingPolicy, Excluder excluder) {"
+S1807,ReflectiveTypeAdapterFactory.java,55,this.constructorConstructor = constructorConstructor;
+S1808,ReflectiveTypeAdapterFactory.java,56,this.fieldNamingPolicy = fieldNamingPolicy;
+S1809,ReflectiveTypeAdapterFactory.java,57,this.excluder = excluder;
+S1810,ReflectiveTypeAdapterFactory.java,61,"return excludeField(f, serialize, excluder);"
+S1811,ReflectiveTypeAdapterFactory.java,65,"return !excluder.excludeClass(f.getType(), serialize) && !excluder.excludeField(f, serialize);"
+S1812,ReflectiveTypeAdapterFactory.java,70,"return getFieldName(fieldNamingPolicy, f);"
+S1813,ReflectiveTypeAdapterFactory.java,75,SerializedName serializedName = f.getAnnotation(SerializedName.class);
+S1814,ReflectiveTypeAdapterFactory.java,76,List<String> fieldNames = new LinkedList<String>();
+S1815,ReflectiveTypeAdapterFactory.java,77,if (serializedName == null) {
+S1816,ReflectiveTypeAdapterFactory.java,78,fieldNames.add(fieldNamingPolicy.translateName(f));
+S1817,ReflectiveTypeAdapterFactory.java,80,fieldNames.add(serializedName.value());
+S1818,ReflectiveTypeAdapterFactory.java,81,for (String alternate : serializedName.alternate()) {
+S1819,ReflectiveTypeAdapterFactory.java,82,fieldNames.add(alternate);
+S1820,ReflectiveTypeAdapterFactory.java,85,return fieldNames;
+S1821,ReflectiveTypeAdapterFactory.java,89,Class<? super T> raw = type.getRawType();
+S1822,ReflectiveTypeAdapterFactory.java,91,if (!Object.class.isAssignableFrom(raw)) {
+S1823,ReflectiveTypeAdapterFactory.java,95,ObjectConstructor<T> constructor = constructorConstructor.get(type);
+S1824,ReflectiveTypeAdapterFactory.java,96,"return new Adapter<T>(constructor, getBoundFields(gson, type, raw));"
+S1825,ReflectiveTypeAdapterFactory.java,102,final boolean isPrimitive = Primitives.isPrimitive(fieldType.getRawType());
+S1826,ReflectiveTypeAdapterFactory.java,104,"return new ReflectiveTypeAdapterFactory.BoundField(name, serialize, deserialize) {"
+S1827,ReflectiveTypeAdapterFactory.java,105,"final TypeAdapter<?> typeAdapter = getFieldAdapter(context, field, fieldType);"
+S1828,ReflectiveTypeAdapterFactory.java,109,Object fieldValue = field.get(value);
+S1829,ReflectiveTypeAdapterFactory.java,110,TypeAdapter t =
+S1830,ReflectiveTypeAdapterFactory.java,112,"t.write(writer, fieldValue);"
+S1831,ReflectiveTypeAdapterFactory.java,116,Object fieldValue = typeAdapter.read(reader);
+S1832,ReflectiveTypeAdapterFactory.java,117,if (fieldValue != null || !isPrimitive) {
+S1833,ReflectiveTypeAdapterFactory.java,118,"field.set(value, fieldValue);"
+S1834,ReflectiveTypeAdapterFactory.java,122,if (!serialized) return false;
+S1835,ReflectiveTypeAdapterFactory.java,123,Object fieldValue = field.get(value);
+S1836,ReflectiveTypeAdapterFactory.java,124,return fieldValue != value; // avoid recursion for example for Throwable.cause
+S1837,ReflectiveTypeAdapterFactory.java,130,JsonAdapter annotation = field.getAnnotation(JsonAdapter.class);
+S1838,ReflectiveTypeAdapterFactory.java,131,if (annotation != null) {
+S1839,ReflectiveTypeAdapterFactory.java,132,"TypeAdapter<?> adapter = getTypeAdapter(constructorConstructor, gson, fieldType, annotation);"
+S1840,ReflectiveTypeAdapterFactory.java,133,if (adapter != null) return adapter;
+S1841,ReflectiveTypeAdapterFactory.java,135,return gson.getAdapter(fieldType);
+S1842,ReflectiveTypeAdapterFactory.java,139,"Map<String, BoundField> result = new LinkedHashMap<String, BoundField>();"
+S1843,ReflectiveTypeAdapterFactory.java,140,if (raw.isInterface()) {
+S1844,ReflectiveTypeAdapterFactory.java,141,return result;
+S1845,ReflectiveTypeAdapterFactory.java,144,Type declaredType = type.getType();
+S1846,ReflectiveTypeAdapterFactory.java,145,while (raw != Object.class) {
+S1847,ReflectiveTypeAdapterFactory.java,146,Field[] fields = raw.getDeclaredFields();
+S1848,ReflectiveTypeAdapterFactory.java,147,for (Field field : fields) {
+S1849,ReflectiveTypeAdapterFactory.java,148,"boolean serialize = excludeField(field, true);"
+S1850,ReflectiveTypeAdapterFactory.java,149,"boolean deserialize = excludeField(field, false);"
+S1851,ReflectiveTypeAdapterFactory.java,150,if (!serialize && !deserialize) {
+S1852,ReflectiveTypeAdapterFactory.java,151,continue;
+S1853,ReflectiveTypeAdapterFactory.java,153,field.setAccessible(true);
+S1854,ReflectiveTypeAdapterFactory.java,154,"Type fieldType = $Gson$Types.resolve(type.getType(), raw, field.getGenericType());"
+S1855,ReflectiveTypeAdapterFactory.java,155,List<String> fieldNames = getFieldNames(field);
+S1856,ReflectiveTypeAdapterFactory.java,156,BoundField previous = null;
+S1857,ReflectiveTypeAdapterFactory.java,157,for (int i = 0; i < fieldNames.size(); ++i) {
+S1858,ReflectiveTypeAdapterFactory.java,158,String name = fieldNames.get(i);
+S1859,ReflectiveTypeAdapterFactory.java,159,if (i != 0) serialize = false; // only serialize the default name
+S1860,ReflectiveTypeAdapterFactory.java,160,"BoundField boundField = createBoundField(context, field, name,"
+S1861,ReflectiveTypeAdapterFactory.java,162,"BoundField replaced = result.put(name, boundField);"
+S1862,ReflectiveTypeAdapterFactory.java,163,if (previous == null) previous = replaced;
+S1863,ReflectiveTypeAdapterFactory.java,165,if (previous != null) {
+S1864,ReflectiveTypeAdapterFactory.java,166,throw new IllegalArgumentException(declaredType
+S1865,ReflectiveTypeAdapterFactory.java,170,"type = TypeToken.get($Gson$Types.resolve(type.getType(), raw, raw.getGenericSuperclass()));"
+S1866,ReflectiveTypeAdapterFactory.java,171,raw = type.getRawType();
+S1867,ReflectiveTypeAdapterFactory.java,173,return result;
+S1868,ReflectiveTypeAdapterFactory.java,181,"protected BoundField(String name, boolean serialized, boolean deserialized) {"
+S1869,ReflectiveTypeAdapterFactory.java,182,this.name = name;
+S1870,ReflectiveTypeAdapterFactory.java,183,this.serialized = serialized;
+S1871,ReflectiveTypeAdapterFactory.java,184,this.deserialized = deserialized;
+S1872,ReflectiveTypeAdapterFactory.java,195,"Adapter(ObjectConstructor<T> constructor, Map<String, BoundField> boundFields) {"
+S1873,ReflectiveTypeAdapterFactory.java,196,this.constructor = constructor;
+S1874,ReflectiveTypeAdapterFactory.java,197,this.boundFields = boundFields;
+S1875,ReflectiveTypeAdapterFactory.java,201,if (in.peek() == JsonToken.NULL) {
+S1876,ReflectiveTypeAdapterFactory.java,202,in.nextNull();
+S1877,ReflectiveTypeAdapterFactory.java,203,return null;
+S1878,ReflectiveTypeAdapterFactory.java,206,T instance = constructor.construct();
+S1879,ReflectiveTypeAdapterFactory.java,209,in.beginObject();
+S1880,ReflectiveTypeAdapterFactory.java,210,while (in.hasNext()) {
+S1881,ReflectiveTypeAdapterFactory.java,211,String name = in.nextName();
+S1882,ReflectiveTypeAdapterFactory.java,212,BoundField field = boundFields.get(name);
+S1883,ReflectiveTypeAdapterFactory.java,213,if (field == null || !field.deserialized) {
+S1884,ReflectiveTypeAdapterFactory.java,214,in.skipValue();
+S1885,ReflectiveTypeAdapterFactory.java,216,"field.read(in, instance);"
+S1886,ReflectiveTypeAdapterFactory.java,219,} catch (IllegalStateException e) {
+S1887,ReflectiveTypeAdapterFactory.java,220,throw new JsonSyntaxException(e);
+S1888,ReflectiveTypeAdapterFactory.java,224,in.endObject();
+S1889,ReflectiveTypeAdapterFactory.java,225,return instance;
+S1890,ReflectiveTypeAdapterFactory.java,229,if (value == null) {
+S1891,ReflectiveTypeAdapterFactory.java,230,out.nullValue();
+S1892,ReflectiveTypeAdapterFactory.java,231,return;
+S1893,ReflectiveTypeAdapterFactory.java,234,out.beginObject();
+S1894,ReflectiveTypeAdapterFactory.java,236,for (BoundField boundField : boundFields.values()) {
+S1895,ReflectiveTypeAdapterFactory.java,237,if (boundField.writeField(value)) {
+S1896,ReflectiveTypeAdapterFactory.java,238,out.name(boundField.name);
+S1897,ReflectiveTypeAdapterFactory.java,239,"boundField.write(out, value);"
+S1898,ReflectiveTypeAdapterFactory.java,245,out.endObject();
+S1899,SqlDateTypeAdapter.java,38,public final class SqlDateTypeAdapter extends TypeAdapter<java.sql.Date> {
+S1900,SqlDateTypeAdapter.java,39,public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+S1901,SqlDateTypeAdapter.java,42,return typeToken.getRawType() == java.sql.Date.class
+S1902,SqlDateTypeAdapter.java,47,"private final DateFormat format = new SimpleDateFormat(""MMM d, yyyy"");"
+S1903,SqlDateTypeAdapter.java,51,if (in.peek() == JsonToken.NULL) {
+S1904,SqlDateTypeAdapter.java,52,in.nextNull();
+S1905,SqlDateTypeAdapter.java,53,return null;
+S1906,SqlDateTypeAdapter.java,56,final long utilDate = format.parse(in.nextString()).getTime();
+S1907,SqlDateTypeAdapter.java,57,return new java.sql.Date(utilDate);
+S1908,SqlDateTypeAdapter.java,65,out.value(value == null ? null : format.format(value));
+S1909,Streams.java,44,boolean isEmpty = true;
+S1910,Streams.java,46,reader.peek();
+S1911,Streams.java,47,isEmpty = false;
+S1912,Streams.java,48,return TypeAdapters.JSON_ELEMENT.read(reader);
+S1913,Streams.java,72,"TypeAdapters.JSON_ELEMENT.write(writer, element);"
+S1914,Streams.java,77,return appendable instanceof Writer ? (Writer) appendable : new AppendableWriter(appendable);
+S1915,TimeTypeAdapter.java,40,public final class TimeTypeAdapter extends TypeAdapter<Time> {
+S1916,TimeTypeAdapter.java,41,public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
+S1917,TimeTypeAdapter.java,44,return typeToken.getRawType() == Time.class ? (TypeAdapter<T>) new TimeTypeAdapter() : null;
+S1918,TimeTypeAdapter.java,48,"private final DateFormat format = new SimpleDateFormat(""hh:mm:ss a"");"
+S1919,TimeTypeAdapter.java,51,if (in.peek() == JsonToken.NULL) {
+S1920,TimeTypeAdapter.java,52,in.nextNull();
+S1921,TimeTypeAdapter.java,53,return null;
+S1922,TimeTypeAdapter.java,56,Date date = format.parse(in.nextString());
+S1923,TimeTypeAdapter.java,57,return new Time(date.getTime());
+S1924,TimeTypeAdapter.java,64,out.value(value == null ? null : format.format(value));
+S1925,TreeTypeAdapter.java,41,public final class TreeTypeAdapter<T> extends TypeAdapter<T> {
+S1926,TreeTypeAdapter.java,47,private final GsonContextImpl context = new GsonContextImpl();
+S1927,TreeTypeAdapter.java,53,"Gson gson, TypeToken<T> typeToken, TypeAdapterFactory skipPast) {"
+S1928,TreeTypeAdapter.java,54,this.serializer = serializer;
+S1929,TreeTypeAdapter.java,55,this.deserializer = deserializer;
+S1930,TreeTypeAdapter.java,56,this.gson = gson;
+S1931,TreeTypeAdapter.java,57,this.typeToken = typeToken;
+S1932,TreeTypeAdapter.java,58,this.skipPast = skipPast;
+S1933,TreeTypeAdapter.java,62,if (deserializer == null) {
+S1934,TreeTypeAdapter.java,63,return delegate().read(in);
+S1935,TreeTypeAdapter.java,65,JsonElement value = Streams.parse(in);
+S1936,TreeTypeAdapter.java,66,if (value.isJsonNull()) {
+S1937,TreeTypeAdapter.java,67,return null;
+S1938,TreeTypeAdapter.java,69,"return deserializer.deserialize(value, typeToken.getType(), context);"
+S1939,TreeTypeAdapter.java,73,if (serializer == null) {
+S1940,TreeTypeAdapter.java,74,"delegate().write(out, value);"
+S1941,TreeTypeAdapter.java,75,return;
+S1942,TreeTypeAdapter.java,77,if (value == null) {
+S1943,TreeTypeAdapter.java,81,"JsonElement tree = serializer.serialize(value, typeToken.getType(), context);"
+S1944,TreeTypeAdapter.java,82,"Streams.write(tree, out);"
+S1945,TreeTypeAdapter.java,86,TypeAdapter<T> d = delegate;
+S1946,TreeTypeAdapter.java,87,return d != null
+S1947,TreeTypeAdapter.java,96,"return new SingleTypeFactory(typeAdapter, exactType, false, null);"
+S1948,TreeTypeAdapter.java,106,boolean matchRawType = exactType.getType() == exactType.getRawType();
+S1949,TreeTypeAdapter.java,107,"return new SingleTypeFactory(typeAdapter, exactType, matchRawType, null);"
+S1950,TreeTypeAdapter.java,116,"return new SingleTypeFactory(typeAdapter, null, false, hierarchyType);"
+S1951,TreeTypeAdapter.java,127,Class<?> hierarchyType) {
+S1952,TreeTypeAdapter.java,128,serializer = typeAdapter instanceof JsonSerializer
+S1953,TreeTypeAdapter.java,131,deserializer = typeAdapter instanceof JsonDeserializer
+S1954,TreeTypeAdapter.java,134,$Gson$Preconditions.checkArgument(serializer != null || deserializer != null);
+S1955,TreeTypeAdapter.java,135,this.exactType = exactType;
+S1956,TreeTypeAdapter.java,136,this.matchRawType = matchRawType;
+S1957,TreeTypeAdapter.java,137,this.hierarchyType = hierarchyType;
+S1958,TreeTypeAdapter.java,143,boolean matches = exactType != null
+S1959,TreeTypeAdapter.java,146,return matches
+S1960,TreeTypeAdapter.java,153,"private final class GsonContextImpl implements JsonSerializationContext, JsonDeserializationContext {"
+S1961,TreeTypeAdapter.java,155,return gson.toJsonTree(src);
+S1962,TreeTypeAdapter.java,162,"return (R) gson.fromJson(json, typeOfT);"
+S1963,TypeAdapter.java,119,public abstract class TypeAdapter<T> {
+S1964,TypeAdapter.java,141,JsonWriter writer = new JsonWriter(out);
+S1965,TypeAdapter.java,142,"write(writer, value);"
+S1966,TypeAdapter.java,186,return new TypeAdapter<T>() {
+S1967,TypeAdapter.java,188,if (value == null) {
+S1968,TypeAdapter.java,189,out.nullValue();
+S1969,TypeAdapter.java,191,"TypeAdapter.this.write(out, value);"
+S1970,TypeAdapter.java,195,if (reader.peek() == JsonToken.NULL) {
+S1971,TypeAdapter.java,196,reader.nextNull();
+S1972,TypeAdapter.java,197,return null;
+S1973,TypeAdapter.java,199,return TypeAdapter.this.read(reader);
+S1974,TypeAdapter.java,215,StringWriter stringWriter = new StringWriter();
+S1975,TypeAdapter.java,217,"toJson(stringWriter, value);"
+S1976,TypeAdapter.java,221,return stringWriter.toString();
+S1977,TypeAdapter.java,233,JsonTreeWriter jsonWriter = new JsonTreeWriter();
+S1978,TypeAdapter.java,234,"write(jsonWriter, value);"
+S1979,TypeAdapter.java,235,return jsonWriter.get();
+S1980,TypeAdapter.java,259,JsonReader reader = new JsonReader(in);
+S1981,TypeAdapter.java,260,return read(reader);
+S1982,TypeAdapter.java,273,return fromJson(new StringReader(json));
+S1983,TypeAdapter.java,284,JsonReader jsonReader = new JsonTreeReader(jsonTree);
+S1984,TypeAdapter.java,285,return read(jsonReader);
+S1985,TypeAdapterRuntimeTypeWrapper.java,32,"TypeAdapterRuntimeTypeWrapper(Gson context, TypeAdapter<T> delegate, Type type) {"
+S1986,TypeAdapterRuntimeTypeWrapper.java,33,this.context = context;
+S1987,TypeAdapterRuntimeTypeWrapper.java,34,this.delegate = delegate;
+S1988,TypeAdapterRuntimeTypeWrapper.java,35,this.type = type;
+S1989,TypeAdapterRuntimeTypeWrapper.java,40,return delegate.read(in);
+S1990,TypeAdapterRuntimeTypeWrapper.java,52,TypeAdapter chosen = delegate;
+S1991,TypeAdapterRuntimeTypeWrapper.java,53,"Type runtimeType = getRuntimeTypeIfMoreSpecific(type, value);"
+S1992,TypeAdapterRuntimeTypeWrapper.java,54,if (runtimeType != type) {
+S1993,TypeAdapterRuntimeTypeWrapper.java,55,TypeAdapter runtimeTypeAdapter = context.getAdapter(TypeToken.get(runtimeType));
+S1994,TypeAdapterRuntimeTypeWrapper.java,56,if (!(runtimeTypeAdapter instanceof ReflectiveTypeAdapterFactory.Adapter)) {
+S1995,TypeAdapterRuntimeTypeWrapper.java,58,chosen = runtimeTypeAdapter;
+S1996,TypeAdapterRuntimeTypeWrapper.java,59,} else if (!(delegate instanceof ReflectiveTypeAdapterFactory.Adapter)) {
+S1997,TypeAdapterRuntimeTypeWrapper.java,62,chosen = delegate;
+S1998,TypeAdapterRuntimeTypeWrapper.java,65,chosen = runtimeTypeAdapter;
+S1999,TypeAdapterRuntimeTypeWrapper.java,68,"chosen.write(out, value);"
+S2000,TypeAdapterRuntimeTypeWrapper.java,75,if (value != null
+S2001,TypeAdapterRuntimeTypeWrapper.java,77,type = value.getClass();
+S2002,TypeAdapterRuntimeTypeWrapper.java,79,return type;
+S2003,TypeAdapters.java,69,public static final TypeAdapter<Class> CLASS = new TypeAdapter<Class>() {
+S2004,TypeAdapters.java,72,if (value == null) {
+S2005,TypeAdapters.java,73,out.nullValue();
+S2006,TypeAdapters.java,75,"throw new UnsupportedOperationException(""Attempted to serialize java.lang.Class: """
+S2007,TypeAdapters.java,81,if (in.peek() == JsonToken.NULL) {
+S2008,TypeAdapters.java,82,in.nextNull();
+S2009,TypeAdapters.java,83,return null;
+S2010,TypeAdapters.java,85,throw new UnsupportedOperationException(
+S2011,TypeAdapters.java,90,"public static final TypeAdapterFactory CLASS_FACTORY = newFactory(Class.class, CLASS);"
+S2012,TypeAdapters.java,92,public static final TypeAdapter<BitSet> BIT_SET = new TypeAdapter<BitSet>() {
+S2013,TypeAdapters.java,94,if (in.peek() == JsonToken.NULL) {
+S2014,TypeAdapters.java,95,in.nextNull();
+S2015,TypeAdapters.java,96,return null;
+S2016,TypeAdapters.java,99,BitSet bitset = new BitSet();
+S2017,TypeAdapters.java,100,in.beginArray();
+S2018,TypeAdapters.java,101,int i = 0;
+S2019,TypeAdapters.java,102,JsonToken tokenType = in.peek();
+S2020,TypeAdapters.java,103,while (tokenType != JsonToken.END_ARRAY) {
+S2021,TypeAdapters.java,105,switch (tokenType) {
+S2022,TypeAdapters.java,107,set = in.nextInt() != 0;
+S2023,TypeAdapters.java,108,break;
+S2024,TypeAdapters.java,110,set = in.nextBoolean();
+S2025,TypeAdapters.java,111,break;
+S2026,TypeAdapters.java,113,String stringValue = in.nextString();
+S2027,TypeAdapters.java,115,set = Integer.parseInt(stringValue) != 0;
+S2028,TypeAdapters.java,124,if (set) {
+S2029,TypeAdapters.java,125,bitset.set(i);
+S2030,TypeAdapters.java,127,++i;
+S2031,TypeAdapters.java,128,tokenType = in.peek();
+S2032,TypeAdapters.java,130,in.endArray();
+S2033,TypeAdapters.java,131,return bitset;
+S2034,TypeAdapters.java,135,if (src == null) {
+S2035,TypeAdapters.java,136,out.nullValue();
+S2036,TypeAdapters.java,137,return;
+S2037,TypeAdapters.java,140,out.beginArray();
+S2038,TypeAdapters.java,141,for (int i = 0; i < src.length(); i++) {
+S2039,TypeAdapters.java,142,int value = (src.get(i)) ? 1 : 0;
+S2040,TypeAdapters.java,143,out.value(value);
+S2041,TypeAdapters.java,145,out.endArray();
+S2042,TypeAdapters.java,149,"public static final TypeAdapterFactory BIT_SET_FACTORY = newFactory(BitSet.class, BIT_SET);"
+S2043,TypeAdapters.java,151,public static final TypeAdapter<Boolean> BOOLEAN = new TypeAdapter<Boolean>() {
+S2044,TypeAdapters.java,154,if (in.peek() == JsonToken.NULL) {
+S2045,TypeAdapters.java,155,in.nextNull();
+S2046,TypeAdapters.java,156,return null;
+S2047,TypeAdapters.java,157,} else if (in.peek() == JsonToken.STRING) {
+S2048,TypeAdapters.java,159,return Boolean.parseBoolean(in.nextString());
+S2049,TypeAdapters.java,161,return in.nextBoolean();
+S2050,TypeAdapters.java,165,if (value == null) {
+S2051,TypeAdapters.java,166,out.nullValue();
+S2052,TypeAdapters.java,167,return;
+S2053,TypeAdapters.java,169,out.value(value);
+S2054,TypeAdapters.java,177,public static final TypeAdapter<Boolean> BOOLEAN_AS_STRING = new TypeAdapter<Boolean>() {
+S2055,TypeAdapters.java,179,if (in.peek() == JsonToken.NULL) {
+S2056,TypeAdapters.java,183,return Boolean.valueOf(in.nextString());
+S2057,TypeAdapters.java,191,public static final TypeAdapterFactory BOOLEAN_FACTORY
+S2058,TypeAdapters.java,194,public static final TypeAdapter<Number> BYTE = new TypeAdapter<Number>() {
+S2059,TypeAdapters.java,197,if (in.peek() == JsonToken.NULL) {
+S2060,TypeAdapters.java,198,in.nextNull();
+S2061,TypeAdapters.java,199,return null;
+S2062,TypeAdapters.java,202,int intValue = in.nextInt();
+S2063,TypeAdapters.java,203,return (byte) intValue;
+S2064,TypeAdapters.java,204,} catch (NumberFormatException e) {
+S2065,TypeAdapters.java,205,throw new JsonSyntaxException(e);
+S2066,TypeAdapters.java,210,out.value(value);
+S2067,TypeAdapters.java,214,public static final TypeAdapterFactory BYTE_FACTORY
+S2068,TypeAdapters.java,217,public static final TypeAdapter<Number> SHORT = new TypeAdapter<Number>() {
+S2069,TypeAdapters.java,220,if (in.peek() == JsonToken.NULL) {
+S2070,TypeAdapters.java,221,in.nextNull();
+S2071,TypeAdapters.java,222,return null;
+S2072,TypeAdapters.java,225,return (short) in.nextInt();
+S2073,TypeAdapters.java,226,} catch (NumberFormatException e) {
+S2074,TypeAdapters.java,227,throw new JsonSyntaxException(e);
+S2075,TypeAdapters.java,232,out.value(value);
+S2076,TypeAdapters.java,236,public static final TypeAdapterFactory SHORT_FACTORY
+S2077,TypeAdapters.java,239,public static final TypeAdapter<Number> INTEGER = new TypeAdapter<Number>() {
+S2078,TypeAdapters.java,242,if (in.peek() == JsonToken.NULL) {
+S2079,TypeAdapters.java,243,in.nextNull();
+S2080,TypeAdapters.java,244,return null;
+S2081,TypeAdapters.java,247,return in.nextInt();
+S2082,TypeAdapters.java,248,} catch (NumberFormatException e) {
+S2083,TypeAdapters.java,249,throw new JsonSyntaxException(e);
+S2084,TypeAdapters.java,254,out.value(value);
+S2085,TypeAdapters.java,257,public static final TypeAdapterFactory INTEGER_FACTORY
+S2086,TypeAdapters.java,260,public static final TypeAdapter<AtomicInteger> ATOMIC_INTEGER = new TypeAdapter<AtomicInteger>() {
+S2087,TypeAdapters.java,272,public static final TypeAdapterFactory ATOMIC_INTEGER_FACTORY =
+S2088,TypeAdapters.java,275,public static final TypeAdapter<AtomicBoolean> ATOMIC_BOOLEAN = new TypeAdapter<AtomicBoolean>() {
+S2089,TypeAdapters.java,283,public static final TypeAdapterFactory ATOMIC_BOOLEAN_FACTORY =
+S2090,TypeAdapters.java,286,public static final TypeAdapter<AtomicIntegerArray> ATOMIC_INTEGER_ARRAY = new TypeAdapter<AtomicIntegerArray>() {
+S2091,TypeAdapters.java,314,public static final TypeAdapterFactory ATOMIC_INTEGER_ARRAY_FACTORY =
+S2092,TypeAdapters.java,317,public static final TypeAdapter<Number> LONG = new TypeAdapter<Number>() {
+S2093,TypeAdapters.java,320,if (in.peek() == JsonToken.NULL) {
+S2094,TypeAdapters.java,321,in.nextNull();
+S2095,TypeAdapters.java,322,return null;
+S2096,TypeAdapters.java,325,return in.nextLong();
+S2097,TypeAdapters.java,326,} catch (NumberFormatException e) {
+S2098,TypeAdapters.java,327,throw new JsonSyntaxException(e);
+S2099,TypeAdapters.java,332,out.value(value);
+S2100,TypeAdapters.java,336,public static final TypeAdapter<Number> FLOAT = new TypeAdapter<Number>() {
+S2101,TypeAdapters.java,347,out.value(value);
+S2102,TypeAdapters.java,351,public static final TypeAdapter<Number> DOUBLE = new TypeAdapter<Number>() {
+S2103,TypeAdapters.java,362,out.value(value);
+S2104,TypeAdapters.java,366,public static final TypeAdapter<Number> NUMBER = new TypeAdapter<Number>() {
+S2105,TypeAdapters.java,369,JsonToken jsonToken = in.peek();
+S2106,TypeAdapters.java,370,switch (jsonToken) {
+S2107,TypeAdapters.java,372,in.nextNull();
+S2108,TypeAdapters.java,373,return null;
+S2109,TypeAdapters.java,375,return new LazilyParsedNumber(in.nextString());
+S2110,TypeAdapters.java,377,"throw new JsonSyntaxException(""Expecting number, got: "" + jsonToken);"
+S2111,TypeAdapters.java,382,out.value(value);
+S2112,TypeAdapters.java,386,"public static final TypeAdapterFactory NUMBER_FACTORY = newFactory(Number.class, NUMBER);"
+S2113,TypeAdapters.java,388,public static final TypeAdapter<Character> CHARACTER = new TypeAdapter<Character>() {
+S2114,TypeAdapters.java,391,if (in.peek() == JsonToken.NULL) {
+S2115,TypeAdapters.java,392,in.nextNull();
+S2116,TypeAdapters.java,393,return null;
+S2117,TypeAdapters.java,395,String str = in.nextString();
+S2118,TypeAdapters.java,396,if (str.length() != 1) {
+S2119,TypeAdapters.java,399,return str.charAt(0);
+S2120,TypeAdapters.java,403,out.value(value == null ? null : String.valueOf(value));
+S2121,TypeAdapters.java,407,public static final TypeAdapterFactory CHARACTER_FACTORY
+S2122,TypeAdapters.java,410,public static final TypeAdapter<String> STRING = new TypeAdapter<String>() {
+S2123,TypeAdapters.java,413,JsonToken peek = in.peek();
+S2124,TypeAdapters.java,414,if (peek == JsonToken.NULL) {
+S2125,TypeAdapters.java,415,in.nextNull();
+S2126,TypeAdapters.java,416,return null;
+S2127,TypeAdapters.java,419,if (peek == JsonToken.BOOLEAN) {
+S2128,TypeAdapters.java,420,return Boolean.toString(in.nextBoolean());
+S2129,TypeAdapters.java,422,return in.nextString();
+S2130,TypeAdapters.java,426,out.value(value);
+S2131,TypeAdapters.java,430,public static final TypeAdapter<BigDecimal> BIG_DECIMAL = new TypeAdapter<BigDecimal>() {
+S2132,TypeAdapters.java,432,if (in.peek() == JsonToken.NULL) {
+S2133,TypeAdapters.java,433,in.nextNull();
+S2134,TypeAdapters.java,434,return null;
+S2135,TypeAdapters.java,437,return new BigDecimal(in.nextString());
+S2136,TypeAdapters.java,438,} catch (NumberFormatException e) {
+S2137,TypeAdapters.java,439,throw new JsonSyntaxException(e);
+S2138,TypeAdapters.java,444,out.value(value);
+S2139,TypeAdapters.java,448,public static final TypeAdapter<BigInteger> BIG_INTEGER = new TypeAdapter<BigInteger>() {
+S2140,TypeAdapters.java,450,if (in.peek() == JsonToken.NULL) {
+S2141,TypeAdapters.java,451,in.nextNull();
+S2142,TypeAdapters.java,452,return null;
+S2143,TypeAdapters.java,455,return new BigInteger(in.nextString());
+S2144,TypeAdapters.java,456,} catch (NumberFormatException e) {
+S2145,TypeAdapters.java,457,throw new JsonSyntaxException(e);
+S2146,TypeAdapters.java,462,out.value(value);
+S2147,TypeAdapters.java,466,"public static final TypeAdapterFactory STRING_FACTORY = newFactory(String.class, STRING);"
+S2148,TypeAdapters.java,468,public static final TypeAdapter<StringBuilder> STRING_BUILDER = new TypeAdapter<StringBuilder>() {
+S2149,TypeAdapters.java,471,if (in.peek() == JsonToken.NULL) {
+S2150,TypeAdapters.java,472,in.nextNull();
+S2151,TypeAdapters.java,473,return null;
+S2152,TypeAdapters.java,475,return new StringBuilder(in.nextString());
+S2153,TypeAdapters.java,479,out.value(value == null ? null : value.toString());
+S2154,TypeAdapters.java,483,public static final TypeAdapterFactory STRING_BUILDER_FACTORY =
+S2155,TypeAdapters.java,486,public static final TypeAdapter<StringBuffer> STRING_BUFFER = new TypeAdapter<StringBuffer>() {
+S2156,TypeAdapters.java,489,if (in.peek() == JsonToken.NULL) {
+S2157,TypeAdapters.java,490,in.nextNull();
+S2158,TypeAdapters.java,491,return null;
+S2159,TypeAdapters.java,493,return new StringBuffer(in.nextString());
+S2160,TypeAdapters.java,497,out.value(value == null ? null : value.toString());
+S2161,TypeAdapters.java,501,public static final TypeAdapterFactory STRING_BUFFER_FACTORY =
+S2162,TypeAdapters.java,504,public static final TypeAdapter<URL> URL = new TypeAdapter<URL>() {
+S2163,TypeAdapters.java,507,if (in.peek() == JsonToken.NULL) {
+S2164,TypeAdapters.java,508,in.nextNull();
+S2165,TypeAdapters.java,509,return null;
+S2166,TypeAdapters.java,511,String nextString = in.nextString();
+S2167,TypeAdapters.java,512,"return ""null"".equals(nextString) ? null : new URL(nextString);"
+S2168,TypeAdapters.java,516,out.value(value == null ? null : value.toExternalForm());
+S2169,TypeAdapters.java,520,"public static final TypeAdapterFactory URL_FACTORY = newFactory(URL.class, URL);"
+S2170,TypeAdapters.java,522,public static final TypeAdapter<URI> URI = new TypeAdapter<URI>() {
+S2171,TypeAdapters.java,525,if (in.peek() == JsonToken.NULL) {
+S2172,TypeAdapters.java,526,in.nextNull();
+S2173,TypeAdapters.java,527,return null;
+S2174,TypeAdapters.java,530,String nextString = in.nextString();
+S2175,TypeAdapters.java,531,"return ""null"".equals(nextString) ? null : new URI(nextString);"
+S2176,TypeAdapters.java,538,out.value(value == null ? null : value.toASCIIString());
+S2177,TypeAdapters.java,542,"public static final TypeAdapterFactory URI_FACTORY = newFactory(URI.class, URI);"
+S2178,TypeAdapters.java,544,public static final TypeAdapter<InetAddress> INET_ADDRESS = new TypeAdapter<InetAddress>() {
+S2179,TypeAdapters.java,547,if (in.peek() == JsonToken.NULL) {
+S2180,TypeAdapters.java,548,in.nextNull();
+S2181,TypeAdapters.java,549,return null;
+S2182,TypeAdapters.java,556,out.value(value == null ? null : value.getHostAddress());
+S2183,TypeAdapters.java,560,public static final TypeAdapterFactory INET_ADDRESS_FACTORY =
+S2184,TypeAdapters.java,563,public static final TypeAdapter<UUID> UUID = new TypeAdapter<UUID>() {
+S2185,TypeAdapters.java,566,if (in.peek() == JsonToken.NULL) {
+S2186,TypeAdapters.java,567,in.nextNull();
+S2187,TypeAdapters.java,568,return null;
+S2188,TypeAdapters.java,570,return java.util.UUID.fromString(in.nextString());
+S2189,TypeAdapters.java,574,out.value(value == null ? null : value.toString());
+S2190,TypeAdapters.java,578,"public static final TypeAdapterFactory UUID_FACTORY = newFactory(UUID.class, UUID);"
+S2191,TypeAdapters.java,580,public static final TypeAdapter<Currency> CURRENCY = new TypeAdapter<Currency>() {
+S2192,TypeAdapters.java,590,"public static final TypeAdapterFactory CURRENCY_FACTORY = newFactory(Currency.class, CURRENCY);"
+S2193,TypeAdapters.java,592,public static final TypeAdapterFactory TIMESTAMP_FACTORY = new TypeAdapterFactory() {
+S2194,TypeAdapters.java,595,if (typeToken.getRawType() != Timestamp.class) {
+S2195,TypeAdapters.java,596,return null;
+S2196,TypeAdapters.java,599,final TypeAdapter<Date> dateTypeAdapter = gson.getAdapter(Date.class);
+S2197,TypeAdapters.java,600,return (TypeAdapter<T>) new TypeAdapter<Timestamp>() {
+S2198,TypeAdapters.java,602,Date date = dateTypeAdapter.read(in);
+S2199,TypeAdapters.java,603,return date != null ? new Timestamp(date.getTime()) : null;
+S2200,TypeAdapters.java,607,"dateTypeAdapter.write(out, value);"
+S2201,TypeAdapters.java,613,public static final TypeAdapter<Calendar> CALENDAR = new TypeAdapter<Calendar>() {
+S2202,TypeAdapters.java,623,if (in.peek() == JsonToken.NULL) {
+S2203,TypeAdapters.java,624,in.nextNull();
+S2204,TypeAdapters.java,625,return  null;
+S2205,TypeAdapters.java,627,in.beginObject();
+S2206,TypeAdapters.java,628,int year = 0;
+S2207,TypeAdapters.java,629,int month = 0;
+S2208,TypeAdapters.java,630,int dayOfMonth = 0;
+S2209,TypeAdapters.java,631,int hourOfDay = 0;
+S2210,TypeAdapters.java,632,int minute = 0;
+S2211,TypeAdapters.java,633,int second = 0;
+S2212,TypeAdapters.java,634,while (in.peek() != JsonToken.END_OBJECT) {
+S2213,TypeAdapters.java,635,String name = in.nextName();
+S2214,TypeAdapters.java,636,int value = in.nextInt();
+S2215,TypeAdapters.java,637,if (YEAR.equals(name)) {
+S2216,TypeAdapters.java,638,year = value;
+S2217,TypeAdapters.java,639,} else if (MONTH.equals(name)) {
+S2218,TypeAdapters.java,640,month = value;
+S2219,TypeAdapters.java,641,} else if (DAY_OF_MONTH.equals(name)) {
+S2220,TypeAdapters.java,642,dayOfMonth = value;
+S2221,TypeAdapters.java,643,} else if (HOUR_OF_DAY.equals(name)) {
+S2222,TypeAdapters.java,644,hourOfDay = value;
+S2223,TypeAdapters.java,645,} else if (MINUTE.equals(name)) {
+S2224,TypeAdapters.java,646,minute = value;
+S2225,TypeAdapters.java,647,} else if (SECOND.equals(name)) {
+S2226,TypeAdapters.java,648,second = value;
+S2227,TypeAdapters.java,651,in.endObject();
+S2228,TypeAdapters.java,652,"return new GregorianCalendar(year, month, dayOfMonth, hourOfDay, minute, second);"
+S2229,TypeAdapters.java,657,if (value == null) {
+S2230,TypeAdapters.java,658,out.nullValue();
+S2231,TypeAdapters.java,659,return;
+S2232,TypeAdapters.java,661,out.beginObject();
+S2233,TypeAdapters.java,662,out.name(YEAR);
+S2234,TypeAdapters.java,663,out.value(value.get(Calendar.YEAR));
+S2235,TypeAdapters.java,664,out.name(MONTH);
+S2236,TypeAdapters.java,665,out.value(value.get(Calendar.MONTH));
+S2237,TypeAdapters.java,666,out.name(DAY_OF_MONTH);
+S2238,TypeAdapters.java,667,out.value(value.get(Calendar.DAY_OF_MONTH));
+S2239,TypeAdapters.java,668,out.name(HOUR_OF_DAY);
+S2240,TypeAdapters.java,669,out.value(value.get(Calendar.HOUR_OF_DAY));
+S2241,TypeAdapters.java,670,out.name(MINUTE);
+S2242,TypeAdapters.java,671,out.value(value.get(Calendar.MINUTE));
+S2243,TypeAdapters.java,672,out.name(SECOND);
+S2244,TypeAdapters.java,673,out.value(value.get(Calendar.SECOND));
+S2245,TypeAdapters.java,674,out.endObject();
+S2246,TypeAdapters.java,678,public static final TypeAdapterFactory CALENDAR_FACTORY =
+S2247,TypeAdapters.java,681,public static final TypeAdapter<Locale> LOCALE = new TypeAdapter<Locale>() {
+S2248,TypeAdapters.java,684,if (in.peek() == JsonToken.NULL) {
+S2249,TypeAdapters.java,685,in.nextNull();
+S2250,TypeAdapters.java,686,return null;
+S2251,TypeAdapters.java,688,String locale = in.nextString();
+S2252,TypeAdapters.java,689,"StringTokenizer tokenizer = new StringTokenizer(locale, ""_"");"
+S2253,TypeAdapters.java,690,String language = null;
+S2254,TypeAdapters.java,691,String country = null;
+S2255,TypeAdapters.java,692,String variant = null;
+S2256,TypeAdapters.java,693,if (tokenizer.hasMoreElements()) {
+S2257,TypeAdapters.java,694,language = tokenizer.nextToken();
+S2258,TypeAdapters.java,696,if (tokenizer.hasMoreElements()) {
+S2259,TypeAdapters.java,697,country = tokenizer.nextToken();
+S2260,TypeAdapters.java,699,if (tokenizer.hasMoreElements()) {
+S2261,TypeAdapters.java,700,variant = tokenizer.nextToken();
+S2262,TypeAdapters.java,702,if (country == null && variant == null) {
+S2263,TypeAdapters.java,703,return new Locale(language);
+S2264,TypeAdapters.java,704,} else if (variant == null) {
+S2265,TypeAdapters.java,705,"return new Locale(language, country);"
+S2266,TypeAdapters.java,707,"return new Locale(language, country, variant);"
+S2267,TypeAdapters.java,712,out.value(value == null ? null : value.toString());
+S2268,TypeAdapters.java,716,"public static final TypeAdapterFactory LOCALE_FACTORY = newFactory(Locale.class, LOCALE);"
+S2269,TypeAdapters.java,718,public static final TypeAdapter<JsonElement> JSON_ELEMENT = new TypeAdapter<JsonElement>() {
+S2270,TypeAdapters.java,720,switch (in.peek()) {
+S2271,TypeAdapters.java,722,return new JsonPrimitive(in.nextString());
+S2272,TypeAdapters.java,724,String number = in.nextString();
+S2273,TypeAdapters.java,725,return new JsonPrimitive(new LazilyParsedNumber(number));
+S2274,TypeAdapters.java,727,return new JsonPrimitive(in.nextBoolean());
+S2275,TypeAdapters.java,729,in.nextNull();
+S2276,TypeAdapters.java,730,return JsonNull.INSTANCE;
+S2277,TypeAdapters.java,732,JsonArray array = new JsonArray();
+S2278,TypeAdapters.java,733,in.beginArray();
+S2279,TypeAdapters.java,734,while (in.hasNext()) {
+S2280,TypeAdapters.java,735,array.add(read(in));
+S2281,TypeAdapters.java,737,in.endArray();
+S2282,TypeAdapters.java,738,return array;
+S2283,TypeAdapters.java,740,JsonObject object = new JsonObject();
+S2284,TypeAdapters.java,741,in.beginObject();
+S2285,TypeAdapters.java,742,while (in.hasNext()) {
+S2286,TypeAdapters.java,743,"object.add(in.nextName(), read(in));"
+S2287,TypeAdapters.java,745,in.endObject();
+S2288,TypeAdapters.java,746,return object;
+S2289,TypeAdapters.java,757,if (value == null || value.isJsonNull()) {
+S2290,TypeAdapters.java,758,out.nullValue();
+S2291,TypeAdapters.java,759,} else if (value.isJsonPrimitive()) {
+S2292,TypeAdapters.java,760,JsonPrimitive primitive = value.getAsJsonPrimitive();
+S2293,TypeAdapters.java,761,if (primitive.isNumber()) {
+S2294,TypeAdapters.java,762,out.value(primitive.getAsNumber());
+S2295,TypeAdapters.java,763,} else if (primitive.isBoolean()) {
+S2296,TypeAdapters.java,764,out.value(primitive.getAsBoolean());
+S2297,TypeAdapters.java,766,out.value(primitive.getAsString());
+S2298,TypeAdapters.java,769,} else if (value.isJsonArray()) {
+S2299,TypeAdapters.java,770,out.beginArray();
+S2300,TypeAdapters.java,771,for (JsonElement e : value.getAsJsonArray()) {
+S2301,TypeAdapters.java,772,"write(out, e);"
+S2302,TypeAdapters.java,774,out.endArray();
+S2303,TypeAdapters.java,776,} else if (value.isJsonObject()) {
+S2304,TypeAdapters.java,777,out.beginObject();
+S2305,TypeAdapters.java,778,"for (Map.Entry<String, JsonElement> e : value.getAsJsonObject().entrySet()) {"
+S2306,TypeAdapters.java,779,out.name(e.getKey());
+S2307,TypeAdapters.java,780,"write(out, e.getValue());"
+S2308,TypeAdapters.java,782,out.endObject();
+S2309,TypeAdapters.java,790,public static final TypeAdapterFactory JSON_ELEMENT_FACTORY
+S2310,TypeAdapters.java,793,private static final class EnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<T> {
+S2311,TypeAdapters.java,794,"private final Map<String, T> nameToConstant = new HashMap<String, T>();"
+S2312,TypeAdapters.java,795,"private final Map<T, String> constantToName = new HashMap<T, String>();"
+S2313,TypeAdapters.java,797,public EnumTypeAdapter(Class<T> classOfT) {
+S2314,TypeAdapters.java,799,for (T constant : classOfT.getEnumConstants()) {
+S2315,TypeAdapters.java,800,String name = constant.name();
+S2316,TypeAdapters.java,801,SerializedName annotation = classOfT.getField(name).getAnnotation(SerializedName.class);
+S2317,TypeAdapters.java,802,if (annotation != null) {
+S2318,TypeAdapters.java,808,"nameToConstant.put(name, constant);"
+S2319,TypeAdapters.java,809,"constantToName.put(constant, name);"
+S2320,TypeAdapters.java,816,if (in.peek() == JsonToken.NULL) {
+S2321,TypeAdapters.java,820,return nameToConstant.get(in.nextString());
+S2322,TypeAdapters.java,824,out.value(value == null ? null : constantToName.get(value));
+S2323,TypeAdapters.java,828,public static final TypeAdapterFactory ENUM_FACTORY = new TypeAdapterFactory() {
+S2324,TypeAdapters.java,831,Class<? super T> rawType = typeToken.getRawType();
+S2325,TypeAdapters.java,832,if (!Enum.class.isAssignableFrom(rawType) || rawType == Enum.class) {
+S2326,TypeAdapters.java,833,return null;
+S2327,TypeAdapters.java,835,if (!rawType.isEnum()) {
+S2328,TypeAdapters.java,838,return (TypeAdapter<T>) new EnumTypeAdapter(rawType);
+S2329,TypeAdapters.java,844,return new TypeAdapterFactory() {
+S2330,TypeAdapters.java,847,return typeToken.equals(type) ? (TypeAdapter<T>) typeAdapter : null;
+S2331,TypeAdapters.java,854,return new TypeAdapterFactory() {
+S2332,TypeAdapters.java,857,return typeToken.getRawType() == type ? (TypeAdapter<T>) typeAdapter : null;
+S2333,TypeAdapters.java,867,return new TypeAdapterFactory() {
+S2334,TypeAdapters.java,870,Class<? super T> rawType = typeToken.getRawType();
+S2335,TypeAdapters.java,871,return (rawType == unboxed || rawType == boxed) ? (TypeAdapter<T>) typeAdapter : null;
+S2336,TypeAdapters.java,882,return new TypeAdapterFactory() {
+S2337,TypeAdapters.java,885,Class<? super T> rawType = typeToken.getRawType();
+S2338,TypeAdapters.java,886,return (rawType == base || rawType == sub) ? (TypeAdapter<T>) typeAdapter : null;
+S2339,TypeAdapters.java,901,return new TypeAdapterFactory() {
+S2340,TypeAdapters.java,904,final Class<? super T2> requestedType = typeToken.getRawType();
+S2341,TypeAdapters.java,905,if (!clazz.isAssignableFrom(requestedType)) {
+S2342,TypeAdapters.java,906,return null;
+S2343,TypeAdapters.java,908,return (TypeAdapter<T2>) new TypeAdapter<T1>() {
+S2344,TypeAdapters.java,910,"typeAdapter.write(out, value);"
+S2345,TypeAdapters.java,914,T1 result = typeAdapter.read(in);
+S2346,TypeAdapters.java,915,if (result != null && !requestedType.isInstance(result)) {
+S2347,TypeAdapters.java,916,"throw new JsonSyntaxException(""Expected a "" + requestedType.getName()"
+S2348,TypeAdapters.java,919,return result;
+S2349,TypeToken.java,61,protected TypeToken() {
+S2350,TypeToken.java,62,this.type = getSuperclassTypeParameter(getClass());
+S2351,TypeToken.java,63,this.rawType = (Class<? super T>) $Gson$Types.getRawType(type);
+S2352,TypeToken.java,64,this.hashCode = type.hashCode();
+S2353,TypeToken.java,71,TypeToken(Type type) {
+S2354,TypeToken.java,72,this.type = $Gson$Types.canonicalize($Gson$Preconditions.checkNotNull(type));
+S2355,TypeToken.java,73,this.rawType = (Class<? super T>) $Gson$Types.getRawType(this.type);
+S2356,TypeToken.java,74,this.hashCode = this.type.hashCode();
+S2357,TypeToken.java,82,Type superclass = subclass.getGenericSuperclass();
+S2358,TypeToken.java,83,if (superclass instanceof Class) {
+S2359,TypeToken.java,86,ParameterizedType parameterized = (ParameterizedType) superclass;
+S2360,TypeToken.java,87,return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);
+S2361,TypeToken.java,94,return rawType;
+S2362,TypeToken.java,101,return type;
+S2363,TypeToken.java,280,return this.hashCode;
+S2364,TypeToken.java,284,return o instanceof TypeToken<?>
+S2365,TypeToken.java,296,return new TypeToken<Object>(type);
+S2366,TypeToken.java,303,return new TypeToken<T>(type);
+S2367,UnsafeAllocator.java,30,public abstract class UnsafeAllocator {
+S2368,UnsafeAllocator.java,39,"Class<?> unsafeClass = Class.forName(""sun.misc.Unsafe"");"
+S2369,UnsafeAllocator.java,40,"Field f = unsafeClass.getDeclaredField(""theUnsafe"");"
+S2370,UnsafeAllocator.java,41,f.setAccessible(true);
+S2371,UnsafeAllocator.java,42,final Object unsafe = f.get(null);
+S2372,UnsafeAllocator.java,43,"final Method allocateInstance = unsafeClass.getMethod(""allocateInstance"", Class.class);"
+S2373,UnsafeAllocator.java,44,return new UnsafeAllocator() {
+S2374,UnsafeAllocator.java,48,"return (T) allocateInstance.invoke(unsafe, c);"

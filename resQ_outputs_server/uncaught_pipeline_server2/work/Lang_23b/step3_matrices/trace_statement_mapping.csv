@@ -1,0 +1,264 @@
+statement_id,file,line,code
+S1,ExtendedMessageFormat.java,91,"this(pattern, Locale.getDefault());"
+S2,ExtendedMessageFormat.java,102,"this(pattern, locale, null);"
+S3,ExtendedMessageFormat.java,113,"this(pattern, Locale.getDefault(), registry);"
+S4,ExtendedMessageFormat.java,125,super(DUMMY_PATTERN);
+S5,ExtendedMessageFormat.java,126,setLocale(locale);
+S6,ExtendedMessageFormat.java,127,this.registry = registry;
+S7,ExtendedMessageFormat.java,128,applyPattern(pattern);
+S8,ExtendedMessageFormat.java,136,return toPattern;
+S9,ExtendedMessageFormat.java,146,if (registry == null) {
+S10,ExtendedMessageFormat.java,147,super.applyPattern(pattern);
+S11,ExtendedMessageFormat.java,148,toPattern = super.toPattern();
+S12,ExtendedMessageFormat.java,149,return;
+S13,ExtendedMessageFormat.java,151,ArrayList<Format> foundFormats = new ArrayList<Format>();
+S14,ExtendedMessageFormat.java,152,ArrayList<String> foundDescriptions = new ArrayList<String>();
+S15,ExtendedMessageFormat.java,153,StringBuilder stripCustom = new StringBuilder(pattern.length());
+S16,ExtendedMessageFormat.java,155,ParsePosition pos = new ParsePosition(0);
+S17,ExtendedMessageFormat.java,156,char[] c = pattern.toCharArray();
+S18,ExtendedMessageFormat.java,157,int fmtCount = 0;
+S19,ExtendedMessageFormat.java,158,while (pos.getIndex() < pattern.length()) {
+S20,ExtendedMessageFormat.java,159,switch (c[pos.getIndex()]) {
+S21,ExtendedMessageFormat.java,161,"appendQuotedString(pattern, pos, stripCustom, true);"
+S22,ExtendedMessageFormat.java,162,break;
+S23,ExtendedMessageFormat.java,164,fmtCount++;
+S24,ExtendedMessageFormat.java,165,"seekNonWs(pattern, pos);"
+S25,ExtendedMessageFormat.java,166,int start = pos.getIndex();
+S26,ExtendedMessageFormat.java,167,"int index = readArgumentIndex(pattern, next(pos));"
+S27,ExtendedMessageFormat.java,168,stripCustom.append(START_FE).append(index);
+S28,ExtendedMessageFormat.java,169,"seekNonWs(pattern, pos);"
+S29,ExtendedMessageFormat.java,170,Format format = null;
+S30,ExtendedMessageFormat.java,171,String formatDescription = null;
+S31,ExtendedMessageFormat.java,172,if (c[pos.getIndex()] == START_FMT) {
+S32,ExtendedMessageFormat.java,173,"formatDescription = parseFormatDescription(pattern,"
+S33,ExtendedMessageFormat.java,175,format = getFormat(formatDescription);
+S34,ExtendedMessageFormat.java,176,if (format == null) {
+S35,ExtendedMessageFormat.java,177,stripCustom.append(START_FMT).append(formatDescription);
+S36,ExtendedMessageFormat.java,180,foundFormats.add(format);
+S37,ExtendedMessageFormat.java,181,foundDescriptions.add(format == null ? null : formatDescription);
+S38,ExtendedMessageFormat.java,182,Validate.isTrue(foundFormats.size() == fmtCount);
+S39,ExtendedMessageFormat.java,183,Validate.isTrue(foundDescriptions.size() == fmtCount);
+S40,ExtendedMessageFormat.java,184,if (c[pos.getIndex()] != END_FE) {
+S41,ExtendedMessageFormat.java,190,stripCustom.append(c[pos.getIndex()]);
+S42,ExtendedMessageFormat.java,191,next(pos);
+S43,ExtendedMessageFormat.java,194,super.applyPattern(stripCustom.toString());
+S44,ExtendedMessageFormat.java,195,"toPattern = insertFormats(super.toPattern(), foundDescriptions);"
+S45,ExtendedMessageFormat.java,196,if (containsElements(foundFormats)) {
+S46,ExtendedMessageFormat.java,197,Format[] origFormats = getFormats();
+S47,ExtendedMessageFormat.java,200,int i = 0;
+S48,ExtendedMessageFormat.java,201,for (Iterator<Format> it = foundFormats.iterator(); it.hasNext(); i++) {
+S49,ExtendedMessageFormat.java,202,Format f = it.next();
+S50,ExtendedMessageFormat.java,203,if (f != null) {
+S51,ExtendedMessageFormat.java,204,origFormats[i] = f;
+S52,ExtendedMessageFormat.java,207,super.setFormats(origFormats);
+S53,ExtendedMessageFormat.java,277,if (registry != null) {
+S54,ExtendedMessageFormat.java,278,String name = desc;
+S55,ExtendedMessageFormat.java,279,String args = null;
+S56,ExtendedMessageFormat.java,280,int i = desc.indexOf(START_FMT);
+S57,ExtendedMessageFormat.java,281,if (i > 0) {
+S58,ExtendedMessageFormat.java,282,"name = desc.substring(0, i).trim();"
+S59,ExtendedMessageFormat.java,283,args = desc.substring(i + 1).trim();
+S60,ExtendedMessageFormat.java,285,FormatFactory factory = registry.get(name);
+S61,ExtendedMessageFormat.java,286,if (factory != null) {
+S62,ExtendedMessageFormat.java,287,"return factory.getFormat(name, args, getLocale());"
+S63,ExtendedMessageFormat.java,290,return null;
+S64,ExtendedMessageFormat.java,301,int start = pos.getIndex();
+S65,ExtendedMessageFormat.java,302,"seekNonWs(pattern, pos);"
+S66,ExtendedMessageFormat.java,303,StringBuffer result = new StringBuffer();
+S67,ExtendedMessageFormat.java,304,boolean error = false;
+S68,ExtendedMessageFormat.java,305,for (; !error && pos.getIndex() < pattern.length(); next(pos)) {
+S69,ExtendedMessageFormat.java,306,char c = pattern.charAt(pos.getIndex());
+S70,ExtendedMessageFormat.java,307,if (Character.isWhitespace(c)) {
+S71,ExtendedMessageFormat.java,315,if ((c == START_FMT || c == END_FE) && result.length() > 0) {
+S72,ExtendedMessageFormat.java,317,return Integer.parseInt(result.toString());
+S73,ExtendedMessageFormat.java,323,error = !Character.isDigit(c);
+S74,ExtendedMessageFormat.java,324,result.append(c);
+S75,ExtendedMessageFormat.java,343,int start = pos.getIndex();
+S76,ExtendedMessageFormat.java,344,"seekNonWs(pattern, pos);"
+S77,ExtendedMessageFormat.java,345,int text = pos.getIndex();
+S78,ExtendedMessageFormat.java,346,int depth = 1;
+S79,ExtendedMessageFormat.java,347,for (; pos.getIndex() < pattern.length(); next(pos)) {
+S80,ExtendedMessageFormat.java,348,switch (pattern.charAt(pos.getIndex())) {
+S81,ExtendedMessageFormat.java,353,depth--;
+S82,ExtendedMessageFormat.java,354,if (depth == 0) {
+S83,ExtendedMessageFormat.java,355,"return pattern.substring(text, pos.getIndex());"
+S84,ExtendedMessageFormat.java,375,if (!containsElements(customPatterns)) {
+S85,ExtendedMessageFormat.java,378,StringBuilder sb = new StringBuilder(pattern.length() * 2);
+S86,ExtendedMessageFormat.java,379,ParsePosition pos = new ParsePosition(0);
+S87,ExtendedMessageFormat.java,380,int fe = -1;
+S88,ExtendedMessageFormat.java,381,int depth = 0;
+S89,ExtendedMessageFormat.java,382,while (pos.getIndex() < pattern.length()) {
+S90,ExtendedMessageFormat.java,383,char c = pattern.charAt(pos.getIndex());
+S91,ExtendedMessageFormat.java,384,switch (c) {
+S92,ExtendedMessageFormat.java,386,"appendQuotedString(pattern, pos, sb, false);"
+S93,ExtendedMessageFormat.java,387,break;
+S94,ExtendedMessageFormat.java,389,depth++;
+S95,ExtendedMessageFormat.java,390,if (depth == 1) {
+S96,ExtendedMessageFormat.java,391,fe++;
+S97,ExtendedMessageFormat.java,392,sb.append(START_FE).append(
+S98,ExtendedMessageFormat.java,394,String customPattern = customPatterns.get(fe);
+S99,ExtendedMessageFormat.java,395,if (customPattern != null) {
+S100,ExtendedMessageFormat.java,396,sb.append(START_FMT).append(customPattern);
+S101,ExtendedMessageFormat.java,401,depth--;
+S102,ExtendedMessageFormat.java,404,sb.append(c);
+S103,ExtendedMessageFormat.java,405,next(pos);
+S104,ExtendedMessageFormat.java,408,return sb.toString();
+S105,ExtendedMessageFormat.java,418,int len = 0;
+S106,ExtendedMessageFormat.java,419,char[] buffer = pattern.toCharArray();
+S107,ExtendedMessageFormat.java,421,"len = StrMatcher.splitMatcher().isMatch(buffer, pos.getIndex());"
+S108,ExtendedMessageFormat.java,422,pos.setIndex(pos.getIndex() + len);
+S109,ExtendedMessageFormat.java,423,} while (len > 0 && pos.getIndex() < pattern.length());
+S110,ExtendedMessageFormat.java,433,pos.setIndex(pos.getIndex() + 1);
+S111,ExtendedMessageFormat.java,434,return pos;
+S112,ExtendedMessageFormat.java,449,int start = pos.getIndex();
+S113,ExtendedMessageFormat.java,450,char[] c = pattern.toCharArray();
+S114,ExtendedMessageFormat.java,451,if (escapingOn && c[start] == QUOTE) {
+S115,ExtendedMessageFormat.java,452,next(pos);
+S116,ExtendedMessageFormat.java,453,return appendTo == null ? null : appendTo.append(QUOTE);
+S117,ExtendedMessageFormat.java,455,int lastHold = start;
+S118,ExtendedMessageFormat.java,456,for (int i = pos.getIndex(); i < pattern.length(); i++) {
+S119,ExtendedMessageFormat.java,457,if (escapingOn && pattern.substring(i).startsWith(ESCAPED_QUOTE)) {
+S120,ExtendedMessageFormat.java,464,switch (c[pos.getIndex()]) {
+S121,ExtendedMessageFormat.java,466,next(pos);
+S122,ExtendedMessageFormat.java,467,"return appendTo == null ? null : appendTo.append(c, lastHold,"
+S123,ExtendedMessageFormat.java,495,if (coll == null || coll.size() == 0) {
+S124,ExtendedMessageFormat.java,498,for (Iterator<?> iter = coll.iterator(); iter.hasNext();) {
+S125,ExtendedMessageFormat.java,499,if (iter.next() != null) {
+S126,ExtendedMessageFormat.java,500,return true;
+S127,StrMatcher.java,37,"private static final StrMatcher COMMA_MATCHER = new CharMatcher(',');"
+S128,StrMatcher.java,41,private static final StrMatcher TAB_MATCHER = new CharMatcher('\t');
+S129,StrMatcher.java,45,private static final StrMatcher SPACE_MATCHER = new CharMatcher(' ');
+S130,StrMatcher.java,50,"private static final StrMatcher SPLIT_MATCHER = new CharSetMatcher("" \t\n\r\f"".toCharArray());"
+S131,StrMatcher.java,54,private static final StrMatcher TRIM_MATCHER = new TrimMatcher();
+S132,StrMatcher.java,58,private static final StrMatcher SINGLE_QUOTE_MATCHER = new CharMatcher('\'');
+S133,StrMatcher.java,62,"private static final StrMatcher DOUBLE_QUOTE_MATCHER = new CharMatcher('""');"
+S134,StrMatcher.java,66,"private static final StrMatcher QUOTE_MATCHER = new CharSetMatcher(""'\"""".toCharArray());"
+S135,StrMatcher.java,70,private static final StrMatcher NONE_MATCHER = new NoMatcher();
+S136,StrMatcher.java,108,return SPLIT_MATCHER;
+S137,StrMatcher.java,216,super();
+S138,StrMatcher.java,267,"return isMatch(buffer, pos, 0, buffer.length);"
+S139,StrMatcher.java,284,super();
+S140,StrMatcher.java,285,this.chars = chars.clone();
+S141,StrMatcher.java,286,Arrays.sort(this.chars);
+S142,StrMatcher.java,300,"return Arrays.binarySearch(chars, buffer[pos]) >= 0 ? 1 : 0;"
+S143,StrMatcher.java,318,super();
+S144,StrMatcher.java,319,this.ch = ch;
+S145,StrMatcher.java,389,super();
+S146,StrMatcher.java,417,super();
+S147,SystemUtils.java,104,"public static final String AWT_TOOLKIT = getSystemProperty(""awt.toolkit"");"
+S148,SystemUtils.java,127,"public static final String FILE_ENCODING = getSystemProperty(""file.encoding"");"
+S149,SystemUtils.java,146,"public static final String FILE_SEPARATOR = getSystemProperty(""file.separator"");"
+S150,SystemUtils.java,165,"public static final String JAVA_AWT_FONTS = getSystemProperty(""java.awt.fonts"");"
+S151,SystemUtils.java,184,"public static final String JAVA_AWT_GRAPHICSENV = getSystemProperty(""java.awt.graphicsenv"");"
+S152,SystemUtils.java,206,"public static final String JAVA_AWT_HEADLESS = getSystemProperty(""java.awt.headless"");"
+S153,SystemUtils.java,225,"public static final String JAVA_AWT_PRINTERJOB = getSystemProperty(""java.awt.printerjob"");"
+S154,SystemUtils.java,244,"public static final String JAVA_CLASS_PATH = getSystemProperty(""java.class.path"");"
+S155,SystemUtils.java,263,"public static final String JAVA_CLASS_VERSION = getSystemProperty(""java.class.version"");"
+S156,SystemUtils.java,283,"public static final String JAVA_COMPILER = getSystemProperty(""java.compiler"");"
+S157,SystemUtils.java,302,"public static final String JAVA_ENDORSED_DIRS = getSystemProperty(""java.endorsed.dirs"");"
+S158,SystemUtils.java,321,"public static final String JAVA_EXT_DIRS = getSystemProperty(""java.ext.dirs"");"
+S159,SystemUtils.java,340,public static final String JAVA_HOME = getSystemProperty(JAVA_HOME_KEY);
+S160,SystemUtils.java,359,public static final String JAVA_IO_TMPDIR = getSystemProperty(JAVA_IO_TMPDIR_KEY);
+S161,SystemUtils.java,378,"public static final String JAVA_LIBRARY_PATH = getSystemProperty(""java.library.path"");"
+S162,SystemUtils.java,398,"public static final String JAVA_RUNTIME_NAME = getSystemProperty(""java.runtime.name"");"
+S163,SystemUtils.java,418,"public static final String JAVA_RUNTIME_VERSION = getSystemProperty(""java.runtime.version"");"
+S164,SystemUtils.java,437,"public static final String JAVA_SPECIFICATION_NAME = getSystemProperty(""java.specification.name"");"
+S165,SystemUtils.java,456,"public static final String JAVA_SPECIFICATION_VENDOR = getSystemProperty(""java.specification.vendor"");"
+S166,SystemUtils.java,475,"public static final String JAVA_SPECIFICATION_VERSION = getSystemProperty(""java.specification.version"");"
+S167,SystemUtils.java,495,"public static final String JAVA_UTIL_PREFS_PREFERENCES_FACTORY = getSystemProperty(""java.util.prefs.PreferencesFactory"");"
+S168,SystemUtils.java,514,"public static final String JAVA_VENDOR = getSystemProperty(""java.vendor"");"
+S169,SystemUtils.java,533,"public static final String JAVA_VENDOR_URL = getSystemProperty(""java.vendor.url"");"
+S170,SystemUtils.java,552,"public static final String JAVA_VERSION = getSystemProperty(""java.version"");"
+S171,SystemUtils.java,572,"public static final String JAVA_VM_INFO = getSystemProperty(""java.vm.info"");"
+S172,SystemUtils.java,591,"public static final String JAVA_VM_NAME = getSystemProperty(""java.vm.name"");"
+S173,SystemUtils.java,610,"public static final String JAVA_VM_SPECIFICATION_NAME = getSystemProperty(""java.vm.specification.name"");"
+S174,SystemUtils.java,629,"public static final String JAVA_VM_SPECIFICATION_VENDOR = getSystemProperty(""java.vm.specification.vendor"");"
+S175,SystemUtils.java,648,"public static final String JAVA_VM_SPECIFICATION_VERSION = getSystemProperty(""java.vm.specification.version"");"
+S176,SystemUtils.java,667,"public static final String JAVA_VM_VENDOR = getSystemProperty(""java.vm.vendor"");"
+S177,SystemUtils.java,686,"public static final String JAVA_VM_VERSION = getSystemProperty(""java.vm.version"");"
+S178,SystemUtils.java,705,"public static final String LINE_SEPARATOR = getSystemProperty(""line.separator"");"
+S179,SystemUtils.java,724,"public static final String OS_ARCH = getSystemProperty(""os.arch"");"
+S180,SystemUtils.java,743,"public static final String OS_NAME = getSystemProperty(""os.name"");"
+S181,SystemUtils.java,762,"public static final String OS_VERSION = getSystemProperty(""os.version"");"
+S182,SystemUtils.java,781,"public static final String PATH_SEPARATOR = getSystemProperty(""path.separator"");"
+S183,SystemUtils.java,802,"public static final String USER_COUNTRY = getSystemProperty(""user.country"") == null ? getSystemProperty(""user.region"")"
+S184,SystemUtils.java,822,public static final String USER_DIR = getSystemProperty(USER_DIR_KEY);
+S185,SystemUtils.java,841,public static final String USER_HOME = getSystemProperty(USER_HOME_KEY);
+S186,SystemUtils.java,861,"public static final String USER_LANGUAGE = getSystemProperty(""user.language"");"
+S187,SystemUtils.java,880,"public static final String USER_NAME = getSystemProperty(""user.name"");"
+S188,SystemUtils.java,899,"public static final String USER_TIMEZONE = getSystemProperty(""user.timezone"");"
+S189,SystemUtils.java,917,public static final String JAVA_VERSION_TRIMMED = getJavaVersionTrimmed();
+S190,SystemUtils.java,943,public static final float JAVA_VERSION_FLOAT = getJavaVersionAsFloat();
+S191,SystemUtils.java,964,public static final int JAVA_VERSION_INT = getJavaVersionAsInt();
+S192,SystemUtils.java,980,"public static final boolean IS_JAVA_1_1 = getJavaVersionMatches(""1.1"");"
+S193,SystemUtils.java,991,"public static final boolean IS_JAVA_1_2 = getJavaVersionMatches(""1.2"");"
+S194,SystemUtils.java,1002,"public static final boolean IS_JAVA_1_3 = getJavaVersionMatches(""1.3"");"
+S195,SystemUtils.java,1013,"public static final boolean IS_JAVA_1_4 = getJavaVersionMatches(""1.4"");"
+S196,SystemUtils.java,1024,"public static final boolean IS_JAVA_1_5 = getJavaVersionMatches(""1.5"");"
+S197,SystemUtils.java,1035,"public static final boolean IS_JAVA_1_6 = getJavaVersionMatches(""1.6"");"
+S198,SystemUtils.java,1048,"public static final boolean IS_JAVA_1_7 = getJavaVersionMatches(""1.7"");"
+S199,SystemUtils.java,1069,"public static final boolean IS_OS_AIX = getOSMatchesName(""AIX"");"
+S200,SystemUtils.java,1082,"public static final boolean IS_OS_HP_UX = getOSMatchesName(""HP-UX"");"
+S201,SystemUtils.java,1095,"public static final boolean IS_OS_IRIX = getOSMatchesName(""Irix"");"
+S202,SystemUtils.java,1108,"public static final boolean IS_OS_LINUX = getOSMatchesName(""Linux"") || getOSMatchesName(""LINUX"");"
+S203,SystemUtils.java,1121,"public static final boolean IS_OS_MAC = getOSMatchesName(""Mac"");"
+S204,SystemUtils.java,1134,"public static final boolean IS_OS_MAC_OSX = getOSMatchesName(""Mac OS X"");"
+S205,SystemUtils.java,1147,"public static final boolean IS_OS_OS2 = getOSMatchesName(""OS/2"");"
+S206,SystemUtils.java,1160,"public static final boolean IS_OS_SOLARIS = getOSMatchesName(""Solaris"");"
+S207,SystemUtils.java,1173,"public static final boolean IS_OS_SUN_OS = getOSMatchesName(""SunOS"");"
+S208,SystemUtils.java,1186,public static final boolean IS_OS_UNIX = IS_OS_AIX || IS_OS_HP_UX || IS_OS_IRIX || IS_OS_LINUX || IS_OS_MAC_OSX || IS_OS_SOLARIS
+S209,SystemUtils.java,1200,public static final boolean IS_OS_WINDOWS = getOSMatchesName(OS_NAME_WINDOWS_PREFIX);
+S210,SystemUtils.java,1213,"public static final boolean IS_OS_WINDOWS_2000 = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""5.0"");"
+S211,SystemUtils.java,1226,"public static final boolean IS_OS_WINDOWS_95 = getOSMatches(OS_NAME_WINDOWS_PREFIX + "" 9"", ""4.0"");"
+S212,SystemUtils.java,1240,"public static final boolean IS_OS_WINDOWS_98 = getOSMatches(OS_NAME_WINDOWS_PREFIX + "" 9"", ""4.1"");"
+S213,SystemUtils.java,1254,"public static final boolean IS_OS_WINDOWS_ME = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""4.9"");"
+S214,SystemUtils.java,1268,"public static final boolean IS_OS_WINDOWS_NT = getOSMatchesName(OS_NAME_WINDOWS_PREFIX + "" NT"");"
+S215,SystemUtils.java,1282,"public static final boolean IS_OS_WINDOWS_XP = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""5.1"");"
+S216,SystemUtils.java,1296,"public static final boolean IS_OS_WINDOWS_VISTA = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""6.0"");"
+S217,SystemUtils.java,1309,"public static final boolean IS_OS_WINDOWS_7 = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""6.1"");"
+S218,SystemUtils.java,1364,"return toVersionFloat(toJavaVersionIntArray(SystemUtils.JAVA_VERSION, JAVA_VERSION_TRIM_SIZE));"
+S219,SystemUtils.java,1388,"return toVersionInt(toJavaVersionIntArray(SystemUtils.JAVA_VERSION, JAVA_VERSION_TRIM_SIZE));"
+S220,SystemUtils.java,1401,"return isJavaVersionMatch(JAVA_VERSION_TRIMMED, versionPrefix);"
+S221,SystemUtils.java,1410,if (JAVA_VERSION != null) {
+S222,SystemUtils.java,1411,for (int i = 0; i < JAVA_VERSION.length(); i++) {
+S223,SystemUtils.java,1412,char ch = JAVA_VERSION.charAt(i);
+S224,SystemUtils.java,1413,if (ch >= '0' && ch <= '9') {
+S225,SystemUtils.java,1414,return JAVA_VERSION.substring(i);
+S226,SystemUtils.java,1431,"return isOSMatch(OS_NAME, OS_VERSION, osNamePrefix, osVersionPrefix);"
+S227,SystemUtils.java,1442,"return isOSNameMatch(OS_NAME, osNamePrefix);"
+S228,SystemUtils.java,1462,return System.getProperty(property);
+S229,SystemUtils.java,1534,return JAVA_VERSION_FLOAT >= requiredVersion;
+S230,SystemUtils.java,1574,if (version == null) {
+S231,SystemUtils.java,1577,return version.startsWith(versionPrefix);
+S232,SystemUtils.java,1597,if (osName == null || osVersion == null) {
+S233,SystemUtils.java,1600,return osName.startsWith(osNamePrefix) && osVersion.startsWith(osVersionPrefix);
+S234,SystemUtils.java,1616,if (osName == null) {
+S235,SystemUtils.java,1619,return osName.startsWith(osNamePrefix);
+S236,SystemUtils.java,1716,if (version == null) {
+S237,SystemUtils.java,1719,"String[] strings = Pattern.compile(""[^\\d]"").split(version);"
+S238,SystemUtils.java,1720,"int[] ints = new int[Math.min(limit, strings.length)];"
+S239,SystemUtils.java,1721,int j = 0;
+S240,SystemUtils.java,1722,for (int i = 0; i < strings.length && j < limit; i++) {
+S241,SystemUtils.java,1723,String s = strings[i];
+S242,SystemUtils.java,1724,if (s.length() > 0) {
+S243,SystemUtils.java,1725,ints[j++] = Integer.parseInt(s);
+S244,SystemUtils.java,1728,return ints;
+S245,SystemUtils.java,1752,if (javaVersions == null || javaVersions.length == 0) {
+S246,SystemUtils.java,1755,if (javaVersions.length == 1) {
+S247,SystemUtils.java,1758,StringBuilder builder = new StringBuilder();
+S248,SystemUtils.java,1759,builder.append(javaVersions[0]);
+S249,SystemUtils.java,1760,builder.append('.');
+S250,SystemUtils.java,1761,for (int i = 1; i < javaVersions.length; i++) {
+S251,SystemUtils.java,1762,builder.append(javaVersions[i]);
+S252,SystemUtils.java,1765,return Float.parseFloat(builder.toString());
+S253,SystemUtils.java,1792,if (javaVersions == null) {
+S254,SystemUtils.java,1795,int intVersion = 0;
+S255,SystemUtils.java,1796,int len = javaVersions.length;
+S256,SystemUtils.java,1797,if (len >= 1) {
+S257,SystemUtils.java,1798,intVersion = javaVersions[0] * 100;
+S258,SystemUtils.java,1800,if (len >= 2) {
+S259,SystemUtils.java,1801,intVersion += javaVersions[1] * 10;
+S260,SystemUtils.java,1803,if (len >= 3) {
+S261,SystemUtils.java,1804,intVersion += javaVersions[2];
+S262,SystemUtils.java,1806,return intVersion;
+S263,Validate.java,176,if (expression == false) {

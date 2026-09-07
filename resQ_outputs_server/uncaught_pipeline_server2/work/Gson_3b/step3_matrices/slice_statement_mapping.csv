@@ -1,0 +1,206 @@
+statement_id,file,line,code
+S1,ConstructorConstructor.java,47,"public ConstructorConstructor(Map<Type, InstanceCreator<?>> instanceCreators) {"
+S2,ConstructorConstructor.java,48,this.instanceCreators = instanceCreators;
+S3,ConstructorConstructor.java,52,final Type type = typeToken.getType();
+S4,ConstructorConstructor.java,53,final Class<? super T> rawType = typeToken.getRawType();
+S5,ConstructorConstructor.java,58,final InstanceCreator<T> typeCreator = (InstanceCreator<T>) instanceCreators.get(type);
+S6,ConstructorConstructor.java,59,if (typeCreator != null) {
+S7,ConstructorConstructor.java,69,final InstanceCreator<T> rawTypeCreator =
+S8,ConstructorConstructor.java,71,if (rawTypeCreator != null) {
+S9,ConstructorConstructor.java,79,ObjectConstructor<T> defaultConstructor = newDefaultConstructor(rawType);
+S10,ConstructorConstructor.java,80,if (defaultConstructor != null) {
+S11,ConstructorConstructor.java,84,"ObjectConstructor<T> defaultImplementation = newDefaultImplementationConstructor(type, rawType);"
+S12,ConstructorConstructor.java,85,if (defaultImplementation != null) {
+S13,ConstructorConstructor.java,86,return defaultImplementation;
+S14,ConstructorConstructor.java,95,final Constructor<? super T> constructor = rawType.getDeclaredConstructor();
+S15,ConstructorConstructor.java,96,if (!constructor.isAccessible()) {
+S16,ConstructorConstructor.java,119,return null;
+S17,ConstructorConstructor.java,130,if (Collection.class.isAssignableFrom(rawType)) {
+S18,ConstructorConstructor.java,174,if (Map.class.isAssignableFrom(rawType)) {
+S19,ConstructorConstructor.java,175,if (SortedMap.class.isAssignableFrom(rawType)) {
+S20,ConstructorConstructor.java,181,} else if (type instanceof ParameterizedType && !(String.class.isAssignableFrom(
+S21,ConstructorConstructor.java,189,return new ObjectConstructor<T>() {
+S22,ConstructorConstructor.java,191,"return (T) new LinkedTreeMap<String, Object>();"
+S23,Excluder.java,50,"public final class Excluder implements TypeAdapterFactory, Cloneable {"
+S24,Excluder.java,52,public static final Excluder DEFAULT = new Excluder();
+S25,Excluder.java,125,if (skipDeserialize) {
+S26,Excluder.java,127,return null;
+S27,Gson.java,112,"private final ThreadLocal<Map<TypeToken<?>, FutureTypeAdapter<?>>> calls"
+S28,Gson.java,115,"private final Map<TypeToken<?>, TypeAdapter<?>> typeTokenCache"
+S29,Gson.java,177,"this(Excluder.DEFAULT, FieldNamingPolicy.IDENTITY,"
+S30,Gson.java,189,this.constructorConstructor = new ConstructorConstructor(instanceCreators);
+S31,Gson.java,241,"factories.add(new MapTypeAdapterFactory(constructorConstructor, complexMapKeySerialization));"
+S32,Gson.java,336,TypeAdapter<?> cached = typeTokenCache.get(type);
+S33,Gson.java,337,if (cached != null) {
+S34,Gson.java,341,"Map<TypeToken<?>, FutureTypeAdapter<?>> threadCalls = calls.get();"
+S35,Gson.java,343,if (threadCalls == null) {
+S36,Gson.java,344,"threadCalls = new HashMap<TypeToken<?>, FutureTypeAdapter<?>>();"
+S37,Gson.java,345,calls.set(threadCalls);
+S38,Gson.java,350,FutureTypeAdapter<T> ongoingCall = (FutureTypeAdapter<T>) threadCalls.get(type);
+S39,Gson.java,356,FutureTypeAdapter<T> call = new FutureTypeAdapter<T>();
+S40,Gson.java,357,"threadCalls.put(type, call);"
+S41,Gson.java,360,"TypeAdapter<T> candidate = factory.create(this, type);"
+S42,Gson.java,363,"typeTokenCache.put(type, candidate);"
+S43,Gson.java,700,"Object object = fromJson(json, (Type) classOfT);"
+S44,Gson.java,701,return Primitives.wrap(classOfT).cast(object);
+S45,Gson.java,724,if (json == null) {
+S46,Gson.java,727,StringReader reader = new StringReader(json);
+S47,Gson.java,728,"T target = (T) fromJson(reader, typeOfT);"
+S48,Gson.java,729,return target;
+S49,Gson.java,778,JsonReader jsonReader = new JsonReader(json);
+S50,Gson.java,779,"T object = (T) fromJson(jsonReader, typeOfT);"
+S51,Gson.java,781,return object;
+S52,Gson.java,808,reader.setLenient(true);
+S53,Gson.java,810,reader.peek();
+S54,Gson.java,812,TypeToken<T> typeToken = (TypeToken<T>) TypeToken.get(typeOfT);
+S55,Gson.java,813,TypeAdapter<T> typeAdapter = getAdapter(typeToken);
+S56,Gson.java,814,T object = typeAdapter.read(reader);
+S57,Gson.java,831,reader.setLenient(oldLenient);
+S58,Gson.java,882,static class FutureTypeAdapter<T> extends TypeAdapter<T> {
+S59,GsonBuilder.java,72,"private final Map<Type, InstanceCreator<?>> instanceCreators"
+S60,GsonBuilder.java,452,if (typeAdapter instanceof InstanceCreator<?>) {
+S61,GsonBuilder.java,453,"instanceCreators.put(type, (InstanceCreator) typeAdapter);"
+S62,JsonReader.java,192,"private static final char[] NON_EXECUTE_PREFIX = "")]}'\n"".toCharArray();"
+S63,JsonReader.java,230,private boolean lenient = false;
+S64,JsonReader.java,238,private final char[] buffer = new char[1024];
+S65,JsonReader.java,239,private int pos = 0;
+S66,JsonReader.java,240,private int limit = 0;
+S67,JsonReader.java,242,private int lineNumber = 0;
+S68,JsonReader.java,243,private int lineStart = 0;
+S69,JsonReader.java,245,private int peeked = PEEKED_NONE;
+S70,JsonReader.java,269,private int[] stack = new int[32];
+S71,JsonReader.java,270,private int stackSize = 0;
+S72,JsonReader.java,272,stack[stackSize++] = JsonScope.EMPTY_DOCUMENT;
+S73,JsonReader.java,283,private String[] pathNames = new String[32];
+S74,JsonReader.java,284,private int[] pathIndices = new int[32];
+S75,JsonReader.java,289,public JsonReader(Reader in) {
+S76,JsonReader.java,293,this.in = in;
+S77,JsonReader.java,326,this.lenient = lenient;
+S78,JsonReader.java,384,push(JsonScope.EMPTY_OBJECT);
+S79,JsonReader.java,385,peeked = PEEKED_NONE;
+S80,JsonReader.java,416,int p = peeked;
+S81,JsonReader.java,417,if (p == PEEKED_NONE) {
+S82,JsonReader.java,418,p = doPeek();
+S83,JsonReader.java,420,return p != PEEKED_END_OBJECT && p != PEEKED_END_ARRAY;
+S84,JsonReader.java,427,int p = peeked;
+S85,JsonReader.java,428,if (p == PEEKED_NONE) {
+S86,JsonReader.java,429,p = doPeek();
+S87,JsonReader.java,432,switch (p) {
+S88,JsonReader.java,434,return JsonToken.BEGIN_OBJECT;
+S89,JsonReader.java,466,int peekStack = stack[stackSize - 1];
+S90,JsonReader.java,485,if (peekStack == JsonScope.NONEMPTY_OBJECT) {
+S91,JsonReader.java,498,int c = nextNonWhitespace(true);
+S92,JsonReader.java,499,switch (c) {
+S93,JsonReader.java,506,if (peekStack != JsonScope.NONEMPTY_OBJECT) {
+S94,JsonReader.java,507,return peeked = PEEKED_END_OBJECT;
+S95,JsonReader.java,537,if (lenient) {
+S96,JsonReader.java,538,consumeNonExecutePrefix();
+S97,JsonReader.java,540,stack[stackSize - 1] = JsonScope.NONEMPTY_DOCUMENT;
+S98,JsonReader.java,553,int c = nextNonWhitespace(true);
+S99,JsonReader.java,554,switch (c) {
+S100,JsonReader.java,581,return peeked = PEEKED_BEGIN_OBJECT;
+S101,JsonReader.java,1280,stack[stackSize++] = newTop;
+S102,JsonReader.java,1289,char[] buffer = this.buffer;
+S103,JsonReader.java,1290,lineStart -= pos;
+S104,JsonReader.java,1291,if (limit != pos) {
+S105,JsonReader.java,1292,limit -= pos;
+S106,JsonReader.java,1293,"System.arraycopy(buffer, pos, buffer, 0, limit);"
+S107,JsonReader.java,1295,limit = 0;
+S108,JsonReader.java,1298,pos = 0;
+S109,JsonReader.java,1300,"while ((total = in.read(buffer, limit, buffer.length - limit)) != -1) {"
+S110,JsonReader.java,1301,limit += total;
+S111,JsonReader.java,1310,if (limit >= minimum) {
+S112,JsonReader.java,1311,return true;
+S113,JsonReader.java,1340,char[] buffer = this.buffer;
+S114,JsonReader.java,1341,int p = pos;
+S115,JsonReader.java,1342,int l = limit;
+S116,JsonReader.java,1344,if (p == l) {
+S117,JsonReader.java,1345,pos = p;
+S118,JsonReader.java,1346,if (!fillBuffer(1)) {
+S119,JsonReader.java,1349,p = pos;
+S120,JsonReader.java,1350,l = limit;
+S121,JsonReader.java,1353,int c = buffer[p++];
+S122,JsonReader.java,1409,pos = p;
+S123,JsonReader.java,1410,return c;
+S124,JsonReader.java,1582,nextNonWhitespace(true);
+S125,JsonReader.java,1583,pos--;
+S126,JsonReader.java,1585,if (pos + NON_EXECUTE_PREFIX.length > limit && !fillBuffer(NON_EXECUTE_PREFIX.length)) {
+S127,JsonToken.java,25,public enum JsonToken {
+S128,JsonToken.java,31,"BEGIN_ARRAY,"
+S129,JsonToken.java,37,"END_ARRAY,"
+S130,JsonToken.java,43,"BEGIN_OBJECT,"
+S131,JsonToken.java,49,"END_OBJECT,"
+S132,JsonToken.java,56,"NAME,"
+S133,JsonToken.java,61,"STRING,"
+S134,JsonToken.java,67,"NUMBER,"
+S135,JsonToken.java,72,"BOOLEAN,"
+S136,JsonToken.java,77,"NULL,"
+S137,JsonToken.java,84,END_DOCUMENT
+S138,LinkedTreeMap.java,40,private static final Comparator<Comparable> NATURAL_ORDER = new Comparator<Comparable>() {
+S139,LinkedTreeMap.java,48,int size = 0;
+S140,LinkedTreeMap.java,49,int modCount = 0;
+S141,LinkedTreeMap.java,52,"final Node<K, V> header = new Node<K, V>();"
+S142,LinkedTreeMap.java,60,this((Comparator<? super K>) NATURAL_ORDER);
+S143,LinkedTreeMap.java,71,public LinkedTreeMap(Comparator<? super K> comparator) {
+S144,LinkedTreeMap.java,72,this.comparator = comparator != null
+S145,LinkedTreeMap.java,450,Node() {
+S146,LinkedTreeMap.java,451,key = null;
+S147,LinkedTreeMap.java,452,next = prev = this;
+S148,MapTypeAdapterFactory.java,111,this.constructorConstructor = constructorConstructor;
+S149,MapTypeAdapterFactory.java,116,Type type = typeToken.getType();
+S150,MapTypeAdapterFactory.java,118,Class<? super T> rawType = typeToken.getRawType();
+S151,MapTypeAdapterFactory.java,119,if (!Map.class.isAssignableFrom(rawType)) {
+S152,MapTypeAdapterFactory.java,123,Class<?> rawTypeOfSrc = $Gson$Types.getRawType(type);
+S153,MapTypeAdapterFactory.java,124,"Type[] keyAndValueTypes = $Gson$Types.getMapKeyAndValueTypes(type, rawTypeOfSrc);"
+S154,MapTypeAdapterFactory.java,125,"TypeAdapter<?> keyAdapter = getKeyAdapter(gson, keyAndValueTypes[0]);"
+S155,MapTypeAdapterFactory.java,126,TypeAdapter<?> valueAdapter = gson.getAdapter(TypeToken.get(keyAndValueTypes[1]));
+S156,MapTypeAdapterFactory.java,127,ObjectConstructor<T> constructor = constructorConstructor.get(typeToken);
+S157,MapTypeAdapterFactory.java,131,"TypeAdapter<T> result = new Adapter(gson, keyAndValueTypes[0], keyAdapter,"
+S158,MapTypeAdapterFactory.java,140,return (keyType == boolean.class || keyType == Boolean.class)
+S159,MapTypeAdapterFactory.java,145,"private final class Adapter<K, V> extends TypeAdapter<Map<K, V>> {"
+S160,MapTypeAdapterFactory.java,157,this.constructor = constructor;
+S161,MapTypeAdapterFactory.java,161,JsonToken peek = in.peek();
+S162,MapTypeAdapterFactory.java,162,if (peek == JsonToken.NULL) {
+S163,MapTypeAdapterFactory.java,167,"Map<K, V> map = constructor.construct();"
+S164,MapTypeAdapterFactory.java,169,if (peek == JsonToken.BEGIN_ARRAY) {
+S165,MapTypeAdapterFactory.java,183,in.beginObject();
+S166,MapTypeAdapterFactory.java,184,while (in.hasNext()) {
+S167,MapTypeAdapterFactory.java,193,in.endObject();
+S168,MapTypeAdapterFactory.java,195,return map;
+S169,ObjectTypeAdapter.java,55,JsonToken token = in.peek();
+S170,ObjectTypeAdapter.java,56,switch (token) {
+S171,ObjectTypeAdapter.java,79,return in.nextDouble();
+S172,Primitives.java,45,"Map<Class<?>, Class<?>> primToWrap = new HashMap<Class<?>, Class<?>>(16);"
+S173,Primitives.java,48,"add(primToWrap, wrapToPrim, boolean.class, Boolean.class);"
+S174,Primitives.java,49,"add(primToWrap, wrapToPrim, byte.class, Byte.class);"
+S175,Primitives.java,50,"add(primToWrap, wrapToPrim, char.class, Character.class);"
+S176,Primitives.java,51,"add(primToWrap, wrapToPrim, double.class, Double.class);"
+S177,Primitives.java,52,"add(primToWrap, wrapToPrim, float.class, Float.class);"
+S178,Primitives.java,53,"add(primToWrap, wrapToPrim, int.class, Integer.class);"
+S179,Primitives.java,54,"add(primToWrap, wrapToPrim, long.class, Long.class);"
+S180,Primitives.java,55,"add(primToWrap, wrapToPrim, short.class, Short.class);"
+S181,Primitives.java,56,"add(primToWrap, wrapToPrim, void.class, Void.class);"
+S182,Primitives.java,58,PRIMITIVE_TO_WRAPPER_TYPE = Collections.unmodifiableMap(primToWrap);
+S183,Primitives.java,64,"forward.put(key, value);"
+S184,Primitives.java,98,Class<T> wrapped = (Class<T>) PRIMITIVE_TO_WRAPPER_TYPE.get(
+S185,Primitives.java,100,return (wrapped == null) ? type : wrapped;
+S186,TypeAdapter.java,119,public abstract class TypeAdapter<T> {
+S187,TypeAdapter.java,259,JsonReader reader = new JsonReader(in);
+S188,TypeAdapter.java,260,return read(reader);
+S189,TypeAdapter.java,273,return fromJson(new StringReader(json));
+S190,TypeAdapters.java,520,if (typeToken.getRawType() != Timestamp.class) {
+S191,TypeAdapters.java,795,Class<? super T> rawType = typeToken.getRawType();
+S192,TypeAdapters.java,796,return (rawType == unboxed || rawType == boxed) ? (TypeAdapter<T>) typeAdapter : null;
+S193,TypeToken.java,61,protected TypeToken() {
+S194,TypeToken.java,62,this.type = getSuperclassTypeParameter(getClass());
+S195,TypeToken.java,71,TypeToken(Type type) {
+S196,TypeToken.java,72,this.type = $Gson$Types.canonicalize($Gson$Preconditions.checkNotNull(type));
+S197,TypeToken.java,73,this.rawType = (Class<? super T>) $Gson$Types.getRawType(this.type);
+S198,TypeToken.java,74,this.hashCode = this.type.hashCode();
+S199,TypeToken.java,82,Type superclass = subclass.getGenericSuperclass();
+S200,TypeToken.java,86,ParameterizedType parameterized = (ParameterizedType) superclass;
+S201,TypeToken.java,87,return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);
+S202,TypeToken.java,94,return rawType;
+S203,TypeToken.java,101,return type;
+S204,TypeToken.java,280,return this.hashCode;
+S205,TypeToken.java,296,return new TypeToken<Object>(type);

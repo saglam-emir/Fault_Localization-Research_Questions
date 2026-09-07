@@ -1,0 +1,1016 @@
+statement_id,file,line,code
+S1,BufferRecycler.java,46,"private final static int[] CHAR_BUFFER_LENGTHS = new int[] { 4000, 4000, 200, 200 };"
+S2,BufferRecycler.java,62,"this(4, 4);"
+S3,BufferRecycler.java,71,"protected BufferRecycler(int bbCount, int cbCount) {"
+S4,BufferRecycler.java,72,_byteBuffers = new byte[bbCount][];
+S5,BufferRecycler.java,73,_charBuffers = new char[cbCount][];
+S6,BufferRecycler.java,118,final int DEF_SIZE = charBufferLength(ix);
+S7,BufferRecycler.java,119,if (minSize < DEF_SIZE) {
+S8,BufferRecycler.java,120,minSize = DEF_SIZE;
+S9,BufferRecycler.java,122,char[] buffer = _charBuffers[ix];
+S10,BufferRecycler.java,123,if (buffer == null || buffer.length < minSize) {
+S11,BufferRecycler.java,124,buffer = calloc(minSize);
+S12,BufferRecycler.java,128,return buffer;
+S13,BufferRecycler.java,146,return CHAR_BUFFER_LENGTHS[ix];
+S14,BufferRecycler.java,156,protected char[] calloc(int size) { return new char[size]; }
+S15,ByteQuadsCanonicalizer.java,222,"private ByteQuadsCanonicalizer(int sz, boolean intern, int seed, boolean failOnDoS) {"
+S16,ByteQuadsCanonicalizer.java,223,_parent = null;
+S17,ByteQuadsCanonicalizer.java,224,_seed = seed;
+S18,ByteQuadsCanonicalizer.java,225,_intern = intern;
+S19,ByteQuadsCanonicalizer.java,226,_failOnDoS = failOnDoS;
+S20,ByteQuadsCanonicalizer.java,241,_tableInfo = new AtomicReference<TableInfo>(TableInfo.createInitial(sz));
+S21,ByteQuadsCanonicalizer.java,250,_parent = parent;
+S22,ByteQuadsCanonicalizer.java,251,_seed = seed;
+S23,ByteQuadsCanonicalizer.java,252,_intern = intern;
+S24,ByteQuadsCanonicalizer.java,253,_failOnDoS = failOnDoS;
+S25,ByteQuadsCanonicalizer.java,254,_tableInfo = null; // not used by child tables
+S26,ByteQuadsCanonicalizer.java,257,_count = state.count;
+S27,ByteQuadsCanonicalizer.java,258,_hashSize = state.size;
+S28,ByteQuadsCanonicalizer.java,259,_secondaryStart = _hashSize << 2; // right after primary area
+S29,ByteQuadsCanonicalizer.java,260,_tertiaryStart = _secondaryStart + (_secondaryStart >> 1); // right after secondary
+S30,ByteQuadsCanonicalizer.java,261,_tertiaryShift = state.tertiaryShift;
+S31,ByteQuadsCanonicalizer.java,263,_hashArea = state.mainHash;
+S32,ByteQuadsCanonicalizer.java,264,_names = state.names;
+S33,ByteQuadsCanonicalizer.java,266,_spilloverEnd = state.spilloverEnd;
+S34,ByteQuadsCanonicalizer.java,267,_longNameOffset = state.longNameOffset;
+S35,ByteQuadsCanonicalizer.java,270,_needRehash = false;
+S36,ByteQuadsCanonicalizer.java,271,_hashShared = true;
+S37,ByteQuadsCanonicalizer.java,288,long now = System.currentTimeMillis();
+S38,ByteQuadsCanonicalizer.java,290,int seed = (((int) now) + ((int) (now >>> 32))) | 1;
+S39,ByteQuadsCanonicalizer.java,291,return createRoot(seed);
+S40,ByteQuadsCanonicalizer.java,299,"return new ByteQuadsCanonicalizer(DEFAULT_T_SIZE, true, seed, true);"
+S41,ByteQuadsCanonicalizer.java,307,"return new ByteQuadsCanonicalizer(this,"
+S42,ByteQuadsCanonicalizer.java,325,_parent.mergeChild(new TableInfo(this));
+S43,ByteQuadsCanonicalizer.java,470,int offset = _calcOffset(calcHash(q1));
+S44,ByteQuadsCanonicalizer.java,472,final int[] hashArea = _hashArea;
+S45,ByteQuadsCanonicalizer.java,474,int len = hashArea[offset+3];
+S46,ByteQuadsCanonicalizer.java,476,if (len == 1) {
+S47,ByteQuadsCanonicalizer.java,477,if (hashArea[offset] == q1) {
+S48,ByteQuadsCanonicalizer.java,478,return _names[offset >> 2];
+S49,ByteQuadsCanonicalizer.java,480,} else if (len == 0) { // empty slot; unlikely but avoid further lookups if so
+S50,ByteQuadsCanonicalizer.java,481,return null;
+S51,ByteQuadsCanonicalizer.java,502,"int offset = _calcOffset(calcHash(q1, q2));"
+S52,ByteQuadsCanonicalizer.java,504,final int[] hashArea = _hashArea;
+S53,ByteQuadsCanonicalizer.java,506,int len = hashArea[offset+3];
+S54,ByteQuadsCanonicalizer.java,508,if (len == 2) {
+S55,ByteQuadsCanonicalizer.java,509,if ((q1 == hashArea[offset]) && (q2 == hashArea[offset+1])) {
+S56,ByteQuadsCanonicalizer.java,510,return _names[offset >> 2];
+S57,ByteQuadsCanonicalizer.java,512,} else if (len == 0) { // empty slot; unlikely but avoid further lookups if so
+S58,ByteQuadsCanonicalizer.java,513,return null;
+S59,ByteQuadsCanonicalizer.java,516,int offset2 = _secondaryStart + ((offset >> 3) << 2);
+S60,ByteQuadsCanonicalizer.java,518,len = hashArea[offset2+3];
+S61,ByteQuadsCanonicalizer.java,521,if ((q1 == hashArea[offset2]) && (q2 == hashArea[offset2+1])) {
+S62,ByteQuadsCanonicalizer.java,524,} else if (len == 0) { // empty slot? Short-circuit if no more spillovers
+S63,ByteQuadsCanonicalizer.java,525,return null;
+S64,ByteQuadsCanonicalizer.java,527,"return _findSecondary(offset, q1, q2);"
+S65,ByteQuadsCanonicalizer.java,532,"int offset = _calcOffset(calcHash(q1, q2, q3));"
+S66,ByteQuadsCanonicalizer.java,533,final int[] hashArea = _hashArea;
+S67,ByteQuadsCanonicalizer.java,534,int len = hashArea[offset+3];
+S68,ByteQuadsCanonicalizer.java,536,if (len == 3) {
+S69,ByteQuadsCanonicalizer.java,540,} else if (len == 0) { // empty slot; unlikely but avoid further lookups if so
+S70,ByteQuadsCanonicalizer.java,541,return null;
+S71,ByteQuadsCanonicalizer.java,544,int offset2 = _secondaryStart + ((offset >> 3) << 2);
+S72,ByteQuadsCanonicalizer.java,546,len = hashArea[offset2+3];
+S73,ByteQuadsCanonicalizer.java,548,if (len == 3) {
+S74,ByteQuadsCanonicalizer.java,552,} else if (len == 0) { // empty slot? Short-circuit if no more spillovers
+S75,ByteQuadsCanonicalizer.java,553,return null;
+S76,ByteQuadsCanonicalizer.java,564,if (qlen < 4) { // another sanity check
+S77,ByteQuadsCanonicalizer.java,565,if (qlen == 3) {
+S78,ByteQuadsCanonicalizer.java,566,"return findName(q[0], q[1], q[2]);"
+S79,ByteQuadsCanonicalizer.java,568,if (qlen == 2) {
+S80,ByteQuadsCanonicalizer.java,569,"return findName(q[0], q[1]);"
+S81,ByteQuadsCanonicalizer.java,571,return findName(q[0]);
+S82,ByteQuadsCanonicalizer.java,573,"final int hash = calcHash(q, qlen);"
+S83,ByteQuadsCanonicalizer.java,574,int offset = _calcOffset(hash);
+S84,ByteQuadsCanonicalizer.java,576,final int[] hashArea = _hashArea;
+S85,ByteQuadsCanonicalizer.java,578,final int len = hashArea[offset+3];
+S86,ByteQuadsCanonicalizer.java,580,if ((hash == hashArea[offset]) && (len == qlen)) {
+S87,ByteQuadsCanonicalizer.java,586,if (len == 0) { // empty slot; unlikely but avoid further lookups if so
+S88,ByteQuadsCanonicalizer.java,587,return null;
+S89,ByteQuadsCanonicalizer.java,609,int ix = hash & (_hashSize-1);
+S90,ByteQuadsCanonicalizer.java,611,return (ix << 2);
+S91,ByteQuadsCanonicalizer.java,651,int offset = _tertiaryStart + ((origOffset >> (_tertiaryShift + 2)) << _tertiaryShift);
+S92,ByteQuadsCanonicalizer.java,652,final int[] hashArea = _hashArea;
+S93,ByteQuadsCanonicalizer.java,654,final int bucketSize = (1 << _tertiaryShift);
+S94,ByteQuadsCanonicalizer.java,655,for (int end = offset + bucketSize; offset < end; offset += 4) {
+S95,ByteQuadsCanonicalizer.java,656,int len = hashArea[offset+3];
+S96,ByteQuadsCanonicalizer.java,660,if (len == 0) {
+S97,ByteQuadsCanonicalizer.java,661,return null;
+S98,ByteQuadsCanonicalizer.java,812,_verifySharing();
+S99,ByteQuadsCanonicalizer.java,813,if (_intern) {
+S100,ByteQuadsCanonicalizer.java,814,name = InternCache.instance.intern(name);
+S101,ByteQuadsCanonicalizer.java,818,switch (qlen) {
+S102,ByteQuadsCanonicalizer.java,821,offset = _findOffsetForAdd(calcHash(q[0]));
+S103,ByteQuadsCanonicalizer.java,848,"int longStart = _appendLongName(q, qlen);"
+S104,ByteQuadsCanonicalizer.java,856,++_count;
+S105,ByteQuadsCanonicalizer.java,857,_verifyNeedForRehash();
+S106,ByteQuadsCanonicalizer.java,858,return name;
+S107,ByteQuadsCanonicalizer.java,863,if (_count > (_hashSize >> 1)) { // over 50%
+S108,ByteQuadsCanonicalizer.java,864,int spillCount = (_spilloverEnd - _spilloverStart()) >> 2;
+S109,ByteQuadsCanonicalizer.java,865,if ((spillCount > (1 + _count >> 7))
+S110,ByteQuadsCanonicalizer.java,867,_needRehash = true;
+S111,ByteQuadsCanonicalizer.java,874,if (_hashShared) {
+S112,ByteQuadsCanonicalizer.java,875,"_hashArea = Arrays.copyOf(_hashArea, _hashArea.length);"
+S113,ByteQuadsCanonicalizer.java,876,"_names = Arrays.copyOf(_names, _names.length);"
+S114,ByteQuadsCanonicalizer.java,877,_hashShared = false;
+S115,ByteQuadsCanonicalizer.java,879,if (_needRehash) {
+S116,ByteQuadsCanonicalizer.java,880,rehash();
+S117,ByteQuadsCanonicalizer.java,890,int offset = _calcOffset(hash);
+S118,ByteQuadsCanonicalizer.java,891,final int[] hashArea = _hashArea;
+S119,ByteQuadsCanonicalizer.java,892,if (hashArea[offset+3] == 0) {
+S120,ByteQuadsCanonicalizer.java,897,int offset2 = _secondaryStart + ((offset >> 3) << 2);
+S121,ByteQuadsCanonicalizer.java,898,if (hashArea[offset2+3] == 0) {
+S122,ByteQuadsCanonicalizer.java,904,offset2 = _tertiaryStart + ((offset >> (_tertiaryShift + 2)) << _tertiaryShift);
+S123,ByteQuadsCanonicalizer.java,905,final int bucketSize = (1 << _tertiaryShift);
+S124,ByteQuadsCanonicalizer.java,906,for (int end = offset2 + bucketSize; offset2 < end; offset2 += 4) {
+S125,ByteQuadsCanonicalizer.java,907,if (hashArea[offset2+3] == 0) {
+S126,ByteQuadsCanonicalizer.java,915,_spilloverEnd += 4;
+S127,ByteQuadsCanonicalizer.java,938,int start = _longNameOffset;
+S128,ByteQuadsCanonicalizer.java,941,if ((start + qlen) > _hashArea.length) {
+S129,ByteQuadsCanonicalizer.java,943,int toAdd = (start + qlen) - _hashArea.length;
+S130,ByteQuadsCanonicalizer.java,945,"int minAdd = Math.min(4096, _hashSize);"
+S131,ByteQuadsCanonicalizer.java,947,"int newSize = _hashArea.length + Math.max(toAdd, minAdd);"
+S132,ByteQuadsCanonicalizer.java,948,"_hashArea = Arrays.copyOf(_hashArea, newSize);"
+S133,ByteQuadsCanonicalizer.java,950,"System.arraycopy(quads, 0, _hashArea, start, qlen);"
+S134,ByteQuadsCanonicalizer.java,951,_longNameOffset += qlen;
+S135,ByteQuadsCanonicalizer.java,977,int hash = q1 ^ _seed;
+S136,ByteQuadsCanonicalizer.java,983,hash += (hash >>> 16); // to xor hi- and low- 16-bits
+S137,ByteQuadsCanonicalizer.java,984,hash ^= (hash >>> 12);
+S138,ByteQuadsCanonicalizer.java,985,return hash;
+S139,ByteQuadsCanonicalizer.java,994,hash += (hash >>> 15); // try mixing first and second byte pairs first
+S140,ByteQuadsCanonicalizer.java,995,hash ^= (hash >>> 9); // as well as lowest 2 bytes
+S141,ByteQuadsCanonicalizer.java,996,hash += (q2 * MULT); // then add second quad
+S142,ByteQuadsCanonicalizer.java,997,hash ^= _seed;
+S143,ByteQuadsCanonicalizer.java,998,hash += (hash >>> 16); // and shuffle some more
+S144,ByteQuadsCanonicalizer.java,999,hash ^= (hash >>> 4);
+S145,ByteQuadsCanonicalizer.java,1000,hash += (hash << 3);
+S146,ByteQuadsCanonicalizer.java,1002,return hash;
+S147,ByteQuadsCanonicalizer.java,1007,int hash = q1 ^ _seed;
+S148,ByteQuadsCanonicalizer.java,1008,hash += (hash >>> 9);
+S149,ByteQuadsCanonicalizer.java,1009,hash *= MULT3;
+S150,ByteQuadsCanonicalizer.java,1010,hash += q2;
+S151,ByteQuadsCanonicalizer.java,1011,hash *= MULT;
+S152,ByteQuadsCanonicalizer.java,1012,hash += (hash >>> 15);
+S153,ByteQuadsCanonicalizer.java,1013,hash ^= q3;
+S154,ByteQuadsCanonicalizer.java,1015,hash += (hash >>> 4);
+S155,ByteQuadsCanonicalizer.java,1017,hash += (hash >>> 15);
+S156,ByteQuadsCanonicalizer.java,1018,hash ^= (hash << 9);
+S157,ByteQuadsCanonicalizer.java,1020,return hash;
+S158,ByteQuadsCanonicalizer.java,1033,int hash = q[0] ^ _seed;
+S159,ByteQuadsCanonicalizer.java,1034,hash += (hash >>> 9);
+S160,ByteQuadsCanonicalizer.java,1035,hash += q[1];
+S161,ByteQuadsCanonicalizer.java,1036,hash += (hash >>> 15);
+S162,ByteQuadsCanonicalizer.java,1037,hash *= MULT;
+S163,ByteQuadsCanonicalizer.java,1038,hash ^= q[2];
+S164,ByteQuadsCanonicalizer.java,1039,hash += (hash >>> 4);
+S165,ByteQuadsCanonicalizer.java,1041,for (int i = 3; i < qlen; ++i) {
+S166,ByteQuadsCanonicalizer.java,1042,int next = q[i];
+S167,ByteQuadsCanonicalizer.java,1043,next = next ^ (next >> 21);
+S168,ByteQuadsCanonicalizer.java,1044,hash += next;
+S169,ByteQuadsCanonicalizer.java,1046,hash *= MULT2;
+S170,ByteQuadsCanonicalizer.java,1049,hash += (hash >>> 19);
+S171,ByteQuadsCanonicalizer.java,1050,hash ^= (hash << 5);
+S172,ByteQuadsCanonicalizer.java,1051,return hash;
+S173,ByteQuadsCanonicalizer.java,1062,_needRehash = false;
+S174,ByteQuadsCanonicalizer.java,1064,_hashShared = false;
+S175,ByteQuadsCanonicalizer.java,1068,final int[] oldHashArea = _hashArea;
+S176,ByteQuadsCanonicalizer.java,1069,final String[] oldNames = _names;
+S177,ByteQuadsCanonicalizer.java,1070,final int oldSize = _hashSize;
+S178,ByteQuadsCanonicalizer.java,1072,final int newSize = oldSize + oldSize;
+S179,ByteQuadsCanonicalizer.java,1073,final int oldEnd = _spilloverEnd;
+S180,ByteQuadsCanonicalizer.java,1078,if (newSize > MAX_T_SIZE) {
+S181,ByteQuadsCanonicalizer.java,1083,_hashArea = new int[oldHashArea.length + (oldSize<<3)];
+S182,ByteQuadsCanonicalizer.java,1084,_hashSize = newSize;
+S183,ByteQuadsCanonicalizer.java,1085,_secondaryStart = (newSize << 2); // 4 ints per entry
+S184,ByteQuadsCanonicalizer.java,1086,_tertiaryStart = _secondaryStart + (_secondaryStart >> 1); // right after secondary
+S185,ByteQuadsCanonicalizer.java,1087,_tertiaryShift = _calcTertiaryShift(newSize);
+S186,ByteQuadsCanonicalizer.java,1090,_names = new String[oldNames.length << 1];
+S187,ByteQuadsCanonicalizer.java,1091,nukeSymbols(false);
+S188,ByteQuadsCanonicalizer.java,1100,"for (int offset = 0, end = oldEnd; offset < end; offset += 4) {"
+S189,ByteQuadsCanonicalizer.java,1106,String name = oldNames[offset>>2];
+S190,ByteQuadsCanonicalizer.java,1110,"addName(name, q, 1);"
+S191,ByteQuadsCanonicalizer.java,1115,"addName(name, q, 2);"
+S192,ByteQuadsCanonicalizer.java,1147,_count = 0;
+S193,ByteQuadsCanonicalizer.java,1149,_spilloverEnd = _spilloverStart();
+S194,ByteQuadsCanonicalizer.java,1151,_longNameOffset = _hashSize << 3;
+S195,ByteQuadsCanonicalizer.java,1170,int offset = _hashSize;
+S196,ByteQuadsCanonicalizer.java,1171,return (offset << 3) - offset;
+S197,ByteQuadsCanonicalizer.java,1189,int tertSlots = (primarySlots) >> 2;
+S198,ByteQuadsCanonicalizer.java,1192,if (tertSlots < 64) {
+S199,ByteQuadsCanonicalizer.java,1193,return 4;
+S200,ByteQuadsCanonicalizer.java,1195,if (tertSlots <= 256) { // buckets of 8 slots (up to 256 == 32 x 8)
+S201,ByteQuadsCanonicalizer.java,1196,return 5;
+S202,ByteQuadsCanonicalizer.java,1198,if (tertSlots <= 1024) { // buckets of 16 slots (up to 1024 == 64 x 16)
+S203,ByteQuadsCanonicalizer.java,1199,return 6;
+S204,ByteQuadsCanonicalizer.java,1231,this.size = size;
+S205,ByteQuadsCanonicalizer.java,1232,this.count = count;
+S206,ByteQuadsCanonicalizer.java,1233,this.tertiaryShift = tertiaryShift;
+S207,ByteQuadsCanonicalizer.java,1234,this.mainHash = mainHash;
+S208,ByteQuadsCanonicalizer.java,1235,this.names = names;
+S209,ByteQuadsCanonicalizer.java,1236,this.spilloverEnd = spilloverEnd;
+S210,ByteQuadsCanonicalizer.java,1237,this.longNameOffset = longNameOffset;
+S211,ByteQuadsCanonicalizer.java,1242,size = src._hashSize;
+S212,ByteQuadsCanonicalizer.java,1243,count = src._count;
+S213,ByteQuadsCanonicalizer.java,1244,tertiaryShift = src._tertiaryShift;
+S214,ByteQuadsCanonicalizer.java,1245,mainHash = src._hashArea;
+S215,ByteQuadsCanonicalizer.java,1246,names = src._names;
+S216,ByteQuadsCanonicalizer.java,1247,spilloverEnd = src._spilloverEnd;
+S217,ByteQuadsCanonicalizer.java,1248,longNameOffset = src._longNameOffset;
+S218,ByteQuadsCanonicalizer.java,1252,int hashAreaSize = sz << 3;
+S219,ByteQuadsCanonicalizer.java,1253,int tertShift = _calcTertiaryShift(sz);
+S220,ByteQuadsCanonicalizer.java,1255,"return new TableInfo(sz, // hashSize"
+S221,ByteSourceJsonBootstrapper.java,74,protected boolean _bigEndian = true;
+S222,ByteSourceJsonBootstrapper.java,76,"protected int _bytesPerChar = 0; // 0 means ""dunno yet"""
+S223,ByteSourceJsonBootstrapper.java,93,"public ByteSourceJsonBootstrapper(IOContext ctxt, byte[] inputBuffer, int inputStart, int inputLen) {"
+S224,ByteSourceJsonBootstrapper.java,94,_context = ctxt;
+S225,ByteSourceJsonBootstrapper.java,95,_in = null;
+S226,ByteSourceJsonBootstrapper.java,96,_inputBuffer = inputBuffer;
+S227,ByteSourceJsonBootstrapper.java,97,_inputPtr = inputStart;
+S228,ByteSourceJsonBootstrapper.java,98,_inputEnd = (inputStart + inputLen);
+S229,ByteSourceJsonBootstrapper.java,100,_inputProcessed = -inputStart;
+S230,ByteSourceJsonBootstrapper.java,101,_bufferRecyclable = false;
+S231,ByteSourceJsonBootstrapper.java,117,boolean foundEncoding = false;
+S232,ByteSourceJsonBootstrapper.java,158,if (!foundEncoding) {
+S233,ByteSourceJsonBootstrapper.java,159,enc = JsonEncoding.UTF8;
+S234,ByteSourceJsonBootstrapper.java,172,return enc;
+S235,ByteSourceJsonBootstrapper.java,215,JsonEncoding enc = detectEncoding();
+S236,ByteSourceJsonBootstrapper.java,217,if (enc == JsonEncoding.UTF8) {
+S237,ByteSourceJsonBootstrapper.java,221,if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(factoryFeatures)) {
+S238,ByteSourceJsonBootstrapper.java,222,ByteQuadsCanonicalizer can = rootByteSymbols.makeChild(factoryFeatures);
+S239,ByteSourceJsonBootstrapper.java,223,"return new UTF8StreamJsonParser(_context, parserFeatures, _in, codec, can,"
+S240,BytesToNameCanonicalizer.java,270,"private BytesToNameCanonicalizer(int sz, boolean intern, int seed, boolean failOnDoS) {"
+S241,BytesToNameCanonicalizer.java,271,_parent = null;
+S242,BytesToNameCanonicalizer.java,272,_seed = seed;
+S243,BytesToNameCanonicalizer.java,273,_intern = intern;
+S244,BytesToNameCanonicalizer.java,274,_failOnDoS = failOnDoS;
+S245,BytesToNameCanonicalizer.java,290,_tableInfo = new AtomicReference<TableInfo>(initTableInfo(sz));
+S246,BytesToNameCanonicalizer.java,299,_parent = parent;
+S247,BytesToNameCanonicalizer.java,300,_seed = seed;
+S248,BytesToNameCanonicalizer.java,301,_intern = intern;
+S249,BytesToNameCanonicalizer.java,302,_failOnDoS = failOnDoS;
+S250,BytesToNameCanonicalizer.java,303,_tableInfo = null; // not used by child tables
+S251,BytesToNameCanonicalizer.java,306,_count = state.count;
+S252,BytesToNameCanonicalizer.java,307,_hashMask = state.mainHashMask;
+S253,BytesToNameCanonicalizer.java,308,_hash = state.mainHash;
+S254,BytesToNameCanonicalizer.java,309,_mainNames = state.mainNames;
+S255,BytesToNameCanonicalizer.java,310,_collList = state.collList;
+S256,BytesToNameCanonicalizer.java,311,_collCount = state.collCount;
+S257,BytesToNameCanonicalizer.java,312,_collEnd = state.collEnd;
+S258,BytesToNameCanonicalizer.java,313,_longestCollisionList = state.longestCollisionList;
+S259,BytesToNameCanonicalizer.java,316,_needRehash = false;
+S260,BytesToNameCanonicalizer.java,317,_hashShared = true;
+S261,BytesToNameCanonicalizer.java,318,_namesShared = true;
+S262,BytesToNameCanonicalizer.java,319,_collListShared = true;
+S263,BytesToNameCanonicalizer.java,327,"return new TableInfo(0, // count"
+S264,BytesToNameCanonicalizer.java,352,long now = System.currentTimeMillis();
+S265,BytesToNameCanonicalizer.java,354,int seed = (((int) now) + ((int) (now >>> 32))) | 1;
+S266,BytesToNameCanonicalizer.java,355,return createRoot(seed);
+S267,BytesToNameCanonicalizer.java,363,"return new BytesToNameCanonicalizer(DEFAULT_T_SIZE, true, seed, true);"
+S268,BytesToNameCanonicalizer.java,371,"return new BytesToNameCanonicalizer(this,"
+S269,BytesToNameCanonicalizer.java,695,if (_intern) {
+S270,BytesToNameCanonicalizer.java,696,name = InternCache.instance.intern(name);
+S271,BytesToNameCanonicalizer.java,699,if (qlen < 4) {
+S272,BytesToNameCanonicalizer.java,700,if (qlen == 1) {
+S273,BytesToNameCanonicalizer.java,701,hash = calcHash(q[0]);
+S274,BytesToNameCanonicalizer.java,702,} else if (qlen == 2) {
+S275,BytesToNameCanonicalizer.java,703,"hash = calcHash(q[0], q[1]);"
+S276,BytesToNameCanonicalizer.java,710,"Name symbol = constructName(hash, name, q, qlen);"
+S277,BytesToNameCanonicalizer.java,711,"_addSymbol(hash, symbol);"
+S278,BytesToNameCanonicalizer.java,712,return symbol;
+S279,BytesToNameCanonicalizer.java,737,int hash = q1 ^ _seed;
+S280,BytesToNameCanonicalizer.java,738,hash += (hash >>> 15); // to xor hi- and low- 16-bits
+S281,BytesToNameCanonicalizer.java,739,hash ^= (hash >>> 9); // as well as lowest 2 bytes
+S282,BytesToNameCanonicalizer.java,740,return hash;
+S283,BytesToNameCanonicalizer.java,748,hash ^= (hash >>> 15); // try mixing first and second byte pairs first
+S284,BytesToNameCanonicalizer.java,749,hash += (q2 * MULT); // then add second quad
+S285,BytesToNameCanonicalizer.java,750,hash ^= _seed;
+S286,BytesToNameCanonicalizer.java,751,hash += (hash >>> 7); // and shuffle some more
+S287,BytesToNameCanonicalizer.java,755,hash ^= (hash >>> 4);
+S288,BytesToNameCanonicalizer.java,756,return hash;
+S289,BytesToNameCanonicalizer.java,812,int blen = wordBytes.length;
+S290,BytesToNameCanonicalizer.java,813,int[] result = new int[(blen + 3) / 4];
+S291,BytesToNameCanonicalizer.java,814,for (int i = 0; i < blen; ++i) {
+S292,BytesToNameCanonicalizer.java,815,int x = wordBytes[i] & 0xFF;
+S293,BytesToNameCanonicalizer.java,817,if (++i < blen) {
+S294,BytesToNameCanonicalizer.java,818,x = (x << 8) | (wordBytes[i] & 0xFF);
+S295,BytesToNameCanonicalizer.java,819,if (++i < blen) {
+S296,BytesToNameCanonicalizer.java,820,x = (x << 8) | (wordBytes[i] & 0xFF);
+S297,BytesToNameCanonicalizer.java,822,x = (x << 8) | (wordBytes[i] & 0xFF);
+S298,BytesToNameCanonicalizer.java,826,result[i >> 2] = x;
+S299,BytesToNameCanonicalizer.java,828,return result;
+S300,BytesToNameCanonicalizer.java,884,if (_hashShared) { // always have to modify main entry
+S301,BytesToNameCanonicalizer.java,885,unshareMain();
+S302,BytesToNameCanonicalizer.java,888,if (_needRehash) {
+S303,BytesToNameCanonicalizer.java,889,rehash();
+S304,BytesToNameCanonicalizer.java,892,++_count;
+S305,BytesToNameCanonicalizer.java,897,int ix = (hash & _hashMask);
+S306,BytesToNameCanonicalizer.java,898,if (_mainNames[ix] == null) { // primary empty?
+S307,BytesToNameCanonicalizer.java,900,if (_namesShared) {
+S308,BytesToNameCanonicalizer.java,901,unshareNames();
+S309,BytesToNameCanonicalizer.java,908,if (_collListShared) {
+S310,BytesToNameCanonicalizer.java,909,unshareCollision(); // also allocates if list was null
+S311,BytesToNameCanonicalizer.java,911,++_collCount;
+S312,BytesToNameCanonicalizer.java,912,int entryValue = _hash[ix];
+S313,BytesToNameCanonicalizer.java,913,int bucket = entryValue & 0xFF;
+S314,BytesToNameCanonicalizer.java,914,if (bucket == 0) { // first spill over?
+S315,BytesToNameCanonicalizer.java,915,"if (_collEnd <= LAST_VALID_BUCKET) { // yup, still unshared bucket"
+S316,BytesToNameCanonicalizer.java,916,bucket = _collEnd;
+S317,BytesToNameCanonicalizer.java,917,++_collEnd;
+S318,BytesToNameCanonicalizer.java,919,if (bucket >= _collList.length) {
+S319,BytesToNameCanonicalizer.java,920,expandCollision();
+S320,BytesToNameCanonicalizer.java,928,--bucket; // 1-based index in value
+S321,BytesToNameCanonicalizer.java,932,"Bucket newB = new Bucket(symbol, _collList[bucket]);"
+S322,BytesToNameCanonicalizer.java,933,int collLen = newB.length;
+S323,BytesToNameCanonicalizer.java,934,if (collLen > MAX_COLL_CHAIN_LENGTH) {
+S324,BytesToNameCanonicalizer.java,942,"_longestCollisionList = Math.max(newB.length, _longestCollisionList);"
+S325,BytesToNameCanonicalizer.java,950,int hashSize = _hash.length;
+S326,BytesToNameCanonicalizer.java,951,if (_count > (hashSize >> 1)) {
+S327,BytesToNameCanonicalizer.java,952,int hashQuarter = (hashSize >> 2);
+S328,BytesToNameCanonicalizer.java,956,if (_count > (hashSize - hashQuarter)) {
+S329,BytesToNameCanonicalizer.java,957,_needRehash = true;
+S330,BytesToNameCanonicalizer.java,991,_needRehash = false;
+S331,BytesToNameCanonicalizer.java,993,_namesShared = false;
+S332,BytesToNameCanonicalizer.java,999,int[] oldMainHash = _hash;
+S333,BytesToNameCanonicalizer.java,1000,int len = oldMainHash.length;
+S334,BytesToNameCanonicalizer.java,1001,int newLen = len+len;
+S335,BytesToNameCanonicalizer.java,1006,if (newLen > MAX_T_SIZE) {
+S336,BytesToNameCanonicalizer.java,1011,_hash = new int[newLen];
+S337,BytesToNameCanonicalizer.java,1012,_hashMask = (newLen - 1);
+S338,BytesToNameCanonicalizer.java,1014,_mainNames = new Name[newLen];
+S339,BytesToNameCanonicalizer.java,1031,int oldEnd = _collEnd;
+S340,BytesToNameCanonicalizer.java,1032,if (oldEnd == 0) { // no prior collisions...
+S341,BytesToNameCanonicalizer.java,1033,_longestCollisionList = 0;
+S342,BytesToNameCanonicalizer.java,1037,_collCount = 0;
+S343,BytesToNameCanonicalizer.java,1038,_collEnd = 0;
+S344,BytesToNameCanonicalizer.java,1039,_collListShared = false;
+S345,BytesToNameCanonicalizer.java,1041,int maxColl = 0;
+S346,BytesToNameCanonicalizer.java,1043,Bucket[] oldBuckets = _collList;
+S347,BytesToNameCanonicalizer.java,1044,_collList = new Bucket[oldBuckets.length];
+S348,BytesToNameCanonicalizer.java,1045,for (int i = 0; i < oldEnd; ++i) {
+S349,BytesToNameCanonicalizer.java,1046,for (Bucket curr = oldBuckets[i]; curr != null; curr = curr.next) {
+S350,BytesToNameCanonicalizer.java,1049,int hash = symbol.hashCode();
+S351,BytesToNameCanonicalizer.java,1050,int ix = (hash & _hashMask);
+S352,BytesToNameCanonicalizer.java,1051,int val = _hash[ix];
+S353,BytesToNameCanonicalizer.java,1052,if (_mainNames[ix] == null) { // no primary entry?
+S354,BytesToNameCanonicalizer.java,1056,++_collCount;
+S355,BytesToNameCanonicalizer.java,1057,int bucket = val & 0xFF;
+S356,BytesToNameCanonicalizer.java,1058,if (bucket == 0) { // first spill over?
+S357,BytesToNameCanonicalizer.java,1059,"if (_collEnd <= LAST_VALID_BUCKET) { // yup, still unshared bucket"
+S358,BytesToNameCanonicalizer.java,1060,bucket = _collEnd;
+S359,BytesToNameCanonicalizer.java,1061,++_collEnd;
+S360,BytesToNameCanonicalizer.java,1072,--bucket; // 1-based index in value
+S361,BytesToNameCanonicalizer.java,1075,"Bucket newB = new Bucket(symbol, _collList[bucket]);"
+S362,BytesToNameCanonicalizer.java,1077,"maxColl = Math.max(maxColl, newB.length);"
+S363,BytesToNameCanonicalizer.java,1082,_longestCollisionList = maxColl;
+S364,BytesToNameCanonicalizer.java,1138,final int[] old = _hash;
+S365,BytesToNameCanonicalizer.java,1139,"_hash = Arrays.copyOf(old, old.length);"
+S366,BytesToNameCanonicalizer.java,1140,_hashShared = false;
+S367,BytesToNameCanonicalizer.java,1144,Bucket[] old = _collList;
+S368,BytesToNameCanonicalizer.java,1145,if (old == null) {
+S369,BytesToNameCanonicalizer.java,1146,_collList = new Bucket[INITIAL_COLLISION_LEN];
+S370,BytesToNameCanonicalizer.java,1150,_collListShared = false;
+S371,BytesToNameCanonicalizer.java,1154,final Name[] old = _mainNames;
+S372,BytesToNameCanonicalizer.java,1155,"_mainNames = Arrays.copyOf(old, old.length);"
+S373,BytesToNameCanonicalizer.java,1156,_namesShared = false;
+S374,BytesToNameCanonicalizer.java,1160,final Bucket[] old = _collList;
+S375,BytesToNameCanonicalizer.java,1161,"_collList = Arrays.copyOf(old, old.length * 2);"
+S376,BytesToNameCanonicalizer.java,1178,"if (qlen < 4) { // Need to check for 3 quad one, can do others too"
+S377,BytesToNameCanonicalizer.java,1179,switch (qlen) {
+S378,BytesToNameCanonicalizer.java,1181,"return new Name1(name, hash, quads[0]);"
+S379,BytesToNameCanonicalizer.java,1183,"return new Name2(name, hash, quads[0], quads[1]);"
+S380,BytesToNameCanonicalizer.java,1234,this.count = count;
+S381,BytesToNameCanonicalizer.java,1235,this.mainHashMask = mainHashMask;
+S382,BytesToNameCanonicalizer.java,1236,this.mainHash = mainHash;
+S383,BytesToNameCanonicalizer.java,1237,this.mainNames = mainNames;
+S384,BytesToNameCanonicalizer.java,1238,this.collList = collList;
+S385,BytesToNameCanonicalizer.java,1239,this.collCount = collCount;
+S386,BytesToNameCanonicalizer.java,1240,this.collEnd = collEnd;
+S387,BytesToNameCanonicalizer.java,1241,this.longestCollisionList = longestCollisionList;
+S388,BytesToNameCanonicalizer.java,1266,this.next = next;
+S389,BytesToNameCanonicalizer.java,1267,length = (next == null) ? 1 : next.length+1;
+S390,CharTypes.java,28,final int[] table = new int[256];
+S391,CharTypes.java,31,table[i] = -1;
+S392,CharTypes.java,34,"table['""'] = 1;"
+S393,CharTypes.java,35,table['\\'] = 1;
+S394,CharTypes.java,36,sInputCodes = table;
+S395,CharTypes.java,183,final static int[] sHexValues = new int[128];
+S396,CharTypes.java,195,public static int[] getInputCodeLatin1() { return sInputCodes; }
+S397,CharTypes.java,215,return (ch > 127) ? -1 : sHexValues[ch];
+S398,CharsToNameCanonicalizer.java,93,final static CharsToNameCanonicalizer sBootstrapSymbolTable = new CharsToNameCanonicalizer();
+S399,CharsToNameCanonicalizer.java,223,long now = System.currentTimeMillis();
+S400,CharsToNameCanonicalizer.java,225,int seed = (((int) now) + ((int) (now >>> 32))) | 1;
+S401,CharsToNameCanonicalizer.java,226,return createRoot(seed);
+S402,CharsToNameCanonicalizer.java,230,return sBootstrapSymbolTable.makeOrphan(hashSeed);
+S403,CharsToNameCanonicalizer.java,244,initTables(DEFAULT_T_SIZE);
+S404,CharsToNameCanonicalizer.java,249,_symbols = new String[initialSize];
+S405,CharsToNameCanonicalizer.java,250,_buckets = new Bucket[initialSize >> 1];
+S406,CharsToNameCanonicalizer.java,253,_size = 0;
+S407,CharsToNameCanonicalizer.java,254,_longestCollisionList = 0;
+S408,CharsToNameCanonicalizer.java,259,private static int _thresholdSize(int hashAreaSize) { return hashAreaSize - (hashAreaSize >> 2); }
+S409,CharsToNameCanonicalizer.java,265,"String[] symbols, Bucket[] buckets, int size, int hashSeed, int longestColl) {"
+S410,CharsToNameCanonicalizer.java,266,_parent = parent;
+S411,CharsToNameCanonicalizer.java,268,_flags = flags;
+S412,CharsToNameCanonicalizer.java,269,_canonicalize = JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(flags);
+S413,CharsToNameCanonicalizer.java,271,_symbols = symbols;
+S414,CharsToNameCanonicalizer.java,272,_buckets = buckets;
+S415,CharsToNameCanonicalizer.java,273,_size = size;
+S416,CharsToNameCanonicalizer.java,274,_hashSeed = hashSeed;
+S417,CharsToNameCanonicalizer.java,276,int arrayLen = (symbols.length);
+S418,CharsToNameCanonicalizer.java,277,_sizeThreshold = _thresholdSize(arrayLen);
+S419,CharsToNameCanonicalizer.java,278,_indexMask =  (arrayLen - 1);
+S420,CharsToNameCanonicalizer.java,279,_longestCollisionList = longestColl;
+S421,CharsToNameCanonicalizer.java,282,_dirty = false;
+S422,CharsToNameCanonicalizer.java,309,symbols = _symbols;
+S423,CharsToNameCanonicalizer.java,310,buckets = _buckets;
+S424,CharsToNameCanonicalizer.java,312,hashSeed = _hashSeed;
+S425,CharsToNameCanonicalizer.java,315,"return new CharsToNameCanonicalizer(this, flags,"
+S426,CharsToNameCanonicalizer.java,320,"return new CharsToNameCanonicalizer(null, -1, _symbols, _buckets, _size, seed, _longestCollisionList);"
+S427,CharsToNameCanonicalizer.java,397,public int hashSeed() { return _hashSeed; }
+S428,CharsToNameCanonicalizer.java,424,public int maxCollisionLength() { return _longestCollisionList; }
+S429,CharsToNameCanonicalizer.java,434,if (len < 1) { // empty Strings are simplest to handle up front
+S430,CharsToNameCanonicalizer.java,437,if (!_canonicalize) { // [JACKSON-259]
+S431,CharsToNameCanonicalizer.java,446,int index = _hashToIndex(h);
+S432,CharsToNameCanonicalizer.java,447,String sym = _symbols[index];
+S433,CharsToNameCanonicalizer.java,450,if (sym != null) {
+S434,CharsToNameCanonicalizer.java,452,if (sym.length() == len) {
+S435,CharsToNameCanonicalizer.java,453,int i = 0;
+S436,CharsToNameCanonicalizer.java,454,while (sym.charAt(i) == buffer[start+i]) {
+S437,CharsToNameCanonicalizer.java,456,if (++i == len) {
+S438,CharsToNameCanonicalizer.java,457,return sym;
+S439,CharsToNameCanonicalizer.java,461,Bucket b = _buckets[index>>1];
+S440,CharsToNameCanonicalizer.java,462,if (b != null) {
+S441,CharsToNameCanonicalizer.java,463,"sym = b.has(buffer, start, len);"
+S442,CharsToNameCanonicalizer.java,464,if (sym != null) {
+S443,CharsToNameCanonicalizer.java,467,"sym = _findSymbol2(buffer, start, len, b.next);"
+S444,CharsToNameCanonicalizer.java,468,if (sym != null) {
+S445,CharsToNameCanonicalizer.java,473,"return _addSymbol(buffer, start, len, h, index);"
+S446,CharsToNameCanonicalizer.java,477,while (b != null) {
+S447,CharsToNameCanonicalizer.java,478,"String sym = b.has(buffer, start, len);"
+S448,CharsToNameCanonicalizer.java,479,if (sym != null) {
+S449,CharsToNameCanonicalizer.java,482,b = b.next;
+S450,CharsToNameCanonicalizer.java,484,return null;
+S451,CharsToNameCanonicalizer.java,489,if (!_dirty) { //need to do copy-on-write?
+S452,CharsToNameCanonicalizer.java,490,copyArrays();
+S453,CharsToNameCanonicalizer.java,491,_dirty = true;
+S454,CharsToNameCanonicalizer.java,492,} else if (_size >= _sizeThreshold) { // Need to expand?
+S455,CharsToNameCanonicalizer.java,493,rehash();
+S456,CharsToNameCanonicalizer.java,500,"String newSymbol = new String(buffer, start, len);"
+S457,CharsToNameCanonicalizer.java,501,if (JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(_flags)) {
+S458,CharsToNameCanonicalizer.java,502,newSymbol = InternCache.instance.intern(newSymbol);
+S459,CharsToNameCanonicalizer.java,504,++_size;
+S460,CharsToNameCanonicalizer.java,506,if (_symbols[index] == null) {
+S461,CharsToNameCanonicalizer.java,509,final int bix = (index >> 1);
+S462,CharsToNameCanonicalizer.java,510,"Bucket newB = new Bucket(newSymbol, _buckets[bix]);"
+S463,CharsToNameCanonicalizer.java,511,int collLen = newB.length;
+S464,CharsToNameCanonicalizer.java,512,if (collLen > MAX_COLL_CHAIN_LENGTH) {
+S465,CharsToNameCanonicalizer.java,519,"_longestCollisionList = Math.max(collLen, _longestCollisionList);"
+S466,CharsToNameCanonicalizer.java,523,return newSymbol;
+S467,CharsToNameCanonicalizer.java,558,rawHash += (rawHash >>> 15);
+S468,CharsToNameCanonicalizer.java,559,rawHash ^= (rawHash << 7);
+S469,CharsToNameCanonicalizer.java,560,rawHash += (rawHash >>> 3);
+S470,CharsToNameCanonicalizer.java,561,return (rawHash & _indexMask);
+S471,CharsToNameCanonicalizer.java,586,int hash = _hashSeed;
+S472,CharsToNameCanonicalizer.java,587,for (int i = 0; i < len; ++i) {
+S473,CharsToNameCanonicalizer.java,588,hash = (hash * HASH_MULT) + (int) key.charAt(i);
+S474,CharsToNameCanonicalizer.java,591,return (hash == 0) ? 1 : hash;
+S475,CharsToNameCanonicalizer.java,605,final String[] oldSyms = _symbols;
+S476,CharsToNameCanonicalizer.java,606,"_symbols = Arrays.copyOf(oldSyms, oldSyms.length);"
+S477,CharsToNameCanonicalizer.java,607,final Bucket[] oldBuckets = _buckets;
+S478,CharsToNameCanonicalizer.java,608,"_buckets = Arrays.copyOf(oldBuckets, oldBuckets.length);"
+S479,CharsToNameCanonicalizer.java,619,int size = _symbols.length;
+S480,CharsToNameCanonicalizer.java,620,int newSize = size + size;
+S481,CharsToNameCanonicalizer.java,626,if (newSize > MAX_T_SIZE) {
+S482,CharsToNameCanonicalizer.java,641,Bucket[] oldBuckets = _buckets;
+S483,CharsToNameCanonicalizer.java,642,_symbols = new String[newSize];
+S484,CharsToNameCanonicalizer.java,643,_buckets = new Bucket[newSize >> 1];
+S485,CharsToNameCanonicalizer.java,645,_indexMask = newSize - 1;
+S486,CharsToNameCanonicalizer.java,646,_sizeThreshold = _thresholdSize(newSize);
+S487,CharsToNameCanonicalizer.java,653,int maxColl = 0;
+S488,CharsToNameCanonicalizer.java,671,for (int i = 0; i < size; ++i) {
+S489,CharsToNameCanonicalizer.java,672,Bucket b = oldBuckets[i];
+S490,CharsToNameCanonicalizer.java,673,while (b != null) {
+S491,CharsToNameCanonicalizer.java,675,String symbol = b.symbol;
+S492,CharsToNameCanonicalizer.java,676,int index = _hashToIndex(calcHash(symbol));
+S493,CharsToNameCanonicalizer.java,677,if (_symbols[index] == null) {
+S494,CharsToNameCanonicalizer.java,680,int bix = (index >> 1);
+S495,CharsToNameCanonicalizer.java,681,"Bucket newB = new Bucket(symbol, _buckets[bix]);"
+S496,CharsToNameCanonicalizer.java,683,"maxColl = Math.max(maxColl, newB.length);"
+S497,CharsToNameCanonicalizer.java,685,b = b.next;
+S498,CharsToNameCanonicalizer.java,688,_longestCollisionList = maxColl;
+S499,CharsToNameCanonicalizer.java,689,_overflows = null;
+S500,CharsToNameCanonicalizer.java,770,symbol = s;
+S501,CharsToNameCanonicalizer.java,771,next = n;
+S502,CharsToNameCanonicalizer.java,772,length = (n == null) ? 1 : n.length+1;
+S503,CharsToNameCanonicalizer.java,776,if (symbol.length() != len) {
+S504,CharsToNameCanonicalizer.java,779,int i = 0;
+S505,CharsToNameCanonicalizer.java,781,if (symbol.charAt(i) != buf[start+i]) {
+S506,CharsToNameCanonicalizer.java,782,return null;
+S507,CharsToNameCanonicalizer.java,784,} while (++i < len);
+S508,DefaultPrettyPrinter.java,28,"public final static SerializedString DEFAULT_ROOT_VALUE_SEPARATOR = new SerializedString("" "");"
+S509,IOContext.java,59,protected byte[] _readIOBuffer = null;
+S510,IOContext.java,65,protected byte[] _writeEncodingBuffer = null;
+S511,IOContext.java,71,protected byte[] _base64Buffer = null;
+S512,IOContext.java,78,protected char[] _tokenCBuffer = null;
+S513,IOContext.java,85,protected char[] _concatCBuffer = null;
+S514,IOContext.java,93,protected char[] _nameCopyBuffer = null;
+S515,IOContext.java,103,_bufferRecycler = br;
+S516,IOContext.java,104,_sourceRef = sourceRef;
+S517,IOContext.java,105,_managedResource = managedResource;
+S518,IOContext.java,137,return new TextBuffer(_bufferRecycler);
+S519,IOContext.java,189,"return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER, minSize));"
+S520,InternCache.java,28,public final static InternCache instance = new InternCache();
+S521,InternCache.java,35,private final Object lock = new Object();
+S522,InternCache.java,37,"private InternCache() { super(MAX_ENTRIES, 0.8f, 4); }"
+S523,InternCache.java,40,String result = get(input);
+S524,InternCache.java,41,if (result != null) { return result; }
+S525,InternCache.java,48,if (size() >= MAX_ENTRIES) {
+S526,InternCache.java,54,if (size() >= MAX_ENTRIES) {
+S527,InternCache.java,55,clear();
+S528,InternCache.java,59,result = input.intern();
+S529,InternCache.java,60,"put(result, result);"
+S530,InternCache.java,61,return result;
+S531,JsonEncoding.java,19,"UTF8(""UTF-8"", false, 8), // N/A for big-endian, really"
+S532,JsonEncoding.java,34,_javaName = javaName;
+S533,JsonEncoding.java,35,_bigEndian = bigEndian;
+S534,JsonEncoding.java,36,_bits = bits;
+S535,JsonFactory.java,57,public enum Feature {
+S536,JsonFactory.java,76,"INTERN_FIELD_NAMES(true),"
+S537,JsonFactory.java,86,"CANONICALIZE_FIELD_NAMES(true),"
+S538,JsonFactory.java,102,"FAIL_ON_SYMBOL_HASH_OVERFLOW(true),"
+S539,JsonFactory.java,117,USE_THREAD_LOCAL_FOR_BUFFER_RECYCLING(true)
+S540,JsonFactory.java,131,int flags = 0;
+S541,JsonFactory.java,132,for (Feature f : values()) {
+S542,JsonFactory.java,133,if (f.enabledByDefault()) { flags |= f.getMask(); }
+S543,JsonFactory.java,135,return flags;
+S544,JsonFactory.java,138,private Feature(boolean defaultState) { _defaultState = defaultState; }
+S545,JsonFactory.java,140,public boolean enabledByDefault() { return _defaultState; }
+S546,JsonFactory.java,141,public boolean enabledIn(int flags) { return (flags & getMask()) != 0; }
+S547,JsonFactory.java,142,public int getMask() { return (1 << ordinal()); }
+S548,JsonFactory.java,160,protected final static int DEFAULT_FACTORY_FEATURE_FLAGS = JsonFactory.Feature.collectDefaults();
+S549,JsonFactory.java,166,protected final static int DEFAULT_PARSER_FEATURE_FLAGS = JsonParser.Feature.collectDefaults();
+S550,JsonFactory.java,172,protected final static int DEFAULT_GENERATOR_FEATURE_FLAGS = JsonGenerator.Feature.collectDefaults();
+S551,JsonFactory.java,174,private final static SerializableString DEFAULT_ROOT_VALUE_SEPARATOR = DefaultPrettyPrinter.DEFAULT_ROOT_VALUE_SEPARATOR;
+S552,JsonFactory.java,187,final protected static ThreadLocal<SoftReference<BufferRecycler>> _recyclerRef
+S553,JsonFactory.java,195,protected final transient CharsToNameCanonicalizer _rootCharSymbols = CharsToNameCanonicalizer.createRoot();
+S554,JsonFactory.java,206,protected final transient ByteQuadsCanonicalizer _byteSymbolCanonicalizer = ByteQuadsCanonicalizer.createRoot();
+S555,JsonFactory.java,214,@Deprecated
+S556,JsonFactory.java,236,protected int _factoryFeatures = DEFAULT_FACTORY_FEATURE_FLAGS;
+S557,JsonFactory.java,241,protected int _parserFeatures = DEFAULT_PARSER_FEATURE_FLAGS;
+S558,JsonFactory.java,246,protected int _generatorFeatures = DEFAULT_GENERATOR_FEATURE_FLAGS;
+S559,JsonFactory.java,274,protected SerializableString _rootValueSeparator = DEFAULT_ROOT_VALUE_SEPARATOR;
+S560,JsonFactory.java,292,public JsonFactory() { this(null); }
+S561,JsonFactory.java,294,public JsonFactory(ObjectCodec oc) { _objectCodec = oc; }
+S562,JsonFactory.java,564,return (_factoryFeatures & f.getMask()) != 0;
+S563,JsonFactory.java,832,"IOContext ctxt = _createContext(data, true);"
+S564,JsonFactory.java,833,if (_inputDecorator != null) {
+S565,JsonFactory.java,839,"return _createParser(data, 0, data.length, ctxt);"
+S566,JsonFactory.java,871,final int strLen = content.length();
+S567,JsonFactory.java,878,"IOContext ctxt = _createContext(content, true);"
+S568,JsonFactory.java,879,char[] buf = ctxt.allocTokenBuffer(strLen);
+S569,JsonFactory.java,880,"content.getChars(0, strLen, buf, 0);"
+S570,JsonFactory.java,881,"return _createParser(buf, 0, strLen, ctxt, true);"
+S571,JsonFactory.java,1269,"return new ReaderBasedJsonParser(ctxt, _parserFeatures, null, _objectCodec,"
+S572,JsonFactory.java,1287,"return new ByteSourceJsonBootstrapper(ctxt, data, offset, len).constructParser(_parserFeatures,"
+S573,JsonFactory.java,1433,if (isEnabled(Feature.USE_THREAD_LOCAL_FOR_BUFFER_RECYCLING)) {
+S574,JsonFactory.java,1434,SoftReference<BufferRecycler> ref = _recyclerRef.get();
+S575,JsonFactory.java,1435,br = (ref == null) ? null : ref.get();
+S576,JsonFactory.java,1438,br = new BufferRecycler();
+S577,JsonFactory.java,1439,_recyclerRef.set(new SoftReference<BufferRecycler>(br));
+S578,JsonFactory.java,1444,return br;
+S579,JsonFactory.java,1452,"return new IOContext(_getBufferRecycler(), srcRef, resourceManaged);"
+S580,JsonParser.java,59,"AUTO_CLOSE_SOURCE(true),"
+S581,JsonParser.java,187,"STRICT_DUPLICATE_DETECTION(false),"
+S582,JsonParser.java,227,int flags = 0;
+S583,JsonParser.java,229,if (f.enabledByDefault()) {
+S584,JsonParser.java,230,flags |= f.getMask();
+S585,JsonParser.java,233,return flags;
+S586,JsonParser.java,236,private Feature(boolean defaultState) {
+S587,JsonParser.java,237,_mask = (1 << ordinal());
+S588,JsonParser.java,238,_defaultState = defaultState;
+S589,JsonParser.java,241,public boolean enabledByDefault() { return _defaultState; }
+S590,JsonParser.java,246,public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+S591,JsonParser.java,248,public int getMask() { return _mask; }
+S592,JsonParser.java,271,protected JsonParser(int features) { _features = features; }
+S593,JsonReadContext.java,33,protected JsonReadContext _child = null;
+S594,JsonReadContext.java,58,super();
+S595,JsonReadContext.java,59,_parent = parent;
+S596,JsonReadContext.java,60,_dups = dups;
+S597,JsonReadContext.java,61,_type = type;
+S598,JsonReadContext.java,62,_lineNr = lineNr;
+S599,JsonReadContext.java,63,_columnNr = colNr;
+S600,JsonReadContext.java,64,_index = -1;
+S601,JsonReadContext.java,68,_type = type;
+S602,JsonReadContext.java,121,"return new JsonReadContext(null, dups, TYPE_ROOT, 1, 0);"
+S603,JsonReadContext.java,125,JsonReadContext ctxt = _child;
+S604,JsonReadContext.java,126,if (ctxt == null) {
+S605,JsonReadContext.java,127,"_child = ctxt = new JsonReadContext(this,"
+S606,JsonReadContext.java,130,"ctxt.reset(TYPE_ARRAY, lineNr, colNr);"
+S607,JsonReadContext.java,136,JsonReadContext ctxt = _child;
+S608,JsonReadContext.java,137,if (ctxt == null) {
+S609,JsonReadContext.java,138,"_child = ctxt = new JsonReadContext(this,"
+S610,JsonReadContext.java,140,return ctxt;
+S611,JsonReadContext.java,142,"ctxt.reset(TYPE_OBJECT, lineNr, colNr);"
+S612,JsonReadContext.java,152,@Override public String getCurrentName() { return _currentName; }
+S613,JsonReadContext.java,153,@Override public JsonReadContext getParent() { return _parent; }
+S614,JsonReadContext.java,187,return (_type != TYPE_ROOT && ix > 0);
+S615,JsonReadContext.java,191,_currentName = name;
+S616,JsonStreamContext.java,43,protected JsonStreamContext() { }
+S617,JsonStreamContext.java,68,public final boolean inRoot() { return _type == TYPE_ROOT; }
+S618,JsonStreamContext.java,74,public final boolean inObject() { return _type == TYPE_OBJECT; }
+S619,JsonToken.java,37,"START_OBJECT(""{"", JsonTokenId.ID_START_OBJECT),"
+S620,JsonToken.java,43,"END_OBJECT(""}"", JsonTokenId.ID_END_OBJECT),"
+S621,JsonToken.java,49,"START_ARRAY(""["", JsonTokenId.ID_START_ARRAY),"
+S622,JsonToken.java,55,"END_ARRAY(""]"", JsonTokenId.ID_END_ARRAY),"
+S623,JsonToken.java,61,"FIELD_NAME(null, JsonTokenId.ID_FIELD_NAME),"
+S624,JsonToken.java,73,"VALUE_EMBEDDED_OBJECT(null, JsonTokenId.ID_EMBEDDED_OBJECT),"
+S625,JsonToken.java,80,"VALUE_STRING(null, JsonTokenId.ID_STRING),"
+S626,JsonToken.java,88,"VALUE_NUMBER_INT(null, JsonTokenId.ID_NUMBER_INT),"
+S627,JsonToken.java,108,"VALUE_FALSE(""false"", JsonTokenId.ID_FALSE),"
+S628,JsonToken.java,114,"VALUE_NULL(""null"", JsonTokenId.ID_NULL),"
+S629,JsonToken.java,139,if (token == null) {
+S630,JsonToken.java,140,_serialized = null;
+S631,JsonToken.java,141,_serializedChars = null;
+S632,JsonToken.java,142,_serializedBytes = null;
+S633,JsonToken.java,144,_serialized = token;
+S634,JsonToken.java,145,_serializedChars = token.toCharArray();
+S635,JsonToken.java,147,int len = _serializedChars.length;
+S636,JsonToken.java,148,_serializedBytes = new byte[len];
+S637,JsonToken.java,153,_id = id;
+S638,JsonToken.java,155,_isBoolean = (id == JsonTokenId.ID_FALSE || id == JsonTokenId.ID_TRUE);
+S639,JsonToken.java,156,_isNumber = (id == JsonTokenId.ID_NUMBER_INT || id == JsonTokenId.ID_NUMBER_FLOAT);
+S640,JsonToken.java,158,_isStructStart = (id == JsonTokenId.ID_START_OBJECT || id == JsonTokenId.ID_START_ARRAY);
+S641,JsonToken.java,159,_isStructEnd = (id == JsonTokenId.ID_END_OBJECT || id == JsonTokenId.ID_END_ARRAY);
+S642,JsonToken.java,161,_isScalar = !_isStructStart && !_isStructEnd
+S643,Name.java,16,"protected Name(String name, int hashCode) {"
+S644,Name.java,17,_name = name;
+S645,Name.java,18,_hashCode = hashCode;
+S646,Name.java,48,@Override public final int hashCode() { return _hashCode; }
+S647,Name1.java,18,"super(name, hash);"
+S648,Name1.java,19,q = quad;
+S649,Name2.java,17,"super(name, hash);"
+S650,Name2.java,18,q1 = quad1;
+S651,Name2.java,19,q2 = quad2;
+S652,ParserBase.java,53,protected int _inputPtr = 0;
+S653,ParserBase.java,58,protected int _inputEnd = 0;
+S654,ParserBase.java,70,protected long _currInputProcessed = 0L;
+S655,ParserBase.java,76,protected int _currInputRow = 1;
+S656,ParserBase.java,84,protected int _currInputRowStart = 0;
+S657,ParserBase.java,100,protected long _tokenInputTotal = 0;
+S658,ParserBase.java,105,protected int _tokenInputRow = 1;
+S659,ParserBase.java,111,protected int _tokenInputCol = 0;
+S660,ParserBase.java,150,protected char[] _nameCopyBuffer = null;
+S661,ParserBase.java,157,protected boolean _nameCopied = false;
+S662,ParserBase.java,163,protected ByteArrayBuilder _byteArrayBuilder = null;
+S663,ParserBase.java,233,protected int _numTypesValid = NR_UNKNOWN;
+S664,ParserBase.java,284,super(features);
+S665,ParserBase.java,285,_ioContext = ctxt;
+S666,ParserBase.java,286,_textBuffer = ctxt.constructTextBuffer();
+S667,ParserBase.java,287,DupDetector dups = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features)
+S668,ParserBase.java,289,_parsingContext = JsonReadContext.createRootContext(dups);
+S669,ParserBase.java,362,return _parsingContext.getCurrentName();
+S670,ParserBase.java,382,if (!_closed) {
+S671,ParserBase.java,383,_closed = true;
+S672,ParserBase.java,385,_closeInput();
+S673,ParserBase.java,389,_releaseBuffers();
+S674,ParserBase.java,509,_handleEOF();
+S675,ParserBase.java,510,return -1;
+S676,ParserBase.java,558,_numberNegative = negative;
+S677,ParserBase.java,559,_intLength = intLen;
+S678,ParserBase.java,560,_fractLength = 0;
+S679,ParserBase.java,561,_expLength = 0;
+S680,ParserBase.java,562,_numTypesValid = NR_UNKNOWN; // to force parsing
+S681,ParserBase.java,563,return JsonToken.VALUE_NUMBER_INT;
+S682,ParserMinimalBase.java,73,protected ParserMinimalBase(int features) { super(features); }
+S683,ReaderBasedJsonParser.java,96,"super(ctxt, features);"
+S684,ReaderBasedJsonParser.java,98,_inputBuffer = inputBuffer;
+S685,ReaderBasedJsonParser.java,99,_inputPtr = start;
+S686,ReaderBasedJsonParser.java,100,_inputEnd = end;
+S687,ReaderBasedJsonParser.java,103,_hashSeed = st.hashSeed();
+S688,ReaderBasedJsonParser.java,571,if (_currToken == JsonToken.FIELD_NAME) {
+S689,ReaderBasedJsonParser.java,572,return _nextAfterName();
+S690,ReaderBasedJsonParser.java,574,if (_tokenIncomplete) {
+S691,ReaderBasedJsonParser.java,575,_skipString(); // only strings can be partial
+S692,ReaderBasedJsonParser.java,577,int i = _skipWSOrEnd();
+S693,ReaderBasedJsonParser.java,578,if (i < 0) { // end-of-input
+S694,ReaderBasedJsonParser.java,590,_tokenInputRow = _currInputRow;
+S695,ReaderBasedJsonParser.java,591,_tokenInputCol = _inputPtr - _currInputRowStart - 1;
+S696,ReaderBasedJsonParser.java,597,if (i == INT_RBRACKET) {
+S697,ReaderBasedJsonParser.java,602,return (_currToken = JsonToken.END_ARRAY);
+S698,ReaderBasedJsonParser.java,604,if (i == INT_RCURLY) {
+S699,ReaderBasedJsonParser.java,609,return (_currToken = JsonToken.END_OBJECT);
+S700,ReaderBasedJsonParser.java,613,if (_parsingContext.expectComma()) {
+S701,ReaderBasedJsonParser.java,614,i = _skipComma(i);
+S702,ReaderBasedJsonParser.java,621,boolean inObject = _parsingContext.inObject();
+S703,ReaderBasedJsonParser.java,622,if (inObject) {
+S704,ReaderBasedJsonParser.java,624,String name = (i == INT_QUOTE) ? _parseName() : _handleOddName(i);
+S705,ReaderBasedJsonParser.java,625,_parsingContext.setCurrentName(name);
+S706,ReaderBasedJsonParser.java,626,_currToken = JsonToken.FIELD_NAME;
+S707,ReaderBasedJsonParser.java,627,i = _skipColon();
+S708,ReaderBasedJsonParser.java,634,switch (i) {
+S709,ReaderBasedJsonParser.java,636,_tokenIncomplete = true;
+S710,ReaderBasedJsonParser.java,637,t = JsonToken.VALUE_STRING;
+S711,ReaderBasedJsonParser.java,643,t = JsonToken.START_ARRAY;
+S712,ReaderBasedJsonParser.java,646,if (!inObject) {
+S713,ReaderBasedJsonParser.java,647,"_parsingContext = _parsingContext.createChildObjectContext(_tokenInputRow, _tokenInputCol);"
+S714,ReaderBasedJsonParser.java,649,t = JsonToken.START_OBJECT;
+S715,ReaderBasedJsonParser.java,686,t = _parsePosNumber(i);
+S716,ReaderBasedJsonParser.java,693,if (inObject) {
+S717,ReaderBasedJsonParser.java,694,_nextToken = t;
+S718,ReaderBasedJsonParser.java,695,return _currToken;
+S719,ReaderBasedJsonParser.java,697,_currToken = t;
+S720,ReaderBasedJsonParser.java,704,JsonToken t = _nextToken;
+S721,ReaderBasedJsonParser.java,707,if (t == JsonToken.START_ARRAY) {
+S722,ReaderBasedJsonParser.java,708,"_parsingContext = _parsingContext.createChildArrayContext(_tokenInputRow, _tokenInputCol);"
+S723,ReaderBasedJsonParser.java,709,} else if (t == JsonToken.START_OBJECT) {
+S724,ReaderBasedJsonParser.java,710,"_parsingContext = _parsingContext.createChildObjectContext(_tokenInputRow, _tokenInputCol);"
+S725,ReaderBasedJsonParser.java,712,return (_currToken = t);
+S726,ReaderBasedJsonParser.java,1010,int ptr = _inputPtr;
+S727,ReaderBasedJsonParser.java,1012,final int inputLen = _inputEnd;
+S728,ReaderBasedJsonParser.java,1030,if (ptr >= inputLen) {
+S729,ReaderBasedJsonParser.java,1034,ch = (int) _inputBuffer[ptr++];
+S730,ReaderBasedJsonParser.java,1045,--ptr; // need to push back following separator
+S731,ReaderBasedJsonParser.java,1046,_inputPtr = ptr;
+S732,ReaderBasedJsonParser.java,1053,"return resetInt(false, intLen);"
+S733,ReaderBasedJsonParser.java,1412,int ptr = _inputPtr;
+S734,ReaderBasedJsonParser.java,1413,int hash = _hashSeed;
+S735,ReaderBasedJsonParser.java,1416,while (ptr < _inputEnd) {
+S736,ReaderBasedJsonParser.java,1417,int ch = _inputBuffer[ptr];
+S737,ReaderBasedJsonParser.java,1420,int start = _inputPtr;
+S738,ReaderBasedJsonParser.java,1421,_inputPtr = ptr+1; // to skip the quote
+S739,ReaderBasedJsonParser.java,1422,"return _symbols.findSymbol(_inputBuffer, start, ptr - start, hash);"
+S740,ReaderBasedJsonParser.java,1426,hash = (hash * CharsToNameCanonicalizer.HASH_MULT) + ch;
+S741,ReaderBasedJsonParser.java,1427,++ptr;
+S742,ReaderBasedJsonParser.java,1798,int inPtr = _inputPtr;
+S743,ReaderBasedJsonParser.java,1825,_inputPtr = inPtr;
+S744,ReaderBasedJsonParser.java,1885,c = _inputBuffer[++_inputPtr];
+S745,ReaderBasedJsonParser.java,1888,int i = _inputBuffer[++_inputPtr];
+S746,ReaderBasedJsonParser.java,1897,i = (int) _inputBuffer[++_inputPtr];
+S747,ReaderBasedJsonParser.java,1902,++_inputPtr;
+S748,ReaderBasedJsonParser.java,1903,return i;
+S749,ReaderBasedJsonParser.java,1959,while (_inputPtr < _inputEnd) {
+S750,ReaderBasedJsonParser.java,1960,i = (int) _inputBuffer[_inputPtr++];
+S751,ReaderBasedJsonParser.java,1966,return i;
+S752,ReaderBasedJsonParser.java,2016,if (_inputPtr >= _inputEnd) {
+S753,ReaderBasedJsonParser.java,2021,int i = _inputBuffer[_inputPtr++];
+S754,ReaderBasedJsonParser.java,2022,if (i > INT_SPACE) {
+S755,ReaderBasedJsonParser.java,2027,return i;
+S756,ReaderBasedJsonParser.java,2031,++_currInputRow;
+S757,ReaderBasedJsonParser.java,2032,_currInputRowStart = _inputPtr;
+S758,ReaderBasedJsonParser.java,2040,while (_inputPtr < _inputEnd) {
+S759,ReaderBasedJsonParser.java,2041,i = (int) _inputBuffer[_inputPtr++];
+S760,ReaderBasedJsonParser.java,2047,return i;
+S761,SerializedString.java,47,public SerializedString(String v) {
+S762,SerializedString.java,51,_value = v;
+S763,TextBuffer.java,85,private boolean _hasSegments = false;
+S764,TextBuffer.java,121,public TextBuffer(BufferRecycler allocator) {
+S765,TextBuffer.java,122,_allocator = allocator;
+S766,TextBuffer.java,234,if (_allocator != null) {
+S767,TextBuffer.java,235,"return _allocator.allocCharBuffer(BufferRecycler.CHAR_TEXT_BUFFER, needed);"
+S768,TextBuffer.java,550,char[] curr = _currentSegment;
+S769,TextBuffer.java,551,if (curr == null) {
+S770,TextBuffer.java,552,_currentSegment = curr = buf(0);
+S771,TextBuffer.java,554,return curr;
+S772,UTF8StreamJsonParser.java,31,protected final static int[] _icLatin1 = CharTypes.getInputCodeLatin1();
+S773,UTF8StreamJsonParser.java,60,protected int[] _quadBuffer = new int[16];
+S774,UTF8StreamJsonParser.java,67,protected boolean _tokenIncomplete = false;
+S775,UTF8StreamJsonParser.java,115,"super(ctxt, features);"
+S776,UTF8StreamJsonParser.java,116,_inputStream = in;
+S777,UTF8StreamJsonParser.java,117,_objectCodec = codec;
+S778,UTF8StreamJsonParser.java,118,_symbols = sym;
+S779,UTF8StreamJsonParser.java,119,_inputBuffer = inputBuffer;
+S780,UTF8StreamJsonParser.java,120,_inputPtr = start;
+S781,UTF8StreamJsonParser.java,121,_inputEnd = end;
+S782,UTF8StreamJsonParser.java,122,_currInputRowStart = start;
+S783,UTF8StreamJsonParser.java,124,_currInputProcessed = -start;
+S784,UTF8StreamJsonParser.java,125,_bufferRecyclable = bufferRecyclable;
+S785,UTF8StreamJsonParser.java,171,_currInputProcessed += _inputEnd;
+S786,UTF8StreamJsonParser.java,172,_currInputRowStart -= _inputEnd;
+S787,UTF8StreamJsonParser.java,174,if (_inputStream != null) {
+S788,UTF8StreamJsonParser.java,193,return false;
+S789,UTF8StreamJsonParser.java,257,super._releaseBuffers();
+S790,UTF8StreamJsonParser.java,259,_symbols.release();
+S791,UTF8StreamJsonParser.java,681,_numTypesValid = NR_UNKNOWN;
+S792,UTF8StreamJsonParser.java,686,if (_currToken == JsonToken.FIELD_NAME) {
+S793,UTF8StreamJsonParser.java,687,return _nextAfterName();
+S794,UTF8StreamJsonParser.java,689,if (_tokenIncomplete) {
+S795,UTF8StreamJsonParser.java,690,_skipString(); // only strings can be partial
+S796,UTF8StreamJsonParser.java,692,int i = _skipWSOrEnd();
+S797,UTF8StreamJsonParser.java,693,if (i < 0) { // end-of-input
+S798,UTF8StreamJsonParser.java,695,close();
+S799,UTF8StreamJsonParser.java,696,return (_currToken = null);
+S800,UTF8StreamJsonParser.java,701,_tokenInputTotal = _currInputProcessed + _inputPtr - 1;
+S801,UTF8StreamJsonParser.java,702,_tokenInputRow = _currInputRow;
+S802,UTF8StreamJsonParser.java,703,_tokenInputCol = _inputPtr - _currInputRowStart - 1;
+S803,UTF8StreamJsonParser.java,706,_binaryValue = null;
+S804,UTF8StreamJsonParser.java,709,if (i == INT_RBRACKET) {
+S805,UTF8StreamJsonParser.java,714,return (_currToken = JsonToken.END_ARRAY);
+S806,UTF8StreamJsonParser.java,716,if (i == INT_RCURLY) {
+S807,UTF8StreamJsonParser.java,720,_parsingContext = _parsingContext.getParent();
+S808,UTF8StreamJsonParser.java,721,return (_currToken = JsonToken.END_OBJECT);
+S809,UTF8StreamJsonParser.java,725,if (_parsingContext.expectComma()) {
+S810,UTF8StreamJsonParser.java,726,if (i != INT_COMMA) {
+S811,UTF8StreamJsonParser.java,729,i = _skipWS();
+S812,UTF8StreamJsonParser.java,736,if (!_parsingContext.inObject()) {
+S813,UTF8StreamJsonParser.java,737,return _nextTokenNotInObject(i);
+S814,UTF8StreamJsonParser.java,740,String n = _parseName(i);
+S815,UTF8StreamJsonParser.java,741,_parsingContext.setCurrentName(n);
+S816,UTF8StreamJsonParser.java,742,_currToken = JsonToken.FIELD_NAME;
+S817,UTF8StreamJsonParser.java,744,i = _skipColon();
+S818,UTF8StreamJsonParser.java,747,if (i == INT_QUOTE) {
+S819,UTF8StreamJsonParser.java,748,_tokenIncomplete = true;
+S820,UTF8StreamJsonParser.java,749,_nextToken = JsonToken.VALUE_STRING;
+S821,UTF8StreamJsonParser.java,750,return _currToken;
+S822,UTF8StreamJsonParser.java,754,switch (i) {
+S823,UTF8StreamJsonParser.java,773,t = _parsePosNumber(i);
+S824,UTF8StreamJsonParser.java,780,"_matchToken(""null"", 1);"
+S825,UTF8StreamJsonParser.java,781,t = JsonToken.VALUE_NULL;
+S826,UTF8StreamJsonParser.java,788,t = JsonToken.START_ARRAY;
+S827,UTF8StreamJsonParser.java,791,t = JsonToken.START_OBJECT;
+S828,UTF8StreamJsonParser.java,797,_nextToken = t;
+S829,UTF8StreamJsonParser.java,798,return _currToken;
+S830,UTF8StreamJsonParser.java,803,if (i == INT_QUOTE) {
+S831,UTF8StreamJsonParser.java,807,switch (i) {
+S832,UTF8StreamJsonParser.java,812,"_parsingContext = _parsingContext.createChildObjectContext(_tokenInputRow, _tokenInputCol);"
+S833,UTF8StreamJsonParser.java,813,return (_currToken = JsonToken.START_OBJECT);
+S834,UTF8StreamJsonParser.java,846,_nameCopied = false; // need to invalidate if it was copied
+S835,UTF8StreamJsonParser.java,847,JsonToken t = _nextToken;
+S836,UTF8StreamJsonParser.java,848,_nextToken = null;
+S837,UTF8StreamJsonParser.java,850,if (t == JsonToken.START_ARRAY) {
+S838,UTF8StreamJsonParser.java,851,"_parsingContext = _parsingContext.createChildArrayContext(_tokenInputRow, _tokenInputCol);"
+S839,UTF8StreamJsonParser.java,852,} else if (t == JsonToken.START_OBJECT) {
+S840,UTF8StreamJsonParser.java,853,"_parsingContext = _parsingContext.createChildObjectContext(_tokenInputRow, _tokenInputCol);"
+S841,UTF8StreamJsonParser.java,855,return (_currToken = t);
+S842,UTF8StreamJsonParser.java,1342,char[] outBuf = _textBuffer.emptyAndGetCurrentSegment();
+S843,UTF8StreamJsonParser.java,1348,outBuf[0] = (char) c;
+S844,UTF8StreamJsonParser.java,1349,int intLen = 1;
+S845,UTF8StreamJsonParser.java,1353,int end = _inputPtr + outBuf.length - 1; // 1 == outPtr
+S846,UTF8StreamJsonParser.java,1354,if (end > _inputEnd) {
+S847,UTF8StreamJsonParser.java,1355,end = _inputEnd;
+S848,UTF8StreamJsonParser.java,1359,"if (_inputPtr >= end) { // split across boundary, offline"
+S849,UTF8StreamJsonParser.java,1362,c = (int) _inputBuffer[_inputPtr++] & 0xFF;
+S850,UTF8StreamJsonParser.java,1372,--_inputPtr; // to push back trailing char (comma etc)
+S851,UTF8StreamJsonParser.java,1375,if (_parsingContext.inRoot()) {
+S852,UTF8StreamJsonParser.java,1379,"return resetInt(false, intLen);"
+S853,UTF8StreamJsonParser.java,1646,if (i != INT_QUOTE) {
+S854,UTF8StreamJsonParser.java,1650,"if ((_inputPtr + 13) > _inputEnd) { // Need up to 12 chars, plus one trailing (quote)"
+S855,UTF8StreamJsonParser.java,1660,final byte[] input = _inputBuffer;
+S856,UTF8StreamJsonParser.java,1661,final int[] codes = _icLatin1;
+S857,UTF8StreamJsonParser.java,1663,int q = input[_inputPtr++] & 0xFF;
+S858,UTF8StreamJsonParser.java,1665,if (codes[q] == 0) {
+S859,UTF8StreamJsonParser.java,1666,i = input[_inputPtr++] & 0xFF;
+S860,UTF8StreamJsonParser.java,1668,q = (q << 8) | i;
+S861,UTF8StreamJsonParser.java,1669,i = input[_inputPtr++] & 0xFF;
+S862,UTF8StreamJsonParser.java,1670,if (codes[i] == 0) {
+S863,UTF8StreamJsonParser.java,1671,q = (q << 8) | i;
+S864,UTF8StreamJsonParser.java,1672,i = input[_inputPtr++] & 0xFF;
+S865,UTF8StreamJsonParser.java,1673,if (codes[i] == 0) {
+S866,UTF8StreamJsonParser.java,1674,q = (q << 8) | i;
+S867,UTF8StreamJsonParser.java,1675,i = input[_inputPtr++] & 0xFF;
+S868,UTF8StreamJsonParser.java,1676,if (codes[i] == 0) {
+S869,UTF8StreamJsonParser.java,1677,_quad1 = q;
+S870,UTF8StreamJsonParser.java,1678,return parseMediumName(i);
+S871,UTF8StreamJsonParser.java,1681,"return findName(q, 4);"
+S872,UTF8StreamJsonParser.java,1686,"return findName(q, 3);"
+S873,UTF8StreamJsonParser.java,1688,"return parseName(q, i, 3);"
+S874,UTF8StreamJsonParser.java,1703,"return parseName(0, q, 0); // quoting or invalid char"
+S875,UTF8StreamJsonParser.java,1708,final byte[] input = _inputBuffer;
+S876,UTF8StreamJsonParser.java,1709,final int[] codes = _icLatin1;
+S877,UTF8StreamJsonParser.java,1712,int i = input[_inputPtr++] & 0xFF;
+S878,UTF8StreamJsonParser.java,1715,"return findName(_quad1, q2, 1);"
+S879,UTF8StreamJsonParser.java,1719,q2 = (q2 << 8) | i;
+S880,UTF8StreamJsonParser.java,1720,i = input[_inputPtr++] & 0xFF;
+S881,UTF8StreamJsonParser.java,1721,if (codes[i] != 0) {
+S882,UTF8StreamJsonParser.java,1723,"return findName(_quad1, q2, 2);"
+S883,UTF8StreamJsonParser.java,1727,q2 = (q2 << 8) | i;
+S884,UTF8StreamJsonParser.java,1728,i = input[_inputPtr++] & 0xFF;
+S885,UTF8StreamJsonParser.java,1729,if (codes[i] != 0) {
+S886,UTF8StreamJsonParser.java,1731,"return findName(_quad1, q2, 3);"
+S887,UTF8StreamJsonParser.java,1735,q2 = (q2 << 8) | i;
+S888,UTF8StreamJsonParser.java,1736,i = input[_inputPtr++] & 0xFF;
+S889,UTF8StreamJsonParser.java,1737,if (codes[i] != 0) {
+S890,UTF8StreamJsonParser.java,1739,"return findName(_quad1, q2, 4);"
+S891,UTF8StreamJsonParser.java,1743,"return parseMediumName2(i, q2);"
+S892,UTF8StreamJsonParser.java,1751,final byte[] input = _inputBuffer;
+S893,UTF8StreamJsonParser.java,1752,final int[] codes = _icLatin1;
+S894,UTF8StreamJsonParser.java,1755,int i = input[_inputPtr++] & 0xFF;
+S895,UTF8StreamJsonParser.java,1758,"return findName(_quad1, q2, q3, 1);"
+S896,UTF8StreamJsonParser.java,1762,q3 = (q3 << 8) | i;
+S897,UTF8StreamJsonParser.java,1763,i = input[_inputPtr++] & 0xFF;
+S898,UTF8StreamJsonParser.java,1764,if (codes[i] != 0) {
+S899,UTF8StreamJsonParser.java,1770,q3 = (q3 << 8) | i;
+S900,UTF8StreamJsonParser.java,1771,i = input[_inputPtr++] & 0xFF;
+S901,UTF8StreamJsonParser.java,1772,if (codes[i] != 0) {
+S902,UTF8StreamJsonParser.java,1778,q3 = (q3 << 8) | i;
+S903,UTF8StreamJsonParser.java,1779,i = input[_inputPtr++] & 0xFF;
+S904,UTF8StreamJsonParser.java,1780,if (codes[i] != 0) {
+S905,UTF8StreamJsonParser.java,1782,"return findName(_quad1, q2, q3, 4);"
+S906,UTF8StreamJsonParser.java,1786,"return parseLongName(i, q2, q3);"
+S907,UTF8StreamJsonParser.java,1796,final byte[] input = _inputBuffer;
+S908,UTF8StreamJsonParser.java,1797,final int[] codes = _icLatin1;
+S909,UTF8StreamJsonParser.java,1798,int qlen = 3;
+S910,UTF8StreamJsonParser.java,1800,while ((_inputPtr + 4) <= _inputEnd) {
+S911,UTF8StreamJsonParser.java,1801,int i = input[_inputPtr++] & 0xFF;
+S912,UTF8StreamJsonParser.java,1804,"return findName(_quadBuffer, qlen, q, 1);"
+S913,UTF8StreamJsonParser.java,1810,i = input[_inputPtr++] & 0xFF;
+S914,UTF8StreamJsonParser.java,1811,if (codes[i] != 0) {
+S915,UTF8StreamJsonParser.java,1819,i = input[_inputPtr++] & 0xFF;
+S916,UTF8StreamJsonParser.java,1820,if (codes[i] != 0) {
+S917,UTF8StreamJsonParser.java,1828,i = input[_inputPtr++] & 0xFF;
+S918,UTF8StreamJsonParser.java,1871,"return parseEscapedName(_quadBuffer, 0, q1, ch, lastQuadBytes);"
+S919,UTF8StreamJsonParser.java,1899,final int[] codes = _icLatin1;
+S920,UTF8StreamJsonParser.java,1902,if (codes[ch] != 0) {
+S921,UTF8StreamJsonParser.java,1903,if (ch == INT_QUOTE) { // we are done
+S922,UTF8StreamJsonParser.java,1907,if (ch != INT_BACKSLASH) {
+S923,UTF8StreamJsonParser.java,1912,ch = _decodeEscaped();
+S924,UTF8StreamJsonParser.java,1919,if (ch > 127) {
+S925,UTF8StreamJsonParser.java,1953,if (currQuadBytes < 4) {
+S926,UTF8StreamJsonParser.java,1954,++currQuadBytes;
+S927,UTF8StreamJsonParser.java,1955,currQuad = (currQuad << 8) | ch;
+S928,UTF8StreamJsonParser.java,1969,ch = _inputBuffer[_inputPtr++] & 0xFF;
+S929,UTF8StreamJsonParser.java,1972,if (currQuadBytes > 0) {
+S930,UTF8StreamJsonParser.java,1976,"quads[qlen++] = pad(currQuad, currQuadBytes);"
+S931,UTF8StreamJsonParser.java,1978,"String name = _symbols.findName(quads, qlen);"
+S932,UTF8StreamJsonParser.java,1979,if (name == null) {
+S933,UTF8StreamJsonParser.java,1980,"name = addName(quads, qlen, currQuadBytes);"
+S934,UTF8StreamJsonParser.java,2177,"q1 = pad(q1, lastQuadBytes);"
+S935,UTF8StreamJsonParser.java,2179,String name = _symbols.findName(q1);
+S936,UTF8StreamJsonParser.java,2180,if (name != null) {
+S937,UTF8StreamJsonParser.java,2181,return name;
+S938,UTF8StreamJsonParser.java,2185,"return addName(_quadBuffer, 1, lastQuadBytes);"
+S939,UTF8StreamJsonParser.java,2190,"q2 = pad(q2, lastQuadBytes);"
+S940,UTF8StreamJsonParser.java,2192,"String name = _symbols.findName(q1, q2);"
+S941,UTF8StreamJsonParser.java,2193,if (name != null) {
+S942,UTF8StreamJsonParser.java,2194,return name;
+S943,UTF8StreamJsonParser.java,2199,"return addName(_quadBuffer, 2, lastQuadBytes);"
+S944,UTF8StreamJsonParser.java,2204,"q3 = pad(q3, lastQuadBytes);"
+S945,UTF8StreamJsonParser.java,2205,"String name = _symbols.findName(q1, q2, q3);"
+S946,UTF8StreamJsonParser.java,2206,if (name != null) {
+S947,UTF8StreamJsonParser.java,2209,int[] quads = _quadBuffer;
+S948,UTF8StreamJsonParser.java,2210,quads[0] = q1;
+S949,UTF8StreamJsonParser.java,2211,quads[1] = q2;
+S950,UTF8StreamJsonParser.java,2212,"quads[2] = pad(q3, lastQuadBytes);"
+S951,UTF8StreamJsonParser.java,2213,"return addName(quads, 3, lastQuadBytes);"
+S952,UTF8StreamJsonParser.java,2221,"quads[qlen++] = pad(lastQuad, lastQuadBytes);"
+S953,UTF8StreamJsonParser.java,2222,"String name = _symbols.findName(quads, qlen);"
+S954,UTF8StreamJsonParser.java,2223,if (name == null) {
+S955,UTF8StreamJsonParser.java,2224,"return addName(quads, qlen, lastQuadBytes);"
+S956,UTF8StreamJsonParser.java,2251,if (lastQuadBytes < 4) {
+S957,UTF8StreamJsonParser.java,2252,lastQuad = quads[qlen-1];
+S958,UTF8StreamJsonParser.java,2254,quads[qlen-1] = (lastQuad << ((4 - lastQuadBytes) << 3));
+S959,UTF8StreamJsonParser.java,2260,char[] cbuf = _textBuffer.emptyAndGetCurrentSegment();
+S960,UTF8StreamJsonParser.java,2261,int cix = 0;
+S961,UTF8StreamJsonParser.java,2263,for (int ix = 0; ix < byteLen; ) {
+S962,UTF8StreamJsonParser.java,2264,"int ch = quads[ix >> 2]; // current quad, need to shift+mask"
+S963,UTF8StreamJsonParser.java,2265,int byteIx = (ix & 3);
+S964,UTF8StreamJsonParser.java,2266,ch = (ch >> ((3 - byteIx) << 3)) & 0xFF;
+S965,UTF8StreamJsonParser.java,2331,cbuf[cix++] = (char) ch;
+S966,UTF8StreamJsonParser.java,2335,"String baseName = new String(cbuf, 0, cix);"
+S967,UTF8StreamJsonParser.java,2337,if (lastQuadBytes < 4) {
+S968,UTF8StreamJsonParser.java,2338,quads[qlen-1] = lastQuad;
+S969,UTF8StreamJsonParser.java,2340,"return _symbols.addName(baseName, quads, qlen);"
+S970,UTF8StreamJsonParser.java,2518,int ptr = _inputPtr;
+S971,UTF8StreamJsonParser.java,2526,c = (int) inputBuffer[ptr++] & 0xFF;
+S972,UTF8StreamJsonParser.java,2528,_inputPtr = ptr;
+S973,UTF8StreamJsonParser.java,2740,final int len = matchStr.length();
+S974,UTF8StreamJsonParser.java,2741,if ((_inputPtr + len) >= _inputEnd) {
+S975,UTF8StreamJsonParser.java,2749,++_inputPtr;
+S976,UTF8StreamJsonParser.java,2795,while (_inputPtr < _inputEnd) {
+S977,UTF8StreamJsonParser.java,2796,int i = _inputBuffer[_inputPtr++] & 0xFF;
+S978,UTF8StreamJsonParser.java,2802,return i;
+S979,UTF8StreamJsonParser.java,2806,++_currInputRow;
+S980,UTF8StreamJsonParser.java,2807,_currInputRowStart = _inputPtr;
+S981,UTF8StreamJsonParser.java,2852,if (_inputPtr >= _inputEnd) {
+S982,UTF8StreamJsonParser.java,2853,if (!loadMore()) {
+S983,UTF8StreamJsonParser.java,2854,return _eofAsNextChar();
+S984,UTF8StreamJsonParser.java,2857,int i = _inputBuffer[_inputPtr++] & 0xFF;
+S985,UTF8StreamJsonParser.java,2858,if (i > INT_SPACE) {
+S986,UTF8StreamJsonParser.java,2863,return i;
+S987,UTF8StreamJsonParser.java,2867,++_currInputRow;
+S988,UTF8StreamJsonParser.java,2868,_currInputRowStart = _inputPtr;
+S989,UTF8StreamJsonParser.java,2876,while (_inputPtr < _inputEnd) {
+S990,UTF8StreamJsonParser.java,2877,i = _inputBuffer[_inputPtr++] & 0xFF;
+S991,UTF8StreamJsonParser.java,2883,return i;
+S992,UTF8StreamJsonParser.java,2931,if ((_inputPtr + 4) >= _inputEnd) {
+S993,UTF8StreamJsonParser.java,2932,return _skipColon2(false);
+S994,UTF8StreamJsonParser.java,2937,i = _inputBuffer[++_inputPtr];
+S995,UTF8StreamJsonParser.java,2942,++_inputPtr;
+S996,UTF8StreamJsonParser.java,2943,return i;
+S997,UTF8StreamJsonParser.java,2946,i = (int) _inputBuffer[++_inputPtr];
+S998,UTF8StreamJsonParser.java,2947,if (i > INT_SPACE) {
+S999,UTF8StreamJsonParser.java,2951,++_inputPtr;
+S1000,UTF8StreamJsonParser.java,2952,return i;
+S1001,UTF8StreamJsonParser.java,2958,i = _inputBuffer[++_inputPtr];
+S1002,UTF8StreamJsonParser.java,2961,i = _inputBuffer[++_inputPtr];
+S1003,UTF8StreamJsonParser.java,2970,i = (int) _inputBuffer[++_inputPtr];
+S1004,UTF8StreamJsonParser.java,2975,++_inputPtr;
+S1005,UTF8StreamJsonParser.java,2976,return i;
+S1006,UTF8StreamJsonParser.java,2987,int i = _inputBuffer[_inputPtr++] & 0xFF;
+S1007,UTF8StreamJsonParser.java,3000,return i;
+S1008,UTF8StreamJsonParser.java,3146,int c = (int) _inputBuffer[_inputPtr++];
+S1009,UTF8StreamJsonParser.java,3148,switch (c) {
+S1010,UTF8StreamJsonParser.java,3175,int value = 0;
+S1011,UTF8StreamJsonParser.java,3182,int ch = (int) _inputBuffer[_inputPtr++];
+S1012,UTF8StreamJsonParser.java,3183,int digit = CharTypes.charToHex(ch);
+S1013,UTF8StreamJsonParser.java,3187,value = (value << 4) | digit;
+S1014,UTF8StreamJsonParser.java,3189,return (char) value;
+S1015,UTF8StreamJsonParser.java,3616,return (bytes == 4) ? q : (q | (-1 << (bytes << 3)));

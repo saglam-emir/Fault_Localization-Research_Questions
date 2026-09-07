@@ -1,0 +1,556 @@
+statement_id,file,line,code
+S1,BufferRecycler.java,46,"private final static int[] CHAR_BUFFER_LENGTHS = new int[] { 4000, 4000, 200, 200 };"
+S2,BufferRecycler.java,62,"this(4, 4);"
+S3,BufferRecycler.java,71,"protected BufferRecycler(int bbCount, int cbCount) {"
+S4,BufferRecycler.java,72,_byteBuffers = new byte[bbCount][];
+S5,BufferRecycler.java,73,_charBuffers = new char[cbCount][];
+S6,BufferRecycler.java,118,final int DEF_SIZE = charBufferLength(ix);
+S7,BufferRecycler.java,119,if (minSize < DEF_SIZE) {
+S8,BufferRecycler.java,120,minSize = DEF_SIZE;
+S9,BufferRecycler.java,122,char[] buffer = _charBuffers[ix];
+S10,BufferRecycler.java,123,if (buffer == null || buffer.length < minSize) {
+S11,BufferRecycler.java,124,buffer = calloc(minSize);
+S12,BufferRecycler.java,128,return buffer;
+S13,BufferRecycler.java,146,return CHAR_BUFFER_LENGTHS[ix];
+S14,BufferRecycler.java,156,protected char[] calloc(int size) { return new char[size]; }
+S15,ByteQuadsCanonicalizer.java,241,_tableInfo = new AtomicReference<TableInfo>(TableInfo.createInitial(sz));
+S16,ByteQuadsCanonicalizer.java,290,return createRoot(seed);
+S17,ByteQuadsCanonicalizer.java,296,"return new ByteQuadsCanonicalizer(DEFAULT_T_SIZE, true, seed, true);"
+S18,ByteQuadsCanonicalizer.java,1254,"return new TableInfo(sz, // hashSize"
+S19,CharTypes.java,28,final int[] table = new int[256];
+S20,CharTypes.java,31,table[i] = -1;
+S21,CharTypes.java,34,"table['""'] = 1;"
+S22,CharTypes.java,35,table['\\'] = 1;
+S23,CharTypes.java,36,sInputCodes = table;
+S24,CharTypes.java,195,public static int[] getInputCodeLatin1() { return sInputCodes; }
+S25,CharsToNameCanonicalizer.java,233,_parent = null;
+S26,CharsToNameCanonicalizer.java,234,_seed = seed;
+S27,CharsToNameCanonicalizer.java,237,_canonicalize = true;
+S28,CharsToNameCanonicalizer.java,238,_flags = -1;
+S29,CharsToNameCanonicalizer.java,240,_hashShared = false; // doesn't really matter for root instance
+S30,CharsToNameCanonicalizer.java,241,_longestCollisionList = 0;
+S31,CharsToNameCanonicalizer.java,243,_tableInfo = new AtomicReference<TableInfo>(TableInfo.createInitial(DEFAULT_T_SIZE));
+S32,CharsToNameCanonicalizer.java,254,_parent = parent;
+S33,CharsToNameCanonicalizer.java,255,_seed = seed;
+S34,CharsToNameCanonicalizer.java,256,_tableInfo = null; // not used by child tables
+S35,CharsToNameCanonicalizer.java,257,_flags = flags;
+S36,CharsToNameCanonicalizer.java,258,_canonicalize = JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(flags);
+S37,CharsToNameCanonicalizer.java,261,_symbols = parentState.symbols;
+S38,CharsToNameCanonicalizer.java,262,_buckets = parentState.buckets;
+S39,CharsToNameCanonicalizer.java,264,_size = parentState.size;
+S40,CharsToNameCanonicalizer.java,265,_longestCollisionList = parentState.longestCollisionList;
+S41,CharsToNameCanonicalizer.java,268,int arrayLen = (_symbols.length);
+S42,CharsToNameCanonicalizer.java,269,_sizeThreshold = _thresholdSize(arrayLen);
+S43,CharsToNameCanonicalizer.java,270,_indexMask =  (arrayLen - 1);
+S44,CharsToNameCanonicalizer.java,273,_hashShared = true;
+S45,CharsToNameCanonicalizer.java,276,private static int _thresholdSize(int hashAreaSize) { return hashAreaSize - (hashAreaSize >> 2); }
+S46,CharsToNameCanonicalizer.java,293,long now = System.currentTimeMillis();
+S47,CharsToNameCanonicalizer.java,295,int seed = (((int) now) + ((int) (now >>> 32))) | 1;
+S48,CharsToNameCanonicalizer.java,296,return createRoot(seed);
+S49,CharsToNameCanonicalizer.java,300,return new CharsToNameCanonicalizer(seed);
+S50,CharsToNameCanonicalizer.java,315,"return new CharsToNameCanonicalizer(this, flags, _seed, _tableInfo.get());"
+S51,CharsToNameCanonicalizer.java,387,public int hashSeed() { return _seed; }
+S52,CharsToNameCanonicalizer.java,424,if (len < 1) { // empty Strings are simplest to handle up front
+S53,CharsToNameCanonicalizer.java,427,if (!_canonicalize) { // [JACKSON-259]
+S54,CharsToNameCanonicalizer.java,436,int index = _hashToIndex(h);
+S55,CharsToNameCanonicalizer.java,437,String sym = _symbols[index];
+S56,CharsToNameCanonicalizer.java,440,if (sym != null) {
+S57,CharsToNameCanonicalizer.java,442,if (sym.length() == len) {
+S58,CharsToNameCanonicalizer.java,443,int i = 0;
+S59,CharsToNameCanonicalizer.java,444,while (sym.charAt(i) == buffer[start+i]) {
+S60,CharsToNameCanonicalizer.java,446,if (++i == len) {
+S61,CharsToNameCanonicalizer.java,447,return sym;
+S62,CharsToNameCanonicalizer.java,451,Bucket b = _buckets[index>>1];
+S63,CharsToNameCanonicalizer.java,452,if (b != null) {
+S64,CharsToNameCanonicalizer.java,463,"return _addSymbol(buffer, start, len, h, index);"
+S65,CharsToNameCanonicalizer.java,479,if (_hashShared) { //need to do copy-on-write?
+S66,CharsToNameCanonicalizer.java,480,copyArrays();
+S67,CharsToNameCanonicalizer.java,490,"String newSymbol = new String(buffer, start, len);"
+S68,CharsToNameCanonicalizer.java,491,if (JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(_flags)) {
+S69,CharsToNameCanonicalizer.java,492,newSymbol = InternCache.instance.intern(newSymbol);
+S70,CharsToNameCanonicalizer.java,511,return newSymbol;
+S71,CharsToNameCanonicalizer.java,546,rawHash += (rawHash >>> 15);
+S72,CharsToNameCanonicalizer.java,547,rawHash ^= (rawHash << 7);
+S73,CharsToNameCanonicalizer.java,548,rawHash += (rawHash >>> 3);
+S74,CharsToNameCanonicalizer.java,549,return (rawHash & _indexMask);
+S75,CharsToNameCanonicalizer.java,593,final String[] oldSyms = _symbols;
+S76,CharsToNameCanonicalizer.java,594,"_symbols = Arrays.copyOf(oldSyms, oldSyms.length);"
+S77,CharsToNameCanonicalizer.java,595,final Bucket[] oldBuckets = _buckets;
+S78,CharsToNameCanonicalizer.java,596,"_buckets = Arrays.copyOf(oldBuckets, oldBuckets.length);"
+S79,CharsToNameCanonicalizer.java,794,this.size = size;
+S80,CharsToNameCanonicalizer.java,795,this.longestCollisionList = longestCollisionList;
+S81,CharsToNameCanonicalizer.java,796,this.symbols = symbols;
+S82,CharsToNameCanonicalizer.java,797,this.buckets = buckets;
+S83,CharsToNameCanonicalizer.java,809,"return new TableInfo(0,"
+S84,FilteringParserDelegate.java,117,super(p);
+S85,FilteringParserDelegate.java,118,rootFilter = f;
+S86,FilteringParserDelegate.java,120,_itemFilter = f;
+S87,FilteringParserDelegate.java,121,_headContext = TokenFilterContext.createRootContext(f);
+S88,FilteringParserDelegate.java,122,_includePath = includePath;
+S89,FilteringParserDelegate.java,123,_allowMultipleMatches = allowMultipleMatches;
+S90,FilteringParserDelegate.java,202,if (_currToken != null) {
+S91,FilteringParserDelegate.java,203,_lastClearedToken = _currToken;
+S92,FilteringParserDelegate.java,204,_currToken = null;
+S93,FilteringParserDelegate.java,237,if (!_allowMultipleMatches && (_currToken != null) && (_exposedContext == null)) {
+S94,FilteringParserDelegate.java,240,if (_currToken.isScalarValue() && !_headContext.isStartHandled() && !_includePath
+S95,FilteringParserDelegate.java,242,return (_currToken = null);
+S96,FilteringParserDelegate.java,246,TokenFilterContext ctxt = _exposedContext;
+S97,FilteringParserDelegate.java,248,if (ctxt != null) {
+S98,FilteringParserDelegate.java,250,JsonToken t = ctxt.nextTokenToRead();
+S99,FilteringParserDelegate.java,251,if (t != null) {
+S100,FilteringParserDelegate.java,252,_currToken = t;
+S101,FilteringParserDelegate.java,256,if (ctxt == _headContext) {
+S102,FilteringParserDelegate.java,257,_exposedContext = null;
+S103,FilteringParserDelegate.java,258,if (ctxt.inArray()) {
+S104,FilteringParserDelegate.java,259,t = delegate.getCurrentToken();
+S105,FilteringParserDelegate.java,262,_currToken = t;
+S106,FilteringParserDelegate.java,278,ctxt = _headContext.findChildOf(ctxt);
+S107,FilteringParserDelegate.java,279,_exposedContext = ctxt;
+S108,FilteringParserDelegate.java,280,if (ctxt == null) { // should never occur
+S109,FilteringParserDelegate.java,287,JsonToken t = delegate.nextToken();
+S110,FilteringParserDelegate.java,288,if (t == null) {
+S111,FilteringParserDelegate.java,290,_currToken = t;
+S112,FilteringParserDelegate.java,335,f = _itemFilter;
+S113,FilteringParserDelegate.java,336,if (f == TokenFilter.INCLUDE_ALL) {
+S114,FilteringParserDelegate.java,337,"_headContext = _headContext.createChildObjectContext(f, true);"
+S115,FilteringParserDelegate.java,338,return (_currToken = t);
+S116,FilteringParserDelegate.java,340,if (f == null) { // does this occur?
+S117,FilteringParserDelegate.java,345,f = _headContext.checkValue(f);
+S118,FilteringParserDelegate.java,346,if (f == null) {
+S119,FilteringParserDelegate.java,350,if (f != TokenFilter.INCLUDE_ALL) {
+S120,FilteringParserDelegate.java,351,f = f.filterStartObject();
+S121,FilteringParserDelegate.java,353,_itemFilter = f;
+S122,FilteringParserDelegate.java,354,if (f == TokenFilter.INCLUDE_ALL) {
+S123,FilteringParserDelegate.java,358,"_headContext = _headContext.createChildObjectContext(f, false);"
+S124,FilteringParserDelegate.java,360,if (_includePath) {
+S125,FilteringParserDelegate.java,361,t = _nextTokenWithBuffering(_headContext);
+S126,FilteringParserDelegate.java,362,if (t != null) {
+S127,FilteringParserDelegate.java,364,return t;
+S128,FilteringParserDelegate.java,374,boolean returnEnd = _headContext.isStartHandled();
+S129,FilteringParserDelegate.java,379,_headContext = _headContext.getParent();
+S130,FilteringParserDelegate.java,380,_itemFilter = _headContext.getFilter();
+S131,FilteringParserDelegate.java,381,if (returnEnd) {
+S132,FilteringParserDelegate.java,382,return (_currToken = t);
+S133,FilteringParserDelegate.java,385,break;
+S134,FilteringParserDelegate.java,389,final String name = delegate.getCurrentName();
+S135,FilteringParserDelegate.java,391,f = _headContext.setFieldName(name);
+S136,FilteringParserDelegate.java,392,if (f == TokenFilter.INCLUDE_ALL) {
+S137,FilteringParserDelegate.java,393,_itemFilter = f;
+S138,FilteringParserDelegate.java,402,return (_currToken = t);
+S139,FilteringParserDelegate.java,404,if (f == null) {
+S140,FilteringParserDelegate.java,409,f = f.includeProperty(name);
+S141,FilteringParserDelegate.java,410,if (f == null) {
+S142,FilteringParserDelegate.java,415,_itemFilter = f;
+S143,FilteringParserDelegate.java,416,if (f == TokenFilter.INCLUDE_ALL) {
+S144,FilteringParserDelegate.java,417,if (_includePath) {
+S145,FilteringParserDelegate.java,418,return (_currToken = t);
+S146,FilteringParserDelegate.java,421,if (_includePath) {
+S147,FilteringParserDelegate.java,422,t = _nextTokenWithBuffering(_headContext);
+S148,FilteringParserDelegate.java,423,if (t != null) {
+S149,FilteringParserDelegate.java,424,_currToken = t;
+S150,FilteringParserDelegate.java,425,return t;
+S151,FilteringParserDelegate.java,432,f = _itemFilter;
+S152,FilteringParserDelegate.java,433,if (f == TokenFilter.INCLUDE_ALL) {
+S153,FilteringParserDelegate.java,434,return (_currToken = t);
+S154,FilteringParserDelegate.java,436,if (f != null) {
+S155,FilteringParserDelegate.java,437,f = _headContext.checkValue(f);
+S156,FilteringParserDelegate.java,438,if ((f == TokenFilter.INCLUDE_ALL)
+S157,FilteringParserDelegate.java,440,return (_currToken = t);
+S158,FilteringParserDelegate.java,448,return _nextToken2();
+S159,FilteringParserDelegate.java,461,JsonToken t = delegate.nextToken();
+S160,FilteringParserDelegate.java,462,if (t == null) { // is this even legal?
+S161,FilteringParserDelegate.java,463,_currToken = t;
+S162,FilteringParserDelegate.java,470,f = _itemFilter;
+S163,FilteringParserDelegate.java,471,if (f == TokenFilter.INCLUDE_ALL) {
+S164,FilteringParserDelegate.java,475,if (f == null) { // does this occur?
+S165,FilteringParserDelegate.java,480,f = _headContext.checkValue(f);
+S166,FilteringParserDelegate.java,481,if (f == null) {
+S167,FilteringParserDelegate.java,485,if (f != TokenFilter.INCLUDE_ALL) {
+S168,FilteringParserDelegate.java,486,f = f.filterStartArray();
+S169,FilteringParserDelegate.java,488,_itemFilter = f;
+S170,FilteringParserDelegate.java,489,if (f == TokenFilter.INCLUDE_ALL) {
+S171,FilteringParserDelegate.java,493,"_headContext = _headContext.createChildArrayContext(f, false);"
+S172,FilteringParserDelegate.java,505,f = _itemFilter;
+S173,FilteringParserDelegate.java,506,if (f == TokenFilter.INCLUDE_ALL) {
+S174,FilteringParserDelegate.java,507,"_headContext = _headContext.createChildObjectContext(f, true);"
+S175,FilteringParserDelegate.java,508,return (_currToken = t);
+S176,FilteringParserDelegate.java,510,if (f == null) { // does this occur?
+S177,FilteringParserDelegate.java,515,f = _headContext.checkValue(f);
+S178,FilteringParserDelegate.java,516,if (f == null) {
+S179,FilteringParserDelegate.java,520,if (f != TokenFilter.INCLUDE_ALL) {
+S180,FilteringParserDelegate.java,521,f = f.filterStartObject();
+S181,FilteringParserDelegate.java,523,_itemFilter = f;
+S182,FilteringParserDelegate.java,524,if (f == TokenFilter.INCLUDE_ALL) {
+S183,FilteringParserDelegate.java,528,"_headContext = _headContext.createChildObjectContext(f, false);"
+S184,FilteringParserDelegate.java,546,_headContext = _headContext.getParent();
+S185,FilteringParserDelegate.java,547,_itemFilter = _headContext.getFilter();
+S186,FilteringParserDelegate.java,556,final String name = delegate.getCurrentName();
+S187,FilteringParserDelegate.java,557,f = _headContext.setFieldName(name);
+S188,FilteringParserDelegate.java,558,if (f == TokenFilter.INCLUDE_ALL) {
+S189,FilteringParserDelegate.java,562,if (f == null) { // filter out the value
+S190,FilteringParserDelegate.java,567,f = f.includeProperty(name);
+S191,FilteringParserDelegate.java,568,if (f == null) { // filter out the value
+S192,FilteringParserDelegate.java,573,_itemFilter = f;
+S193,FilteringParserDelegate.java,574,if (f == TokenFilter.INCLUDE_ALL) {
+S194,FilteringParserDelegate.java,581,if (_includePath) {
+S195,FilteringParserDelegate.java,582,t = _nextTokenWithBuffering(_headContext);
+S196,FilteringParserDelegate.java,583,if (t != null) {
+S197,FilteringParserDelegate.java,584,_currToken = t;
+S198,FilteringParserDelegate.java,592,f = _itemFilter;
+S199,FilteringParserDelegate.java,593,if (f == TokenFilter.INCLUDE_ALL) {
+S200,FilteringParserDelegate.java,594,return (_currToken = t);
+S201,FilteringParserDelegate.java,617,JsonToken t = delegate.nextToken();
+S202,FilteringParserDelegate.java,618,if (t == null) { // is this even legal?
+S203,FilteringParserDelegate.java,627,switch (t.id()) {
+S204,FilteringParserDelegate.java,629,f = _headContext.checkValue(_itemFilter);
+S205,FilteringParserDelegate.java,630,if (f == null) {
+S206,FilteringParserDelegate.java,634,if (f != TokenFilter.INCLUDE_ALL) {
+S207,FilteringParserDelegate.java,635,f = f.filterStartArray();
+S208,FilteringParserDelegate.java,637,_itemFilter = f;
+S209,FilteringParserDelegate.java,638,if (f == TokenFilter.INCLUDE_ALL) {
+S210,FilteringParserDelegate.java,642,"_headContext = _headContext.createChildArrayContext(f, false);"
+S211,FilteringParserDelegate.java,646,f = _itemFilter;
+S212,FilteringParserDelegate.java,647,if (f == TokenFilter.INCLUDE_ALL) {
+S213,FilteringParserDelegate.java,651,if (f == null) { // does this occur?
+S214,FilteringParserDelegate.java,656,f = _headContext.checkValue(f);
+S215,FilteringParserDelegate.java,657,if (f == null) {
+S216,FilteringParserDelegate.java,661,if (f != TokenFilter.INCLUDE_ALL) {
+S217,FilteringParserDelegate.java,662,f = f.filterStartObject();
+S218,FilteringParserDelegate.java,664,_itemFilter = f;
+S219,FilteringParserDelegate.java,665,if (f == TokenFilter.INCLUDE_ALL) {
+S220,FilteringParserDelegate.java,669,"_headContext = _headContext.createChildObjectContext(f, false);"
+S221,FilteringParserDelegate.java,684,_headContext = _headContext.getParent();
+S222,FilteringParserDelegate.java,685,_itemFilter = _headContext.getFilter();
+S223,FilteringParserDelegate.java,699,final String name = delegate.getCurrentName();
+S224,FilteringParserDelegate.java,700,f = _headContext.setFieldName(name);
+S225,FilteringParserDelegate.java,701,if (f == TokenFilter.INCLUDE_ALL) {
+S226,FilteringParserDelegate.java,705,if (f == null) { // filter out the value
+S227,FilteringParserDelegate.java,710,f = f.includeProperty(name);
+S228,FilteringParserDelegate.java,711,if (f == null) { // filter out the value
+S229,FilteringParserDelegate.java,716,_itemFilter = f;
+S230,FilteringParserDelegate.java,717,if (f == TokenFilter.INCLUDE_ALL) {
+S231,FilteringParserDelegate.java,718,return _nextBuffered(buffRoot);
+S232,FilteringParserDelegate.java,724,f = _itemFilter;
+S233,FilteringParserDelegate.java,725,if (f == TokenFilter.INCLUDE_ALL) {
+S234,FilteringParserDelegate.java,728,if (f != null) {
+S235,FilteringParserDelegate.java,729,f = _headContext.checkValue(f);
+S236,FilteringParserDelegate.java,730,if ((f == TokenFilter.INCLUDE_ALL)
+S237,FilteringParserDelegate.java,732,return _nextBuffered(buffRoot);
+S238,FilteringParserDelegate.java,743,_exposedContext = buffRoot;
+S239,FilteringParserDelegate.java,745,JsonToken t = ctxt.nextTokenToRead();
+S240,FilteringParserDelegate.java,746,if (t != null) {
+S241,FilteringParserDelegate.java,747,return t;
+S242,FilteringParserDelegate.java,790,if ((_currToken != JsonToken.START_OBJECT)
+S243,FilteringParserDelegate.java,799,JsonToken t = nextToken();
+S244,FilteringParserDelegate.java,807,return this;
+S245,FilteringParserDelegate.java,820,@Override public boolean hasTextCharacters() { return delegate.hasTextCharacters(); }
+S246,FilteringParserDelegate.java,821,@Override public char[] getTextCharacters() throws IOException { return delegate.getTextCharacters(); }
+S247,IOContext.java,103,_bufferRecycler = br;
+S248,IOContext.java,104,_sourceRef = sourceRef;
+S249,IOContext.java,105,_managedResource = managedResource;
+S250,IOContext.java,137,return new TextBuffer(_bufferRecycler);
+S251,IOContext.java,196,_verifyAlloc(_tokenCBuffer);
+S252,IOContext.java,197,"return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER, minSize));"
+S253,InternCache.java,29,public final static InternCache instance = new InternCache();
+S254,InternCache.java,36,private final Object lock = new Object();
+S255,InternCache.java,38,"private InternCache() { super(MAX_ENTRIES, 0.8f, 4); }"
+S256,InternCache.java,41,String result = get(input);
+S257,InternCache.java,42,if (result != null) { return result; }
+S258,InternCache.java,49,if (size() >= MAX_ENTRIES) {
+S259,InternCache.java,60,result = input.intern();
+S260,InternCache.java,61,"put(result, result);"
+S261,InternCache.java,62,return result;
+S262,JsonFactory.java,77,"INTERN_FIELD_NAMES(true),"
+S263,JsonFactory.java,87,"CANONICALIZE_FIELD_NAMES(true),"
+S264,JsonFactory.java,120,USE_THREAD_LOCAL_FOR_BUFFER_RECYCLING(true)
+S265,JsonFactory.java,141,private Feature(boolean defaultState) { _defaultState = defaultState; }
+S266,JsonFactory.java,144,public boolean enabledIn(int flags) { return (flags & getMask()) != 0; }
+S267,JsonFactory.java,145,public int getMask() { return (1 << ordinal()); }
+S268,JsonFactory.java,163,protected final static int DEFAULT_FACTORY_FEATURE_FLAGS = JsonFactory.Feature.collectDefaults();
+S269,JsonFactory.java,169,protected final static int DEFAULT_PARSER_FEATURE_FLAGS = JsonParser.Feature.collectDefaults();
+S270,JsonFactory.java,190,final protected static ThreadLocal<SoftReference<BufferRecycler>> _recyclerRef
+S271,JsonFactory.java,198,protected final transient CharsToNameCanonicalizer _rootCharSymbols = CharsToNameCanonicalizer.createRoot();
+S272,JsonFactory.java,209,protected final transient ByteQuadsCanonicalizer _byteSymbolCanonicalizer = ByteQuadsCanonicalizer.createRoot();
+S273,JsonFactory.java,229,protected int _factoryFeatures = DEFAULT_FACTORY_FEATURE_FLAGS;
+S274,JsonFactory.java,234,protected int _parserFeatures = DEFAULT_PARSER_FEATURE_FLAGS;
+S275,JsonFactory.java,285,public JsonFactory() { this(null); }
+S276,JsonFactory.java,287,public JsonFactory(ObjectCodec oc) { _objectCodec = oc; }
+S277,JsonFactory.java,896,final int strLen = content.length();
+S278,JsonFactory.java,903,"IOContext ctxt = _createContext(content, true);"
+S279,JsonFactory.java,904,char[] buf = ctxt.allocTokenBuffer(strLen);
+S280,JsonFactory.java,905,"content.getChars(0, strLen, buf, 0);"
+S281,JsonFactory.java,906,"return _createParser(buf, 0, strLen, ctxt, true);"
+S282,JsonFactory.java,1351,"return new ReaderBasedJsonParser(ctxt, _parserFeatures, null, _objectCodec,"
+S283,JsonFactory.java,1544,if (Feature.USE_THREAD_LOCAL_FOR_BUFFER_RECYCLING.enabledIn(_factoryFeatures)) {
+S284,JsonFactory.java,1549,br = new BufferRecycler();
+S285,JsonFactory.java,1552,return br;
+S286,JsonFactory.java,1562,"return new IOContext(_getBufferRecycler(), srcRef, resourceManaged);"
+S287,JsonGenerator.java,1716,switch (t.id()) {
+S288,JsonGenerator.java,1736,if (p.hasTextCharacters()) {
+S289,JsonGenerator.java,1737,"writeString(p.getTextCharacters(), p.getTextOffset(), p.getTextLength());"
+S290,JsonParser.java,61,"AUTO_CLOSE_SOURCE(true),"
+S291,JsonParser.java,77,"ALLOW_COMMENTS(false),"
+S292,JsonParser.java,212,"ALLOW_TRAILING_COMMA(false),"
+S293,JsonParser.java,232,"STRICT_DUPLICATE_DETECTION(false),"
+S294,JsonParser.java,279,"INCLUDE_SOURCE_IN_LOCATION(true),"
+S295,JsonParser.java,296,int flags = 0;
+S296,JsonParser.java,298,if (f.enabledByDefault()) {
+S297,JsonParser.java,299,flags |= f.getMask();
+S298,JsonParser.java,302,return flags;
+S299,JsonParser.java,305,private Feature(boolean defaultState) {
+S300,JsonParser.java,306,_mask = (1 << ordinal());
+S301,JsonParser.java,307,_defaultState = defaultState;
+S302,JsonParser.java,310,public boolean enabledByDefault() { return _defaultState; }
+S303,JsonParser.java,315,public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+S304,JsonParser.java,317,public int getMask() { return _mask; }
+S305,JsonParser.java,346,protected JsonParser() { }
+S306,JsonParser.java,347,protected JsonParser(int features) { _features = features; }
+S307,JsonParserDelegate.java,25,public JsonParserDelegate(JsonParser d) {
+S308,JsonParserDelegate.java,26,delegate = d;
+S309,JsonReadContext.java,57,super();
+S310,JsonReadContext.java,58,_parent = parent;
+S311,JsonReadContext.java,59,_dups = dups;
+S312,JsonReadContext.java,60,_type = type;
+S313,JsonReadContext.java,61,_lineNr = lineNr;
+S314,JsonReadContext.java,62,_columnNr = colNr;
+S315,JsonReadContext.java,63,_index = -1;
+S316,JsonReadContext.java,67,_type = type;
+S317,JsonReadContext.java,68,_index = -1;
+S318,JsonReadContext.java,69,_lineNr = lineNr;
+S319,JsonReadContext.java,70,_columnNr = colNr;
+S320,JsonReadContext.java,71,_currentName = null;
+S321,JsonReadContext.java,72,_currentValue = null;
+S322,JsonReadContext.java,110,"return new JsonReadContext(null, dups, TYPE_ROOT, 1, 0);"
+S323,JsonReadContext.java,114,JsonReadContext ctxt = _child;
+S324,JsonReadContext.java,115,if (ctxt == null) {
+S325,JsonReadContext.java,116,"_child = ctxt = new JsonReadContext(this,"
+S326,JsonReadContext.java,125,JsonReadContext ctxt = _child;
+S327,JsonReadContext.java,126,if (ctxt == null) {
+S328,JsonReadContext.java,127,"_child = ctxt = new JsonReadContext(this,"
+S329,JsonReadContext.java,129,return ctxt;
+S330,JsonReadContext.java,131,"ctxt.reset(TYPE_OBJECT, lineNr, colNr);"
+S331,JsonReadContext.java,132,return ctxt;
+S332,JsonReadContext.java,141,@Override public String getCurrentName() { return _currentName; }
+S333,JsonReadContext.java,174,return _parent;
+S334,JsonReadContext.java,193,return (_type != TYPE_ROOT && ix > 0);
+S335,JsonReadContext.java,197,_currentName = name;
+S336,JsonStreamContext.java,45,protected JsonStreamContext() { }
+S337,JsonStreamContext.java,82,public final boolean inArray() { return _type == TYPE_ARRAY; }
+S338,JsonStreamContext.java,95,public final boolean inObject() { return _type == TYPE_OBJECT; }
+S339,JsonToken.java,37,"START_OBJECT(""{"", JsonTokenId.ID_START_OBJECT),"
+S340,JsonToken.java,43,"END_OBJECT(""}"", JsonTokenId.ID_END_OBJECT),"
+S341,JsonToken.java,49,"START_ARRAY(""["", JsonTokenId.ID_START_ARRAY),"
+S342,JsonToken.java,55,"END_ARRAY(""]"", JsonTokenId.ID_END_ARRAY),"
+S343,JsonToken.java,61,"FIELD_NAME(null, JsonTokenId.ID_FIELD_NAME),"
+S344,JsonToken.java,73,"VALUE_EMBEDDED_OBJECT(null, JsonTokenId.ID_EMBEDDED_OBJECT),"
+S345,JsonToken.java,80,"VALUE_STRING(null, JsonTokenId.ID_STRING),"
+S346,JsonToken.java,88,"VALUE_NUMBER_INT(null, JsonTokenId.ID_NUMBER_INT),"
+S347,JsonToken.java,96,"VALUE_NUMBER_FLOAT(null, JsonTokenId.ID_NUMBER_FLOAT),"
+S348,JsonToken.java,102,"VALUE_TRUE(""true"", JsonTokenId.ID_TRUE),"
+S349,JsonToken.java,108,"VALUE_FALSE(""false"", JsonTokenId.ID_FALSE),"
+S350,JsonToken.java,139,if (token == null) {
+S351,JsonToken.java,140,_serialized = null;
+S352,JsonToken.java,141,_serializedChars = null;
+S353,JsonToken.java,142,_serializedBytes = null;
+S354,JsonToken.java,144,_serialized = token;
+S355,JsonToken.java,145,_serializedChars = token.toCharArray();
+S356,JsonToken.java,147,int len = _serializedChars.length;
+S357,JsonToken.java,148,_serializedBytes = new byte[len];
+S358,JsonToken.java,153,_id = id;
+S359,JsonToken.java,155,_isBoolean = (id == JsonTokenId.ID_FALSE || id == JsonTokenId.ID_TRUE);
+S360,JsonToken.java,156,_isNumber = (id == JsonTokenId.ID_NUMBER_INT || id == JsonTokenId.ID_NUMBER_FLOAT);
+S361,JsonToken.java,158,_isStructStart = (id == JsonTokenId.ID_START_OBJECT || id == JsonTokenId.ID_START_ARRAY);
+S362,JsonToken.java,159,_isStructEnd = (id == JsonTokenId.ID_END_OBJECT || id == JsonTokenId.ID_END_ARRAY);
+S363,JsonToken.java,161,_isScalar = !_isStructStart && !_isStructEnd
+S364,JsonToken.java,166,public final int id() { return _id; }
+S365,JsonToken.java,199,public final boolean isScalarValue() { return _isScalar; }
+S366,ParserBase.java,77,protected int _currInputRow = 1;
+S367,ParserBase.java,106,protected int _tokenInputRow = 1;
+S368,ParserBase.java,181,protected int _numTypesValid = NR_UNKNOWN;
+S369,ParserBase.java,232,super(features);
+S370,ParserBase.java,233,_ioContext = ctxt;
+S371,ParserBase.java,234,_textBuffer = ctxt.constructTextBuffer();
+S372,ParserBase.java,235,DupDetector dups = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features)
+S373,ParserBase.java,237,_parsingContext = JsonReadContext.createRootContext(dups);
+S374,ParserBase.java,343,return _parsingContext.getCurrentName();
+S375,ParserBase.java,411,if (_currToken == JsonToken.VALUE_STRING) { return true; } // usually true
+S376,ParserBase.java,496,return -1;
+S377,ParserBase.java,538,return JsonToken.VALUE_NUMBER_INT;
+S378,ParserMinimalBase.java,158,protected ParserMinimalBase(int features) { super(features); }
+S379,ParserMinimalBase.java,190,@Override public JsonToken getCurrentToken() { return _currToken; }
+S380,ReaderBasedJsonParser.java,22,protected final static int FEAT_MASK_TRAILING_COMMA = Feature.ALLOW_TRAILING_COMMA.getMask();
+S381,ReaderBasedJsonParser.java,26,protected final static int[] _icLatin1 = CharTypes.getInputCodeLatin1();
+S382,ReaderBasedJsonParser.java,118,"super(ctxt, features);"
+S383,ReaderBasedJsonParser.java,119,_reader = r;
+S384,ReaderBasedJsonParser.java,120,_inputBuffer = inputBuffer;
+S385,ReaderBasedJsonParser.java,121,_inputPtr = start;
+S386,ReaderBasedJsonParser.java,122,_inputEnd = end;
+S387,ReaderBasedJsonParser.java,123,_objectCodec = codec;
+S388,ReaderBasedJsonParser.java,124,_symbols = st;
+S389,ReaderBasedJsonParser.java,125,_hashSeed = st.hashSeed();
+S390,ReaderBasedJsonParser.java,126,_bufferRecyclable = bufferRecyclable;
+S391,ReaderBasedJsonParser.java,232,final int bufSize = _inputEnd;
+S392,ReaderBasedJsonParser.java,235,_currInputRowStart -= bufSize;
+S393,ReaderBasedJsonParser.java,242,if (_reader != null) {
+S394,ReaderBasedJsonParser.java,256,return false;
+S395,ReaderBasedJsonParser.java,368,if (_currToken != null) { // null only before/after document
+S396,ReaderBasedJsonParser.java,369,switch (_currToken.id()) {
+S397,ReaderBasedJsonParser.java,384,if (_tokenIncomplete) {
+S398,ReaderBasedJsonParser.java,386,_finishString(); // only strings can be incomplete
+S399,ReaderBasedJsonParser.java,637,if (_currToken == JsonToken.FIELD_NAME) {
+S400,ReaderBasedJsonParser.java,638,return _nextAfterName();
+S401,ReaderBasedJsonParser.java,643,if (_tokenIncomplete) {
+S402,ReaderBasedJsonParser.java,644,_skipString(); // only strings can be partial
+S403,ReaderBasedJsonParser.java,646,int i = _skipWSOrEnd();
+S404,ReaderBasedJsonParser.java,647,if (i < 0) { // end-of-input
+S405,ReaderBasedJsonParser.java,651,return (_currToken = null);
+S406,ReaderBasedJsonParser.java,657,if (i == INT_RBRACKET || i == INT_RCURLY) {
+S407,ReaderBasedJsonParser.java,658,_closeScope(i);
+S408,ReaderBasedJsonParser.java,659,return _currToken;
+S409,ReaderBasedJsonParser.java,663,if (_parsingContext.expectComma()) {
+S410,ReaderBasedJsonParser.java,664,i = _skipComma(i);
+S411,ReaderBasedJsonParser.java,667,if ((_features & FEAT_MASK_TRAILING_COMMA) != 0) {
+S412,ReaderBasedJsonParser.java,678,boolean inObject = _parsingContext.inObject();
+S413,ReaderBasedJsonParser.java,679,if (inObject) {
+S414,ReaderBasedJsonParser.java,682,String name = (i == INT_QUOTE) ? _parseName() : _handleOddName(i);
+S415,ReaderBasedJsonParser.java,683,_parsingContext.setCurrentName(name);
+S416,ReaderBasedJsonParser.java,684,_currToken = JsonToken.FIELD_NAME;
+S417,ReaderBasedJsonParser.java,685,i = _skipColon();
+S418,ReaderBasedJsonParser.java,687,_updateLocation();
+S419,ReaderBasedJsonParser.java,693,switch (i) {
+S420,ReaderBasedJsonParser.java,695,_tokenIncomplete = true;
+S421,ReaderBasedJsonParser.java,696,t = JsonToken.VALUE_STRING;
+S422,ReaderBasedJsonParser.java,702,t = JsonToken.START_ARRAY;
+S423,ReaderBasedJsonParser.java,705,if (!inObject) {
+S424,ReaderBasedJsonParser.java,706,"_parsingContext = _parsingContext.createChildObjectContext(_tokenInputRow, _tokenInputCol);"
+S425,ReaderBasedJsonParser.java,708,t = JsonToken.START_OBJECT;
+S426,ReaderBasedJsonParser.java,715,_matchTrue();
+S427,ReaderBasedJsonParser.java,716,t = JsonToken.VALUE_TRUE;
+S428,ReaderBasedJsonParser.java,719,_matchFalse();
+S429,ReaderBasedJsonParser.java,720,t = JsonToken.VALUE_FALSE;
+S430,ReaderBasedJsonParser.java,744,t = _parsePosNumber(i);
+S431,ReaderBasedJsonParser.java,751,if (inObject) {
+S432,ReaderBasedJsonParser.java,752,_nextToken = t;
+S433,ReaderBasedJsonParser.java,753,return _currToken;
+S434,ReaderBasedJsonParser.java,755,_currToken = t;
+S435,ReaderBasedJsonParser.java,756,return t;
+S436,ReaderBasedJsonParser.java,762,JsonToken t = _nextToken;
+S437,ReaderBasedJsonParser.java,768,if (t == JsonToken.START_ARRAY) {
+S438,ReaderBasedJsonParser.java,769,"_parsingContext = _parsingContext.createChildArrayContext(_tokenInputRow, _tokenInputCol);"
+S439,ReaderBasedJsonParser.java,770,} else if (t == JsonToken.START_OBJECT) {
+S440,ReaderBasedJsonParser.java,771,"_parsingContext = _parsingContext.createChildObjectContext(_tokenInputRow, _tokenInputCol);"
+S441,ReaderBasedJsonParser.java,773,return (_currToken = t);
+S442,ReaderBasedJsonParser.java,1258,int ptr = _inputPtr;
+S443,ReaderBasedJsonParser.java,1260,final int inputLen = _inputEnd;
+S444,ReaderBasedJsonParser.java,1278,if (ptr >= inputLen) {
+S445,ReaderBasedJsonParser.java,1282,ch = (int) _inputBuffer[ptr++];
+S446,ReaderBasedJsonParser.java,1293,--ptr; // need to push back following separator
+S447,ReaderBasedJsonParser.java,1294,_inputPtr = ptr;
+S448,ReaderBasedJsonParser.java,1301,"return resetInt(false, intLen);"
+S449,ReaderBasedJsonParser.java,1667,int ptr = _inputPtr;
+S450,ReaderBasedJsonParser.java,1668,int hash = _hashSeed;
+S451,ReaderBasedJsonParser.java,1671,while (ptr < _inputEnd) {
+S452,ReaderBasedJsonParser.java,1672,int ch = _inputBuffer[ptr];
+S453,ReaderBasedJsonParser.java,1675,int start = _inputPtr;
+S454,ReaderBasedJsonParser.java,1676,_inputPtr = ptr+1; // to skip the quote
+S455,ReaderBasedJsonParser.java,1677,"return _symbols.findSymbol(_inputBuffer, start, ptr - start, hash);"
+S456,ReaderBasedJsonParser.java,1681,hash = (hash * CharsToNameCanonicalizer.HASH_MULT) + ch;
+S457,ReaderBasedJsonParser.java,1682,++ptr;
+S458,ReaderBasedJsonParser.java,1989,int ptr = _inputPtr;
+S459,ReaderBasedJsonParser.java,1993,final int[] codes = _icLatin1;
+S460,ReaderBasedJsonParser.java,1994,final int maxCode = codes.length;
+S461,ReaderBasedJsonParser.java,1997,int ch = _inputBuffer[ptr];
+S462,ReaderBasedJsonParser.java,1998,if (ch < maxCode && codes[ch] != 0) {
+S463,ReaderBasedJsonParser.java,2001,_inputPtr = ptr+1;
+S464,ReaderBasedJsonParser.java,2007,++ptr;
+S465,ReaderBasedJsonParser.java,2068,int inPtr = _inputPtr;
+S466,ReaderBasedJsonParser.java,2094,_inputPtr = inPtr;
+S467,ReaderBasedJsonParser.java,2128,if ((_inputPtr + 4) >= _inputEnd) {
+S468,ReaderBasedJsonParser.java,2131,char c = _inputBuffer[_inputPtr];
+S469,ReaderBasedJsonParser.java,2132,"if (c == ':') { // common case, no leading space"
+S470,ReaderBasedJsonParser.java,2133,int i = _inputBuffer[++_inputPtr];
+S471,ReaderBasedJsonParser.java,2138,++_inputPtr;
+S472,ReaderBasedJsonParser.java,2139,return i;
+S473,ReaderBasedJsonParser.java,2273,while (_inputPtr < _inputEnd) {
+S474,ReaderBasedJsonParser.java,2274,i = (int) _inputBuffer[_inputPtr++];
+S475,ReaderBasedJsonParser.java,2280,return i;
+S476,ReaderBasedJsonParser.java,2330,if (_inputPtr >= _inputEnd) {
+S477,ReaderBasedJsonParser.java,2331,if (!_loadMore()) {
+S478,ReaderBasedJsonParser.java,2332,return _eofAsNextChar();
+S479,ReaderBasedJsonParser.java,2335,int i = _inputBuffer[_inputPtr++];
+S480,ReaderBasedJsonParser.java,2341,return i;
+S481,ReaderBasedJsonParser.java,2544,int ptr = _inputPtr;
+S482,ReaderBasedJsonParser.java,2545,if ((ptr + 3) < _inputEnd) {
+S483,ReaderBasedJsonParser.java,2546,final char[] b = _inputBuffer;
+S484,ReaderBasedJsonParser.java,2547,if (b[ptr] == 'r' && b[++ptr] == 'u' && b[++ptr] == 'e') {
+S485,ReaderBasedJsonParser.java,2548,char c = b[++ptr];
+S486,ReaderBasedJsonParser.java,2550,_inputPtr = ptr;
+S487,ReaderBasedJsonParser.java,2560,int ptr = _inputPtr;
+S488,ReaderBasedJsonParser.java,2561,if ((ptr + 4) < _inputEnd) {
+S489,ReaderBasedJsonParser.java,2562,final char[] b = _inputBuffer;
+S490,ReaderBasedJsonParser.java,2563,if (b[ptr] == 'a' && b[++ptr] == 'l' && b[++ptr] == 's' && b[++ptr] == 'e') {
+S491,ReaderBasedJsonParser.java,2564,char c = b[++ptr];
+S492,ReaderBasedJsonParser.java,2566,_inputPtr = ptr;
+S493,ReaderBasedJsonParser.java,2791,int ptr = _inputPtr;
+S494,ReaderBasedJsonParser.java,2793,_tokenInputRow = _currInputRow;
+S495,ReaderBasedJsonParser.java,2794,_tokenInputCol = ptr - _currInputRowStart;
+S496,ReaderBasedJsonParser.java,2845,if (i == INT_RBRACKET) {
+S497,ReaderBasedJsonParser.java,2850,_parsingContext = _parsingContext.clearAndGetParent();
+S498,ReaderBasedJsonParser.java,2851,_currToken = JsonToken.END_ARRAY;
+S499,ReaderBasedJsonParser.java,2853,if (i == INT_RCURLY) {
+S500,ReaderBasedJsonParser.java,2859,_currToken = JsonToken.END_OBJECT;
+S501,TextBuffer.java,121,public TextBuffer(BufferRecycler allocator) {
+S502,TextBuffer.java,122,_allocator = allocator;
+S503,TokenFilter.java,30,public final static TokenFilter INCLUDE_ALL = new TokenFilter();
+S504,TokenFilter.java,34,protected TokenFilter() { }
+S505,TokenFilter.java,66,return this;
+S506,TokenFilter.java,93,return this;
+S507,TokenFilter.java,193,return this;
+S508,TokenFilterContext.java,71,super();
+S509,TokenFilterContext.java,72,_type = type;
+S510,TokenFilterContext.java,73,_parent = parent;
+S511,TokenFilterContext.java,74,_filter = filter;
+S512,TokenFilterContext.java,75,_index = -1;
+S513,TokenFilterContext.java,76,_startHandled = startHandled;
+S514,TokenFilterContext.java,77,_needToHandleName = false;
+S515,TokenFilterContext.java,83,_type = type;
+S516,TokenFilterContext.java,84,_filter = filter;
+S517,TokenFilterContext.java,85,_index = -1;
+S518,TokenFilterContext.java,86,_currentName = null;
+S519,TokenFilterContext.java,87,_startHandled = startWritten;
+S520,TokenFilterContext.java,88,_needToHandleName = false;
+S521,TokenFilterContext.java,89,return this;
+S522,TokenFilterContext.java,100,"return new TokenFilterContext(TYPE_ROOT, null, filter, true);"
+S523,TokenFilterContext.java,104,TokenFilterContext ctxt = _child;
+S524,TokenFilterContext.java,105,if (ctxt == null) {
+S525,TokenFilterContext.java,106,"_child = ctxt = new TokenFilterContext(TYPE_ARRAY, this, filter, writeStart);"
+S526,TokenFilterContext.java,107,return ctxt;
+S527,TokenFilterContext.java,113,TokenFilterContext ctxt = _child;
+S528,TokenFilterContext.java,114,if (ctxt == null) {
+S529,TokenFilterContext.java,115,"_child = ctxt = new TokenFilterContext(TYPE_OBJECT, this, filter, writeStart);"
+S530,TokenFilterContext.java,116,return ctxt;
+S531,TokenFilterContext.java,118,"return ctxt.reset(TYPE_OBJECT, filter, writeStart);"
+S532,TokenFilterContext.java,129,_needToHandleName = true;
+S533,TokenFilterContext.java,130,return _filter;
+S534,TokenFilterContext.java,139,if (_type == TYPE_OBJECT) {
+S535,TokenFilterContext.java,140,return filter;
+S536,TokenFilterContext.java,143,int ix = ++_index;
+S537,TokenFilterContext.java,144,if (_type == TYPE_ARRAY) {
+S538,TokenFilterContext.java,145,return filter.includeElement(ix);
+S539,TokenFilterContext.java,147,return filter.includeRootValue(ix);
+S540,TokenFilterContext.java,276,@Override public final TokenFilterContext getParent() { return _parent; }
+S541,TokenFilterContext.java,281,public TokenFilter getFilter() { return _filter; }
+S542,TokenFilterContext.java,282,public boolean isStartHandled() { return _startHandled; }
+S543,TokenFilterContext.java,285,if (!_startHandled) {
+S544,TokenFilterContext.java,286,_startHandled = true;
+S545,TokenFilterContext.java,287,if (_type == TYPE_OBJECT) {
+S546,TokenFilterContext.java,288,return JsonToken.START_OBJECT;
+S547,TokenFilterContext.java,291,return JsonToken.START_ARRAY;
+S548,TokenFilterContext.java,294,if (_needToHandleName && (_type == TYPE_OBJECT)) {
+S549,TokenFilterContext.java,295,_needToHandleName = false;
+S550,TokenFilterContext.java,296,return JsonToken.FIELD_NAME;
+S551,TokenFilterContext.java,298,return null;
+S552,TokenFilterContext.java,302,if (_parent == parent) {
+S553,TokenFilterContext.java,303,return this;
+S554,TokenFilterContext.java,305,TokenFilterContext curr = _parent;
+S555,TokenFilterContext.java,309,return curr;

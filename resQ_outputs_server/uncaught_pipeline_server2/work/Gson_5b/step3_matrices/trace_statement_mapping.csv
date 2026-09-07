@@ -1,0 +1,131 @@
+statement_id,file,line,code
+S1,$Gson$Preconditions.java,45,if (!condition) {
+S2,DefaultDateTypeAdapter.java,46,"this(DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US),"
+S3,DefaultDateTypeAdapter.java,51,"this(new SimpleDateFormat(datePattern, Locale.US), new SimpleDateFormat(datePattern));"
+S4,DefaultDateTypeAdapter.java,55,"this(DateFormat.getDateInstance(style, Locale.US), DateFormat.getDateInstance(style));"
+S5,DefaultDateTypeAdapter.java,59,"this(DateFormat.getDateTimeInstance(dateStyle, timeStyle, Locale.US),"
+S6,DefaultDateTypeAdapter.java,63,"DefaultDateTypeAdapter(DateFormat enUsFormat, DateFormat localFormat) {"
+S7,DefaultDateTypeAdapter.java,64,this.enUsFormat = enUsFormat;
+S8,DefaultDateTypeAdapter.java,65,this.localFormat = localFormat;
+S9,DefaultDateTypeAdapter.java,72,synchronized (localFormat) {
+S10,DefaultDateTypeAdapter.java,73,String dateFormatAsString = enUsFormat.format(src);
+S11,DefaultDateTypeAdapter.java,74,return new JsonPrimitive(dateFormatAsString);
+S12,DefaultDateTypeAdapter.java,81,if (!(json instanceof JsonPrimitive)) {
+S13,DefaultDateTypeAdapter.java,84,Date date = deserializeToDate(json);
+S14,DefaultDateTypeAdapter.java,85,if (typeOfT == Date.class) {
+S15,DefaultDateTypeAdapter.java,86,return date;
+S16,DefaultDateTypeAdapter.java,97,synchronized (localFormat) {
+S17,DefaultDateTypeAdapter.java,99,return localFormat.parse(json.getAsString());
+S18,DefaultDateTypeAdapter.java,100,} catch (ParseException ignored) {}
+S19,DefaultDateTypeAdapter.java,102,return enUsFormat.parse(json.getAsString());
+S20,DefaultDateTypeAdapter.java,103,} catch (ParseException ignored) {}
+S21,DefaultDateTypeAdapter.java,105,"return ISO8601Utils.parse(json.getAsString(), new ParsePosition(0));"
+S22,DefaultDateTypeAdapter.java,106,} catch (ParseException e) {
+S23,DefaultDateTypeAdapter.java,107,"throw new JsonSyntaxException(json.getAsString(), e);"
+S24,ISO8601Utils.java,30,private static final TimeZone TIMEZONE_UTC = TimeZone.getTimeZone(UTC_ID);
+S25,ISO8601Utils.java,124,Exception fail = null;
+S26,ISO8601Utils.java,126,int offset = pos.getIndex();
+S27,ISO8601Utils.java,129,"int year = parseInt(date, offset, offset += 4);"
+S28,ISO8601Utils.java,130,"if (checkOffset(date, offset, '-')) {"
+S29,ISO8601Utils.java,131,offset += 1;
+S30,ISO8601Utils.java,135,"int month = parseInt(date, offset, offset += 2);"
+S31,ISO8601Utils.java,136,"if (checkOffset(date, offset, '-')) {"
+S32,ISO8601Utils.java,137,offset += 1;
+S33,ISO8601Utils.java,141,"int day = parseInt(date, offset, offset += 2);"
+S34,ISO8601Utils.java,143,int hour = 0;
+S35,ISO8601Utils.java,144,int minutes = 0;
+S36,ISO8601Utils.java,145,int seconds = 0;
+S37,ISO8601Utils.java,146,int milliseconds = 0; // always use 0 otherwise returned date will include millis of current time
+S38,ISO8601Utils.java,149,"boolean hasT = checkOffset(date, offset, 'T');"
+S39,ISO8601Utils.java,151,if (!hasT && (date.length() <= offset)) {
+S40,ISO8601Utils.java,158,if (hasT) {
+S41,ISO8601Utils.java,161,"hour = parseInt(date, offset += 1, offset += 2);"
+S42,ISO8601Utils.java,162,"if (checkOffset(date, offset, ':')) {"
+S43,ISO8601Utils.java,163,offset += 1;
+S44,ISO8601Utils.java,166,"minutes = parseInt(date, offset, offset += 2);"
+S45,ISO8601Utils.java,167,"if (checkOffset(date, offset, ':')) {"
+S46,ISO8601Utils.java,168,offset += 1;
+S47,ISO8601Utils.java,171,if (date.length() > offset) {
+S48,ISO8601Utils.java,172,char c = date.charAt(offset);
+S49,ISO8601Utils.java,173,if (c != 'Z' && c != '+' && c != '-') {
+S50,ISO8601Utils.java,174,"seconds = parseInt(date, offset, offset += 2);"
+S51,ISO8601Utils.java,175,if (seconds > 59 && seconds < 63) seconds = 59; // truncate up to 3 leap seconds
+S52,ISO8601Utils.java,177,"if (checkOffset(date, offset, '.')) {"
+S53,ISO8601Utils.java,178,offset += 1;
+S54,ISO8601Utils.java,179,"int endOffset = indexOfNonDigit(date, offset + 1); // assume at least one digit"
+S55,ISO8601Utils.java,180,"int parseEndOffset = Math.min(endOffset, offset + 3); // parse up to 3 digits"
+S56,ISO8601Utils.java,181,"int fraction = parseInt(date, offset, parseEndOffset);"
+S57,ISO8601Utils.java,183,switch (parseEndOffset - offset) { // number of digits parsed
+S58,ISO8601Utils.java,191,milliseconds = fraction;
+S59,ISO8601Utils.java,193,offset = endOffset;
+S60,ISO8601Utils.java,200,if (date.length() <= offset) {
+S61,ISO8601Utils.java,204,TimeZone timezone = null;
+S62,ISO8601Utils.java,205,char timezoneIndicator = date.charAt(offset);
+S63,ISO8601Utils.java,207,if (timezoneIndicator == 'Z') {
+S64,ISO8601Utils.java,208,timezone = TIMEZONE_UTC;
+S65,ISO8601Utils.java,209,offset += 1;
+S66,ISO8601Utils.java,210,} else if (timezoneIndicator == '+' || timezoneIndicator == '-') {
+S67,ISO8601Utils.java,211,String timezoneOffset = date.substring(offset);
+S68,ISO8601Utils.java,215,offset += timezoneOffset.length();
+S69,ISO8601Utils.java,217,"if (""+0000"".equals(timezoneOffset) || ""+00:00"".equals(timezoneOffset)) {"
+S70,ISO8601Utils.java,218,timezone = TIMEZONE_UTC;
+S71,ISO8601Utils.java,224,"String timezoneId = ""GMT"" + timezoneOffset;"
+S72,ISO8601Utils.java,227,timezone = TimeZone.getTimeZone(timezoneId);
+S73,ISO8601Utils.java,229,String act = timezone.getID();
+S74,ISO8601Utils.java,230,if (!act.equals(timezoneId)) {
+S75,ISO8601Utils.java,236,"String cleaned = act.replace("":"", """");"
+S76,ISO8601Utils.java,237,if (!cleaned.equals(timezoneId)) {
+S77,ISO8601Utils.java,238,"throw new IndexOutOfBoundsException(""Mismatching time zone indicator: ""+timezoneId+"" given, resolves to """
+S78,ISO8601Utils.java,243,} else {
+S79,ISO8601Utils.java,247,Calendar calendar = new GregorianCalendar(timezone);
+S80,ISO8601Utils.java,248,calendar.setLenient(false);
+S81,ISO8601Utils.java,249,"calendar.set(Calendar.YEAR, year);"
+S82,ISO8601Utils.java,250,"calendar.set(Calendar.MONTH, month - 1);"
+S83,ISO8601Utils.java,251,"calendar.set(Calendar.DAY_OF_MONTH, day);"
+S84,ISO8601Utils.java,252,"calendar.set(Calendar.HOUR_OF_DAY, hour);"
+S85,ISO8601Utils.java,253,"calendar.set(Calendar.MINUTE, minutes);"
+S86,ISO8601Utils.java,254,"calendar.set(Calendar.SECOND, seconds);"
+S87,ISO8601Utils.java,255,"calendar.set(Calendar.MILLISECOND, milliseconds);"
+S88,ISO8601Utils.java,257,pos.setIndex(offset);
+S89,ISO8601Utils.java,258,return calendar.getTime();
+S90,ISO8601Utils.java,261,} catch (IndexOutOfBoundsException e) {
+S91,ISO8601Utils.java,262,fail = e;
+S92,ISO8601Utils.java,268,"String input = (date == null) ? null : ('""' + date + ""'"");"
+S93,ISO8601Utils.java,269,String msg = fail.getMessage();
+S94,ISO8601Utils.java,270,if (msg == null || msg.isEmpty()) {
+S95,ISO8601Utils.java,273,"ParseException ex = new ParseException(""Failed to parse date ["" + input + ""]: "" + msg, pos.getIndex());"
+S96,ISO8601Utils.java,274,ex.initCause(fail);
+S97,ISO8601Utils.java,275,throw ex;
+S98,ISO8601Utils.java,287,return (offset < value.length()) && (value.charAt(offset) == expected);
+S99,ISO8601Utils.java,300,if (beginIndex < 0 || endIndex > value.length() || beginIndex > endIndex) {
+S100,ISO8601Utils.java,304,int i = beginIndex;
+S101,ISO8601Utils.java,305,int result = 0;
+S102,ISO8601Utils.java,307,if (i < endIndex) {
+S103,ISO8601Utils.java,308,"digit = Character.digit(value.charAt(i++), 10);"
+S104,ISO8601Utils.java,309,if (digit < 0) {
+S105,ISO8601Utils.java,312,result = -digit;
+S106,ISO8601Utils.java,314,while (i < endIndex) {
+S107,ISO8601Utils.java,315,"digit = Character.digit(value.charAt(i++), 10);"
+S108,ISO8601Utils.java,316,if (digit < 0) {
+S109,ISO8601Utils.java,319,result *= 10;
+S110,ISO8601Utils.java,320,result -= digit;
+S111,ISO8601Utils.java,322,return -result;
+S112,ISO8601Utils.java,344,for (int i = offset; i < string.length(); i++) {
+S113,ISO8601Utils.java,345,char c = string.charAt(i);
+S114,ISO8601Utils.java,346,if (c < '0' || c > '9') return i;
+S115,JsonElement.java,33,public abstract class JsonElement {
+S116,JsonParseException.java,52,"super(msg, cause);"
+S117,JsonPrimitive.java,35,"private static final Class<?>[] PRIMITIVE_TYPES = { int.class, long.class, short.class,"
+S118,JsonPrimitive.java,64,public JsonPrimitive(String string) {
+S119,JsonPrimitive.java,65,setValue(string);
+S120,JsonPrimitive.java,94,if (primitive instanceof Character) {
+S121,JsonPrimitive.java,100,$Gson$Preconditions.checkArgument(primitive instanceof Number
+S122,JsonPrimitive.java,102,this.value = primitive;
+S123,JsonPrimitive.java,112,return value instanceof Boolean;
+S124,JsonPrimitive.java,146,return value instanceof Number;
+S125,JsonPrimitive.java,176,if (isNumber()) {
+S126,JsonPrimitive.java,178,} else if (isBoolean()) {
+S127,JsonPrimitive.java,181,return (String) value;
+S128,JsonPrimitive.java,274,if (target instanceof String) {
+S129,JsonPrimitive.java,275,return true;
+S130,JsonSyntaxException.java,34,"super(msg, cause);"
