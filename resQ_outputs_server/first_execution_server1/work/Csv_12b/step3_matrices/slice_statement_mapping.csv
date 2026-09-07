@@ -1,0 +1,141 @@
+statement_id,file,line,code
+S1,CSVFormat.java,175,"public static final CSVFormat DEFAULT = new CSVFormat(COMMA, DOUBLE_QUOTE_CHAR, null, null, null,"
+S2,CSVFormat.java,219,public static final CSVFormat EXCEL = DEFAULT.withIgnoreEmptyLines(false);
+S3,CSVFormat.java,234,public static final CSVFormat TDF =
+S4,CSVFormat.java,345,final boolean allowMissingColumnNames) {
+S5,CSVFormat.java,349,this.delimiter = delimiter;
+S6,CSVFormat.java,350,this.quoteCharacter = quoteChar;
+S7,CSVFormat.java,351,this.quoteMode = quoteMode;
+S8,CSVFormat.java,352,this.commentMarker = commentStart;
+S9,CSVFormat.java,353,this.escapeCharacter = escape;
+S10,CSVFormat.java,354,this.ignoreSurroundingSpaces = ignoreSurroundingSpaces;
+S11,CSVFormat.java,355,this.allowMissingColumnNames = allowMissingColumnNames;
+S12,CSVFormat.java,356,this.ignoreEmptyLines = ignoreEmptyLines;
+S13,CSVFormat.java,357,this.recordSeparator = recordSeparator;
+S14,CSVFormat.java,358,this.nullString = nullString;
+S15,CSVFormat.java,359,if (header == null) {
+S16,CSVFormat.java,360,this.header = null;
+S17,CSVFormat.java,371,this.skipHeaderRecord = skipHeaderRecord;
+S18,CSVFormat.java,372,validate();
+S19,CSVFormat.java,468,return commentMarker;
+S20,CSVFormat.java,477,return delimiter;
+S21,CSVFormat.java,486,return escapeCharacter;
+S22,CSVFormat.java,515,return ignoreEmptyLines;
+S23,CSVFormat.java,525,return ignoreSurroundingSpaces;
+S24,CSVFormat.java,542,return nullString;
+S25,CSVFormat.java,551,return quoteCharacter;
+S26,CSVFormat.java,732,if (quoteCharacter != null && quoteCharacter.equals(commentMarker)) {
+S27,CSVFormat.java,759,return withCommentMarker(Character.valueOf(commentMarker));
+S28,CSVFormat.java,777,"return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,"
+S29,CSVFormat.java,795,"return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,"
+S30,CSVFormat.java,810,return withEscape(Character.valueOf(escape));
+S31,CSVFormat.java,826,"return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escape,"
+S32,CSVFormat.java,877,"return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,"
+S33,CSVFormat.java,891,"return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,"
+S34,CSVFormat.java,927,return withQuote(Character.valueOf(quoteChar));
+S35,CSVFormat.java,943,"return new CSVFormat(delimiter, quoteChar, quoteMode, commentMarker, escapeCharacter,"
+S36,CSVFormat.java,991,"return new CSVFormat(delimiter, quoteCharacter, quoteMode, commentMarker, escapeCharacter,"
+S37,CSVParser.java,178,"return new CSVParser(new StringReader(string), format);"
+S38,CSVParser.java,219,private final List<String> record = new ArrayList<String>();
+S39,CSVParser.java,223,private final Token reusableToken = new Token();
+S40,CSVParser.java,242,"public CSVParser(final Reader reader, final CSVFormat format) throws IOException {"
+S41,CSVParser.java,246,this.format = format;
+S42,CSVParser.java,247,"this.lexer = new Lexer(format, new ExtendedBufferedReader(reader));"
+S43,CSVParser.java,248,this.headerMap = this.initializeHeader();
+S44,CSVParser.java,252,final String input = this.reusableToken.content.toString();
+S45,CSVParser.java,253,final String nullString = this.format.getNullString();
+S46,CSVParser.java,254,if (nullString == null) {
+S47,CSVParser.java,255,this.record.add(input);
+S48,CSVParser.java,340,"Map<String, Integer> hdrMap = null;"
+S49,CSVParser.java,374,return hdrMap;
+S50,CSVParser.java,446,this.record.clear();
+S51,CSVParser.java,449,this.reusableToken.reset();
+S52,CSVParser.java,450,this.lexer.nextToken(this.reusableToken);
+S53,CSVParser.java,451,switch (this.reusableToken.type) {
+S54,CSVParser.java,453,this.addRecordValue();
+S55,CSVParser.java,456,this.addRecordValue();
+S56,CSVParser.java,459,if (this.reusableToken.isReady) {
+S57,CSVParser.java,460,this.addRecordValue();
+S58,CSVParser.java,479,if (!this.record.isEmpty()) {
+S59,CSVParser.java,480,this.recordNumber++;
+S60,CSVParser.java,482,"result = new CSVRecord(this.record.toArray(new String[this.record.size()]), this.headerMap, comment,"
+S61,Constants.java,36,"static final Character DOUBLE_QUOTE_CHAR = Character.valueOf('""');"
+S62,ExtendedBufferedReader.java,40,private int lastChar = UNDEFINED;
+S63,ExtendedBufferedReader.java,43,private long eolCounter = 0;
+S64,ExtendedBufferedReader.java,51,super(reader);
+S65,ExtendedBufferedReader.java,56,final int current = super.read();
+S66,ExtendedBufferedReader.java,60,lastChar = current;
+S67,ExtendedBufferedReader.java,61,return lastChar;
+S68,ExtendedBufferedReader.java,73,return lastChar;
+S69,ExtendedBufferedReader.java,140,super.mark(1);
+S70,ExtendedBufferedReader.java,141,final int c = super.read();
+S71,ExtendedBufferedReader.java,144,return c;
+S72,Lexer.java,62,"Lexer(final CSVFormat format, final ExtendedBufferedReader reader) {"
+S73,Lexer.java,63,this.reader = reader;
+S74,Lexer.java,64,this.delimiter = format.getDelimiter();
+S75,Lexer.java,65,this.escape = mapNullToDisabled(format.getEscapeCharacter());
+S76,Lexer.java,66,this.quoteChar = mapNullToDisabled(format.getQuoteCharacter());
+S77,Lexer.java,67,this.commentStart = mapNullToDisabled(format.getCommentMarker());
+S78,Lexer.java,68,this.ignoreSurroundingSpaces = format.getIgnoreSurroundingSpaces();
+S79,Lexer.java,69,this.ignoreEmptyLines = format.getIgnoreEmptyLines();
+S80,Lexer.java,86,int lastChar = reader.getLastChar();
+S81,Lexer.java,89,int c = reader.read();
+S82,Lexer.java,94,boolean eol = readEndOfLine(c);
+S83,Lexer.java,97,if (ignoreEmptyLines) {
+S84,Lexer.java,98,while (eol && isStartOfLine(lastChar)) {
+S85,Lexer.java,113,if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
+S86,Lexer.java,119,if (isStartOfLine(lastChar) && isCommentStart(c)) {
+S87,Lexer.java,133,while (token.type == INVALID) {
+S88,Lexer.java,135,if (ignoreSurroundingSpaces) {
+S89,Lexer.java,136,while (isWhitespace(c) && !eol) {
+S90,Lexer.java,137,c = reader.read();
+S91,Lexer.java,138,eol = readEndOfLine(c);
+S92,Lexer.java,143,if (isDelimiter(c)) {
+S93,Lexer.java,146,} else if (eol) {
+S94,Lexer.java,149,token.type = EORECORD;
+S95,Lexer.java,150,} else if (isQuoteChar(c)) {
+S96,Lexer.java,152,parseEncapsulatedToken(token);
+S97,Lexer.java,153,} else if (isEndOfFile(c)) {
+S98,Lexer.java,161,"parseSimpleToken(token, c);"
+S99,Lexer.java,189,if (readEndOfLine(ch)) {
+S100,Lexer.java,190,token.type = EORECORD;
+S101,Lexer.java,192,} else if (isEndOfFile(ch)) {
+S102,Lexer.java,196,} else if (isDelimiter(ch)) {
+S103,Lexer.java,197,token.type = TOKEN;
+S104,Lexer.java,199,} else if (isEscape(ch)) {
+S105,Lexer.java,208,token.content.append((char) ch);
+S106,Lexer.java,209,ch = reader.read(); // continue
+S107,Lexer.java,245,c = reader.read();
+S108,Lexer.java,255,if (isQuoteChar(reader.lookAhead())) {
+S109,Lexer.java,257,c = reader.read();
+S110,Lexer.java,258,token.content.append((char) c);
+S111,Lexer.java,262,c = reader.read();
+S112,Lexer.java,263,if (isDelimiter(c)) {
+S113,Lexer.java,264,token.type = TOKEN;
+S114,Lexer.java,266,} else if (isEndOfFile(c)) {
+S115,Lexer.java,267,token.type = EOF;
+S116,Lexer.java,268,token.isReady = true; // There is data at EOF
+S117,Lexer.java,270,} else if (readEndOfLine(c)) {
+S118,Lexer.java,271,token.type = EORECORD;
+S119,Lexer.java,280,} else if (isEndOfFile(c)) {
+S120,Lexer.java,286,token.content.append((char) c);
+S121,Lexer.java,292,return c == null ? DISABLED : c.charValue();
+S122,Lexer.java,367,ch = reader.read();
+S123,Lexer.java,369,return ch == LF || ch == CR;
+S124,Lexer.java,380,return !isDelimiter(ch) && Character.isWhitespace((char) ch);
+S125,Lexer.java,390,return ch == LF || ch == CR || ch == UNDEFINED;
+S126,Lexer.java,397,return ch == END_OF_STREAM;
+S127,Lexer.java,401,return ch == delimiter;
+S128,Lexer.java,405,return ch == escape;
+S129,Lexer.java,409,return ch == quoteChar;
+S130,Token.java,29,final class Token {
+S131,Token.java,34,enum Type {
+S132,Token.java,36,"INVALID,"
+S133,Token.java,39,"TOKEN,"
+S134,Token.java,42,"EOF,"
+S135,Token.java,45,"EORECORD,"
+S136,Token.java,48,COMMENT
+S137,Token.java,52,Token.Type type = INVALID;
+S138,Token.java,55,final StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
+S139,Token.java,61,content.setLength(0);
+S140,Token.java,62,type = INVALID;

@@ -1,0 +1,794 @@
+statement_id,file,line,code
+S1,AlreadySelectedException.java,43,super(message);
+S2,AlreadySelectedException.java,56,"this(""The option '"" + option.getKey() + ""' was specified but an option from this group """
+S3,AlreadySelectedException.java,58,this.group = group;
+S4,AlreadySelectedException.java,59,this.option = option;
+S5,AlreadySelectedException.java,70,return group;
+S6,AlreadySelectedException.java,81,return option;
+S7,BasicParser.java,28,public class BasicParser extends Parser
+S8,CommandLine.java,49,private List args = new LinkedList();
+S9,CommandLine.java,52,private List options = new ArrayList();
+S10,CommandLine.java,70,return options.contains(resolveOption(opt));
+S11,CommandLine.java,81,return hasOption(String.valueOf(opt));
+S12,CommandLine.java,95,return getParsedOptionValue(opt);
+S13,CommandLine.java,97,catch (ParseException pe)
+S14,CommandLine.java,99,"System.err.println(""Exception found converting "" + opt + "" to desired type: "" + pe.getMessage());"
+S15,CommandLine.java,100,return null;
+S16,CommandLine.java,115,String res = getOptionValue(opt);
+S17,CommandLine.java,116,Option option = resolveOption(opt);
+S18,CommandLine.java,118,if (option == null || res == null)
+S19,CommandLine.java,120,return null;
+S20,CommandLine.java,123,"return TypeHandler.createValue(res, option.getType());"
+S21,CommandLine.java,134,return getOptionObject(String.valueOf(opt));
+S22,CommandLine.java,146,String[] values = getOptionValues(opt);
+S23,CommandLine.java,148,return (values == null) ? null : values[0];
+S24,CommandLine.java,160,return getOptionValue(String.valueOf(opt));
+S25,CommandLine.java,172,List values = new ArrayList();
+S26,CommandLine.java,174,for (Iterator it = options.iterator(); it.hasNext();)
+S27,CommandLine.java,176,Option option = (Option) it.next();
+S28,CommandLine.java,177,if (opt.equals(option.getOpt()) || opt.equals(option.getLongOpt()))
+S29,CommandLine.java,179,values.addAll(option.getValuesList());
+S30,CommandLine.java,183,return values.isEmpty() ? null : (String[]) values.toArray(new String[values.size()]);
+S31,CommandLine.java,194,opt = Util.stripLeadingHyphens(opt);
+S32,CommandLine.java,195,for (Iterator it = options.iterator(); it.hasNext();)
+S33,CommandLine.java,197,Option option = (Option) it.next();
+S34,CommandLine.java,198,if (opt.equals(option.getOpt()))
+S35,CommandLine.java,200,return option;
+S36,CommandLine.java,203,if (opt.equals(option.getLongOpt()))
+S37,CommandLine.java,205,return option;
+S38,CommandLine.java,209,return null;
+S39,CommandLine.java,221,return getOptionValues(String.valueOf(opt));
+S40,CommandLine.java,235,String answer = getOptionValue(opt);
+S41,CommandLine.java,237,return (answer != null) ? answer : defaultValue;
+S42,CommandLine.java,251,"return getOptionValue(String.valueOf(opt), defaultValue);"
+S43,CommandLine.java,269,Properties props = new Properties();
+S44,CommandLine.java,271,for (Iterator it = options.iterator(); it.hasNext();)
+S45,CommandLine.java,273,Option option = (Option) it.next();
+S46,CommandLine.java,275,if (opt.equals(option.getOpt()) || opt.equals(option.getLongOpt()))
+S47,CommandLine.java,277,List values = option.getValuesList();
+S48,CommandLine.java,278,if (values.size() >= 2)
+S49,CommandLine.java,281,"props.put(values.get(0), values.get(1));"
+S50,CommandLine.java,283,else if (values.size() == 1)
+S51,CommandLine.java,286,"props.put(values.get(0), ""true"");"
+S52,CommandLine.java,291,return props;
+S53,CommandLine.java,301,String[] answer = new String[args.size()];
+S54,CommandLine.java,303,args.toArray(answer);
+S55,CommandLine.java,305,return answer;
+S56,CommandLine.java,315,return args;
+S57,CommandLine.java,347,args.add(arg);
+S58,CommandLine.java,357,options.add(opt);
+S59,CommandLine.java,368,return options.iterator();
+S60,CommandLine.java,378,Collection processed = options;
+S61,CommandLine.java,381,Option[] optionsArray = new Option[processed.size()];
+S62,CommandLine.java,384,return (Option[]) processed.toArray(optionsArray);
+S63,DefaultParser.java,33,public class DefaultParser implements CommandLineParser
+S64,DefaultParser.java,59,"return parse(options, arguments, null);"
+S65,DefaultParser.java,75,"return parse(options, arguments, properties, false);"
+S66,DefaultParser.java,100,this.options = options;
+S67,DefaultParser.java,101,this.stopAtNonOption = stopAtNonOption;
+S68,DefaultParser.java,102,skipParsing = false;
+S69,DefaultParser.java,103,currentOption = null;
+S70,DefaultParser.java,104,expectedOpts = new ArrayList(options.getRequiredOptions());
+S71,DefaultParser.java,107,for (Iterator it = options.getOptionGroups().iterator(); it.hasNext();)
+S72,DefaultParser.java,113,cmd = new CommandLine();
+S73,DefaultParser.java,115,if (arguments != null)
+S74,DefaultParser.java,117,for (int i = 0; i < arguments.length; i++)
+S75,DefaultParser.java,119,handleToken(arguments[i]);
+S76,DefaultParser.java,124,checkRequiredArgs();
+S77,DefaultParser.java,127,handleProperties(properties);
+S78,DefaultParser.java,129,checkRequiredOptions();
+S79,DefaultParser.java,131,return cmd;
+S80,DefaultParser.java,141,if (properties == null)
+S81,DefaultParser.java,143,return;
+S82,DefaultParser.java,196,if (!expectedOpts.isEmpty())
+S83,DefaultParser.java,208,if (currentOption != null && currentOption.requiresArg())
+S84,DefaultParser.java,222,currentToken = token;
+S85,DefaultParser.java,224,if (skipParsing)
+S86,DefaultParser.java,228,"else if (""--"".equals(token))"
+S87,DefaultParser.java,232,else if (currentOption != null && currentOption.acceptsArg() && isArgument(token))
+S88,DefaultParser.java,234,currentOption.addValueForProcessing(Util.stripLeadingAndTrailingQuotes(token));
+S89,DefaultParser.java,236,"else if (token.startsWith(""--""))"
+S90,DefaultParser.java,240,"else if (token.startsWith(""-"") && !""-"".equals(token))"
+S91,DefaultParser.java,242,handleShortAndLongOption(token);
+S92,DefaultParser.java,249,if (currentOption != null && !currentOption.acceptsArg())
+S93,DefaultParser.java,251,currentOption = null;
+S94,DefaultParser.java,262,return !isOption(token) || isNegativeNumber(token);
+S95,DefaultParser.java,290,return isLongOption(token) || isShortOption(token);
+S96,DefaultParser.java,301,"return token.startsWith(""-"") && token.length() >= 2 && options.hasShortOption(token.substring(1, 2));"
+S97,DefaultParser.java,311,"if (!token.startsWith(""-"") || token.length() == 1)"
+S98,DefaultParser.java,313,return false;
+S99,DefaultParser.java,470,String t = Util.stripLeadingHyphens(token);
+S100,DefaultParser.java,472,int pos = t.indexOf('=');
+S101,DefaultParser.java,474,if (t.length() == 1)
+S102,DefaultParser.java,477,if (options.hasShortOption(t))
+S103,DefaultParser.java,479,handleOption(options.getOption(t));
+S104,DefaultParser.java,596,checkRequiredArgs();
+S105,DefaultParser.java,598,option = (Option) option.clone();
+S106,DefaultParser.java,600,updateRequiredOptions(option);
+S107,DefaultParser.java,602,cmd.addOption(option);
+S108,DefaultParser.java,604,if (option.hasArg())
+S109,DefaultParser.java,606,currentOption = option;
+S110,DefaultParser.java,621,if (option.isRequired())
+S111,DefaultParser.java,627,if (options.getOptionGroup(option) != null)
+S112,GnuParser.java,31,public class GnuParser extends Parser
+S113,GnuParser.java,52,List tokens = new ArrayList();
+S114,GnuParser.java,54,boolean eatTheRest = false;
+S115,GnuParser.java,56,for (int i = 0; i < arguments.length; i++)
+S116,GnuParser.java,58,String arg = arguments[i];
+S117,GnuParser.java,60,"if (""--"".equals(arg))"
+S118,GnuParser.java,65,"else if (""-"".equals(arg))"
+S119,GnuParser.java,69,"else if (arg.startsWith(""-""))"
+S120,GnuParser.java,71,String opt = Util.stripLeadingHyphens(arg);
+S121,GnuParser.java,73,if (options.hasOption(opt))
+S122,GnuParser.java,75,tokens.add(arg);
+S123,GnuParser.java,79,"if (opt.indexOf('=') != -1 && options.hasOption(opt.substring(0, opt.indexOf('='))))"
+S124,GnuParser.java,85,"else if (options.hasOption(arg.substring(0, 2)))"
+S125,GnuParser.java,88,"tokens.add(arg.substring(0, 2)); // -D"
+S126,GnuParser.java,89,tokens.add(arg.substring(2)); // property=value
+S127,GnuParser.java,93,eatTheRest = stopAtNonOption;
+S128,GnuParser.java,94,tokens.add(arg);
+S129,GnuParser.java,100,tokens.add(arg);
+S130,GnuParser.java,103,if (eatTheRest)
+S131,GnuParser.java,105,for (i++; i < arguments.length; i++)
+S132,GnuParser.java,107,tokens.add(arguments[i]);
+S133,GnuParser.java,112,return (String[]) tokens.toArray(new String[tokens.size()]);
+S134,HelpFormatter.java,39,public class HelpFormatter
+S135,HelpFormatter.java,78,public int defaultWidth = DEFAULT_WIDTH;
+S136,HelpFormatter.java,86,public int defaultLeftPad = DEFAULT_LEFT_PAD;
+S137,HelpFormatter.java,95,public int defaultDescPad = DEFAULT_DESC_PAD;
+S138,HelpFormatter.java,103,public String defaultSyntaxPrefix = DEFAULT_SYNTAX_PREFIX;
+S139,HelpFormatter.java,111,"public String defaultNewLine = System.getProperty(""line.separator"");"
+S140,HelpFormatter.java,119,public String defaultOptPrefix = DEFAULT_OPT_PREFIX;
+S141,HelpFormatter.java,127,public String defaultLongOptPrefix = DEFAULT_LONG_OPT_PREFIX;
+S142,HelpFormatter.java,130,private String longOptSeparator = DEFAULT_LONG_OPT_SEPARATOR;
+S143,HelpFormatter.java,138,public String defaultArgName = DEFAULT_ARG_NAME;
+S144,HelpFormatter.java,145,protected Comparator optionComparator = new OptionComparator();
+S145,HelpFormatter.java,154,this.defaultWidth = width;
+S146,HelpFormatter.java,164,return defaultWidth;
+S147,HelpFormatter.java,174,this.defaultLeftPad = padding;
+S148,HelpFormatter.java,184,return defaultLeftPad;
+S149,HelpFormatter.java,194,this.defaultDescPad = padding;
+S150,HelpFormatter.java,204,return defaultDescPad;
+S151,HelpFormatter.java,214,this.defaultSyntaxPrefix = prefix;
+S152,HelpFormatter.java,224,return defaultSyntaxPrefix;
+S153,HelpFormatter.java,234,this.defaultNewLine = newline;
+S154,HelpFormatter.java,244,return defaultNewLine;
+S155,HelpFormatter.java,254,this.defaultOptPrefix = prefix;
+S156,HelpFormatter.java,264,return defaultOptPrefix;
+S157,HelpFormatter.java,274,this.defaultLongOptPrefix = prefix;
+S158,HelpFormatter.java,284,return defaultLongOptPrefix;
+S159,HelpFormatter.java,297,this.longOptSeparator = longOptSeparator;
+S160,HelpFormatter.java,308,return longOptSeparator;
+S161,HelpFormatter.java,318,this.defaultArgName = name;
+S162,HelpFormatter.java,328,return defaultArgName;
+S163,HelpFormatter.java,339,return optionComparator;
+S164,HelpFormatter.java,350,if (comparator == null)
+S165,HelpFormatter.java,352,this.optionComparator = new OptionComparator();
+S166,HelpFormatter.java,356,this.optionComparator = comparator;
+S167,HelpFormatter.java,370,"printHelp(getWidth(), cmdLineSyntax, null, options, null, false);"
+S168,HelpFormatter.java,433,"printHelp(width, cmdLineSyntax, header, options, footer, false);"
+S169,HelpFormatter.java,452,PrintWriter pw = new PrintWriter(System.out);
+S170,HelpFormatter.java,454,"printHelp(pw, width, cmdLineSyntax, header, options, getLeftPadding(), getDescPadding(), footer, autoUsage);"
+S171,HelpFormatter.java,455,pw.flush();
+S172,HelpFormatter.java,479,"printHelp(pw, width, cmdLineSyntax, header, options, leftPad, descPad, footer, false);"
+S173,HelpFormatter.java,506,if ((cmdLineSyntax == null) || (cmdLineSyntax.length() == 0))
+S174,HelpFormatter.java,508,"throw new IllegalArgumentException(""cmdLineSyntax not provided"");"
+S175,HelpFormatter.java,511,if (autoUsage)
+S176,HelpFormatter.java,513,"printUsage(pw, width, cmdLineSyntax, options);"
+S177,HelpFormatter.java,517,"printUsage(pw, width, cmdLineSyntax);"
+S178,HelpFormatter.java,520,if ((header != null) && (header.trim().length() > 0))
+S179,HelpFormatter.java,522,"printWrapped(pw, width, header);"
+S180,HelpFormatter.java,525,"printOptions(pw, width, options, leftPad, descPad);"
+S181,HelpFormatter.java,527,if ((footer != null) && (footer.trim().length() > 0))
+S182,HelpFormatter.java,529,"printWrapped(pw, width, footer);"
+S183,HelpFormatter.java,544,"StringBuffer buff = new StringBuffer(getSyntaxPrefix()).append(app).append("" "");"
+S184,HelpFormatter.java,547,final Collection processedGroups = new ArrayList();
+S185,HelpFormatter.java,552,List optList = new ArrayList(options.getOptions());
+S186,HelpFormatter.java,553,"Collections.sort(optList, getOptionComparator());"
+S187,HelpFormatter.java,555,for (Iterator i = optList.iterator(); i.hasNext();)
+S188,HelpFormatter.java,558,option = (Option) i.next();
+S189,HelpFormatter.java,561,OptionGroup group = options.getOptionGroup(option);
+S190,HelpFormatter.java,564,if (group != null)
+S191,HelpFormatter.java,567,if (!processedGroups.contains(group))
+S192,HelpFormatter.java,570,processedGroups.add(group);
+S193,HelpFormatter.java,574,"appendOptionGroup(buff, group);"
+S194,HelpFormatter.java,584,"appendOption(buff, option, option.isRequired());"
+S195,HelpFormatter.java,587,if (i.hasNext())
+S196,HelpFormatter.java,589,"buff.append("" "");"
+S197,HelpFormatter.java,595,"printWrapped(pw, width, buff.toString().indexOf(' ') + 1, buff.toString());"
+S198,HelpFormatter.java,608,if (!group.isRequired())
+S199,HelpFormatter.java,610,"buff.append(""["");"
+S200,HelpFormatter.java,613,List optList = new ArrayList(group.getOptions());
+S201,HelpFormatter.java,614,"Collections.sort(optList, getOptionComparator());"
+S202,HelpFormatter.java,616,for (Iterator i = optList.iterator(); i.hasNext();)
+S203,HelpFormatter.java,619,"appendOption(buff, (Option) i.next(), true);"
+S204,HelpFormatter.java,621,if (i.hasNext())
+S205,HelpFormatter.java,623,"buff.append("" | "");"
+S206,HelpFormatter.java,627,if (!group.isRequired())
+S207,HelpFormatter.java,629,"buff.append(""]"");"
+S208,HelpFormatter.java,642,if (!required)
+S209,HelpFormatter.java,644,"buff.append(""["");"
+S210,HelpFormatter.java,647,if (option.getOpt() != null)
+S211,HelpFormatter.java,649,"buff.append(""-"").append(option.getOpt());"
+S212,HelpFormatter.java,653,"buff.append(""--"").append(option.getLongOpt());"
+S213,HelpFormatter.java,657,if (option.hasArg() && (option.getArgName() == null || option.getArgName().length() != 0))
+S214,HelpFormatter.java,659,"buff.append(option.getOpt() == null ? longOptSeparator : "" "");"
+S215,HelpFormatter.java,660,"buff.append(""<"").append(option.getArgName() != null ? option.getArgName() : getArgName()).append("">"");"
+S216,HelpFormatter.java,664,if (!required)
+S217,HelpFormatter.java,666,"buff.append(""]"");"
+S218,HelpFormatter.java,680,int argPos = cmdLineSyntax.indexOf(' ') + 1;
+S219,HelpFormatter.java,682,"printWrapped(pw, width, getSyntaxPrefix().length() + argPos, getSyntaxPrefix() + cmdLineSyntax);"
+S220,HelpFormatter.java,700,StringBuffer sb = new StringBuffer();
+S221,HelpFormatter.java,702,"renderOptions(sb, width, options, leftPad, descPad);"
+S222,HelpFormatter.java,703,pw.println(sb.toString());
+S223,HelpFormatter.java,715,"printWrapped(pw, width, 0, text);"
+S224,HelpFormatter.java,728,StringBuffer sb = new StringBuffer(text.length());
+S225,HelpFormatter.java,730,"renderWrappedTextBlock(sb, width, nextLineTabStop, text);"
+S226,HelpFormatter.java,731,pw.println(sb.toString());
+S227,HelpFormatter.java,752,final String lpad = createPadding(leftPad);
+S228,HelpFormatter.java,753,final String dpad = createPadding(descPad);
+S229,HelpFormatter.java,759,int max = 0;
+S230,HelpFormatter.java,761,List prefixList = new ArrayList();
+S231,HelpFormatter.java,763,List optList = options.helpOptions();
+S232,HelpFormatter.java,765,"Collections.sort(optList, getOptionComparator());"
+S233,HelpFormatter.java,767,for (Iterator i = optList.iterator(); i.hasNext();)
+S234,HelpFormatter.java,769,Option option = (Option) i.next();
+S235,HelpFormatter.java,770,optBuf = new StringBuffer();
+S236,HelpFormatter.java,772,if (option.getOpt() == null)
+S237,HelpFormatter.java,774,"optBuf.append(lpad).append(""   "").append(getLongOptPrefix()).append(option.getLongOpt());"
+S238,HelpFormatter.java,778,optBuf.append(lpad).append(getOptPrefix()).append(option.getOpt());
+S239,HelpFormatter.java,780,if (option.hasLongOpt())
+S240,HelpFormatter.java,782,"optBuf.append(',').append(getLongOptPrefix()).append(option.getLongOpt());"
+S241,HelpFormatter.java,786,if (option.hasArg())
+S242,HelpFormatter.java,788,String argName = option.getArgName();
+S243,HelpFormatter.java,789,if (argName != null && argName.length() == 0)
+S244,HelpFormatter.java,796,"optBuf.append(option.hasLongOpt() ? longOptSeparator : "" "");"
+S245,HelpFormatter.java,797,"optBuf.append(""<"").append(argName != null ? option.getArgName() : getArgName()).append("">"");"
+S246,HelpFormatter.java,801,prefixList.add(optBuf);
+S247,HelpFormatter.java,802,max = (optBuf.length() > max) ? optBuf.length() : max;
+S248,HelpFormatter.java,805,int x = 0;
+S249,HelpFormatter.java,807,for (Iterator i = optList.iterator(); i.hasNext();)
+S250,HelpFormatter.java,809,Option option = (Option) i.next();
+S251,HelpFormatter.java,810,optBuf = new StringBuffer(prefixList.get(x++).toString());
+S252,HelpFormatter.java,812,if (optBuf.length() < max)
+S253,HelpFormatter.java,814,optBuf.append(createPadding(max - optBuf.length()));
+S254,HelpFormatter.java,817,optBuf.append(dpad);
+S255,HelpFormatter.java,819,int nextLineTabStop = max + descPad;
+S256,HelpFormatter.java,821,if (option.getDescription() != null)
+S257,HelpFormatter.java,823,optBuf.append(option.getDescription());
+S258,HelpFormatter.java,826,"renderWrappedText(sb, width, nextLineTabStop, optBuf.toString());"
+S259,HelpFormatter.java,828,if (i.hasNext())
+S260,HelpFormatter.java,830,sb.append(getNewLine());
+S261,HelpFormatter.java,834,return sb;
+S262,HelpFormatter.java,851,"int pos = findWrapPos(text, width, 0);"
+S263,HelpFormatter.java,853,if (pos == -1)
+S264,HelpFormatter.java,855,sb.append(rtrim(text));
+S265,HelpFormatter.java,857,return sb;
+S266,HelpFormatter.java,859,"sb.append(rtrim(text.substring(0, pos))).append(getNewLine());"
+S267,HelpFormatter.java,861,if (nextLineTabStop >= width)
+S268,HelpFormatter.java,864,nextLineTabStop = 1;
+S269,HelpFormatter.java,868,final String padding = createPadding(nextLineTabStop);
+S270,HelpFormatter.java,872,text = padding + text.substring(pos).trim();
+S271,HelpFormatter.java,873,"pos = findWrapPos(text, width, 0);"
+S272,HelpFormatter.java,875,if (pos == -1)
+S273,HelpFormatter.java,877,sb.append(text);
+S274,HelpFormatter.java,879,return sb;
+S275,HelpFormatter.java,882,if ((text.length() > width) && (pos == nextLineTabStop - 1))
+S276,HelpFormatter.java,884,pos = width;
+S277,HelpFormatter.java,887,"sb.append(rtrim(text.substring(0, pos))).append(getNewLine());"
+S278,HelpFormatter.java,902,BufferedReader in = new BufferedReader(new StringReader(text));
+S279,HelpFormatter.java,904,boolean firstLine = true;
+S280,HelpFormatter.java,905,while ((line = in.readLine()) != null) {
+S281,HelpFormatter.java,906,if (!firstLine) {
+S282,HelpFormatter.java,907,sb.append(getNewLine());
+S283,HelpFormatter.java,909,firstLine = false;
+S284,HelpFormatter.java,911,"renderWrappedText(sb, width, nextLineTabStop, line);"
+S285,HelpFormatter.java,917,return sb;
+S286,HelpFormatter.java,939,"if (((pos = text.indexOf('\n', startPos)) != -1 && pos <= width)"
+S287,HelpFormatter.java,942,return pos + 1;
+S288,HelpFormatter.java,944,else if (startPos + width >= text.length())
+S289,HelpFormatter.java,946,return -1;
+S290,HelpFormatter.java,951,pos = startPos + width;
+S291,HelpFormatter.java,956,&& (c != '\n') && (c != '\r'))
+S292,HelpFormatter.java,958,--pos;
+S293,HelpFormatter.java,962,if (pos > startPos)
+S294,HelpFormatter.java,964,return pos;
+S295,HelpFormatter.java,968,pos = startPos + width;
+S296,HelpFormatter.java,970,return pos == text.length() ? -1 : pos;
+S297,HelpFormatter.java,982,char[] padding = new char[len];
+S298,HelpFormatter.java,983,"Arrays.fill(padding, ' ');"
+S299,HelpFormatter.java,985,return new String(padding);
+S300,HelpFormatter.java,997,if ((s == null) || (s.length() == 0))
+S301,HelpFormatter.java,999,return s;
+S302,HelpFormatter.java,1002,int pos = s.length();
+S303,HelpFormatter.java,1004,while ((pos > 0) && Character.isWhitespace(s.charAt(pos - 1)))
+S304,HelpFormatter.java,1006,--pos;
+S305,HelpFormatter.java,1009,"return s.substring(0, pos);"
+S306,HelpFormatter.java,1019,private static class OptionComparator implements Comparator
+S307,HelpFormatter.java,1035,Option opt1 = (Option) o1;
+S308,HelpFormatter.java,1036,Option opt2 = (Option) o2;
+S309,HelpFormatter.java,1038,return opt1.getKey().compareToIgnoreCase(opt2.getKey());
+S310,MissingArgumentException.java,40,super(message);
+S311,MissingArgumentException.java,52,"this(""Missing argument for option: "" + option.getKey());"
+S312,MissingArgumentException.java,53,this.option = option;
+S313,MissingArgumentException.java,65,return option;
+S314,MissingOptionException.java,42,super(message);
+S315,MissingOptionException.java,54,this(createMessage(missingOptions));
+S316,MissingOptionException.java,55,this.missingOptions = missingOptions;
+S317,MissingOptionException.java,66,return missingOptions;
+S318,MissingOptionException.java,77,"StringBuffer buff = new StringBuffer(""Missing required option"");"
+S319,MissingOptionException.java,78,"buff.append(missingOptions.size() == 1 ? """" : ""s"");"
+S320,MissingOptionException.java,79,"buff.append("": "");"
+S321,MissingOptionException.java,81,Iterator it = missingOptions.iterator();
+S322,MissingOptionException.java,82,while (it.hasNext())
+S323,MissingOptionException.java,84,buff.append(it.next());
+S324,MissingOptionException.java,85,if (it.hasNext())
+S325,MissingOptionException.java,87,"buff.append("", "");"
+S326,MissingOptionException.java,91,return buff.toString();
+S327,Option.java,69,private int numberOfArgs = UNINITIALIZED;
+S328,Option.java,75,private List values = new ArrayList();
+S329,Option.java,91,"this(opt, null, false, description);"
+S330,Option.java,106,"this(opt, null, hasArg, description);"
+S331,Option.java,124,OptionValidator.validateOption(opt);
+S332,Option.java,126,this.opt = opt;
+S333,Option.java,127,this.longOpt = longOpt;
+S334,Option.java,130,if (hasArg)
+S335,Option.java,132,this.numberOfArgs = 1;
+S336,Option.java,135,this.description = description;
+S337,Option.java,147,return getKey().charAt(0);
+S338,Option.java,158,if (opt == null)
+S339,Option.java,160,return longOpt;
+S340,Option.java,163,return opt;
+S341,Option.java,178,return opt;
+S342,Option.java,188,return type;
+S343,Option.java,198,this.type = type;
+S344,Option.java,208,return longOpt;
+S345,Option.java,218,this.longOpt = longOpt;
+S346,Option.java,229,this.optionalArg = optionalArg;
+S347,Option.java,237,return optionalArg;
+S348,Option.java,247,return longOpt != null;
+S349,Option.java,257,return numberOfArgs > 0 || numberOfArgs == UNLIMITED_VALUES;
+S350,Option.java,267,return description;
+S351,Option.java,278,this.description = description;
+S352,Option.java,288,return required;
+S353,Option.java,298,this.required = required;
+S354,Option.java,308,this.argName = argName;
+S355,Option.java,318,return argName;
+S356,Option.java,328,return argName != null && argName.length() > 0;
+S357,Option.java,338,return numberOfArgs > 1 || numberOfArgs == UNLIMITED_VALUES;
+S358,Option.java,348,this.numberOfArgs = num;
+S359,Option.java,359,this.valuesep = sep;
+S360,Option.java,369,return valuesep;
+S361,Option.java,380,return valuesep > 0;
+S362,Option.java,390,return numberOfArgs;
+S363,Option.java,400,switch (numberOfArgs)
+S364,Option.java,406,processValue(value);
+S365,Option.java,424,if (hasValueSeparator())
+S366,Option.java,427,char sep = getValueSeparator();
+S367,Option.java,430,int index = value.indexOf(sep);
+S368,Option.java,433,while (index != -1)
+S369,Option.java,436,if (values.size() == (numberOfArgs - 1))
+S370,Option.java,442,"add(value.substring(0, index));"
+S371,Option.java,445,value = value.substring(index + 1);
+S372,Option.java,448,index = value.indexOf(sep);
+S373,Option.java,453,add(value);
+S374,Option.java,467,if (!acceptsArg())
+S375,Option.java,469,"throw new RuntimeException(""Cannot add value, list full."");"
+S376,Option.java,473,values.add(value);
+S377,Option.java,485,return hasNoValues() ? null : (String) values.get(0);
+S378,Option.java,502,return hasNoValues() ? null : (String) values.get(index);
+S379,Option.java,517,String value = getValue();
+S380,Option.java,519,return (value != null) ? value : defaultValue;
+S381,Option.java,531,return hasNoValues() ? null : (String[]) values.toArray(new String[values.size()]);
+S382,Option.java,540,return values;
+S383,Option.java,550,"StringBuffer buf = new StringBuffer().append(""[ option: "");"
+S384,Option.java,552,buf.append(opt);
+S385,Option.java,554,if (longOpt != null)
+S386,Option.java,556,"buf.append("" "").append(longOpt);"
+S387,Option.java,559,"buf.append("" "");"
+S388,Option.java,561,if (hasArgs())
+S389,Option.java,565,else if (hasArg())
+S390,Option.java,567,"buf.append("" [ARG]"");"
+S391,Option.java,570,"buf.append("" :: "").append(description);"
+S392,Option.java,572,if (type != null)
+S393,Option.java,577,"buf.append("" ]"");"
+S394,Option.java,579,return buf.toString();
+S395,Option.java,589,return values.isEmpty();
+S396,Option.java,594,if (this == o)
+S397,Option.java,596,return true;
+S398,Option.java,598,if (o == null || getClass() != o.getClass())
+S399,Option.java,603,Option option = (Option) o;
+S400,Option.java,606,if (opt != null ? !opt.equals(option.opt) : option.opt != null)
+S401,Option.java,608,return false;
+S402,Option.java,610,if (longOpt != null ? !longOpt.equals(option.longOpt) : option.longOpt != null)
+S403,Option.java,612,return false;
+S404,Option.java,615,return true;
+S405,Option.java,640,Option option = (Option) super.clone();
+S406,Option.java,641,option.values = new ArrayList(values);
+S407,Option.java,642,return option;
+S408,Option.java,658,values.clear();
+S409,Option.java,681,return (hasArg() || hasArgs() || hasOptionalArg()) && (numberOfArgs <= 0 || values.size() < numberOfArgs);
+S410,OptionBuilder.java,48,private static int numberOfArgs = Option.UNINITIALIZED;
+S411,OptionBuilder.java,60,private static OptionBuilder instance = new OptionBuilder();
+S412,OptionBuilder.java,65,reset();
+S413,OptionBuilder.java,81,description = null;
+S414,OptionBuilder.java,82,argName = null;
+S415,OptionBuilder.java,83,longopt = null;
+S416,OptionBuilder.java,84,type = null;
+S417,OptionBuilder.java,85,required = false;
+S418,OptionBuilder.java,86,numberOfArgs = Option.UNINITIALIZED;
+S419,OptionBuilder.java,87,optionalArg = false;
+S420,OptionBuilder.java,88,valuesep = (char) 0;
+S421,OptionBuilder.java,99,OptionBuilder.longopt = newLongopt;
+S422,OptionBuilder.java,101,return instance;
+S423,OptionBuilder.java,111,OptionBuilder.numberOfArgs = 1;
+S424,OptionBuilder.java,113,return instance;
+S425,OptionBuilder.java,125,OptionBuilder.numberOfArgs = hasArg ? 1 : Option.UNINITIALIZED;
+S426,OptionBuilder.java,127,return instance;
+S427,OptionBuilder.java,138,OptionBuilder.argName = name;
+S428,OptionBuilder.java,140,return instance;
+S429,OptionBuilder.java,150,OptionBuilder.required = true;
+S430,OptionBuilder.java,152,return instance;
+S431,OptionBuilder.java,175,OptionBuilder.valuesep = sep;
+S432,OptionBuilder.java,177,return instance;
+S433,OptionBuilder.java,198,OptionBuilder.valuesep = '=';
+S434,OptionBuilder.java,200,return instance;
+S435,OptionBuilder.java,212,OptionBuilder.required = newRequired;
+S436,OptionBuilder.java,214,return instance;
+S437,OptionBuilder.java,224,OptionBuilder.numberOfArgs = Option.UNLIMITED_VALUES;
+S438,OptionBuilder.java,226,return instance;
+S439,OptionBuilder.java,237,OptionBuilder.numberOfArgs = num;
+S440,OptionBuilder.java,239,return instance;
+S441,OptionBuilder.java,249,OptionBuilder.numberOfArgs = 1;
+S442,OptionBuilder.java,250,OptionBuilder.optionalArg = true;
+S443,OptionBuilder.java,252,return instance;
+S444,OptionBuilder.java,262,OptionBuilder.numberOfArgs = Option.UNLIMITED_VALUES;
+S445,OptionBuilder.java,263,OptionBuilder.optionalArg = true;
+S446,OptionBuilder.java,265,return instance;
+S447,OptionBuilder.java,277,OptionBuilder.numberOfArgs = numArgs;
+S448,OptionBuilder.java,278,OptionBuilder.optionalArg = true;
+S449,OptionBuilder.java,280,return instance;
+S450,OptionBuilder.java,292,OptionBuilder.type = newType;
+S451,OptionBuilder.java,294,return instance;
+S452,OptionBuilder.java,305,OptionBuilder.description = newDescription;
+S453,OptionBuilder.java,307,return instance;
+S454,OptionBuilder.java,321,return create(String.valueOf(opt));
+S455,OptionBuilder.java,332,if (longopt == null)
+S456,OptionBuilder.java,334,OptionBuilder.reset();
+S457,OptionBuilder.java,335,"throw new IllegalArgumentException(""must specify longopt"");"
+S458,OptionBuilder.java,338,return create(null);
+S459,OptionBuilder.java,353,Option option = null;
+S460,OptionBuilder.java,357,"option = new Option(opt, description);"
+S461,OptionBuilder.java,360,option.setLongOpt(longopt);
+S462,OptionBuilder.java,361,option.setRequired(required);
+S463,OptionBuilder.java,362,option.setOptionalArg(optionalArg);
+S464,OptionBuilder.java,363,option.setArgs(numberOfArgs);
+S465,OptionBuilder.java,364,option.setType(type);
+S466,OptionBuilder.java,365,option.setValueSeparator(valuesep);
+S467,OptionBuilder.java,366,option.setArgName(argName);
+S468,OptionBuilder.java,371,OptionBuilder.reset();
+S469,OptionBuilder.java,375,return option;
+S470,OptionGroup.java,32,public class OptionGroup implements Serializable
+S471,OptionGroup.java,38,private Map optionMap = new HashMap();
+S472,OptionGroup.java,56,"optionMap.put(option.getKey(), option);"
+S473,OptionGroup.java,58,return this;
+S474,OptionGroup.java,68,return optionMap.keySet();
+S475,OptionGroup.java,77,return optionMap.values();
+S476,OptionGroup.java,89,if (option == null)
+S477,OptionGroup.java,92,selected = null;
+S478,OptionGroup.java,93,return;
+S479,OptionGroup.java,99,if (selected == null || selected.equals(option.getKey()))
+S480,OptionGroup.java,101,selected = option.getKey();
+S481,OptionGroup.java,105,"throw new AlreadySelectedException(this, option);"
+S482,OptionGroup.java,114,return selected;
+S483,OptionGroup.java,122,this.required = required;
+S484,OptionGroup.java,132,return required;
+S485,OptionGroup.java,142,StringBuffer buff = new StringBuffer();
+S486,OptionGroup.java,144,Iterator iter = getOptions().iterator();
+S487,OptionGroup.java,146,"buff.append(""["");"
+S488,OptionGroup.java,148,while (iter.hasNext())
+S489,OptionGroup.java,150,Option option = (Option) iter.next();
+S490,OptionGroup.java,152,if (option.getOpt() != null)
+S491,OptionGroup.java,154,"buff.append(""-"");"
+S492,OptionGroup.java,155,buff.append(option.getOpt());
+S493,OptionGroup.java,159,"buff.append(""--"");"
+S494,OptionGroup.java,160,buff.append(option.getLongOpt());
+S495,OptionGroup.java,163,if (option.getDescription() != null)
+S496,OptionGroup.java,165,"buff.append("" "");"
+S497,OptionGroup.java,166,buff.append(option.getDescription());
+S498,OptionGroup.java,169,if (iter.hasNext())
+S499,OptionGroup.java,171,"buff.append("", "");"
+S500,OptionGroup.java,175,"buff.append(""]"");"
+S501,OptionGroup.java,177,return buff.toString();
+S502,OptionValidator.java,48,if (opt == null)
+S503,OptionValidator.java,50,return;
+S504,OptionValidator.java,54,if (opt.length() == 1)
+S505,OptionValidator.java,56,char ch = opt.charAt(0);
+S506,OptionValidator.java,58,if (!isValidOpt(ch))
+S507,OptionValidator.java,60,"throw new IllegalArgumentException(""Illegal option name '"" + ch + ""'"");"
+S508,OptionValidator.java,67,char[] chars = opt.toCharArray();
+S509,OptionValidator.java,69,for (int i = 0; i < chars.length; i++)
+S510,OptionValidator.java,71,if (!isValidChar(chars[i]))
+S511,OptionValidator.java,73,"throw new IllegalArgumentException(""The option '"" + opt + ""' contains an illegal character : '"" + chars[i] + ""'"");"
+S512,OptionValidator.java,87,return isValidChar(c) || c == '?' || c == '@';
+S513,OptionValidator.java,98,return Character.isJavaIdentifierPart(c);
+S514,Options.java,46,public class Options implements Serializable
+S515,Options.java,52,private Map shortOpts = new HashMap();
+S516,Options.java,55,private Map longOpts = new HashMap();
+S517,Options.java,58,private List requiredOpts = new ArrayList();
+S518,Options.java,61,private Map optionGroups = new HashMap();
+S519,Options.java,71,Iterator options = group.getOptions().iterator();
+S520,Options.java,73,if (group.isRequired())
+S521,Options.java,75,requiredOpts.add(group);
+S522,Options.java,78,while (options.hasNext())
+S523,Options.java,80,Option option = (Option) options.next();
+S524,Options.java,85,option.setRequired(false);
+S525,Options.java,86,addOption(option);
+S526,Options.java,88,"optionGroups.put(option.getKey(), group);"
+S527,Options.java,91,return this;
+S528,Options.java,101,return new HashSet(optionGroups.values());
+S529,Options.java,115,"addOption(opt, null, hasArg, description);"
+S530,Options.java,117,return this;
+S531,Options.java,132,"addOption(new Option(opt, longOpt, hasArg, description));"
+S532,Options.java,134,return this;
+S533,Options.java,145,String key = opt.getKey();
+S534,Options.java,148,if (opt.hasLongOpt())
+S535,Options.java,150,"longOpts.put(opt.getLongOpt(), opt);"
+S536,Options.java,154,if (opt.isRequired())
+S537,Options.java,156,if (requiredOpts.contains(key))
+S538,Options.java,158,requiredOpts.remove(requiredOpts.indexOf(key));
+S539,Options.java,160,requiredOpts.add(key);
+S540,Options.java,163,"shortOpts.put(key, opt);"
+S541,Options.java,165,return this;
+S542,Options.java,175,return Collections.unmodifiableCollection(helpOptions());
+S543,Options.java,185,return new ArrayList(shortOpts.values());
+S544,Options.java,195,return requiredOpts;
+S545,Options.java,207,opt = Util.stripLeadingHyphens(opt);
+S546,Options.java,209,if (shortOpts.containsKey(opt))
+S547,Options.java,211,return (Option) shortOpts.get(opt);
+S548,Options.java,214,return (Option) longOpts.get(opt);
+S549,Options.java,226,opt = Util.stripLeadingHyphens(opt);
+S550,Options.java,228,List matchingOpts = new ArrayList();
+S551,Options.java,230,Iterator it = longOpts.keySet().iterator();
+S552,Options.java,231,while (it.hasNext())
+S553,Options.java,233,String longOpt = (String) it.next();
+S554,Options.java,234,if (longOpt.startsWith(opt))
+S555,Options.java,236,matchingOpts.add(longOpt);
+S556,Options.java,240,return matchingOpts;
+S557,Options.java,251,opt = Util.stripLeadingHyphens(opt);
+S558,Options.java,253,return shortOpts.containsKey(opt) || longOpts.containsKey(opt);
+S559,Options.java,279,opt = Util.stripLeadingHyphens(opt);
+S560,Options.java,281,return shortOpts.containsKey(opt);
+S561,Options.java,293,return (OptionGroup) optionGroups.get(opt.getKey());
+S562,Options.java,303,StringBuffer buf = new StringBuffer();
+S563,Options.java,305,"buf.append(""[ Options: [ short "");"
+S564,Options.java,306,buf.append(shortOpts.toString());
+S565,Options.java,307,"buf.append("" ] [ long "");"
+S566,Options.java,308,buf.append(longOpts);
+S567,Options.java,309,"buf.append("" ]"");"
+S568,Options.java,311,return buf.toString();
+S569,ParseException.java,36,super(message);
+S570,Parser.java,35,public abstract class Parser implements CommandLineParser
+S571,Parser.java,48,this.options = options;
+S572,Parser.java,49,this.requiredOptions = new ArrayList(options.getRequiredOptions());
+S573,Parser.java,54,return options;
+S574,Parser.java,59,return requiredOptions;
+S575,Parser.java,86,"return parse(options, arguments, null, false);"
+S576,Parser.java,103,"return parse(options, arguments, properties, false);"
+S577,Parser.java,121,"return parse(options, arguments, null, stopAtNonOption);"
+S578,Parser.java,147,for (Iterator it = options.helpOptions().iterator(); it.hasNext();)
+S579,Parser.java,149,Option opt = (Option) it.next();
+S580,Parser.java,150,opt.clearValues();
+S581,Parser.java,154,for (Iterator it = options.getOptionGroups().iterator(); it.hasNext();)
+S582,Parser.java,156,OptionGroup group = (OptionGroup) it.next();
+S583,Parser.java,157,group.setSelected(null);
+S584,Parser.java,161,setOptions(options);
+S585,Parser.java,163,cmd = new CommandLine();
+S586,Parser.java,165,boolean eatTheRest = false;
+S587,Parser.java,167,if (arguments == null)
+S588,Parser.java,169,arguments = new String[0];
+S589,Parser.java,172,"List tokenList = Arrays.asList(flatten(getOptions(), arguments, stopAtNonOption));"
+S590,Parser.java,174,ListIterator iterator = tokenList.listIterator();
+S591,Parser.java,177,while (iterator.hasNext())
+S592,Parser.java,179,String t = (String) iterator.next();
+S593,Parser.java,182,"if (""--"".equals(t))"
+S594,Parser.java,188,"else if (""-"".equals(t))"
+S595,Parser.java,201,"else if (t.startsWith(""-""))"
+S596,Parser.java,203,if (stopAtNonOption && !getOptions().hasOption(t))
+S597,Parser.java,205,eatTheRest = true;
+S598,Parser.java,206,cmd.addArg(t);
+S599,Parser.java,210,"processOption(t, iterator);"
+S600,Parser.java,217,cmd.addArg(t);
+S601,Parser.java,219,if (stopAtNonOption)
+S602,Parser.java,226,if (eatTheRest)
+S603,Parser.java,228,while (iterator.hasNext())
+S604,Parser.java,230,String str = (String) iterator.next();
+S605,Parser.java,233,"if (!""--"".equals(str))"
+S606,Parser.java,235,cmd.addArg(str);
+S607,Parser.java,241,processProperties(properties);
+S608,Parser.java,242,checkRequiredOptions();
+S609,Parser.java,244,return cmd;
+S610,Parser.java,254,if (properties == null)
+S611,Parser.java,256,return;
+S612,Parser.java,259,for (Enumeration e = properties.propertyNames(); e.hasMoreElements();)
+S613,Parser.java,261,String option = e.nextElement().toString();
+S614,Parser.java,263,Option opt = options.getOption(option);
+S615,Parser.java,264,if (opt == null)
+S616,Parser.java,270,OptionGroup group = options.getOptionGroup(opt);
+S617,Parser.java,271,boolean selected = group != null && group.getSelected() != null;
+S618,Parser.java,273,if (!cmd.hasOption(option) && !selected)
+S619,Parser.java,276,String value = properties.getProperty(option);
+S620,Parser.java,278,if (opt.hasArg())
+S621,Parser.java,280,if (opt.getValues() == null || opt.getValues().length == 0)
+S622,Parser.java,284,opt.addValueForProcessing(value);
+S623,Parser.java,301,cmd.addOption(opt);
+S624,Parser.java,302,updateRequiredOptions(opt);
+S625,Parser.java,317,if (!getRequiredOptions().isEmpty())
+S626,Parser.java,319,throw new MissingOptionException(getRequiredOptions());
+S627,Parser.java,338,while (iter.hasNext())
+S628,Parser.java,340,String str = (String) iter.next();
+S629,Parser.java,343,"if (getOptions().hasOption(str) && str.startsWith(""-""))"
+S630,Parser.java,345,iter.previous();
+S631,Parser.java,346,break;
+S632,Parser.java,352,opt.addValueForProcessing(Util.stripLeadingAndTrailingQuotes(str));
+S633,Parser.java,354,catch (RuntimeException exp)
+S634,Parser.java,356,iter.previous();
+S635,Parser.java,357,break;
+S636,Parser.java,361,if (opt.getValues() == null && !opt.hasOptionalArg())
+S637,Parser.java,363,throw new MissingArgumentException(opt);
+S638,Parser.java,378,boolean hasOption = getOptions().hasOption(arg);
+S639,Parser.java,381,if (!hasOption)
+S640,Parser.java,387,Option opt = (Option) getOptions().getOption(arg).clone();
+S641,Parser.java,390,updateRequiredOptions(opt);
+S642,Parser.java,393,if (opt.hasArg())
+S643,Parser.java,395,"processArgs(opt, iter);"
+S644,Parser.java,399,cmd.addOption(opt);
+S645,Parser.java,411,if (opt.isRequired())
+S646,Parser.java,413,getRequiredOptions().remove(opt.getKey());
+S647,Parser.java,418,if (getOptions().getOptionGroup(opt) != null)
+S648,Parser.java,420,OptionGroup group = getOptions().getOptionGroup(opt);
+S649,Parser.java,422,if (group.isRequired())
+S650,Parser.java,424,getRequiredOptions().remove(group);
+S651,Parser.java,427,group.setSelected(opt);
+S652,PatternOptionBuilder.java,58,public static final Class STRING_VALUE = String.class;
+S653,PatternOptionBuilder.java,61,public static final Class OBJECT_VALUE = Object.class;
+S654,PatternOptionBuilder.java,64,public static final Class NUMBER_VALUE = Number.class;
+S655,PatternOptionBuilder.java,67,public static final Class DATE_VALUE = Date.class;
+S656,PatternOptionBuilder.java,70,public static final Class CLASS_VALUE = Class.class;
+S657,PatternOptionBuilder.java,77,public static final Class EXISTING_FILE_VALUE = FileInputStream.class;
+S658,PatternOptionBuilder.java,80,public static final Class FILE_VALUE = File.class;
+S659,PatternOptionBuilder.java,83,public static final Class FILES_VALUE = File[].class;
+S660,PatternOptionBuilder.java,86,public static final Class URL_VALUE = URL.class;
+S661,PatternOptionBuilder.java,96,switch (ch)
+S662,PatternOptionBuilder.java,99,return PatternOptionBuilder.OBJECT_VALUE;
+S663,PatternOptionBuilder.java,101,return PatternOptionBuilder.STRING_VALUE;
+S664,PatternOptionBuilder.java,103,return PatternOptionBuilder.NUMBER_VALUE;
+S665,PatternOptionBuilder.java,105,return PatternOptionBuilder.CLASS_VALUE;
+S666,PatternOptionBuilder.java,107,return PatternOptionBuilder.DATE_VALUE;
+S667,PatternOptionBuilder.java,109,return PatternOptionBuilder.EXISTING_FILE_VALUE;
+S668,PatternOptionBuilder.java,111,return PatternOptionBuilder.FILE_VALUE;
+S669,PatternOptionBuilder.java,113,return PatternOptionBuilder.FILES_VALUE;
+S670,PatternOptionBuilder.java,115,return PatternOptionBuilder.URL_VALUE;
+S671,PatternOptionBuilder.java,130,return ch == '@'
+S672,PatternOptionBuilder.java,150,char opt = ' ';
+S673,PatternOptionBuilder.java,151,boolean required = false;
+S674,PatternOptionBuilder.java,152,Class type = null;
+S675,PatternOptionBuilder.java,154,Options options = new Options();
+S676,PatternOptionBuilder.java,156,for (int i = 0; i < pattern.length(); i++)
+S677,PatternOptionBuilder.java,158,char ch = pattern.charAt(i);
+S678,PatternOptionBuilder.java,162,if (!isValueCode(ch))
+S679,PatternOptionBuilder.java,164,if (opt != ' ')
+S680,PatternOptionBuilder.java,166,OptionBuilder.hasArg(type != null);
+S681,PatternOptionBuilder.java,167,OptionBuilder.isRequired(required);
+S682,PatternOptionBuilder.java,168,OptionBuilder.withType(type);
+S683,PatternOptionBuilder.java,171,options.addOption(OptionBuilder.create(opt));
+S684,PatternOptionBuilder.java,172,required = false;
+S685,PatternOptionBuilder.java,173,type = null;
+S686,PatternOptionBuilder.java,174,opt = ' ';
+S687,PatternOptionBuilder.java,177,opt = ch;
+S688,PatternOptionBuilder.java,179,else if (ch == '!')
+S689,PatternOptionBuilder.java,181,required = true;
+S690,PatternOptionBuilder.java,185,type = getValueClass(ch);
+S691,PatternOptionBuilder.java,189,if (opt != ' ')
+S692,PatternOptionBuilder.java,191,OptionBuilder.hasArg(type != null);
+S693,PatternOptionBuilder.java,192,OptionBuilder.isRequired(required);
+S694,PatternOptionBuilder.java,193,OptionBuilder.withType(type);
+S695,PatternOptionBuilder.java,196,options.addOption(OptionBuilder.create(opt));
+S696,PatternOptionBuilder.java,199,return options;
+S697,PosixParser.java,33,public class PosixParser extends Parser
+S698,PosixParser.java,36,private List tokens = new ArrayList();
+S699,PosixParser.java,54,eatTheRest = false;
+S700,PosixParser.java,55,tokens.clear();
+S701,PosixParser.java,98,init();
+S702,PosixParser.java,99,this.options = options;
+S703,PosixParser.java,102,Iterator iter = Arrays.asList(arguments).iterator();
+S704,PosixParser.java,105,while (iter.hasNext())
+S705,PosixParser.java,108,String token = (String) iter.next();
+S706,PosixParser.java,111,"if (""-"".equals(token) || ""--"".equals(token))"
+S707,PosixParser.java,117,"else if (token.startsWith(""--""))"
+S708,PosixParser.java,119,int pos = token.indexOf('=');
+S709,PosixParser.java,120,"String opt = pos == -1 ? token : token.substring(0, pos); // --foo"
+S710,PosixParser.java,122,List matchingOpts = options.getMatchingOptions(opt);
+S711,PosixParser.java,124,if (matchingOpts.isEmpty())
+S712,PosixParser.java,128,else if (matchingOpts.size() > 1)
+S713,PosixParser.java,134,currentOption = options.getOption((String) matchingOpts.get(0));
+S714,PosixParser.java,136,"tokens.add(""--"" + currentOption.getLongOpt());"
+S715,PosixParser.java,137,if (pos != -1)
+S716,PosixParser.java,139,tokens.add(token.substring(pos + 1));
+S717,PosixParser.java,144,"else if (token.startsWith(""-""))"
+S718,PosixParser.java,146,if (token.length() == 2 || options.hasOption(token))
+S719,PosixParser.java,148,"processOptionToken(token, stopAtNonOption);"
+S720,PosixParser.java,150,else if (!options.getMatchingOptions(token).isEmpty())
+S721,PosixParser.java,166,"burstToken(token, stopAtNonOption);"
+S722,PosixParser.java,171,"processNonOptionToken(token, stopAtNonOption);"
+S723,PosixParser.java,174,gobble(iter);
+S724,PosixParser.java,177,return (String[]) tokens.toArray(new String[tokens.size()]);
+S725,PosixParser.java,187,if (eatTheRest)
+S726,PosixParser.java,205,if (stopAtNonOption && (currentOption == null || !currentOption.hasArg()))
+S727,PosixParser.java,211,tokens.add(value);
+S728,PosixParser.java,228,if (stopAtNonOption && !options.hasOption(token))
+S729,PosixParser.java,233,if (options.hasOption(token))
+S730,PosixParser.java,235,currentOption = options.getOption(token);
+S731,PosixParser.java,238,tokens.add(token);
+S732,PosixParser.java,269,for (int i = 1; i < token.length(); i++)
+S733,PosixParser.java,271,String ch = String.valueOf(token.charAt(i));
+S734,PosixParser.java,273,if (options.hasOption(ch))
+S735,PosixParser.java,275,"tokens.add(""-"" + ch);"
+S736,PosixParser.java,276,currentOption = options.getOption(ch);
+S737,PosixParser.java,278,if (currentOption.hasArg() && (token.length() != (i + 1)))
+S738,PosixParser.java,280,tokens.add(token.substring(i + 1));
+S739,PosixParser.java,282,break;
+S740,TypeHandler.java,48,"return createValue(str, (Class) obj);"
+S741,TypeHandler.java,62,if (PatternOptionBuilder.STRING_VALUE == clazz)
+S742,TypeHandler.java,64,return str;
+S743,TypeHandler.java,66,else if (PatternOptionBuilder.OBJECT_VALUE == clazz)
+S744,TypeHandler.java,68,return createObject(str);
+S745,TypeHandler.java,70,else if (PatternOptionBuilder.NUMBER_VALUE == clazz)
+S746,TypeHandler.java,72,return createNumber(str);
+S747,TypeHandler.java,74,else if (PatternOptionBuilder.DATE_VALUE == clazz)
+S748,TypeHandler.java,76,return createDate(str);
+S749,TypeHandler.java,78,else if (PatternOptionBuilder.CLASS_VALUE == clazz)
+S750,TypeHandler.java,80,return createClass(str);
+S751,TypeHandler.java,82,else if (PatternOptionBuilder.FILE_VALUE == clazz)
+S752,TypeHandler.java,84,return createFile(str);
+S753,TypeHandler.java,86,else if (PatternOptionBuilder.EXISTING_FILE_VALUE == clazz)
+S754,TypeHandler.java,88,return createFile(str);
+S755,TypeHandler.java,90,else if (PatternOptionBuilder.FILES_VALUE == clazz)
+S756,TypeHandler.java,92,return createFiles(str);
+S757,TypeHandler.java,94,else if (PatternOptionBuilder.URL_VALUE == clazz)
+S758,TypeHandler.java,96,return createURL(str);
+S759,TypeHandler.java,100,return null;
+S760,TypeHandler.java,113,Class cl = null;
+S761,TypeHandler.java,117,cl = Class.forName(classname);
+S762,TypeHandler.java,119,catch (ClassNotFoundException cnfe)
+S763,TypeHandler.java,121,"throw new ParseException(""Unable to find the class: "" + classname);"
+S764,TypeHandler.java,124,Object instance = null;
+S765,TypeHandler.java,128,instance = cl.newInstance();
+S766,TypeHandler.java,130,catch (Exception e)
+S767,TypeHandler.java,132,"throw new ParseException(e.getClass().getName() + ""; Unable to create an instance of: "" + classname);"
+S768,TypeHandler.java,135,return instance;
+S769,TypeHandler.java,150,if (str.indexOf('.') != -1)
+S770,TypeHandler.java,152,return Double.valueOf(str);
+S771,TypeHandler.java,156,return Long.valueOf(str);
+S772,TypeHandler.java,159,catch (NumberFormatException e)
+S773,TypeHandler.java,161,throw new ParseException(e.getMessage());
+S774,TypeHandler.java,175,return Class.forName(classname);
+S775,TypeHandler.java,177,catch (ClassNotFoundException e)
+S776,TypeHandler.java,179,"throw new ParseException(""Unable to find the class: "" + classname);"
+S777,TypeHandler.java,192,"throw new UnsupportedOperationException(""Not yet implemented"");"
+S778,TypeHandler.java,206,return new URL(str);
+S779,TypeHandler.java,208,catch (MalformedURLException e)
+S780,TypeHandler.java,210,"throw new ParseException(""Unable to parse the URL: "" + str);"
+S781,TypeHandler.java,222,return new File(str);
+S782,TypeHandler.java,235,"throw new UnsupportedOperationException(""Not yet implemented"");"
+S783,Util.java,38,if (str == null)
+S784,Util.java,40,return null;
+S785,Util.java,42,"if (str.startsWith(""--""))"
+S786,Util.java,44,"return str.substring(2, str.length());"
+S787,Util.java,46,"else if (str.startsWith(""-""))"
+S788,Util.java,48,"return str.substring(1, str.length());"
+S789,Util.java,51,return str;
+S790,Util.java,65,int length = str.length();
+S791,Util.java,66,"if (length > 1 && str.startsWith(""\"""") && str.endsWith(""\"""") && str.substring(1, length - 1).indexOf('""') == -1)"
+S792,Util.java,68,"str = str.substring(1, length - 1);"
+S793,Util.java,71,return str;
