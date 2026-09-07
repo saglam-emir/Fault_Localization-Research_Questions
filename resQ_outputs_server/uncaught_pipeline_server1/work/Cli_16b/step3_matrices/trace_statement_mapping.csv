@@ -1,0 +1,1466 @@
+statement_id,file,line,code
+S1,ArgumentBuilder.java,34,private final static ResourceHelper resources = ResourceHelper.getResourceHelper();
+S2,ArgumentBuilder.java,69,public ArgumentBuilder() {
+S3,ArgumentBuilder.java,70,reset();
+S4,ArgumentBuilder.java,81,final Argument argument =
+S5,ArgumentBuilder.java,94,reset();
+S6,ArgumentBuilder.java,96,return argument;
+S7,ArgumentBuilder.java,104,"name = ""arg"";"
+S8,ArgumentBuilder.java,105,description = null;
+S9,ArgumentBuilder.java,106,minimum = 0;
+S10,ArgumentBuilder.java,107,maximum = Integer.MAX_VALUE;
+S11,ArgumentBuilder.java,108,initialSeparator = ArgumentImpl.DEFAULT_INITIAL_SEPARATOR;
+S12,ArgumentBuilder.java,109,subsequentSeparator = ArgumentImpl.DEFAULT_SUBSEQUENT_SEPARATOR;
+S13,ArgumentBuilder.java,110,validator = null;
+S14,ArgumentBuilder.java,111,"consumeRemaining = ""--"";"
+S15,ArgumentBuilder.java,112,defaultValues = null;
+S16,ArgumentBuilder.java,113,id = 0;
+S17,ArgumentBuilder.java,114,return this;
+S18,ArgumentBuilder.java,127,if (newName == null) {
+S19,ArgumentBuilder.java,128,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_NULL_NAME));
+S20,ArgumentBuilder.java,130,"if ("""".equals(newName)) {"
+S21,ArgumentBuilder.java,131,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_EMPTY_NAME));
+S22,ArgumentBuilder.java,133,this.name = newName;
+S23,ArgumentBuilder.java,134,return this;
+S24,ArgumentBuilder.java,146,this.description = newDescription;
+S25,ArgumentBuilder.java,147,return this;
+S26,ArgumentBuilder.java,157,if (newMinimum < 0) {
+S27,ArgumentBuilder.java,158,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_NEGATIVE_MINIMUM));
+S28,ArgumentBuilder.java,160,this.minimum = newMinimum;
+S29,ArgumentBuilder.java,161,return this;
+S30,ArgumentBuilder.java,171,if (newMaximum < 0) {
+S31,ArgumentBuilder.java,172,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_NEGATIVE_MAXIMUM));
+S32,ArgumentBuilder.java,174,this.maximum = newMaximum;
+S33,ArgumentBuilder.java,175,return this;
+S34,ArgumentBuilder.java,190,this.initialSeparator = newInitialSeparator;
+S35,ArgumentBuilder.java,191,return this;
+S36,ArgumentBuilder.java,206,this.subsequentSeparator = newSubsequentSeparator;
+S37,ArgumentBuilder.java,207,return this;
+S38,ArgumentBuilder.java,218,if (newValidator == null) {
+S39,ArgumentBuilder.java,219,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_NULL_VALIDATOR));
+S40,ArgumentBuilder.java,221,this.validator = newValidator;
+S41,ArgumentBuilder.java,222,return this;
+S42,ArgumentBuilder.java,234,if (newConsumeRemaining == null) {
+S43,ArgumentBuilder.java,235,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_NULL_CONSUME_REMAINING));
+S44,ArgumentBuilder.java,237,"if ( """".equals(newConsumeRemaining)) {"
+S45,ArgumentBuilder.java,238,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_EMPTY_CONSUME_REMAINING));
+S46,ArgumentBuilder.java,240,this.consumeRemaining = newConsumeRemaining;
+S47,ArgumentBuilder.java,241,return this;
+S48,ArgumentBuilder.java,251,if (defaultValue == null) {
+S49,ArgumentBuilder.java,252,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_NULL_DEFAULT));
+S50,ArgumentBuilder.java,255,if (this.defaultValues == null) {
+S51,ArgumentBuilder.java,256,this.defaultValues = new ArrayList(1);
+S52,ArgumentBuilder.java,258,this.defaultValues.add(defaultValue);
+S53,ArgumentBuilder.java,259,return this;
+S54,ArgumentBuilder.java,269,if (newDefaultValues == null) {
+S55,ArgumentBuilder.java,270,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_BUILDER_NULL_DEFAULTS));
+S56,ArgumentBuilder.java,272,this.defaultValues = newDefaultValues;
+S57,ArgumentBuilder.java,273,return this;
+S58,ArgumentBuilder.java,283,this.id = newId;
+S59,ArgumentBuilder.java,284,return this;
+S60,ArgumentImpl.java,69,private final ResourceHelper resources = ResourceHelper.getResourceHelper();
+S61,ArgumentImpl.java,107,"super(id, false);"
+S62,ArgumentImpl.java,109,"this.name = (name == null) ? ""arg"" : name;"
+S63,ArgumentImpl.java,110,this.description = description;
+S64,ArgumentImpl.java,111,this.minimum = minimum;
+S65,ArgumentImpl.java,112,this.maximum = maximum;
+S66,ArgumentImpl.java,113,this.initialSeparator = initialSeparator;
+S67,ArgumentImpl.java,114,this.subsequentSeparator = subsequentSeparator;
+S68,ArgumentImpl.java,115,this.subsequentSplit = subsequentSeparator != NUL;
+S69,ArgumentImpl.java,116,this.validator = validator;
+S70,ArgumentImpl.java,117,this.consumeRemaining = consumeRemaining;
+S71,ArgumentImpl.java,118,this.defaultValues = valueDefaults;
+S72,ArgumentImpl.java,120,if (minimum > maximum) {
+S73,ArgumentImpl.java,121,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_MIN_EXCEEDS_MAX));
+S74,ArgumentImpl.java,124,if ((valueDefaults != null) && (valueDefaults.size() > 0)) {
+S75,ArgumentImpl.java,125,if (valueDefaults.size() < minimum) {
+S76,ArgumentImpl.java,126,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_TOO_FEW_DEFAULTS));
+S77,ArgumentImpl.java,129,if (valueDefaults.size() > maximum) {
+S78,ArgumentImpl.java,130,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.ARGUMENT_TOO_MANY_DEFAULTS));
+S79,ArgumentImpl.java,136,return name;
+S80,ArgumentImpl.java,144,int argumentCount = commandLine.getUndefaultedValues(option).size();
+S81,ArgumentImpl.java,146,while (arguments.hasNext() && (argumentCount < maximum)) {
+S82,ArgumentImpl.java,147,final String allValuesQuoted = (String) arguments.next();
+S83,ArgumentImpl.java,148,final String allValues = stripBoundaryQuotes(allValuesQuoted);
+S84,ArgumentImpl.java,151,if (allValuesQuoted.equals(consumeRemaining)) {
+S85,ArgumentImpl.java,152,while (arguments.hasNext() && (argumentCount < maximum)) {
+S86,ArgumentImpl.java,153,++argumentCount;
+S87,ArgumentImpl.java,154,"commandLine.addValue(option, arguments.next());"
+S88,ArgumentImpl.java,158,else if (commandLine.looksLikeOption(allValuesQuoted)) {
+S89,ArgumentImpl.java,159,arguments.previous();
+S90,ArgumentImpl.java,161,break;
+S91,ArgumentImpl.java,164,else if (subsequentSplit) {
+S92,ArgumentImpl.java,165,final StringTokenizer values =
+S93,ArgumentImpl.java,168,arguments.remove();
+S94,ArgumentImpl.java,170,while (values.hasMoreTokens() && (argumentCount < maximum)) {
+S95,ArgumentImpl.java,171,++argumentCount;
+S96,ArgumentImpl.java,173,final String token = values.nextToken();
+S97,ArgumentImpl.java,174,"commandLine.addValue(option, token);"
+S98,ArgumentImpl.java,175,arguments.add(token);
+S99,ArgumentImpl.java,178,if (values.hasMoreTokens()) {
+S100,ArgumentImpl.java,179,"throw new OptionException(option, ResourceConstants.ARGUMENT_UNEXPECTED_VALUE,"
+S101,ArgumentImpl.java,185,++argumentCount;
+S102,ArgumentImpl.java,186,"commandLine.addValue(option, allValues);"
+S103,ArgumentImpl.java,193,return true;
+S104,ArgumentImpl.java,197,return Collections.EMPTY_SET;
+S105,ArgumentImpl.java,203,"processValues(commandLine, args, this);"
+S106,ArgumentImpl.java,207,return this.initialSeparator;
+S107,ArgumentImpl.java,211,return this.subsequentSeparator;
+S108,ArgumentImpl.java,215,return Collections.EMPTY_SET;
+S109,ArgumentImpl.java,219,return this.consumeRemaining;
+S110,ArgumentImpl.java,223,return this.defaultValues;
+S111,ArgumentImpl.java,227,return this.validator;
+S112,ArgumentImpl.java,232,"validate(commandLine, this);"
+S113,ArgumentImpl.java,238,final List values = commandLine.getValues(option);
+S114,ArgumentImpl.java,240,if (values.size() < minimum) {
+S115,ArgumentImpl.java,241,"throw new OptionException(option, ResourceConstants.ARGUMENT_MISSING_VALUES);"
+S116,ArgumentImpl.java,244,if (values.size() > maximum) {
+S117,ArgumentImpl.java,245,"throw new OptionException(option, ResourceConstants.ARGUMENT_UNEXPECTED_VALUE,"
+S118,ArgumentImpl.java,249,if (validator != null) {
+S119,ArgumentImpl.java,251,validator.validate(values);
+S120,ArgumentImpl.java,252,} catch (InvalidArgumentException ive) {
+S121,ArgumentImpl.java,253,"throw new OptionException(option, ResourceConstants.ARGUMENT_UNEXPECTED_VALUE,"
+S122,ArgumentImpl.java,263,final boolean optional = helpSettings.contains(DisplaySetting.DISPLAY_OPTIONAL);
+S123,ArgumentImpl.java,266,final boolean numbered =
+S124,ArgumentImpl.java,269,final boolean bracketed = helpSettings.contains(DisplaySetting.DISPLAY_ARGUMENT_BRACKETED);
+S125,ArgumentImpl.java,272,final int max = (maximum == Integer.MAX_VALUE) ? 2 : maximum;
+S126,ArgumentImpl.java,274,int i = 0;
+S127,ArgumentImpl.java,277,while (i < max) {
+S128,ArgumentImpl.java,279,if (i > 0) {
+S129,ArgumentImpl.java,280,buffer.append(' ');
+S130,ArgumentImpl.java,284,if ((i >= minimum) && (optional || (i > 0))) {
+S131,ArgumentImpl.java,285,buffer.append('[');
+S132,ArgumentImpl.java,288,if (bracketed) {
+S133,ArgumentImpl.java,289,buffer.append('<');
+S134,ArgumentImpl.java,293,buffer.append(name);
+S135,ArgumentImpl.java,294,++i;
+S136,ArgumentImpl.java,297,if (numbered) {
+S137,ArgumentImpl.java,298,buffer.append(i);
+S138,ArgumentImpl.java,301,if (bracketed) {
+S139,ArgumentImpl.java,302,buffer.append('>');
+S140,ArgumentImpl.java,307,if (maximum == Integer.MAX_VALUE) {
+S141,ArgumentImpl.java,309,"buffer.append("" ..."");"
+S142,ArgumentImpl.java,313,while (i > 0) {
+S143,ArgumentImpl.java,314,--i;
+S144,ArgumentImpl.java,317,if ((i >= minimum) && (optional || (i > 0))) {
+S145,ArgumentImpl.java,318,buffer.append(']');
+S146,ArgumentImpl.java,324,return description;
+S147,ArgumentImpl.java,330,"final HelpLine helpLine = new HelpLineImpl(this, depth);"
+S148,ArgumentImpl.java,332,return Collections.singletonList(helpLine);
+S149,ArgumentImpl.java,336,return maximum;
+S150,ArgumentImpl.java,340,return minimum;
+S151,ArgumentImpl.java,353,"if (!token.startsWith(""\"""") || !token.endsWith(""\"""")) {"
+S152,ArgumentImpl.java,354,return token;
+S153,ArgumentImpl.java,357,"token = token.substring(1, token.length() - 1);"
+S154,ArgumentImpl.java,359,return token;
+S155,ArgumentImpl.java,363,return getMinimum() > 0;
+S156,ArgumentImpl.java,367,super.defaults(commandLine);
+S157,ArgumentImpl.java,368,"defaultValues(commandLine, this);"
+S158,ArgumentImpl.java,373,"commandLine.setDefaultValues(option, defaultValues);"
+S159,ClassValidator.java,45,public class ClassValidator implements Validator {
+S160,ClassValidator.java,47,private static final ResourceHelper resources = ResourceHelper.getResourceHelper();
+S161,ClassValidator.java,69,for (final ListIterator i = values.listIterator(); i.hasNext();) {
+S162,ClassValidator.java,70,final String name = (String) i.next();
+S163,ClassValidator.java,72,if (!isPotentialClassName(name)) {
+S164,ClassValidator.java,73,"throw new InvalidArgumentException(resources.getMessage(ResourceConstants.CLASSVALIDATOR_BAD_CLASSNAME,"
+S165,ClassValidator.java,77,if (loadable || instance) {
+S166,ClassValidator.java,78,final ClassLoader theLoader = getClassLoader();
+S167,ClassValidator.java,81,final Class clazz = theLoader.loadClass(name);
+S168,ClassValidator.java,83,if (instance) {
+S169,ClassValidator.java,84,i.set(clazz.newInstance());
+S170,ClassValidator.java,86,i.set(clazz);
+S171,ClassValidator.java,88,} catch (final ClassNotFoundException exp) {
+S172,ClassValidator.java,89,"throw new InvalidArgumentException(resources.getMessage(ResourceConstants.CLASSVALIDATOR_CLASS_NOTFOUND,"
+S173,ClassValidator.java,91,} catch (final IllegalAccessException exp) {
+S174,ClassValidator.java,92,"throw new InvalidArgumentException(resources.getMessage(ResourceConstants.CLASSVALIDATOR_CLASS_ACCESS,"
+S175,ClassValidator.java,94,} catch (final InstantiationException exp) {
+S176,ClassValidator.java,95,"throw new InvalidArgumentException(resources.getMessage(ResourceConstants.CLASSVALIDATOR_CLASS_CREATE,"
+S177,ClassValidator.java,110,return loadable;
+S178,ClassValidator.java,121,this.loadable = loadable;
+S179,ClassValidator.java,132,if (loader == null) {
+S180,ClassValidator.java,133,loader = getClass().getClassLoader();
+S181,ClassValidator.java,136,return loader;
+S182,ClassValidator.java,147,this.loader = loader;
+S183,ClassValidator.java,158,return instance;
+S184,ClassValidator.java,169,this.instance = instance;
+S185,ClassValidator.java,177,final char[] chars = name.toCharArray();
+S186,ClassValidator.java,179,boolean expectingStart = true;
+S187,ClassValidator.java,181,for (int i = 0; i < chars.length; ++i) {
+S188,ClassValidator.java,182,final char c = chars[i];
+S189,ClassValidator.java,184,if (expectingStart) {
+S190,ClassValidator.java,185,if (!Character.isJavaIdentifierStart(c)) {
+S191,ClassValidator.java,186,return false;
+S192,ClassValidator.java,189,expectingStart = false;
+S193,ClassValidator.java,191,if (c == '.') {
+S194,ClassValidator.java,192,expectingStart = true;
+S195,ClassValidator.java,193,} else if (!Character.isJavaIdentifierPart(c)) {
+S196,ClassValidator.java,194,return false;
+S197,ClassValidator.java,199,return !expectingStart;
+S198,Command.java,80,"super(argument, children, description, id, required);"
+S199,Command.java,83,if ((preferredName == null) || (preferredName.length() < 1)) {
+S200,Command.java,84,throw new IllegalArgumentException(ResourceHelper.getResourceHelper().getMessage(ResourceConstants.COMMAND_PREFERRED_NAME_TOO_SHORT));
+S201,Command.java,87,this.preferredName = preferredName;
+S202,Command.java,90,this.aliases =
+S203,Command.java,95,final Set newTriggers = new HashSet();
+S204,Command.java,96,newTriggers.add(preferredName);
+S205,Command.java,97,newTriggers.addAll(this.aliases);
+S206,Command.java,98,this.triggers = Collections.unmodifiableSet(newTriggers);
+S207,Command.java,105,final String arg = (String) arguments.next();
+S208,Command.java,108,"if (canProcess(commandLine, arg)) {"
+S209,Command.java,110,commandLine.addOption(this);
+S210,Command.java,113,arguments.set(preferredName);
+S211,Command.java,115,"throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN, arg);"
+S212,Command.java,120,return triggers;
+S213,Command.java,125,if (isRequired() && !commandLine.hasOption(this)) {
+S214,Command.java,126,"throw new OptionException(this, ResourceConstants.OPTION_MISSING_REQUIRED,"
+S215,Command.java,130,super.validate(commandLine);
+S216,Command.java,137,final boolean optional =
+S217,Command.java,139,final boolean displayAliases = helpSettings.contains(DisplaySetting.DISPLAY_ALIASES);
+S218,Command.java,141,if (optional) {
+S219,Command.java,142,buffer.append('[');
+S220,Command.java,145,buffer.append(preferredName);
+S221,Command.java,147,if (displayAliases && !aliases.isEmpty()) {
+S222,Command.java,148,"buffer.append("" ("");"
+S223,Command.java,150,final List list = new ArrayList(aliases);
+S224,Command.java,151,Collections.sort(list);
+S225,Command.java,153,for (final Iterator i = list.iterator(); i.hasNext();) {
+S226,Command.java,154,final String alias = (String) i.next();
+S227,Command.java,155,buffer.append(alias);
+S228,Command.java,157,if (i.hasNext()) {
+S229,Command.java,158,"buffer.append(',');"
+S230,Command.java,162,buffer.append(')');
+S231,Command.java,165,"super.appendUsage(buffer, helpSettings, comp);"
+S232,Command.java,167,if (optional) {
+S233,Command.java,168,buffer.append(']');
+S234,Command.java,173,return preferredName;
+S235,CommandBuilder.java,56,public CommandBuilder() {
+S236,CommandBuilder.java,57,reset();
+S237,CommandBuilder.java,68,if (preferredName == null) {
+S238,CommandBuilder.java,69,throw new IllegalStateException(ResourceHelper.getResourceHelper().getMessage(ResourceConstants.OPTION_NO_NAME));
+S239,CommandBuilder.java,73,final Command option =
+S240,CommandBuilder.java,77,reset();
+S241,CommandBuilder.java,79,return option;
+S242,CommandBuilder.java,89,preferredName = null;
+S243,CommandBuilder.java,90,description = null;
+S244,CommandBuilder.java,91,aliases = new HashSet();
+S245,CommandBuilder.java,92,required = false;
+S246,CommandBuilder.java,93,argument = null;
+S247,CommandBuilder.java,94,children = null;
+S248,CommandBuilder.java,95,id = 0;
+S249,CommandBuilder.java,97,return this;
+S250,CommandBuilder.java,111,if (preferredName == null) {
+S251,CommandBuilder.java,112,preferredName = name;
+S252,CommandBuilder.java,114,aliases.add(name);
+S253,CommandBuilder.java,117,return this;
+S254,CommandBuilder.java,130,this.description = newDescription;
+S255,CommandBuilder.java,132,return this;
+S256,CommandBuilder.java,143,this.required = newRequired;
+S257,CommandBuilder.java,145,return this;
+S258,CommandBuilder.java,157,this.children = newChildren;
+S259,CommandBuilder.java,159,return this;
+S260,CommandBuilder.java,171,this.argument = newArgument;
+S261,CommandBuilder.java,173,return this;
+S262,CommandBuilder.java,183,this.id = newId;
+S263,CommandBuilder.java,185,return this;
+S264,CommandLineImpl.java,32,public abstract class CommandLineImpl implements CommandLine {
+S265,CommandLineImpl.java,34,return hasOption(getOption(trigger));
+S266,CommandLineImpl.java,38,"return getValues(getOption(trigger), Collections.EMPTY_LIST);"
+S267,CommandLineImpl.java,43,"return getValues(getOption(trigger), defaultValues);"
+S268,CommandLineImpl.java,47,"return getValues(option, Collections.EMPTY_LIST);"
+S269,CommandLineImpl.java,51,"return getValue(getOption(trigger), null);"
+S270,CommandLineImpl.java,60,"return getValue(option, null);"
+S271,CommandLineImpl.java,67,if (defaultValue == null) {
+S272,CommandLineImpl.java,68,values = getValues(option);
+S273,CommandLineImpl.java,70,"values = getValues(option, Collections.singletonList(defaultValue));"
+S274,CommandLineImpl.java,73,if (values.size() > 1) {
+S275,CommandLineImpl.java,77,if (values.isEmpty()) {
+S276,CommandLineImpl.java,78,return defaultValue;
+S277,CommandLineImpl.java,81,return values.get(0);
+S278,CommandLineImpl.java,85,"return getSwitch(getOption(trigger), null);"
+S279,CommandLineImpl.java,98,"return getProperty(option, property, null);"
+S280,Comparators.java,49,"return chain(new Comparator[] { c0, c1 });"
+S281,Comparators.java,142,return new Chain(comparators);
+S282,Comparators.java,156,public Chain(final Comparator[] chain) {
+S283,Comparators.java,157,this.chain = new Comparator[chain.length];
+S284,Comparators.java,158,"System.arraycopy(chain, 0, this.chain, 0, chain.length);"
+S285,Comparators.java,162,int result = 0;
+S286,Comparators.java,163,for (int i = 0; result == 0 && i < chain.length; ++i) {
+S287,Comparators.java,164,"result = chain[i].compare(left, right);"
+S288,Comparators.java,166,return result;
+S289,Comparators.java,178,return new Reverse(wrapped);
+S290,Comparators.java,188,public Reverse(final Comparator wrapped) {
+S291,Comparators.java,189,this.wrapped = wrapped;
+S292,Comparators.java,193,"return -wrapped.compare(left, right);"
+S293,Comparators.java,204,return new GroupFirst();
+S294,Comparators.java,214,return reverse(groupFirst());
+S295,Comparators.java,217,private static class GroupFirst implements Comparator {
+S296,Comparators.java,219,final boolean l = left instanceof Group;
+S297,Comparators.java,220,final boolean r = right instanceof Group;
+S298,Comparators.java,222,if (l ^ r) {
+S299,Comparators.java,223,if (l) {
+S300,Comparators.java,226,return 1;
+S301,Comparators.java,239,return new SwitchFirst();
+S302,Comparators.java,249,return reverse(switchFirst());
+S303,Comparators.java,252,private static class SwitchFirst implements Comparator {
+S304,Comparators.java,254,final boolean l = left instanceof Switch;
+S305,Comparators.java,255,final boolean r = right instanceof Switch;
+S306,Comparators.java,257,if (l ^ r) {
+S307,Comparators.java,258,if (l) {
+S308,Comparators.java,261,return 1;
+S309,Comparators.java,274,return new CommandFirst();
+S310,Comparators.java,284,return reverse(commandFirst());
+S311,Comparators.java,287,private static class CommandFirst implements Comparator {
+S312,Comparators.java,289,final boolean l = left instanceof Command;
+S313,Comparators.java,290,final boolean r = right instanceof Command;
+S314,Comparators.java,292,if (l ^ r) {
+S315,Comparators.java,293,if (l) {
+S316,Comparators.java,296,return 1;
+S317,Comparators.java,309,return new DefaultOptionFirst();
+S318,Comparators.java,319,return reverse(defaultOptionFirst());
+S319,Comparators.java,322,private static class DefaultOptionFirst implements Comparator {
+S320,Comparators.java,324,final boolean l = left instanceof DefaultOption;
+S321,Comparators.java,325,final boolean r = right instanceof DefaultOption;
+S322,Comparators.java,327,if (l ^ r) {
+S323,Comparators.java,328,if (l) {
+S324,Comparators.java,331,return 1;
+S325,Comparators.java,347,return new Named(name);
+S326,Comparators.java,360,return reverse(new Named(name));
+S327,Comparators.java,370,public Named(final String name) {
+S328,Comparators.java,371,this.name = name;
+S329,Comparators.java,374,final Option left = (Option)oleft;
+S330,Comparators.java,375,final Option right = (Option)oright;
+S331,Comparators.java,377,final boolean l = left.getTriggers().contains(name);
+S332,Comparators.java,378,final boolean r = right.getTriggers().contains(name);
+S333,Comparators.java,380,if (l ^ r) {
+S334,Comparators.java,381,if (l) {
+S335,Comparators.java,382,return -1;
+S336,Comparators.java,384,return 1;
+S337,Comparators.java,386,return 0;
+S338,Comparators.java,397,return new PreferredName();
+S339,Comparators.java,407,return reverse(preferredNameFirst());
+S340,Comparators.java,410,private static class PreferredName implements Comparator {
+S341,Comparators.java,412,final Option left = (Option)oleft;
+S342,Comparators.java,413,final Option right = (Option)oright;
+S343,Comparators.java,415,return left.getPreferredName().compareTo(right.getPreferredName());
+S344,Comparators.java,426,return new Required();
+S345,Comparators.java,436,return reverse(requiredFirst());
+S346,Comparators.java,439,private static class Required implements Comparator {
+S347,Comparators.java,441,final Option left = (Option)oleft;
+S348,Comparators.java,442,final Option right = (Option)oright;
+S349,Comparators.java,444,final boolean l = left.isRequired();
+S350,Comparators.java,445,final boolean r = right.isRequired();
+S351,Comparators.java,447,if (l ^ r) {
+S352,Comparators.java,448,if (l) {
+S353,Comparators.java,449,return -1;
+S354,DateValidator.java,65,private static final ResourceHelper resources = ResourceHelper.getResourceHelper();
+S355,DateValidator.java,92,public DateValidator(final DateFormat format) {
+S356,DateValidator.java,93,setFormat(format);
+S357,DateValidator.java,112,return new DateValidator(DateFormat.getDateInstance());
+S358,DateValidator.java,145,for (final ListIterator i = values.listIterator(); i.hasNext();) {
+S359,DateValidator.java,146,final String value = (String) i.next();
+S360,DateValidator.java,148,Date date = null;
+S361,DateValidator.java,151,final ParsePosition pp = new ParsePosition(0);
+S362,DateValidator.java,154,for (int f = 0; (f < this.formats.length) && (date == null); ++f) {
+S363,DateValidator.java,156,pp.setIndex(0);
+S364,DateValidator.java,157,"date = this.formats[f].parse(value, pp);"
+S365,DateValidator.java,160,if (pp.getIndex() < value.length()) {
+S366,DateValidator.java,161,date = null;
+S367,DateValidator.java,166,if (date == null) {
+S368,DateValidator.java,167,throw new InvalidArgumentException(value);
+S369,DateValidator.java,171,if (isDateEarlier(date) || isDateLater(date)) {
+S370,DateValidator.java,177,i.set(date);
+S371,DateValidator.java,187,for (int i = 0; i < this.formats.length; i++) {
+S372,DateValidator.java,188,this.formats[i].setLenient(lenient);
+S373,DateValidator.java,191,this.isLenient = lenient;
+S374,DateValidator.java,253,return (maximum != null) && (date.getTime() > maximum.getTime());
+S375,DateValidator.java,266,return (minimum != null) && (date.getTime() < minimum.getTime());
+S376,DateValidator.java,276,setFormats(new DateFormat[] { format });
+S377,DateValidator.java,296,this.formats = formats;
+S378,DateValidator.java,297,setLenient(this.isLenient);
+S379,DefaultOption.java,91,"super(argument, children, description, id, required);"
+S380,DefaultOption.java,93,this.shortPrefix = shortPrefix;
+S381,DefaultOption.java,94,this.burstEnabled = burstEnabled;
+S382,DefaultOption.java,96,this.burstLength = shortPrefix.length() + 1;
+S383,DefaultOption.java,98,this.preferredName = preferredName;
+S384,DefaultOption.java,99,this.aliases =
+S385,DefaultOption.java,103,this.burstAliases =
+S386,DefaultOption.java,107,final Set newTriggers = new HashSet();
+S387,DefaultOption.java,108,newTriggers.add(preferredName);
+S388,DefaultOption.java,109,newTriggers.addAll(this.aliases);
+S389,DefaultOption.java,110,newTriggers.addAll(this.burstAliases);
+S390,DefaultOption.java,111,this.triggers = Collections.unmodifiableSet(newTriggers);
+S391,DefaultOption.java,113,final Set newPrefixes = new HashSet(super.getPrefixes());
+S392,DefaultOption.java,114,newPrefixes.add(shortPrefix);
+S393,DefaultOption.java,115,newPrefixes.add(longPrefix);
+S394,DefaultOption.java,116,this.prefixes = Collections.unmodifiableSet(newPrefixes);
+S395,DefaultOption.java,118,checkPrefixes(newPrefixes);
+S396,DefaultOption.java,123,return (argument != null) &&
+S397,DefaultOption.java,132,final String argument = (String) arguments.next();
+S398,DefaultOption.java,134,if (triggers.contains(argument)) {
+S399,DefaultOption.java,135,commandLine.addOption(this);
+S400,DefaultOption.java,136,arguments.set(preferredName);
+S401,DefaultOption.java,137,} else if (burstEnabled && (argument.length() >= burstLength)) {
+S402,DefaultOption.java,138,"final String burst = argument.substring(0, burstLength);"
+S403,DefaultOption.java,140,if (burstAliases.contains(burst)) {
+S404,DefaultOption.java,141,commandLine.addOption(this);
+S405,DefaultOption.java,144,arguments.set(preferredName);
+S406,DefaultOption.java,146,if (getArgument() == null) {
+S407,DefaultOption.java,147,arguments.add(shortPrefix + argument.substring(burstLength));
+S408,DefaultOption.java,149,arguments.add(argument.substring(burstLength));
+S409,DefaultOption.java,152,arguments.previous();
+S410,DefaultOption.java,156,} else {
+S411,DefaultOption.java,162,return triggers;
+S412,DefaultOption.java,166,return prefixes;
+S413,DefaultOption.java,171,if (isRequired() && !commandLine.hasOption(this)) {
+S414,DefaultOption.java,172,"throw new OptionException(this, ResourceConstants.OPTION_MISSING_REQUIRED,"
+S415,DefaultOption.java,176,super.validate(commandLine);
+S416,DefaultOption.java,183,final boolean optional =
+S417,DefaultOption.java,185,final boolean displayAliases = helpSettings.contains(DisplaySetting.DISPLAY_ALIASES);
+S418,DefaultOption.java,187,if (optional) {
+S419,DefaultOption.java,188,buffer.append('[');
+S420,DefaultOption.java,191,buffer.append(preferredName);
+S421,DefaultOption.java,193,if (displayAliases && !aliases.isEmpty()) {
+S422,DefaultOption.java,194,"buffer.append("" ("");"
+S423,DefaultOption.java,196,final List list = new ArrayList(aliases);
+S424,DefaultOption.java,197,Collections.sort(list);
+S425,DefaultOption.java,199,for (final Iterator i = list.iterator(); i.hasNext();) {
+S426,DefaultOption.java,200,final String alias = (String) i.next();
+S427,DefaultOption.java,201,buffer.append(alias);
+S428,DefaultOption.java,203,if (i.hasNext()) {
+S429,DefaultOption.java,204,"buffer.append(',');"
+S430,DefaultOption.java,208,buffer.append(')');
+S431,DefaultOption.java,211,"super.appendUsage(buffer, helpSettings, comp);"
+S432,DefaultOption.java,213,if (optional) {
+S433,DefaultOption.java,214,buffer.append(']');
+S434,DefaultOption.java,219,return preferredName;
+S435,DefaultOptionBuilder.java,51,"this(DefaultOption.DEFAULT_SHORT_PREFIX, DefaultOption.DEFAULT_LONG_PREFIX,"
+S436,DefaultOptionBuilder.java,66,throws IllegalArgumentException {
+S437,DefaultOptionBuilder.java,67,if ((shortPrefix == null) || (shortPrefix.length() == 0)) {
+S438,DefaultOptionBuilder.java,68,throw new IllegalArgumentException(ResourceHelper.getResourceHelper().getMessage(ResourceConstants.OPTION_ILLEGAL_SHORT_PREFIX));
+S439,DefaultOptionBuilder.java,71,if ((longPrefix == null) || (longPrefix.length() == 0)) {
+S440,DefaultOptionBuilder.java,72,throw new IllegalArgumentException(ResourceHelper.getResourceHelper().getMessage(ResourceConstants.OPTION_ILLEGAL_LONG_PREFIX));
+S441,DefaultOptionBuilder.java,75,this.shortPrefix = shortPrefix;
+S442,DefaultOptionBuilder.java,76,this.longPrefix = longPrefix;
+S443,DefaultOptionBuilder.java,77,this.burstEnabled = burstEnabled;
+S444,DefaultOptionBuilder.java,78,reset();
+S445,DefaultOptionBuilder.java,88,if (preferredName == null) {
+S446,DefaultOptionBuilder.java,89,throw new IllegalStateException(ResourceHelper.getResourceHelper().getMessage(ResourceConstants.OPTION_NO_NAME));
+S447,DefaultOptionBuilder.java,92,final DefaultOption option =
+S448,DefaultOptionBuilder.java,96,reset();
+S449,DefaultOptionBuilder.java,98,return option;
+S450,DefaultOptionBuilder.java,105,preferredName = null;
+S451,DefaultOptionBuilder.java,106,description = null;
+S452,DefaultOptionBuilder.java,107,aliases = new HashSet();
+S453,DefaultOptionBuilder.java,108,burstAliases = new HashSet();
+S454,DefaultOptionBuilder.java,109,required = false;
+S455,DefaultOptionBuilder.java,110,argument = null;
+S456,DefaultOptionBuilder.java,111,children = null;
+S457,DefaultOptionBuilder.java,112,id = 0;
+S458,DefaultOptionBuilder.java,114,return this;
+S459,DefaultOptionBuilder.java,125,final String name = shortPrefix + shortName;
+S460,DefaultOptionBuilder.java,127,if (preferredName == null) {
+S461,DefaultOptionBuilder.java,128,preferredName = name;
+S462,DefaultOptionBuilder.java,130,aliases.add(name);
+S463,DefaultOptionBuilder.java,133,if (burstEnabled && (name.length() == (shortPrefix.length() + 1))) {
+S464,DefaultOptionBuilder.java,134,burstAliases.add(name);
+S465,DefaultOptionBuilder.java,137,return this;
+S466,DefaultOptionBuilder.java,148,final String name = longPrefix + longName;
+S467,DefaultOptionBuilder.java,150,if (preferredName == null) {
+S468,DefaultOptionBuilder.java,151,preferredName = name;
+S469,DefaultOptionBuilder.java,153,aliases.add(name);
+S470,DefaultOptionBuilder.java,156,return this;
+S471,DefaultOptionBuilder.java,165,this.description = newDescription;
+S472,DefaultOptionBuilder.java,167,return this;
+S473,DefaultOptionBuilder.java,176,this.required = newRequired;
+S474,DefaultOptionBuilder.java,178,return this;
+S475,DefaultOptionBuilder.java,187,this.children = newChildren;
+S476,DefaultOptionBuilder.java,189,return this;
+S477,DefaultOptionBuilder.java,198,this.argument = newArgument;
+S478,DefaultOptionBuilder.java,200,return this;
+S479,DefaultOptionBuilder.java,211,this.id = newId;
+S480,DefaultOptionBuilder.java,213,return this;
+S481,DefaultingCommandLine.java,41,public class DefaultingCommandLine extends CommandLineImpl {
+S482,DefaultingCommandLine.java,46,private final List commandLines = new ArrayList();
+S483,DefaultingCommandLine.java,57,commandLines.add(commandLine);
+S484,DefaultingCommandLine.java,82,for (final Iterator i = commandLines.iterator(); i.hasNext();) {
+S485,DefaultingCommandLine.java,89,return null;
+S486,DefaultingCommandLine.java,108,final Set all = new HashSet();
+S487,DefaultingCommandLine.java,109,for (final Iterator i = commandLines.iterator(); i.hasNext();) {
+S488,DefaultingCommandLine.java,110,final CommandLine commandLine = (CommandLine)i.next();
+S489,DefaultingCommandLine.java,111,all.addAll(commandLine.getOptionTriggers());
+S490,DefaultingCommandLine.java,114,return Collections.unmodifiableSet(all);
+S491,DefaultingCommandLine.java,128,for (final Iterator i = commandLines.iterator(); i.hasNext();) {
+S492,DefaultingCommandLine.java,135,if(defaultValues==null){
+S493,DefaultingCommandLine.java,136,return Collections.EMPTY_LIST;
+S494,DefaultingCommandLine.java,139,return defaultValues;
+S495,DisplaySetting.java,31,private static final Set all = new HashSet();
+S496,DisplaySetting.java,36,public static final Set ALL = Collections.unmodifiableSet(all);
+S497,DisplaySetting.java,41,public static final Set NONE = Collections.EMPTY_SET;
+S498,DisplaySetting.java,46,public static final DisplaySetting DISPLAY_ALIASES =
+S499,DisplaySetting.java,52,public static final DisplaySetting DISPLAY_OPTIONAL =
+S500,DisplaySetting.java,58,public static final DisplaySetting DISPLAY_PROPERTY_OPTION =
+S501,DisplaySetting.java,64,public static final DisplaySetting DISPLAY_SWITCH_ENABLED =
+S502,DisplaySetting.java,70,public static final DisplaySetting DISPLAY_SWITCH_DISABLED =
+S503,DisplaySetting.java,76,public static final DisplaySetting DISPLAY_GROUP_NAME =
+S504,DisplaySetting.java,82,public static final DisplaySetting DISPLAY_GROUP_EXPANDED =
+S505,DisplaySetting.java,88,public static final DisplaySetting DISPLAY_GROUP_ARGUMENT =
+S506,DisplaySetting.java,94,public static final DisplaySetting DISPLAY_GROUP_OUTER =
+S507,DisplaySetting.java,100,public static final DisplaySetting DISPLAY_ARGUMENT_NUMBERED =
+S508,DisplaySetting.java,106,public static final DisplaySetting DISPLAY_ARGUMENT_BRACKETED =
+S509,DisplaySetting.java,112,public static final DisplaySetting DISPLAY_PARENT_ARGUMENT =
+S510,DisplaySetting.java,118,public static final DisplaySetting DISPLAY_PARENT_CHILDREN =
+S511,DisplaySetting.java,135,private DisplaySetting(final String name) {
+S512,DisplaySetting.java,136,this.name = name;
+S513,DisplaySetting.java,137,this.hashCode = name.hashCode();
+S514,DisplaySetting.java,138,all.add(this);
+S515,DisplaySetting.java,142,return hashCode;
+S516,DisplaySetting.java,146,if (that instanceof DisplaySetting) {
+S517,DisplaySetting.java,147,return name.compareTo(that.toString()) == 0;
+S518,DisplaySetting.java,153,return name;
+S519,EnumValidator.java,56,public EnumValidator(final Set values) {
+S520,EnumValidator.java,57,setValidValues(values);
+S521,EnumValidator.java,67,for (final Iterator iter = values.iterator(); iter.hasNext();) {
+S522,EnumValidator.java,68,final String value = (String) iter.next();
+S523,EnumValidator.java,70,if (!this.validValues.contains(value)) {
+S524,EnumValidator.java,118,this.validValues = validValues;
+S525,FileValidator.java,59,public class FileValidator implements Validator {
+S526,FileValidator.java,78,final FileValidator validator = new FileValidator();
+S527,FileValidator.java,79,validator.setExisting(true);
+S528,FileValidator.java,80,validator.setFile(true);
+S529,FileValidator.java,81,return validator;
+S530,FileValidator.java,97,private boolean readable = false;
+S531,FileValidator.java,100,private boolean writable = false;
+S532,FileValidator.java,103,private boolean existing = false;
+S533,FileValidator.java,106,private boolean directory = false;
+S534,FileValidator.java,109,private boolean file = false;
+S535,FileValidator.java,112,private boolean hidden = false;
+S536,FileValidator.java,122,for (final ListIterator i = values.listIterator(); i.hasNext();) {
+S537,FileValidator.java,123,final String name = (String)i.next();
+S538,FileValidator.java,124,final File f = new File(name);
+S539,FileValidator.java,126,if ((existing && !f.exists())
+S540,FileValidator.java,136,i.set(f);
+S541,FileValidator.java,178,this.existing = existing;
+S542,FileValidator.java,197,this.file = file;
+S543,GroupBuilder.java,40,public GroupBuilder() {
+S544,GroupBuilder.java,41,reset();
+S545,GroupBuilder.java,49,final GroupImpl group =
+S546,GroupBuilder.java,52,reset();
+S547,GroupBuilder.java,54,return group;
+S548,GroupBuilder.java,61,name = null;
+S549,GroupBuilder.java,62,description = null;
+S550,GroupBuilder.java,63,options = new ArrayList();
+S551,GroupBuilder.java,64,minimum = 0;
+S552,GroupBuilder.java,65,maximum = Integer.MAX_VALUE;
+S553,GroupBuilder.java,66,return this;
+S554,GroupBuilder.java,75,this.description = newDescription;
+S555,GroupBuilder.java,76,return this;
+S556,GroupBuilder.java,85,this.name = newName;
+S557,GroupBuilder.java,86,return this;
+S558,GroupBuilder.java,95,this.minimum = newMinimum;
+S559,GroupBuilder.java,96,return this;
+S560,GroupBuilder.java,105,this.maximum = newMaximum;
+S561,GroupBuilder.java,106,return this;
+S562,GroupBuilder.java,115,this.options.add(option);
+S563,GroupBuilder.java,116,return this;
+S564,GroupImpl.java,69,"super(0, false);"
+S565,GroupImpl.java,71,this.name = name;
+S566,GroupImpl.java,72,this.description = description;
+S567,GroupImpl.java,73,this.minimum = minimum;
+S568,GroupImpl.java,74,this.maximum = maximum;
+S569,GroupImpl.java,78,this.options = Collections.unmodifiableList(options);
+S570,GroupImpl.java,81,final List newAnonymous = new ArrayList();
+S571,GroupImpl.java,84,final SortedMap newOptionMap = new TreeMap(ReverseStringComparator.getInstance());
+S572,GroupImpl.java,87,final Set newPrefixes = new HashSet();
+S573,GroupImpl.java,90,for (final Iterator i = options.iterator(); i.hasNext();) {
+S574,GroupImpl.java,91,final Option option = (Option) i.next();
+S575,GroupImpl.java,93,if (option instanceof Argument) {
+S576,GroupImpl.java,94,i.remove();
+S577,GroupImpl.java,95,newAnonymous.add(option);
+S578,GroupImpl.java,97,final Set triggers = option.getTriggers();
+S579,GroupImpl.java,99,for (Iterator j = triggers.iterator(); j.hasNext();) {
+S580,GroupImpl.java,100,"newOptionMap.put(j.next(), option);"
+S581,GroupImpl.java,104,newPrefixes.addAll(option.getPrefixes());
+S582,GroupImpl.java,108,this.anonymous = Collections.unmodifiableList(newAnonymous);
+S583,GroupImpl.java,109,this.optionMap = Collections.unmodifiableSortedMap(newOptionMap);
+S584,GroupImpl.java,110,this.prefixes = Collections.unmodifiableSet(newPrefixes);
+S585,GroupImpl.java,115,if (arg == null) {
+S586,GroupImpl.java,116,return false;
+S587,GroupImpl.java,120,if (optionMap.containsKey(arg)) {
+S588,GroupImpl.java,121,return true;
+S589,GroupImpl.java,125,final Map tailMap = optionMap.tailMap(arg);
+S590,GroupImpl.java,128,for (final Iterator iter = tailMap.values().iterator(); iter.hasNext();) {
+S591,GroupImpl.java,129,final Option option = (Option) iter.next();
+S592,GroupImpl.java,131,"if (option.canProcess(commandLine, arg)) {"
+S593,GroupImpl.java,132,return true;
+S594,GroupImpl.java,136,if (commandLine.looksLikeOption(arg)) {
+S595,GroupImpl.java,137,return false;
+S596,GroupImpl.java,141,if (anonymous.size() > 0) {
+S597,GroupImpl.java,142,return true;
+S598,GroupImpl.java,145,return false;
+S599,GroupImpl.java,149,return prefixes;
+S600,GroupImpl.java,153,return optionMap.keySet();
+S601,GroupImpl.java,159,String previous = null;
+S602,GroupImpl.java,162,while (arguments.hasNext()) {
+S603,GroupImpl.java,164,final String arg = (String) arguments.next();
+S604,GroupImpl.java,167,if (arg == previous) {
+S605,GroupImpl.java,169,arguments.previous();
+S606,GroupImpl.java,171,break;
+S607,GroupImpl.java,175,previous = arg;
+S608,GroupImpl.java,177,final Option opt = (Option) optionMap.get(arg);
+S609,GroupImpl.java,180,if (opt != null) {
+S610,GroupImpl.java,181,arguments.previous();
+S611,GroupImpl.java,182,"opt.process(commandLine, arguments);"
+S612,GroupImpl.java,188,if (commandLine.looksLikeOption(arg)) {
+S613,GroupImpl.java,190,final Collection values = optionMap.tailMap(arg).values();
+S614,GroupImpl.java,192,boolean foundMemberOption = false;
+S615,GroupImpl.java,194,for (Iterator i = values.iterator(); i.hasNext() && !foundMemberOption;) {
+S616,GroupImpl.java,195,final Option option = (Option) i.next();
+S617,GroupImpl.java,197,"if (option.canProcess(commandLine, arg)) {"
+S618,GroupImpl.java,198,foundMemberOption = true;
+S619,GroupImpl.java,199,arguments.previous();
+S620,GroupImpl.java,200,"option.process(commandLine, arguments);"
+S621,GroupImpl.java,205,if (!foundMemberOption) {
+S622,GroupImpl.java,206,arguments.previous();
+S623,GroupImpl.java,208,return;
+S624,GroupImpl.java,210,} // [END argument may be anonymous
+S625,GroupImpl.java,215,arguments.previous();
+S626,GroupImpl.java,219,if (anonymous.isEmpty()) {
+S627,GroupImpl.java,220,break;
+S628,GroupImpl.java,225,for (final Iterator i = anonymous.iterator(); i.hasNext();) {
+S629,GroupImpl.java,226,final Argument argument = (Argument) i.next();
+S630,GroupImpl.java,228,"if (argument.canProcess(commandLine, arguments)) {"
+S631,GroupImpl.java,229,"argument.process(commandLine, arguments);"
+S632,GroupImpl.java,234,} // [END process each command line token
+S633,GroupImpl.java,240,int present = 0;
+S634,GroupImpl.java,243,Option unexpected = null;
+S635,GroupImpl.java,245,for (final Iterator i = options.iterator(); i.hasNext();) {
+S636,GroupImpl.java,246,final Option option = (Option) i.next();
+S637,GroupImpl.java,249,boolean validate = option.isRequired() || option instanceof Group;
+S638,GroupImpl.java,252,if (commandLine.hasOption(option)) {
+S639,GroupImpl.java,253,if (++present > maximum) {
+S640,GroupImpl.java,254,unexpected = option;
+S641,GroupImpl.java,256,break;
+S642,GroupImpl.java,258,validate = true;
+S643,GroupImpl.java,261,if (validate) {
+S644,GroupImpl.java,262,option.validate(commandLine);
+S645,GroupImpl.java,267,if (unexpected != null) {
+S646,GroupImpl.java,268,"throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN,"
+S647,GroupImpl.java,273,if (present < minimum) {
+S648,GroupImpl.java,274,"throw new OptionException(this, ResourceConstants.MISSING_OPTION);"
+S649,GroupImpl.java,278,for (final Iterator i = anonymous.iterator(); i.hasNext();) {
+S650,GroupImpl.java,279,final Option option = (Option) i.next();
+S651,GroupImpl.java,280,option.validate(commandLine);
+S652,GroupImpl.java,285,return name;
+S653,GroupImpl.java,289,return description;
+S654,GroupImpl.java,295,"appendUsage(buffer, helpSettings, comp, ""|"");"
+S655,GroupImpl.java,302,final Set helpSettingsCopy = new HashSet(helpSettings);
+S656,GroupImpl.java,304,final boolean optional =
+S657,GroupImpl.java,307,final boolean expanded =
+S658,GroupImpl.java,310,final boolean named =
+S659,GroupImpl.java,314,final boolean arguments = helpSettingsCopy.contains(DisplaySetting.DISPLAY_GROUP_ARGUMENT);
+S660,GroupImpl.java,316,final boolean outer = helpSettingsCopy.contains(DisplaySetting.DISPLAY_GROUP_OUTER);
+S661,GroupImpl.java,318,helpSettingsCopy.remove(DisplaySetting.DISPLAY_GROUP_OUTER);
+S662,GroupImpl.java,320,final boolean both = named && expanded;
+S663,GroupImpl.java,322,if (optional) {
+S664,GroupImpl.java,323,buffer.append('[');
+S665,GroupImpl.java,326,if (named) {
+S666,GroupImpl.java,327,buffer.append(name);
+S667,GroupImpl.java,330,if (both) {
+S668,GroupImpl.java,331,"buffer.append("" ("");"
+S669,GroupImpl.java,334,if (expanded) {
+S670,GroupImpl.java,337,if (!helpSettingsCopy.contains(DisplaySetting.DISPLAY_GROUP_EXPANDED)) {
+S671,GroupImpl.java,338,childSettings = DisplaySetting.NONE;
+S672,GroupImpl.java,340,childSettings = new HashSet(helpSettingsCopy);
+S673,GroupImpl.java,341,childSettings.remove(DisplaySetting.DISPLAY_OPTIONAL);
+S674,GroupImpl.java,347,if (comp == null) {
+S675,GroupImpl.java,349,list = options;
+S676,GroupImpl.java,352,list = new ArrayList(options);
+S677,GroupImpl.java,353,"Collections.sort(list, comp);"
+S678,GroupImpl.java,357,for (final Iterator i = list.iterator(); i.hasNext();) {
+S679,GroupImpl.java,358,final Option option = (Option) i.next();
+S680,GroupImpl.java,361,"option.appendUsage(buffer, childSettings, comp);"
+S681,GroupImpl.java,364,if (i.hasNext()) {
+S682,GroupImpl.java,365,buffer.append(separator);
+S683,GroupImpl.java,370,if (both) {
+S684,GroupImpl.java,371,buffer.append(')');
+S685,GroupImpl.java,374,if (optional && outer) {
+S686,GroupImpl.java,375,buffer.append(']');
+S687,GroupImpl.java,378,if (arguments) {
+S688,GroupImpl.java,379,for (final Iterator i = anonymous.iterator(); i.hasNext();) {
+S689,GroupImpl.java,380,buffer.append(' ');
+S690,GroupImpl.java,382,final Option option = (Option) i.next();
+S691,GroupImpl.java,383,"option.appendUsage(buffer, helpSettingsCopy, comp);"
+S692,GroupImpl.java,387,if (optional && !outer) {
+S693,GroupImpl.java,388,buffer.append(']');
+S694,GroupImpl.java,395,final List helpLines = new ArrayList();
+S695,GroupImpl.java,397,if (helpSettings.contains(DisplaySetting.DISPLAY_GROUP_NAME)) {
+S696,GroupImpl.java,398,"final HelpLine helpLine = new HelpLineImpl(this, depth);"
+S697,GroupImpl.java,399,helpLines.add(helpLine);
+S698,GroupImpl.java,402,if (helpSettings.contains(DisplaySetting.DISPLAY_GROUP_EXPANDED)) {
+S699,GroupImpl.java,406,if (comp == null) {
+S700,GroupImpl.java,408,list = options;
+S701,GroupImpl.java,411,list = new ArrayList(options);
+S702,GroupImpl.java,412,"Collections.sort(list, comp);"
+S703,GroupImpl.java,416,for (final Iterator i = list.iterator(); i.hasNext();) {
+S704,GroupImpl.java,417,final Option option = (Option) i.next();
+S705,GroupImpl.java,418,"helpLines.addAll(option.helpLines(depth + 1, helpSettings, comp));"
+S706,GroupImpl.java,422,if (helpSettings.contains(DisplaySetting.DISPLAY_GROUP_ARGUMENT)) {
+S707,GroupImpl.java,423,for (final Iterator i = anonymous.iterator(); i.hasNext();) {
+S708,GroupImpl.java,424,final Option option = (Option) i.next();
+S709,GroupImpl.java,425,"helpLines.addAll(option.helpLines(depth + 1, helpSettings, comp));"
+S710,GroupImpl.java,429,return helpLines;
+S711,GroupImpl.java,438,return options;
+S712,GroupImpl.java,450,final Iterator i = getOptions().iterator();
+S713,GroupImpl.java,452,while (i.hasNext()) {
+S714,GroupImpl.java,453,final Option option = (Option) i.next();
+S715,GroupImpl.java,454,final Option found = option.findOption(trigger);
+S716,GroupImpl.java,456,if (found != null) {
+S717,GroupImpl.java,457,return found;
+S718,GroupImpl.java,461,return null;
+S719,GroupImpl.java,465,return minimum;
+S720,GroupImpl.java,473,return getMinimum() > 0;
+S721,GroupImpl.java,477,super.defaults(commandLine);
+S722,GroupImpl.java,479,for (final Iterator i = options.iterator(); i.hasNext();) {
+S723,GroupImpl.java,480,final Option option = (Option) i.next();
+S724,GroupImpl.java,481,option.defaults(commandLine);
+S725,GroupImpl.java,484,for (final Iterator i = anonymous.iterator(); i.hasNext();) {
+S726,GroupImpl.java,485,final Option option = (Option) i.next();
+S727,GroupImpl.java,486,option.defaults(commandLine);
+S728,HelpFormatter.java,84,final Set fullUsage = new HashSet(DisplaySetting.ALL);
+S729,HelpFormatter.java,85,fullUsage.remove(DisplaySetting.DISPLAY_ALIASES);
+S730,HelpFormatter.java,86,fullUsage.remove(DisplaySetting.DISPLAY_GROUP_NAME);
+S731,HelpFormatter.java,87,DEFAULT_FULL_USAGE_SETTINGS = Collections.unmodifiableSet(fullUsage);
+S732,HelpFormatter.java,89,final Set lineUsage = new HashSet();
+S733,HelpFormatter.java,90,lineUsage.add(DisplaySetting.DISPLAY_ALIASES);
+S734,HelpFormatter.java,91,lineUsage.add(DisplaySetting.DISPLAY_GROUP_NAME);
+S735,HelpFormatter.java,92,lineUsage.add(DisplaySetting.DISPLAY_PARENT_ARGUMENT);
+S736,HelpFormatter.java,93,DEFAULT_LINE_USAGE_SETTINGS = Collections.unmodifiableSet(lineUsage);
+S737,HelpFormatter.java,95,final Set displayUsage = new HashSet(DisplaySetting.ALL);
+S738,HelpFormatter.java,96,displayUsage.remove(DisplaySetting.DISPLAY_PARENT_ARGUMENT);
+S739,HelpFormatter.java,97,DEFAULT_DISPLAY_USAGE_SETTINGS = Collections.unmodifiableSet(displayUsage);
+S740,HelpFormatter.java,100,private Set fullUsageSettings = new HashSet(DEFAULT_FULL_USAGE_SETTINGS);
+S741,HelpFormatter.java,101,private Set lineUsageSettings = new HashSet(DEFAULT_LINE_USAGE_SETTINGS);
+S742,HelpFormatter.java,102,private Set displaySettings = new HashSet(DEFAULT_DISPLAY_USAGE_SETTINGS);
+S743,HelpFormatter.java,103,private OptionException exception = null;
+S744,HelpFormatter.java,105,private Comparator comparator = null;
+S745,HelpFormatter.java,106,private String divider = null;
+S746,HelpFormatter.java,107,private String header = null;
+S747,HelpFormatter.java,108,private String footer = null;
+S748,HelpFormatter.java,109,"private String shellCommand = """";"
+S749,HelpFormatter.java,110,private PrintWriter out = new PrintWriter(System.out);
+S750,HelpFormatter.java,122,"this(DEFAULT_GUTTER_LEFT, DEFAULT_GUTTER_CENTER, DEFAULT_GUTTER_RIGHT, DEFAULT_FULL_WIDTH);"
+S751,HelpFormatter.java,135,final int fullWidth) {
+S752,HelpFormatter.java,137,this.gutterLeft = (gutterLeft == null) ? DEFAULT_GUTTER_LEFT : gutterLeft;
+S753,HelpFormatter.java,140,this.gutterCenter = (gutterCenter == null) ? DEFAULT_GUTTER_CENTER : gutterCenter;
+S754,HelpFormatter.java,143,this.gutterRight = (gutterRight == null) ? DEFAULT_GUTTER_RIGHT : gutterRight;
+S755,HelpFormatter.java,146,this.pageWidth = fullWidth - this.gutterLeft.length() - this.gutterRight.length();
+S756,HelpFormatter.java,149,int availableWidth = fullWidth - pageWidth + this.gutterCenter.length();
+S757,HelpFormatter.java,151,if (availableWidth < 2) {
+S758,HelpFormatter.java,160,printHeader();
+S759,HelpFormatter.java,161,printException();
+S760,HelpFormatter.java,162,printUsage();
+S761,HelpFormatter.java,163,printHelp();
+S762,HelpFormatter.java,164,printFooter();
+S763,HelpFormatter.java,165,out.flush();
+S764,HelpFormatter.java,172,if (exception != null) {
+S765,HelpFormatter.java,173,printDivider();
+S766,HelpFormatter.java,174,printWrapped(exception.getMessage());
+S767,HelpFormatter.java,182,printDivider();
+S768,HelpFormatter.java,186,if ((exception != null) && (exception.getOption() != null)) {
+S769,HelpFormatter.java,187,option = exception.getOption();
+S770,HelpFormatter.java,189,option = group;
+S771,HelpFormatter.java,193,"final List helpLines = option.helpLines(0, displaySettings, comparator);"
+S772,HelpFormatter.java,196,int usageWidth = 0;
+S773,HelpFormatter.java,198,for (final Iterator i = helpLines.iterator(); i.hasNext();) {
+S774,HelpFormatter.java,199,final HelpLine helpLine = (HelpLine) i.next();
+S775,HelpFormatter.java,200,"final String usage = helpLine.usage(lineUsageSettings, comparator);"
+S776,HelpFormatter.java,201,"usageWidth = Math.max(usageWidth, usage.length());"
+S777,HelpFormatter.java,205,final StringBuffer blankBuffer = new StringBuffer();
+S778,HelpFormatter.java,207,for (int i = 0; i < usageWidth; i++) {
+S779,HelpFormatter.java,208,blankBuffer.append(' ');
+S780,HelpFormatter.java,212,"final int descriptionWidth = Math.max(1, pageWidth - gutterCenter.length() - usageWidth);"
+S781,HelpFormatter.java,215,for (final Iterator i = helpLines.iterator(); i.hasNext();) {
+S782,HelpFormatter.java,217,final HelpLine helpLine = (HelpLine) i.next();
+S783,HelpFormatter.java,220,"final List descList = wrap(helpLine.getDescription(), descriptionWidth);"
+S784,HelpFormatter.java,221,final Iterator descriptionIterator = descList.iterator();
+S785,HelpFormatter.java,224,printGutterLeft();
+S786,HelpFormatter.java,225,"pad(helpLine.usage(lineUsageSettings, comparator), usageWidth, out);"
+S787,HelpFormatter.java,226,out.print(gutterCenter);
+S788,HelpFormatter.java,227,"pad((String) descriptionIterator.next(), descriptionWidth, out);"
+S789,HelpFormatter.java,228,printGutterRight();
+S790,HelpFormatter.java,229,out.println();
+S791,HelpFormatter.java,232,while (descriptionIterator.hasNext()) {
+S792,HelpFormatter.java,233,printGutterLeft();
+S793,HelpFormatter.java,236,out.print(blankBuffer);
+S794,HelpFormatter.java,237,out.print(gutterCenter);
+S795,HelpFormatter.java,238,"pad((String) descriptionIterator.next(), descriptionWidth, out);"
+S796,HelpFormatter.java,239,printGutterRight();
+S797,HelpFormatter.java,240,out.println();
+S798,HelpFormatter.java,244,printDivider();
+S799,HelpFormatter.java,251,printDivider();
+S800,HelpFormatter.java,253,"final StringBuffer buffer = new StringBuffer(""Usage:\n"");"
+S801,HelpFormatter.java,254,buffer.append(shellCommand).append(' ');
+S802,HelpFormatter.java,255,"group.appendUsage(buffer, fullUsageSettings, comparator, "" "");"
+S803,HelpFormatter.java,256,printWrapped(buffer.toString());
+S804,HelpFormatter.java,263,if (header != null) {
+S805,HelpFormatter.java,264,printDivider();
+S806,HelpFormatter.java,265,printWrapped(header);
+S807,HelpFormatter.java,273,if (footer != null) {
+S808,HelpFormatter.java,274,printWrapped(footer);
+S809,HelpFormatter.java,275,printDivider();
+S810,HelpFormatter.java,284,"for (final Iterator i = wrap(text, pageWidth).iterator(); i.hasNext();) {"
+S811,HelpFormatter.java,285,printGutterLeft();
+S812,HelpFormatter.java,286,"pad((String) i.next(), pageWidth, out);"
+S813,HelpFormatter.java,287,printGutterRight();
+S814,HelpFormatter.java,288,out.println();
+S815,HelpFormatter.java,291,out.flush();
+S816,HelpFormatter.java,298,if (gutterLeft != null) {
+S817,HelpFormatter.java,299,out.print(gutterLeft);
+S818,HelpFormatter.java,307,if (gutterRight != null) {
+S819,HelpFormatter.java,308,out.print(gutterRight);
+S820,HelpFormatter.java,316,if (divider != null) {
+S821,HelpFormatter.java,317,out.println(divider);
+S822,HelpFormatter.java,327,if (text == null) {
+S823,HelpFormatter.java,328,left = 0;
+S824,HelpFormatter.java,330,writer.write(text);
+S825,HelpFormatter.java,331,left = text.length();
+S826,HelpFormatter.java,335,for (int i = left; i < width; ++i) {
+S827,HelpFormatter.java,336,writer.write(' ');
+S828,HelpFormatter.java,343,if (width < 1) {
+S829,HelpFormatter.java,344,"throw new IllegalArgumentException(ResourceHelper.getResourceHelper().getMessage(ResourceConstants.HELPFORMATTER_WIDTH_TOO_NARROW,"
+S830,HelpFormatter.java,351,if (text == null) {
+S831,HelpFormatter.java,352,"return Collections.singletonList("""");"
+S832,HelpFormatter.java,355,final List lines = new ArrayList();
+S833,HelpFormatter.java,356,final char[] chars = text.toCharArray();
+S834,HelpFormatter.java,357,int left = 0;
+S835,HelpFormatter.java,360,while (left < chars.length) {
+S836,HelpFormatter.java,362,int right = left;
+S837,HelpFormatter.java,365,while ((right < chars.length) && (chars[right] != '\n') &&
+S838,HelpFormatter.java,367,right++;
+S839,HelpFormatter.java,371,if ((right < chars.length) && (chars[right] == '\n')) {
+S840,HelpFormatter.java,373,"final String line = new String(chars, left, right - left);"
+S841,HelpFormatter.java,374,lines.add(line);
+S842,HelpFormatter.java,377,left = right + 1;
+S843,HelpFormatter.java,379,if (left == chars.length) {
+S844,HelpFormatter.java,380,"lines.add("""");"
+S845,HelpFormatter.java,388,right = (left + width) - 1;
+S846,HelpFormatter.java,391,if (chars.length <= right) {
+S847,HelpFormatter.java,393,"final String line = new String(chars, left, chars.length - left);"
+S848,HelpFormatter.java,394,lines.add(line);
+S849,HelpFormatter.java,397,break;
+S850,HelpFormatter.java,401,while ((right >= left) && (chars[right] != ' ')) {
+S851,HelpFormatter.java,402,right--;
+S852,HelpFormatter.java,406,if (right >= left) {
+S853,HelpFormatter.java,408,"final String line = new String(chars, left, right - left);"
+S854,HelpFormatter.java,409,lines.add(line);
+S855,HelpFormatter.java,412,while ((right < chars.length) && (chars[right] == ' ')) {
+S856,HelpFormatter.java,413,right++;
+S857,HelpFormatter.java,416,left = right;
+S858,HelpFormatter.java,419,continue;
+S859,HelpFormatter.java,423,"right = Math.min(left + width, chars.length);"
+S860,HelpFormatter.java,426,"final String line = new String(chars, left, right - left);"
+S861,HelpFormatter.java,427,lines.add(line);
+S862,HelpFormatter.java,430,while ((right < chars.length) && (chars[right] == ' ')) {
+S863,HelpFormatter.java,431,right++;
+S864,HelpFormatter.java,434,left = right;
+S865,HelpFormatter.java,437,return lines;
+S866,HelpFormatter.java,445,this.comparator = comparator;
+S867,HelpFormatter.java,456,this.displaySettings = displaySettings;
+S868,HelpFormatter.java,464,this.divider = divider;
+S869,HelpFormatter.java,472,this.exception = exception;
+S870,HelpFormatter.java,480,this.footer = footer;
+S871,HelpFormatter.java,490,this.fullUsageSettings = fullUsageSettings;
+S872,HelpFormatter.java,498,this.group = group;
+S873,HelpFormatter.java,506,this.header = header;
+S874,HelpFormatter.java,516,this.lineUsageSettings = lineUsageSettings;
+S875,HelpFormatter.java,524,this.shellCommand = shellCommand;
+S876,HelpFormatter.java,531,return comparator;
+S877,HelpFormatter.java,538,return displaySettings;
+S878,HelpFormatter.java,545,return divider;
+S879,HelpFormatter.java,559,return footer;
+S880,HelpFormatter.java,566,return fullUsageSettings;
+S881,HelpFormatter.java,573,return group;
+S882,HelpFormatter.java,580,return gutterCenter;
+S883,HelpFormatter.java,587,return gutterLeft;
+S884,HelpFormatter.java,594,return gutterRight;
+S885,HelpFormatter.java,601,return header;
+S886,HelpFormatter.java,608,return lineUsageSettings;
+S887,HelpFormatter.java,615,return pageWidth;
+S888,HelpFormatter.java,622,return shellCommand;
+S889,HelpFormatter.java,629,this.out = out;
+S890,HelpFormatter.java,636,return out;
+S891,HelpLineImpl.java,54,"public HelpLineImpl(final Option option, final int indent) {"
+S892,HelpLineImpl.java,55,this.option = option;
+S893,HelpLineImpl.java,56,this.indent = indent;
+S894,HelpLineImpl.java,63,return option.getDescription();
+S895,HelpLineImpl.java,70,return indent;
+S896,HelpLineImpl.java,77,return option;
+S897,HelpLineImpl.java,90,if (cachedUsage == null
+S898,HelpLineImpl.java,95,cachedHelpSettings = helpSettings;
+S899,HelpLineImpl.java,96,cachedComparator = comparator;
+S900,HelpLineImpl.java,99,final StringBuffer buffer = new StringBuffer();
+S901,HelpLineImpl.java,100,for (int i = 0; i < indent; ++i) {
+S902,HelpLineImpl.java,101,"buffer.append(""  "");"
+S903,HelpLineImpl.java,103,"option.appendUsage(buffer, helpSettings, comparator);"
+S904,HelpLineImpl.java,106,cachedUsage = buffer.toString();
+S905,HelpLineImpl.java,108,return cachedUsage;
+S906,InvalidArgumentException.java,32,super(message);
+S907,OptionException.java,34,public static final Set HELP_SETTINGS =
+S908,OptionException.java,38,private static final ResourceHelper helper = ResourceHelper.getResourceHelper();
+S909,OptionException.java,53,"this(option, null, null);"
+S910,OptionException.java,63,"this(option, messageKey, null);"
+S911,OptionException.java,74,final String value) {
+S912,OptionException.java,75,this.option = option;
+S913,OptionException.java,77,if (messageKey != null) {
+S914,OptionException.java,78,final StringBuffer buffer = new StringBuffer();
+S915,OptionException.java,80,if (value != null) {
+S916,OptionException.java,81,"buffer.append(helper.getMessage(messageKey, value));"
+S917,OptionException.java,83,buffer.append(helper.getMessage(messageKey));
+S918,OptionException.java,86,"buffer.append("" "");"
+S919,OptionException.java,88,"option.appendUsage(buffer, HELP_SETTINGS, null);"
+S920,OptionException.java,89,message = buffer.toString();
+S921,OptionException.java,90,} else {
+S922,OptionException.java,91,"message = """";"
+S923,OptionException.java,101,return option;
+S924,OptionException.java,105,return message;
+S925,OptionImpl.java,43,final boolean required) {
+S926,OptionImpl.java,44,this.id = id;
+S927,OptionImpl.java,45,this.required = required;
+S928,OptionImpl.java,50,if (arguments.hasNext()) {
+S929,OptionImpl.java,51,final String argument = (String) arguments.next();
+S930,OptionImpl.java,52,arguments.previous();
+S931,OptionImpl.java,54,"return canProcess(commandLine, argument);"
+S932,OptionImpl.java,56,return false;
+S933,OptionImpl.java,61,final StringBuffer buffer = new StringBuffer();
+S934,OptionImpl.java,62,"appendUsage(buffer, DisplaySetting.ALL, null);"
+S935,OptionImpl.java,64,return buffer.toString();
+S936,OptionImpl.java,68,return id;
+S937,OptionImpl.java,72,if (thatObj instanceof OptionImpl) {
+S938,OptionImpl.java,73,final OptionImpl that = (OptionImpl) thatObj;
+S939,OptionImpl.java,75,return (getId() == that.getId()) &&
+S940,OptionImpl.java,87,if ((left == null) && (right == null)) {
+S941,OptionImpl.java,88,return true;
+S942,OptionImpl.java,89,} else if ((left == null) || (right == null)) {
+S943,OptionImpl.java,90,return false;
+S944,OptionImpl.java,92,return left.equals(right);
+S945,OptionImpl.java,97,int hashCode = getId();
+S946,OptionImpl.java,98,if (getPreferredName() != null) {
+S947,OptionImpl.java,99,hashCode = (hashCode * 37) + getPreferredName().hashCode();
+S948,OptionImpl.java,102,if (getDescription() != null) {
+S949,OptionImpl.java,103,hashCode = (hashCode * 37) + getDescription().hashCode();
+S950,OptionImpl.java,106,hashCode = (hashCode * 37) + getPrefixes().hashCode();
+S951,OptionImpl.java,107,hashCode = (hashCode * 37) + getTriggers().hashCode();
+S952,OptionImpl.java,109,return hashCode;
+S953,OptionImpl.java,113,if (getTriggers().contains(trigger)) {
+S954,OptionImpl.java,114,return this;
+S955,OptionImpl.java,116,return null;
+S956,OptionImpl.java,121,return required;
+S957,OptionImpl.java,132,if (prefixes.isEmpty()) {
+S958,OptionImpl.java,137,"checkPrefix(prefixes, getPreferredName());"
+S959,OptionImpl.java,140,this.getTriggers();
+S960,OptionImpl.java,142,for (final Iterator i = getTriggers().iterator(); i.hasNext();) {
+S961,OptionImpl.java,143,"checkPrefix(prefixes, (String) i.next());"
+S962,OptionImpl.java,149,for (final Iterator i = prefixes.iterator(); i.hasNext();) {
+S963,OptionImpl.java,150,String prefix = (String) i.next();
+S964,OptionImpl.java,152,if (trigger.startsWith(prefix)) {
+S965,OptionImpl.java,153,return;
+S966,ParentImpl.java,50,"super(id, required);"
+S967,ParentImpl.java,51,this.children = children;
+S968,ParentImpl.java,52,this.argument = argument;
+S969,ParentImpl.java,53,this.description = description;
+S970,ParentImpl.java,65,if (argument != null) {
+S971,ParentImpl.java,66,"handleInitialSeparator(arguments, argument.getInitialSeparator());"
+S972,ParentImpl.java,69,"processParent(commandLine, arguments);"
+S973,ParentImpl.java,71,if (argument != null) {
+S974,ParentImpl.java,72,"argument.processValues(commandLine, arguments, this);"
+S975,ParentImpl.java,75,"if ((children != null) && children.canProcess(commandLine, arguments)) {"
+S976,ParentImpl.java,76,"children.process(commandLine, arguments);"
+S977,ParentImpl.java,87,final Set triggers = getTriggers();
+S978,ParentImpl.java,89,if (argument != null) {
+S979,ParentImpl.java,90,final char separator = argument.getInitialSeparator();
+S980,ParentImpl.java,93,if (separator != NUL) {
+S981,ParentImpl.java,94,final int initialIndex = arg.indexOf(separator);
+S982,ParentImpl.java,97,if (initialIndex > 0) {
+S983,ParentImpl.java,98,"return triggers.contains(arg.substring(0, initialIndex));"
+S984,ParentImpl.java,103,return triggers.contains(arg);
+S985,ParentImpl.java,112,return (children == null) ? Collections.EMPTY_SET : children.getPrefixes();
+S986,ParentImpl.java,122,if (commandLine.hasOption(this)) {
+S987,ParentImpl.java,123,if (argument != null) {
+S988,ParentImpl.java,124,"argument.validate(commandLine, this);"
+S989,ParentImpl.java,127,if (children != null) {
+S990,ParentImpl.java,128,children.validate(commandLine);
+S991,ParentImpl.java,142,final boolean displayArgument =
+S992,ParentImpl.java,145,final boolean displayChildren =
+S993,ParentImpl.java,149,if (displayArgument) {
+S994,ParentImpl.java,150,buffer.append(' ');
+S995,ParentImpl.java,151,"argument.appendUsage(buffer, helpSettings, comp);"
+S996,ParentImpl.java,154,if (displayChildren) {
+S997,ParentImpl.java,155,buffer.append(' ');
+S998,ParentImpl.java,156,"children.appendUsage(buffer, helpSettings, comp);"
+S999,ParentImpl.java,164,return description;
+S1000,ParentImpl.java,176,final List helpLines = new ArrayList();
+S1001,ParentImpl.java,177,"helpLines.add(new HelpLineImpl(this, depth));"
+S1002,ParentImpl.java,179,if (helpSettings.contains(DisplaySetting.DISPLAY_PARENT_ARGUMENT) && (argument != null)) {
+S1003,ParentImpl.java,180,"helpLines.addAll(argument.helpLines(depth + 1, helpSettings, comp));"
+S1004,ParentImpl.java,183,if (helpSettings.contains(DisplaySetting.DISPLAY_PARENT_CHILDREN) && (children != null)) {
+S1005,ParentImpl.java,184,"helpLines.addAll(children.helpLines(depth + 1, helpSettings, comp));"
+S1006,ParentImpl.java,187,return helpLines;
+S1007,ParentImpl.java,194,return argument;
+S1008,ParentImpl.java,201,return children;
+S1009,ParentImpl.java,212,final String newArgument = (String) arguments.next();
+S1010,ParentImpl.java,215,final int initialIndex = newArgument.indexOf(separator);
+S1011,ParentImpl.java,217,if (initialIndex > 0) {
+S1012,ParentImpl.java,218,arguments.remove();
+S1013,ParentImpl.java,219,"arguments.add(newArgument.substring(0, initialIndex));"
+S1014,ParentImpl.java,220,String value = newArgument.substring(initialIndex + 1);
+S1015,ParentImpl.java,223,"if (value.startsWith(""-"")) {"
+S1016,ParentImpl.java,224,"value = '""' + value + '""';"
+S1017,ParentImpl.java,226,arguments.add(value);
+S1018,ParentImpl.java,227,arguments.previous();
+S1019,ParentImpl.java,230,arguments.previous();
+S1020,ParentImpl.java,237,final Option found = super.findOption(trigger);
+S1021,ParentImpl.java,239,if ((found == null) && (children != null)) {
+S1022,ParentImpl.java,240,return children.findOption(trigger);
+S1023,ParentImpl.java,242,return found;
+S1024,ParentImpl.java,247,super.defaults(commandLine);
+S1025,ParentImpl.java,249,if (argument != null) {
+S1026,ParentImpl.java,250,"argument.defaultValues(commandLine, this);"
+S1027,ParentImpl.java,253,if (children != null) {
+S1028,ParentImpl.java,254,children.defaults(commandLine);
+S1029,Parser.java,38,public class Parser {
+S1030,Parser.java,39,private HelpFormatter helpFormatter = new HelpFormatter();
+S1031,Parser.java,40,private Option helpOption = null;
+S1032,Parser.java,41,private String helpTrigger = null;
+S1033,Parser.java,42,private Group group = null;
+S1034,Parser.java,58,final List argumentList = new LinkedList();
+S1035,Parser.java,61,for (int i = 0; i < arguments.length; i++) {
+S1036,Parser.java,62,final String argument = arguments[i];
+S1037,Parser.java,66,argumentList.add(new String(argument));
+S1038,Parser.java,70,"final WriteableCommandLine commandLine = new WriteableCommandLineImpl(group, argumentList);"
+S1039,Parser.java,73,group.defaults(commandLine);
+S1040,Parser.java,76,final ListIterator iterator = argumentList.listIterator();
+S1041,Parser.java,77,Object previous = null;
+S1042,Parser.java,79,"while (group.canProcess(commandLine, iterator)) {"
+S1043,Parser.java,81,final Object next = iterator.next();
+S1044,Parser.java,82,iterator.previous();
+S1045,Parser.java,85,if (next == previous) {
+S1046,Parser.java,87,break;
+S1047,Parser.java,91,previous = next;
+S1048,Parser.java,93,"group.process(commandLine, iterator);"
+S1049,Parser.java,97,if (iterator.hasNext()) {
+S1050,Parser.java,98,final String arg = (String) iterator.next();
+S1051,Parser.java,99,"throw new OptionException(group, ResourceConstants.UNEXPECTED_TOKEN, arg);"
+S1052,Parser.java,103,if (!commandLine.hasOption(helpOption) && !commandLine.hasOption(helpTrigger)) {
+S1053,Parser.java,104,group.validate(commandLine);
+S1054,Parser.java,107,return commandLine;
+S1055,Parser.java,120,helpFormatter.setGroup(group);
+S1056,Parser.java,124,final CommandLine commandLine = parse(arguments);
+S1057,Parser.java,126,if (!commandLine.hasOption(helpOption) && !commandLine.hasOption(helpTrigger)) {
+S1058,Parser.java,127,return commandLine;
+S1059,Parser.java,129,} catch (final OptionException oe) {
+S1060,Parser.java,131,helpFormatter.setException(oe);
+S1061,Parser.java,135,helpFormatter.print();
+S1062,Parser.java,137,return null;
+S1063,Parser.java,145,this.group = group;
+S1064,Parser.java,154,this.helpFormatter = helpFormatter;
+S1065,Parser.java,164,this.helpOption = helpOption;
+S1066,Parser.java,174,this.helpTrigger = helpTrigger;
+S1067,PatternBuilder.java,46,this(
+S1068,PatternBuilder.java,61,final ArgumentBuilder abuilder) {
+S1069,PatternBuilder.java,62,this.gbuilder = gbuilder;
+S1070,PatternBuilder.java,63,this.obuilder = obuilder;
+S1071,PatternBuilder.java,64,this.abuilder = abuilder;
+S1072,PatternBuilder.java,67,private final Set options = new LinkedHashSet();
+S1073,PatternBuilder.java,76,if (options.size() == 1) {
+S1074,PatternBuilder.java,80,gbuilder.reset();
+S1075,PatternBuilder.java,81,for (final Iterator i = options.iterator(); i.hasNext();) {
+S1076,PatternBuilder.java,82,gbuilder.withOption((Option)i.next());
+S1077,PatternBuilder.java,84,option = gbuilder.create();
+S1078,PatternBuilder.java,87,reset();
+S1079,PatternBuilder.java,89,return option;
+S1080,PatternBuilder.java,96,options.clear();
+S1081,PatternBuilder.java,97,return this;
+S1082,PatternBuilder.java,105,if (type != ' ') {
+S1083,PatternBuilder.java,106,abuilder.reset();
+S1084,PatternBuilder.java,107,abuilder.withValidator(validator(type));
+S1085,PatternBuilder.java,108,if (required) {
+S1086,PatternBuilder.java,109,abuilder.withMinimum(1);
+S1087,PatternBuilder.java,111,if (type != '*') {
+S1088,PatternBuilder.java,112,abuilder.withMaximum(1);
+S1089,PatternBuilder.java,114,argument = abuilder.create();
+S1090,PatternBuilder.java,117,argument = null;
+S1091,PatternBuilder.java,120,obuilder.reset();
+S1092,PatternBuilder.java,121,obuilder.withArgument(argument);
+S1093,PatternBuilder.java,122,obuilder.withShortName(String.valueOf(opt));
+S1094,PatternBuilder.java,123,obuilder.withRequired(required);
+S1095,PatternBuilder.java,125,options.add(obuilder.create());
+S1096,PatternBuilder.java,133,int sz = pattern.length();
+S1097,PatternBuilder.java,135,char opt = ' ';
+S1098,PatternBuilder.java,136,char ch = ' ';
+S1099,PatternBuilder.java,137,char type = ' ';
+S1100,PatternBuilder.java,138,boolean required = false;
+S1101,PatternBuilder.java,140,for (int i = 0; i < sz; i++) {
+S1102,PatternBuilder.java,141,ch = pattern.charAt(i);
+S1103,PatternBuilder.java,143,switch (ch) {
+S1104,PatternBuilder.java,145,required = true;
+S1105,PatternBuilder.java,146,break;
+S1106,PatternBuilder.java,156,type = ch;
+S1107,PatternBuilder.java,157,break;
+S1108,PatternBuilder.java,159,if (opt != ' ') {
+S1109,PatternBuilder.java,160,"createOption(type, required, opt);"
+S1110,PatternBuilder.java,161,required = false;
+S1111,PatternBuilder.java,162,type = ' ';
+S1112,PatternBuilder.java,165,opt = ch;
+S1113,PatternBuilder.java,169,if (opt != ' ') {
+S1114,PatternBuilder.java,170,"createOption(type, required, opt);"
+S1115,PatternBuilder.java,175,switch (c) {
+S1116,PatternBuilder.java,189,final FileValidator existingv = new FileValidator();
+S1117,PatternBuilder.java,190,existingv.setExisting(true);
+S1118,PatternBuilder.java,191,existingv.setFile(true);
+S1119,PatternBuilder.java,192,return existingv;
+S1120,PreferencesCommandLine.java,65,"this(root,preferences,NUL);"
+S1121,PreferencesCommandLine.java,76,"public PreferencesCommandLine(final Option root, final Preferences preferences, final char separator){"
+S1122,PreferencesCommandLine.java,77,this.root = root;
+S1123,PreferencesCommandLine.java,78,this.preferences = preferences;
+S1124,PreferencesCommandLine.java,79,this.separator = separator;
+S1125,PreferencesCommandLine.java,83,if(option==null){
+S1126,PreferencesCommandLine.java,84,return false;
+S1127,PreferencesCommandLine.java,96,return root.findOption(trigger);
+S1128,PreferencesCommandLine.java,100,"final String value = preferences.get(option.getPreferredName(),null);"
+S1129,PreferencesCommandLine.java,102,if(value==null){
+S1130,PreferencesCommandLine.java,105,else if(separator>NUL){
+S1131,PreferencesCommandLine.java,106,final List values = new ArrayList();
+S1132,PreferencesCommandLine.java,107,"final StringTokenizer tokens = new StringTokenizer(value,String.valueOf(separator));"
+S1133,PreferencesCommandLine.java,109,while(tokens.hasMoreTokens()){
+S1134,PreferencesCommandLine.java,110,values.add(tokens.nextToken());
+S1135,PreferencesCommandLine.java,113,return values;
+S1136,PreferencesCommandLine.java,116,return Collections.singletonList(value);
+S1137,PreferencesCommandLine.java,121,"final String value = preferences.get(option.getPreferredName(),null);"
+S1138,PreferencesCommandLine.java,122,"if(""true"".equals(value)){"
+S1139,PreferencesCommandLine.java,123,return Boolean.TRUE;
+S1140,PreferencesCommandLine.java,125,"else if(""false"".equals(value)){"
+S1141,PreferencesCommandLine.java,126,return Boolean.FALSE;
+S1142,PreferencesCommandLine.java,155,final List options = new ArrayList();
+S1143,PreferencesCommandLine.java,156,final Iterator keys = Arrays.asList(preferences.keys()).iterator();
+S1144,PreferencesCommandLine.java,157,while (keys.hasNext()) {
+S1145,PreferencesCommandLine.java,158,final String trigger = (String) keys.next();
+S1146,PreferencesCommandLine.java,159,final Option option = root.findOption(trigger);
+S1147,PreferencesCommandLine.java,160,if (option != null) {
+S1148,PreferencesCommandLine.java,161,options.add(option);
+S1149,PreferencesCommandLine.java,164,return Collections.unmodifiableList(options);
+S1150,PreferencesCommandLine.java,171,final Set triggers = new HashSet();
+S1151,PreferencesCommandLine.java,172,final Iterator options = getOptions().iterator();
+S1152,PreferencesCommandLine.java,173,while(options.hasNext()){
+S1153,PreferencesCommandLine.java,174,final Option option = (Option)options.next();
+S1154,PreferencesCommandLine.java,175,triggers.addAll(option.getTriggers());
+S1155,PreferencesCommandLine.java,177,return Collections.unmodifiableSet(triggers);
+S1156,PropertiesCommandLine.java,61,"this(root,properties,NUL);"
+S1157,PropertiesCommandLine.java,72,"public PropertiesCommandLine(final Option root, final Properties properties, final char separator){"
+S1158,PropertiesCommandLine.java,73,this.root = root;
+S1159,PropertiesCommandLine.java,74,this.properties = properties;
+S1160,PropertiesCommandLine.java,75,this.separator = separator;
+S1161,PropertiesCommandLine.java,80,if(option==null){
+S1162,PropertiesCommandLine.java,81,return false;
+S1163,PropertiesCommandLine.java,89,return root.findOption(trigger);
+S1164,PropertiesCommandLine.java,93,final String value = properties.getProperty(option.getPreferredName());
+S1165,PropertiesCommandLine.java,95,if(value==null){
+S1166,PropertiesCommandLine.java,98,else if(separator>NUL){
+S1167,PropertiesCommandLine.java,99,final List values = new ArrayList();
+S1168,PropertiesCommandLine.java,100,"final StringTokenizer tokens = new StringTokenizer(value,String.valueOf(separator));"
+S1169,PropertiesCommandLine.java,102,while(tokens.hasMoreTokens()){
+S1170,PropertiesCommandLine.java,103,values.add(tokens.nextToken());
+S1171,PropertiesCommandLine.java,106,return values;
+S1172,PropertiesCommandLine.java,109,return Collections.singletonList(value);
+S1173,PropertiesCommandLine.java,114,final String value = properties.getProperty(option.getPreferredName());
+S1174,PropertiesCommandLine.java,115,"if(""true"".equals(value)){"
+S1175,PropertiesCommandLine.java,116,return Boolean.TRUE;
+S1176,PropertiesCommandLine.java,118,"else if(""false"".equals(value)){"
+S1177,PropertiesCommandLine.java,119,return Boolean.FALSE;
+S1178,PropertiesCommandLine.java,143,final List options = new ArrayList();
+S1179,PropertiesCommandLine.java,144,final Iterator keys = properties.keySet().iterator();
+S1180,PropertiesCommandLine.java,145,while(keys.hasNext()){
+S1181,PropertiesCommandLine.java,146,final String trigger = (String)keys.next();
+S1182,PropertiesCommandLine.java,147,final Option option = root.findOption(trigger);
+S1183,PropertiesCommandLine.java,148,if(option!=null){
+S1184,PropertiesCommandLine.java,149,options.add(option);
+S1185,PropertiesCommandLine.java,152,return Collections.unmodifiableList(options);
+S1186,PropertiesCommandLine.java,156,final Set triggers = new HashSet();
+S1187,PropertiesCommandLine.java,157,final Iterator options = getOptions().iterator();
+S1188,PropertiesCommandLine.java,158,while(options.hasNext()){
+S1189,PropertiesCommandLine.java,159,final Option option = (Option)options.next();
+S1190,PropertiesCommandLine.java,160,triggers.addAll(option.getTriggers());
+S1191,PropertiesCommandLine.java,162,return Collections.unmodifiableSet(triggers);
+S1192,PropertyOption.java,43,public static final PropertyOption INSTANCE = new PropertyOption();
+S1193,PropertyOption.java,53,"this(DEFAULT_OPTION_STRING, DEFAULT_DESCRIPTION, 'D');"
+S1194,PropertyOption.java,65,"super(id, false);"
+S1195,PropertyOption.java,66,this.optionString = optionString;
+S1196,PropertyOption.java,67,this.description = description;
+S1197,PropertyOption.java,68,this.prefixes = Collections.singleton(optionString);
+S1198,PropertyOption.java,73,return (argument != null) && argument.startsWith(optionString) &&
+S1199,PropertyOption.java,78,return prefixes;
+S1200,PropertyOption.java,84,final String arg = (String) arguments.next();
+S1201,PropertyOption.java,86,"if (!canProcess(commandLine, arg)) {"
+S1202,PropertyOption.java,87,"throw new OptionException(this, ResourceConstants.UNEXPECTED_TOKEN, arg);"
+S1203,PropertyOption.java,90,final int propertyStart = optionString.length();
+S1204,PropertyOption.java,91,"final int equalsIndex = arg.indexOf('=', propertyStart);"
+S1205,PropertyOption.java,95,if (equalsIndex < 0) {
+S1206,PropertyOption.java,96,property = arg.substring(propertyStart);
+S1207,PropertyOption.java,97,"value = ""true"";"
+S1208,PropertyOption.java,99,"property = arg.substring(propertyStart, equalsIndex);"
+S1209,PropertyOption.java,100,value = arg.substring(equalsIndex + 1);
+S1210,PropertyOption.java,103,"commandLine.addProperty(this, property, value);"
+S1211,PropertyOption.java,107,return Collections.singleton(optionString);
+S1212,PropertyOption.java,117,final boolean display = helpSettings.contains(DisplaySetting.DISPLAY_PROPERTY_OPTION);
+S1213,PropertyOption.java,119,final boolean bracketed = helpSettings.contains(DisplaySetting.DISPLAY_ARGUMENT_BRACKETED);
+S1214,PropertyOption.java,121,if (display) {
+S1215,PropertyOption.java,122,buffer.append(optionString);
+S1216,PropertyOption.java,124,if (bracketed) {
+S1217,PropertyOption.java,125,buffer.append('<');
+S1218,PropertyOption.java,128,"buffer.append(""property"");"
+S1219,PropertyOption.java,130,if (bracketed) {
+S1220,PropertyOption.java,131,buffer.append('>');
+S1221,PropertyOption.java,134,"buffer.append(""="");"
+S1222,PropertyOption.java,136,if (bracketed) {
+S1223,PropertyOption.java,137,buffer.append('<');
+S1224,PropertyOption.java,140,"buffer.append(""value"");"
+S1225,PropertyOption.java,142,if (bracketed) {
+S1226,PropertyOption.java,143,buffer.append('>');
+S1227,PropertyOption.java,149,return optionString;
+S1228,PropertyOption.java,153,return description;
+S1229,PropertyOption.java,159,if (helpSettings.contains(DisplaySetting.DISPLAY_PROPERTY_OPTION)) {
+S1230,PropertyOption.java,160,"final HelpLine helpLine = new HelpLineImpl(this, depth);"
+S1231,PropertyOption.java,162,return Collections.singletonList(helpLine);
+S1232,PropertyOption.java,164,return Collections.EMPTY_LIST;
+S1233,ResourceHelper.java,47,private ResourceHelper() {
+S1234,ResourceHelper.java,48,String bundleName = System.getProperty(PROP_LOCALE);
+S1235,ResourceHelper.java,50,if (bundleName == null) {
+S1236,ResourceHelper.java,51,bundleName = DEFAULT_BUNDLE;
+S1237,ResourceHelper.java,54,this.prop = bundleName;
+S1238,ResourceHelper.java,56,int firstUnderscore = bundleName.indexOf('_');
+S1239,ResourceHelper.java,57,"int secondUnderscore = bundleName.indexOf('_', firstUnderscore + 1);"
+S1240,ResourceHelper.java,60,if (firstUnderscore != -1) {
+S1241,ResourceHelper.java,61,"String language = bundleName.substring(firstUnderscore + 1, secondUnderscore);"
+S1242,ResourceHelper.java,62,String country = bundleName.substring(secondUnderscore + 1);
+S1243,ResourceHelper.java,63,"locale = new Locale(language, country);"
+S1244,ResourceHelper.java,70,"bundle = ResourceBundle.getBundle(bundleName, locale);"
+S1245,ResourceHelper.java,77,return this.prop;
+S1246,ResourceHelper.java,85,String bundleName = System.getProperty(PROP_LOCALE);
+S1247,ResourceHelper.java,86,if (helper == null || !helper.getBundleName().equals(bundleName)) {
+S1248,ResourceHelper.java,87,helper = new ResourceHelper();
+S1249,ResourceHelper.java,90,return helper;
+S1250,ResourceHelper.java,100,"return getMessage(key, new Object[] {  });"
+S1251,ResourceHelper.java,112,"return getMessage(key, new Object[] { value });"
+S1252,ResourceHelper.java,126,"return getMessage(key, new Object[] { value1, value2 });"
+S1253,ResourceHelper.java,155,final String msgFormatStr = bundle.getString(key);
+S1254,ResourceHelper.java,156,final MessageFormat msgFormat = new MessageFormat(msgFormatStr);
+S1255,ResourceHelper.java,158,return msgFormat.format(values);
+S1256,SourceDestArgument.java,51,"this(source, dest, DEFAULT_INITIAL_SEPARATOR, DEFAULT_SUBSEQUENT_SEPARATOR,"
+S1257,SourceDestArgument.java,71,"super(""SourceDestArgument"", null, sum(source.getMinimum(), dest.getMinimum()),"
+S1258,SourceDestArgument.java,75,this.source = source;
+S1259,SourceDestArgument.java,76,this.dest = dest;
+S1260,SourceDestArgument.java,78,if (dest.getMinimum() != dest.getMaximum()) {
+S1261,SourceDestArgument.java,79,throw new IllegalArgumentException(ResourceHelper.getResourceHelper().getMessage(ResourceConstants.SOURCE_DEST_MUST_ENFORCE_VALUES));
+S1262,SourceDestArgument.java,85,"return Math.max(a, Math.max(b, a + b));"
+S1263,SourceDestArgument.java,91,final int length = buffer.length();
+S1264,SourceDestArgument.java,93,"source.appendUsage(buffer, helpSettings, comp);"
+S1265,SourceDestArgument.java,95,if (buffer.length() != length) {
+S1266,SourceDestArgument.java,96,buffer.append(' ');
+S1267,SourceDestArgument.java,99,"dest.appendUsage(buffer, helpSettings, comp);"
+S1268,SourceDestArgument.java,105,final List helpLines = new ArrayList();
+S1269,SourceDestArgument.java,106,"helpLines.addAll(source.helpLines(depth, helpSettings, comp));"
+S1270,SourceDestArgument.java,107,"helpLines.addAll(dest.helpLines(depth, helpSettings, comp));"
+S1271,SourceDestArgument.java,109,return helpLines;
+S1272,SourceDestArgument.java,115,final List values = commandLine.getValues(option);
+S1273,SourceDestArgument.java,117,final int limit = values.size() - dest.getMinimum();
+S1274,SourceDestArgument.java,118,int count = 0;
+S1275,SourceDestArgument.java,120,final Iterator i = values.iterator();
+S1276,SourceDestArgument.java,122,while (count++ < limit) {
+S1277,SourceDestArgument.java,123,"commandLine.addValue(source, i.next());"
+S1278,SourceDestArgument.java,126,while (i.hasNext()) {
+S1279,SourceDestArgument.java,127,"commandLine.addValue(dest, i.next());"
+S1280,SourceDestArgument.java,130,"source.validate(commandLine, source);"
+S1281,SourceDestArgument.java,131,"dest.validate(commandLine, dest);"
+S1282,SourceDestArgument.java,136,"return source.canProcess(commandLine, arg) || dest.canProcess(commandLine, arg);"
+S1283,Switch.java,43,public static final ResourceHelper resources = ResourceHelper.getResourceHelper();
+S1284,Switch.java,86,"super(argument, children, description, id, required);"
+S1285,Switch.java,88,if (enabledPrefix == null) {
+S1286,Switch.java,89,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.SWITCH_NO_ENABLED_PREFIX));
+S1287,Switch.java,92,if (disabledPrefix == null) {
+S1288,Switch.java,93,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.SWITCH_NO_DISABLED_PREFIX));
+S1289,Switch.java,96,if (enabledPrefix.startsWith(disabledPrefix)) {
+S1290,Switch.java,97,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.SWITCH_ENABLED_STARTS_WITH_DISABLED));
+S1291,Switch.java,100,if (disabledPrefix.startsWith(enabledPrefix)) {
+S1292,Switch.java,101,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.SWITCH_DISABLED_STARTWS_WITH_ENABLED));
+S1293,Switch.java,104,this.enabledPrefix = enabledPrefix;
+S1294,Switch.java,105,this.disabledPrefix = disabledPrefix;
+S1295,Switch.java,106,this.preferredName = preferredName;
+S1296,Switch.java,108,if ((preferredName == null) || (preferredName.length() < 1)) {
+S1297,Switch.java,109,throw new IllegalArgumentException(resources.getMessage(ResourceConstants.SWITCH_PREFERRED_NAME_TOO_SHORT));
+S1298,Switch.java,112,final Set newTriggers = new HashSet();
+S1299,Switch.java,113,newTriggers.add(enabledPrefix + preferredName);
+S1300,Switch.java,114,newTriggers.add(disabledPrefix + preferredName);
+S1301,Switch.java,115,this.triggers = Collections.unmodifiableSet(newTriggers);
+S1302,Switch.java,117,if (aliases == null) {
+S1303,Switch.java,118,this.aliases = Collections.EMPTY_SET;
+S1304,Switch.java,120,this.aliases = Collections.unmodifiableSet(new HashSet(aliases));
+S1305,Switch.java,122,for (final Iterator i = aliases.iterator(); i.hasNext();) {
+S1306,Switch.java,123,final String alias = (String) i.next();
+S1307,Switch.java,124,newTriggers.add(enabledPrefix + alias);
+S1308,Switch.java,125,newTriggers.add(disabledPrefix + alias);
+S1309,Switch.java,129,final Set newPrefixes = new HashSet(super.getPrefixes());
+S1310,Switch.java,130,newPrefixes.add(enabledPrefix);
+S1311,Switch.java,131,newPrefixes.add(disabledPrefix);
+S1312,Switch.java,132,this.prefixes = Collections.unmodifiableSet(newPrefixes);
+S1313,Switch.java,134,this.defaultSwitch = switchDefault;
+S1314,Switch.java,136,checkPrefixes(newPrefixes);
+S1315,Switch.java,142,final String arg = (String) arguments.next();
+S1316,Switch.java,144,"if (canProcess(commandLine, arg)) {"
+S1317,Switch.java,145,if (arg.startsWith(enabledPrefix)) {
+S1318,Switch.java,146,"commandLine.addSwitch(this, true);"
+S1319,Switch.java,147,arguments.set(enabledPrefix + preferredName);
+S1320,Switch.java,150,if (arg.startsWith(disabledPrefix)) {
+S1321,Switch.java,151,"commandLine.addSwitch(this, false);"
+S1322,Switch.java,152,arguments.set(disabledPrefix + preferredName);
+S1323,Switch.java,160,return triggers;
+S1324,Switch.java,164,return prefixes;
+S1325,Switch.java,169,if (isRequired() && !commandLine.hasOption(this)) {
+S1326,Switch.java,170,"throw new OptionException(this, ResourceConstants.OPTION_MISSING_REQUIRED,"
+S1327,Switch.java,181,final boolean optional =
+S1328,Switch.java,183,final boolean displayAliases = helpSettings.contains(DisplaySetting.DISPLAY_ALIASES);
+S1329,Switch.java,184,final boolean disabled = helpSettings.contains(DisplaySetting.DISPLAY_SWITCH_DISABLED);
+S1330,Switch.java,185,final boolean enabled =
+S1331,Switch.java,187,final boolean both = disabled && enabled;
+S1332,Switch.java,189,if (optional) {
+S1333,Switch.java,193,if (enabled) {
+S1334,Switch.java,194,buffer.append(enabledPrefix).append(preferredName);
+S1335,Switch.java,197,if (both) {
+S1336,Switch.java,198,buffer.append('|');
+S1337,Switch.java,201,if (disabled) {
+S1338,Switch.java,202,buffer.append(disabledPrefix).append(preferredName);
+S1339,Switch.java,205,if (displayAliases && !aliases.isEmpty()) {
+S1340,Switch.java,206,"buffer.append("" ("");"
+S1341,Switch.java,208,final List list = new ArrayList(aliases);
+S1342,Switch.java,209,Collections.sort(list);
+S1343,Switch.java,211,for (final Iterator i = list.iterator(); i.hasNext();) {
+S1344,Switch.java,212,final String alias = (String) i.next();
+S1345,Switch.java,214,if (enabled) {
+S1346,Switch.java,215,buffer.append(enabledPrefix).append(alias);
+S1347,Switch.java,218,if (both) {
+S1348,Switch.java,219,buffer.append('|');
+S1349,Switch.java,222,if (disabled) {
+S1350,Switch.java,223,buffer.append(disabledPrefix).append(alias);
+S1351,Switch.java,226,if (i.hasNext()) {
+S1352,Switch.java,227,"buffer.append(',');"
+S1353,Switch.java,231,buffer.append(')');
+S1354,Switch.java,234,"super.appendUsage(buffer, helpSettings, comp);"
+S1355,Switch.java,236,if (optional) {
+S1356,Switch.java,242,return enabledPrefix + preferredName;
+S1357,Switch.java,246,"commandLine.setDefaultSwitch(this, defaultSwitch);"
+S1358,SwitchBuilder.java,49,"this(Switch.DEFAULT_ENABLED_PREFIX, Switch.DEFAULT_DISABLED_PREFIX);"
+S1359,SwitchBuilder.java,61,throws IllegalArgumentException {
+S1360,SwitchBuilder.java,62,if ((enabledPrefix == null) || (enabledPrefix.length() < 1)) {
+S1361,SwitchBuilder.java,66,if ((disabledPrefix == null) || (disabledPrefix.length() < 1)) {
+S1362,SwitchBuilder.java,70,if (enabledPrefix.equals(disabledPrefix)) {
+S1363,SwitchBuilder.java,74,this.enabledPrefix = enabledPrefix;
+S1364,SwitchBuilder.java,75,this.disabledPrefix = disabledPrefix;
+S1365,SwitchBuilder.java,76,reset();
+S1366,SwitchBuilder.java,84,final Switch option =
+S1367,SwitchBuilder.java,88,reset();
+S1368,SwitchBuilder.java,90,return option;
+S1369,SwitchBuilder.java,97,description = null;
+S1370,SwitchBuilder.java,98,preferredName = null;
+S1371,SwitchBuilder.java,99,required = false;
+S1372,SwitchBuilder.java,100,aliases = new HashSet();
+S1373,SwitchBuilder.java,101,argument = null;
+S1374,SwitchBuilder.java,102,children = null;
+S1375,SwitchBuilder.java,103,id = 0;
+S1376,SwitchBuilder.java,104,switchDefault = null;
+S1377,SwitchBuilder.java,106,return this;
+S1378,SwitchBuilder.java,128,if (preferredName == null) {
+S1379,SwitchBuilder.java,129,preferredName = name;
+S1380,SwitchBuilder.java,134,return this;
+S1381,SwitchBuilder.java,190,this.switchDefault = newSwitchDefault;
+S1382,SwitchBuilder.java,192,return this;
+S1383,WriteableCommandLineImpl.java,41,private final Map optionToProperties = new HashMap();
+S1384,WriteableCommandLineImpl.java,43,private final List options = new ArrayList();
+S1385,WriteableCommandLineImpl.java,44,private final Map nameToOption = new HashMap();
+S1386,WriteableCommandLineImpl.java,45,private final Map values = new HashMap();
+S1387,WriteableCommandLineImpl.java,46,private final Map switches = new HashMap();
+S1388,WriteableCommandLineImpl.java,47,private final Map defaultValues = new HashMap();
+S1389,WriteableCommandLineImpl.java,48,private final Map defaultSwitches = new HashMap();
+S1390,WriteableCommandLineImpl.java,60,final List arguments) {
+S1391,WriteableCommandLineImpl.java,61,this.prefixes = rootOption.getPrefixes();
+S1392,WriteableCommandLineImpl.java,62,this.normalised = arguments;
+S1393,WriteableCommandLineImpl.java,66,options.add(option);
+S1394,WriteableCommandLineImpl.java,67,"nameToOption.put(option.getPreferredName(), option);"
+S1395,WriteableCommandLineImpl.java,69,for (Iterator i = option.getTriggers().iterator(); i.hasNext();) {
+S1396,WriteableCommandLineImpl.java,70,"nameToOption.put(i.next(), option);"
+S1397,WriteableCommandLineImpl.java,78,if (option instanceof Argument) {
+S1398,WriteableCommandLineImpl.java,79,addOption(option);
+S1399,WriteableCommandLineImpl.java,82,List valueList = (List) values.get(option);
+S1400,WriteableCommandLineImpl.java,84,if (valueList == null) {
+S1401,WriteableCommandLineImpl.java,85,valueList = new ArrayList();
+S1402,WriteableCommandLineImpl.java,86,"values.put(option, valueList);"
+S1403,WriteableCommandLineImpl.java,89,valueList.add(value);
+S1404,WriteableCommandLineImpl.java,94,addOption(option);
+S1405,WriteableCommandLineImpl.java,96,if (switches.containsKey(option)) {
+S1406,WriteableCommandLineImpl.java,99,"switches.put(option, value ? Boolean.TRUE : Boolean.FALSE);"
+S1407,WriteableCommandLineImpl.java,104,final boolean present = options.contains(option);
+S1408,WriteableCommandLineImpl.java,106,return present;
+S1409,WriteableCommandLineImpl.java,110,return (Option) nameToOption.get(trigger);
+S1410,WriteableCommandLineImpl.java,116,List valueList = (List) values.get(option);
+S1411,WriteableCommandLineImpl.java,119,if (defaultValues == null || defaultValues.isEmpty()) {
+S1412,WriteableCommandLineImpl.java,120,defaultValues = (List) this.defaultValues.get(option);
+S1413,WriteableCommandLineImpl.java,124,if (defaultValues != null && !defaultValues.isEmpty()) {
+S1414,WriteableCommandLineImpl.java,125,if (valueList == null || valueList.isEmpty()) {
+S1415,WriteableCommandLineImpl.java,126,valueList = defaultValues;
+S1416,WriteableCommandLineImpl.java,130,if (defaultValues.size() > valueList.size()) {
+S1417,WriteableCommandLineImpl.java,132,valueList = new ArrayList(valueList);
+S1418,WriteableCommandLineImpl.java,133,for (int i=valueList.size(); i<defaultValues.size(); i++) {
+S1419,WriteableCommandLineImpl.java,134,valueList.add(defaultValues.get(i));
+S1420,WriteableCommandLineImpl.java,140,return valueList == null ? Collections.EMPTY_LIST : valueList;
+S1421,WriteableCommandLineImpl.java,145,List valueList = (List) values.get(option);
+S1422,WriteableCommandLineImpl.java,148,if (valueList == null) {
+S1423,WriteableCommandLineImpl.java,149,valueList = Collections.EMPTY_LIST;
+S1424,WriteableCommandLineImpl.java,152,return valueList;
+S1425,WriteableCommandLineImpl.java,158,Boolean bool = (Boolean) switches.get(option);
+S1426,WriteableCommandLineImpl.java,161,if (bool == null) {
+S1427,WriteableCommandLineImpl.java,162,bool = defaultValue;
+S1428,WriteableCommandLineImpl.java,166,if (bool == null) {
+S1429,WriteableCommandLineImpl.java,167,bool = (Boolean) this.defaultSwitches.get(option);
+S1430,WriteableCommandLineImpl.java,170,return bool;
+S1431,WriteableCommandLineImpl.java,174,"return getProperty(new PropertyOption(), property);"
+S1432,WriteableCommandLineImpl.java,180,Properties properties = (Properties) optionToProperties.get(option);
+S1433,WriteableCommandLineImpl.java,181,if (properties == null) {
+S1434,WriteableCommandLineImpl.java,182,properties = new Properties();
+S1435,WriteableCommandLineImpl.java,183,"optionToProperties.put(option, properties);"
+S1436,WriteableCommandLineImpl.java,185,"properties.setProperty(property, value);"
+S1437,WriteableCommandLineImpl.java,189,"addProperty(new PropertyOption(), property, value);"
+S1438,WriteableCommandLineImpl.java,195,Properties properties = (Properties) optionToProperties.get(option);
+S1439,WriteableCommandLineImpl.java,196,if (properties == null) {
+S1440,WriteableCommandLineImpl.java,199,"return properties.getProperty(property, defaultValue);"
+S1441,WriteableCommandLineImpl.java,203,Properties properties = (Properties) optionToProperties.get(option);
+S1442,WriteableCommandLineImpl.java,204,if (properties == null) {
+S1443,WriteableCommandLineImpl.java,207,return Collections.unmodifiableSet(properties.keySet());
+S1444,WriteableCommandLineImpl.java,211,return getProperties(new PropertyOption());
+S1445,WriteableCommandLineImpl.java,215,for (final Iterator i = prefixes.iterator(); i.hasNext();) {
+S1446,WriteableCommandLineImpl.java,216,final String prefix = (String) i.next();
+S1447,WriteableCommandLineImpl.java,218,if (trigger.startsWith(prefix)) {
+S1448,WriteableCommandLineImpl.java,219,return true;
+S1449,WriteableCommandLineImpl.java,223,return false;
+S1450,WriteableCommandLineImpl.java,227,final StringBuffer buffer = new StringBuffer();
+S1451,WriteableCommandLineImpl.java,230,for (final Iterator i = normalised.iterator(); i.hasNext();) {
+S1452,WriteableCommandLineImpl.java,231,final String arg = (String) i.next();
+S1453,WriteableCommandLineImpl.java,233,if (arg.indexOf(' ') >= 0) {
+S1454,WriteableCommandLineImpl.java,236,buffer.append(arg);
+S1455,WriteableCommandLineImpl.java,239,if (i.hasNext()) {
+S1456,WriteableCommandLineImpl.java,240,buffer.append(' ');
+S1457,WriteableCommandLineImpl.java,244,return buffer.toString();
+S1458,WriteableCommandLineImpl.java,252,return Collections.unmodifiableSet(nameToOption.keySet());
+S1459,WriteableCommandLineImpl.java,257,if (defaults == null) {
+S1460,WriteableCommandLineImpl.java,258,defaultValues.remove(option);
+S1461,WriteableCommandLineImpl.java,260,"defaultValues.put(option, defaults);"
+S1462,WriteableCommandLineImpl.java,266,if (defaultSwitch == null) {
+S1463,WriteableCommandLineImpl.java,267,defaultSwitches.remove(option);
+S1464,WriteableCommandLineImpl.java,269,"defaultSwitches.put(option, defaultSwitch);"
+S1465,WriteableCommandLineImpl.java,274,return Collections.unmodifiableList(normalised);

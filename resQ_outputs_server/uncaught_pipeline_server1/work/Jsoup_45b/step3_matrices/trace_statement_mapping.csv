@@ -1,0 +1,3110 @@
+statement_id,file,line,code
+S1,Attribute.java,13,private static final String[] booleanAttributes = {
+S2,Attribute.java,29,"public Attribute(String key, String value) {"
+S3,Attribute.java,30,Validate.notEmpty(key);
+S4,Attribute.java,31,Validate.notNull(value);
+S5,Attribute.java,32,this.key = key.trim().toLowerCase();
+S6,Attribute.java,33,this.value = value;
+S7,Attribute.java,41,return key;
+S8,Attribute.java,58,return value;
+S9,Attribute.java,83,accum.append(key);
+S10,Attribute.java,84,if (!shouldCollapseAttribute(out)) {
+S11,Attribute.java,85,"accum.append(""=\"""");"
+S12,Attribute.java,86,"Entities.escape(accum, value, out, true, false, false);"
+S13,Attribute.java,87,"accum.append('""');"
+S14,Attribute.java,122,"return ("""".equals(value) || value.equalsIgnoreCase(key))"
+S15,Attribute.java,133,if (this == o) return true;
+S16,Attribute.java,134,if (!(o instanceof Attribute)) return false;
+S17,Attribute.java,136,Attribute attribute = (Attribute) o;
+S18,Attribute.java,138,if (key != null ? !key.equals(attribute.key) : attribute.key != null) return false;
+S19,Attribute.java,139,return !(value != null ? !value.equals(attribute.value) : attribute.value != null);
+S20,Attribute.java,144,int result = key != null ? key.hashCode() : 0;
+S21,Attribute.java,145,result = 31 * result + (value != null ? value.hashCode() : 0);
+S22,Attribute.java,146,return result;
+S23,Attributes.java,19,"public class Attributes implements Iterable<Attribute>, Cloneable {"
+S24,Attributes.java,22,"private LinkedHashMap<String, Attribute> attributes = null;"
+S25,Attributes.java,33,Validate.notEmpty(key);
+S26,Attributes.java,35,if (attributes == null)
+S27,Attributes.java,36,"return """";"
+S28,Attributes.java,38,Attribute attr = attributes.get(key.toLowerCase());
+S29,Attributes.java,39,"return attr != null ? attr.getValue() : """";"
+S30,Attributes.java,48,"Attribute attr = new Attribute(key, value);"
+S31,Attributes.java,49,put(attr);
+S32,Attributes.java,69,Validate.notNull(attribute);
+S33,Attributes.java,70,if (attributes == null)
+S34,Attributes.java,71,"attributes = new LinkedHashMap<String, Attribute>(2);"
+S35,Attributes.java,72,"attributes.put(attribute.getKey(), attribute);"
+S36,Attributes.java,92,return attributes != null && attributes.containsKey(key.toLowerCase());
+S37,Attributes.java,100,if (attributes == null)
+S38,Attributes.java,101,return 0;
+S39,Attributes.java,102,return attributes.size();
+S40,Attributes.java,110,if (incoming.size() == 0)
+S41,Attributes.java,111,return;
+S42,Attributes.java,118,return asList().iterator();
+S43,Attributes.java,127,if (attributes == null)
+S44,Attributes.java,128,return Collections.emptyList();
+S45,Attributes.java,130,List<Attribute> list = new ArrayList<Attribute>(attributes.size());
+S46,Attributes.java,131,"for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {"
+S47,Attributes.java,132,list.add(entry.getValue());
+S48,Attributes.java,134,return Collections.unmodifiableList(list);
+S49,Attributes.java,157,if (attributes == null)
+S50,Attributes.java,158,return;
+S51,Attributes.java,160,"for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {"
+S52,Attributes.java,161,Attribute attribute = entry.getValue();
+S53,Attributes.java,162,"accum.append("" "");"
+S54,Attributes.java,163,"attribute.html(accum, out);"
+S55,Attributes.java,179,if (this == o) return true;
+S56,Attributes.java,180,if (!(o instanceof Attributes)) return false;
+S57,Attributes.java,182,Attributes that = (Attributes) o;
+S58,Attributes.java,184,return !(attributes != null ? !attributes.equals(that.attributes) : that.attributes != null);
+S59,Attributes.java,193,return attributes != null ? attributes.hashCode() : 0;
+S60,Attributes.java,198,if (attributes == null)
+S61,Attributes.java,199,return new Attributes();
+S62,BooleanAttribute.java,12,"super(key, """");"
+S63,CharacterReader.java,17,private int pos = 0;
+S64,CharacterReader.java,18,private int mark = 0;
+S65,CharacterReader.java,19,"private final String[] stringCache = new String[512]; // holds reused strings in this doc, to lessen garbage"
+S66,CharacterReader.java,21,CharacterReader(String input) {
+S67,CharacterReader.java,22,Validate.notNull(input);
+S68,CharacterReader.java,23,this.input = input.toCharArray();
+S69,CharacterReader.java,24,this.length = this.input.length;
+S70,CharacterReader.java,32,return pos >= length;
+S71,CharacterReader.java,36,return pos >= length ? EOF : input[pos];
+S72,CharacterReader.java,40,char val = pos >= length ? EOF : input[pos];
+S73,CharacterReader.java,41,pos++;
+S74,CharacterReader.java,42,return val;
+S75,CharacterReader.java,46,pos--;
+S76,CharacterReader.java,50,pos++;
+S77,CharacterReader.java,54,mark = pos;
+S78,CharacterReader.java,58,pos = mark;
+S79,CharacterReader.java,72,for (int i = pos; i < length; i++) {
+S80,CharacterReader.java,73,if (c == input[i])
+S81,CharacterReader.java,74,return i - pos;
+S82,CharacterReader.java,104,int offset = nextIndexOf(c);
+S83,CharacterReader.java,105,if (offset != -1) {
+S84,CharacterReader.java,106,"String consumed = cacheString(pos, offset);"
+S85,CharacterReader.java,107,pos += offset;
+S86,CharacterReader.java,108,return consumed;
+S87,CharacterReader.java,126,final int start = pos;
+S88,CharacterReader.java,127,final int remaining = length;
+S89,CharacterReader.java,129,OUTER: while (pos < remaining) {
+S90,CharacterReader.java,130,for (char c : chars) {
+S91,CharacterReader.java,131,if (input[pos] == c)
+S92,CharacterReader.java,132,break OUTER;
+S93,CharacterReader.java,134,pos++;
+S94,CharacterReader.java,137,"return pos > start ? cacheString(start, pos-start) : """";"
+S95,CharacterReader.java,141,final int start = pos;
+S96,CharacterReader.java,142,final int remaining = length;
+S97,CharacterReader.java,143,final char[] val = input;
+S98,CharacterReader.java,145,while (pos < remaining) {
+S99,CharacterReader.java,146,"if (Arrays.binarySearch(chars, val[pos]) >= 0)"
+S100,CharacterReader.java,147,break;
+S101,CharacterReader.java,148,pos++;
+S102,CharacterReader.java,151,"return pos > start ? cacheString(start, pos-start) : """";"
+S103,CharacterReader.java,156,final int start = pos;
+S104,CharacterReader.java,157,final int remaining = length;
+S105,CharacterReader.java,158,final char[] val = input;
+S106,CharacterReader.java,160,while (pos < remaining) {
+S107,CharacterReader.java,161,final char c = val[pos];
+S108,CharacterReader.java,162,if (c == '&'|| c ==  '<' || c ==  TokeniserState.nullChar)
+S109,CharacterReader.java,163,break;
+S110,CharacterReader.java,164,pos++;
+S111,CharacterReader.java,167,"return pos > start ? cacheString(start, pos-start) : """";"
+S112,CharacterReader.java,172,final int start = pos;
+S113,CharacterReader.java,173,final int remaining = length;
+S114,CharacterReader.java,174,final char[] val = input;
+S115,CharacterReader.java,176,while (pos < remaining) {
+S116,CharacterReader.java,177,final char c = val[pos];
+S117,CharacterReader.java,178,if (c == '\t'|| c ==  '\n'|| c ==  '\r'|| c ==  '\f'|| c ==  ' '|| c ==  '/'|| c ==  '>'|| c ==  TokeniserState.nullChar)
+S118,CharacterReader.java,180,pos++;
+S119,CharacterReader.java,183,"return pos > start ? cacheString(start, pos-start) : """";"
+S120,CharacterReader.java,193,int start = pos;
+S121,CharacterReader.java,194,while (pos < length) {
+S122,CharacterReader.java,195,char c = input[pos];
+S123,CharacterReader.java,196,if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+S124,CharacterReader.java,197,pos++;
+S125,CharacterReader.java,202,"return cacheString(start, pos - start);"
+S126,CharacterReader.java,206,int start = pos;
+S127,CharacterReader.java,207,while (pos < length) {
+S128,CharacterReader.java,208,char c = input[pos];
+S129,CharacterReader.java,209,if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+S130,CharacterReader.java,210,pos++;
+S131,CharacterReader.java,214,while (!isEmpty()) {
+S132,CharacterReader.java,215,char c = input[pos];
+S133,CharacterReader.java,216,if (c >= '0' && c <= '9')
+S134,CharacterReader.java,217,pos++;
+S135,CharacterReader.java,222,"return cacheString(start, pos - start);"
+S136,CharacterReader.java,226,int start = pos;
+S137,CharacterReader.java,227,while (pos < length) {
+S138,CharacterReader.java,228,char c = input[pos];
+S139,CharacterReader.java,229,if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'))
+S140,CharacterReader.java,230,pos++;
+S141,CharacterReader.java,234,"return cacheString(start, pos - start);"
+S142,CharacterReader.java,238,int start = pos;
+S143,CharacterReader.java,239,while (pos < length) {
+S144,CharacterReader.java,240,char c = input[pos];
+S145,CharacterReader.java,241,if (c >= '0' && c <= '9')
+S146,CharacterReader.java,242,pos++;
+S147,CharacterReader.java,246,"return cacheString(start, pos - start);"
+S148,CharacterReader.java,250,return !isEmpty() && input[pos] == c;
+S149,CharacterReader.java,255,int scanLength = seq.length();
+S150,CharacterReader.java,256,if (scanLength > length - pos)
+S151,CharacterReader.java,259,for (int offset = 0; offset < scanLength; offset++)
+S152,CharacterReader.java,260,if (seq.charAt(offset) != input[pos+offset])
+S153,CharacterReader.java,261,return false;
+S154,CharacterReader.java,262,return true;
+S155,CharacterReader.java,266,int scanLength = seq.length();
+S156,CharacterReader.java,267,if (scanLength > length - pos)
+S157,CharacterReader.java,270,for (int offset = 0; offset < scanLength; offset++) {
+S158,CharacterReader.java,271,char upScan = Character.toUpperCase(seq.charAt(offset));
+S159,CharacterReader.java,272,char upTarget = Character.toUpperCase(input[pos + offset]);
+S160,CharacterReader.java,273,if (upScan != upTarget)
+S161,CharacterReader.java,274,return false;
+S162,CharacterReader.java,276,return true;
+S163,CharacterReader.java,280,if (isEmpty())
+S164,CharacterReader.java,283,char c = input[pos];
+S165,CharacterReader.java,284,for (char seek : seq) {
+S166,CharacterReader.java,285,if (seek == c)
+S167,CharacterReader.java,288,return false;
+S168,CharacterReader.java,292,"return !isEmpty() && Arrays.binarySearch(seq, input[pos]) >= 0;"
+S169,CharacterReader.java,296,if (isEmpty())
+S170,CharacterReader.java,298,char c = input[pos];
+S171,CharacterReader.java,299,return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+S172,CharacterReader.java,303,if (isEmpty())
+S173,CharacterReader.java,305,char c = input[pos];
+S174,CharacterReader.java,306,return (c >= '0' && c <= '9');
+S175,CharacterReader.java,310,if (matches(seq)) {
+S176,CharacterReader.java,311,pos += seq.length();
+S177,CharacterReader.java,312,return true;
+S178,CharacterReader.java,314,return false;
+S179,CharacterReader.java,319,if (matchesIgnoreCase(seq)) {
+S180,CharacterReader.java,320,pos += seq.length();
+S181,CharacterReader.java,321,return true;
+S182,CharacterReader.java,323,return false;
+S183,CharacterReader.java,347,final char[] val = input;
+S184,CharacterReader.java,348,final String[] cache = stringCache;
+S185,CharacterReader.java,351,if (count > maxCacheLen)
+S186,CharacterReader.java,352,"return new String(val, start, count);"
+S187,CharacterReader.java,355,int hash = 0;
+S188,CharacterReader.java,356,int offset = start;
+S189,CharacterReader.java,357,for (int i = 0; i < count; i++) {
+S190,CharacterReader.java,358,hash = 31 * hash + val[offset++];
+S191,CharacterReader.java,362,final int index = hash & cache.length - 1;
+S192,CharacterReader.java,363,String cached = cache[index];
+S193,CharacterReader.java,365,"if (cached == null) { // miss, add"
+S194,CharacterReader.java,366,"cached = new String(val, start, count);"
+S195,CharacterReader.java,367,cache[index] = cached;
+S196,CharacterReader.java,369,"if (rangeEquals(start, count, cached)) {"
+S197,CharacterReader.java,371,return cached;
+S198,CharacterReader.java,373,"cached = new String(val, start, count);"
+S199,CharacterReader.java,376,return cached;
+S200,CharacterReader.java,383,if (count == cached.length()) {
+S201,CharacterReader.java,384,char one[] = input;
+S202,CharacterReader.java,385,int i = start;
+S203,CharacterReader.java,386,int j = 0;
+S204,CharacterReader.java,387,while (count-- != 0) {
+S205,CharacterReader.java,388,if (one[i++] != cached.charAt(j++))
+S206,CharacterReader.java,389,return false;
+S207,CharacterReader.java,391,return true;
+S208,CharacterReader.java,393,return false;
+S209,Cleaner.java,25,public class Cleaner {
+S210,Cleaner.java,32,public Cleaner(Whitelist whitelist) {
+S211,Cleaner.java,33,Validate.notNull(whitelist);
+S212,Cleaner.java,34,this.whitelist = whitelist;
+S213,Cleaner.java,65,Validate.notNull(dirtyDocument);
+S214,Cleaner.java,67,Document clean = Document.createShell(dirtyDocument.baseUri());
+S215,Cleaner.java,68,"int numDiscarded = copySafeNodes(dirtyDocument.body(), clean.body());"
+S216,Cleaner.java,69,return numDiscarded == 0;
+S217,Cleaner.java,75,private final class CleaningVisitor implements NodeVisitor {
+S218,Cleaner.java,76,private int numDiscarded = 0;
+S219,Cleaner.java,80,"private CleaningVisitor(Element root, Element destination) {"
+S220,Cleaner.java,81,this.root = root;
+S221,Cleaner.java,82,this.destination = destination;
+S222,Cleaner.java,86,if (source instanceof Element) {
+S223,Cleaner.java,87,Element sourceEl = (Element) source;
+S224,Cleaner.java,89,"if (whitelist.isSafeTag(sourceEl.tagName())) { // safe, clone and copy safe attrs"
+S225,Cleaner.java,90,ElementMeta meta = createSafeElement(sourceEl);
+S226,Cleaner.java,91,Element destChild = meta.el;
+S227,Cleaner.java,92,destination.appendChild(destChild);
+S228,Cleaner.java,94,numDiscarded += meta.numAttribsDiscarded;
+S229,Cleaner.java,95,destination = destChild;
+S230,Cleaner.java,96,"} else if (source != root) { // not a safe tag, so don't add. don't count root against discarded."
+S231,Cleaner.java,99,} else if (source instanceof TextNode) {
+S232,Cleaner.java,100,TextNode sourceText = (TextNode) source;
+S233,Cleaner.java,101,"TextNode destText = new TextNode(sourceText.getWholeText(), source.baseUri());"
+S234,Cleaner.java,102,destination.appendChild(destText);
+S235,Cleaner.java,103,} else if (source instanceof DataNode && whitelist.isSafeTag(source.parent().nodeName())) {
+S236,Cleaner.java,104,DataNode sourceData = (DataNode) source;
+S237,Cleaner.java,105,"DataNode destData = new DataNode(sourceData.getWholeData(), source.baseUri());"
+S238,Cleaner.java,106,destination.appendChild(destData);
+S239,Cleaner.java,107,"} else { // else, we don't care about comments, xml proc instructions, etc"
+S240,Cleaner.java,113,if (source instanceof Element && whitelist.isSafeTag(source.nodeName())) {
+S241,Cleaner.java,114,"destination = destination.parent(); // would have descended, so pop destination stack"
+S242,Cleaner.java,120,"CleaningVisitor cleaningVisitor = new CleaningVisitor(source, dest);"
+S243,Cleaner.java,121,NodeTraversor traversor = new NodeTraversor(cleaningVisitor);
+S244,Cleaner.java,122,traversor.traverse(source);
+S245,Cleaner.java,123,return cleaningVisitor.numDiscarded;
+S246,Cleaner.java,127,String sourceTag = sourceEl.tagName();
+S247,Cleaner.java,128,Attributes destAttrs = new Attributes();
+S248,Cleaner.java,129,"Element dest = new Element(Tag.valueOf(sourceTag), sourceEl.baseUri(), destAttrs);"
+S249,Cleaner.java,130,int numDiscarded = 0;
+S250,Cleaner.java,132,Attributes sourceAttrs = sourceEl.attributes();
+S251,Cleaner.java,133,for (Attribute sourceAttr : sourceAttrs) {
+S252,Cleaner.java,139,Attributes enforcedAttrs = whitelist.getEnforcedAttributes(sourceTag);
+S253,Cleaner.java,140,destAttrs.addAll(enforcedAttrs);
+S254,Cleaner.java,142,"return new ElementMeta(dest, numDiscarded);"
+S255,Cleaner.java,149,"ElementMeta(Element el, int numAttribsDiscarded) {"
+S256,Cleaner.java,150,this.el = el;
+S257,Cleaner.java,151,this.numAttribsDiscarded = numAttribsDiscarded;
+S258,Collector.java,23,Elements elements = new Elements();
+S259,Collector.java,24,"new NodeTraversor(new Accumulator(root, elements, eval)).traverse(root);"
+S260,Collector.java,25,return elements;
+S261,Collector.java,33,"Accumulator(Element root, Elements elements, Evaluator eval) {"
+S262,Collector.java,34,this.root = root;
+S263,Collector.java,35,this.elements = elements;
+S264,Collector.java,36,this.eval = eval;
+S265,Collector.java,40,if (node instanceof Element) {
+S266,Collector.java,41,Element el = (Element) node;
+S267,Collector.java,42,"if (eval.matches(root, el))"
+S268,Collector.java,43,elements.add(el);
+S269,CombiningEvaluator.java,15,int num = 0;
+S270,CombiningEvaluator.java,18,super();
+S271,CombiningEvaluator.java,19,evaluators = new ArrayList<Evaluator>();
+S272,CombiningEvaluator.java,23,this();
+S273,CombiningEvaluator.java,24,this.evaluators.addAll(evaluators);
+S274,CombiningEvaluator.java,25,updateNumEvaluators();
+S275,CombiningEvaluator.java,38,num = evaluators.size();
+S276,CombiningEvaluator.java,43,super(evaluators);
+S277,CombiningEvaluator.java,47,this(Arrays.asList(evaluators));
+S278,CombiningEvaluator.java,52,for (int i = 0; i < num; i++) {
+S279,CombiningEvaluator.java,53,Evaluator s = evaluators.get(i);
+S280,CombiningEvaluator.java,54,"if (!s.matches(root, node))"
+S281,CombiningEvaluator.java,55,return false;
+S282,CombiningEvaluator.java,57,return true;
+S283,CombiningEvaluator.java,81,super();
+S284,CombiningEvaluator.java,85,evaluators.add(e);
+S285,CombiningEvaluator.java,86,updateNumEvaluators();
+S286,CombiningEvaluator.java,91,for (int i = 0; i < num; i++) {
+S287,CombiningEvaluator.java,92,Evaluator s = evaluators.get(i);
+S288,CombiningEvaluator.java,93,"if (s.matches(root, node))"
+S289,CombiningEvaluator.java,94,return true;
+S290,CombiningEvaluator.java,96,return false;
+S291,Comment.java,16,super(baseUri);
+S292,Comment.java,17,"attributes.put(COMMENT_KEY, data);"
+S293,Comment.java,21,"return ""#comment"";"
+S294,Comment.java,29,return attributes.get(COMMENT_KEY);
+S295,Comment.java,33,if (out.prettyPrint())
+S296,Comment.java,34,"indent(accum, depth, out);"
+S297,Comment.java,35,accum
+S298,Comment.java,41,"void outerHtmlTail(StringBuilder accum, int depth, Document.OutputSettings out) {}"
+S299,DataNode.java,16,super(baseUri);
+S300,DataNode.java,17,"attributes.put(DATA_KEY, data);"
+S301,DataNode.java,29,return attributes.get(DATA_KEY);
+S302,DataUtil.java,21,"private static final Pattern charsetPattern = Pattern.compile(""(?i)\\bcharset=\\s*(?:\""|')?([^\\s,;\""']*)"");"
+S303,DataUtil.java,25,private static final char[] mimeBoundaryChars =
+S304,DataUtil.java,40,ByteBuffer byteData = readFileToByteBuffer(in);
+S305,DataUtil.java,41,"return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());"
+S306,DataUtil.java,53,ByteBuffer byteData = readToByteBuffer(in);
+S307,DataUtil.java,54,"return parseByteData(byteData, charsetName, baseUri, Parser.htmlParser());"
+S308,DataUtil.java,67,ByteBuffer byteData = readToByteBuffer(in);
+S309,DataUtil.java,68,"return parseByteData(byteData, charsetName, baseUri, parser);"
+S310,DataUtil.java,90,Document doc = null;
+S311,DataUtil.java,91,if (charsetName == null) { // determine from meta. safe parse as UTF-8
+S312,DataUtil.java,93,docData = Charset.forName(defaultCharset).decode(byteData).toString();
+S313,DataUtil.java,94,"doc = parser.parseInput(docData, baseUri);"
+S314,DataUtil.java,95,"Element meta = doc.select(""meta[http-equiv=content-type], meta[charset]"").first();"
+S315,DataUtil.java,96,"if (meta != null) { // if not found, will keep utf-8 as best attempt"
+S316,DataUtil.java,97,String foundCharset = null;
+S317,DataUtil.java,98,"if (meta.hasAttr(""http-equiv"")) {"
+S318,DataUtil.java,99,"foundCharset = getCharsetFromContentType(meta.attr(""content""));"
+S319,DataUtil.java,101,"if (foundCharset == null && meta.hasAttr(""charset"")) {"
+S320,DataUtil.java,103,"if (Charset.isSupported(meta.attr(""charset""))) {"
+S321,DataUtil.java,104,"foundCharset = meta.attr(""charset"");"
+S322,DataUtil.java,106,} catch (IllegalCharsetNameException e) {
+S323,DataUtil.java,107,foundCharset = null;
+S324,DataUtil.java,111,if (foundCharset != null && foundCharset.length() != 0 && !foundCharset.equals(defaultCharset)) { // need to re-decode
+S325,DataUtil.java,112,"foundCharset = foundCharset.trim().replaceAll(""[\""']"", """");"
+S326,DataUtil.java,113,charsetName = foundCharset;
+S327,DataUtil.java,114,byteData.rewind();
+S328,DataUtil.java,115,docData = Charset.forName(foundCharset).decode(byteData).toString();
+S329,DataUtil.java,116,doc = null;
+S330,DataUtil.java,119,} else { // specified by content type header (or by user on file load)
+S331,DataUtil.java,120,"Validate.notEmpty(charsetName, ""Must set charset arg to character set of file to parse. Set to null to attempt to detect from HTML"");"
+S332,DataUtil.java,121,docData = Charset.forName(charsetName).decode(byteData).toString();
+S333,DataUtil.java,124,if (docData.length() > 0 && docData.charAt(0) == UNICODE_BOM) {
+S334,DataUtil.java,131,if (doc == null) {
+S335,DataUtil.java,132,"doc = parser.parseInput(docData, baseUri);"
+S336,DataUtil.java,133,doc.outputSettings().charset(charsetName);
+S337,DataUtil.java,135,return doc;
+S338,DataUtil.java,146,"Validate.isTrue(maxSize >= 0, ""maxSize must be 0 (unlimited) or larger"");"
+S339,DataUtil.java,147,final boolean capped = maxSize > 0;
+S340,DataUtil.java,148,byte[] buffer = new byte[bufferSize];
+S341,DataUtil.java,149,ByteArrayOutputStream outStream = new ByteArrayOutputStream(bufferSize);
+S342,DataUtil.java,151,int remaining = maxSize;
+S343,DataUtil.java,154,read = inStream.read(buffer);
+S344,DataUtil.java,155,if (read == -1) break;
+S345,DataUtil.java,156,if (capped) {
+S346,DataUtil.java,163,"outStream.write(buffer, 0, read);"
+S347,DataUtil.java,165,return ByteBuffer.wrap(outStream.toByteArray());
+S348,DataUtil.java,169,"return readToByteBuffer(inStream, 0);"
+S349,DataUtil.java,173,RandomAccessFile randomAccessFile = null;
+S350,DataUtil.java,175,"randomAccessFile = new RandomAccessFile(file, ""r"");"
+S351,DataUtil.java,176,byte[] bytes = new byte[(int) randomAccessFile.length()];
+S352,DataUtil.java,177,randomAccessFile.readFully(bytes);
+S353,DataUtil.java,178,return ByteBuffer.wrap(bytes);
+S354,DataUtil.java,180,if (randomAccessFile != null)
+S355,DataUtil.java,181,randomAccessFile.close();
+S356,DataUtil.java,196,if (contentType == null) return null;
+S357,DataUtil.java,197,Matcher m = charsetPattern.matcher(contentType);
+S358,DataUtil.java,198,if (m.find()) {
+S359,DataUtil.java,199,String charset = m.group(1).trim();
+S360,DataUtil.java,200,"charset = charset.replace(""charset="", """");"
+S361,DataUtil.java,201,if (charset.length() == 0) return null;
+S362,DataUtil.java,203,if (Charset.isSupported(charset)) return charset;
+S363,DataUtil.java,204,charset = charset.toUpperCase(Locale.ENGLISH);
+S364,DataUtil.java,205,if (Charset.isSupported(charset)) return charset;
+S365,DataUtil.java,206,} catch (IllegalCharsetNameException e) {
+S366,DataUtil.java,208,return null;
+S367,DataUtil.java,211,return null;
+S368,DataUtil.java,218,final StringBuilder mime = new StringBuilder(boundaryLength);
+S369,DataUtil.java,219,final Random rand = new Random();
+S370,DataUtil.java,220,for (int i = 0; i < boundaryLength; i++) {
+S371,DataUtil.java,221,mime.append(mimeBoundaryChars[rand.nextInt(mimeBoundaryChars.length)]);
+S372,DataUtil.java,223,return mime.toString();
+S373,Document.java,18,private OutputSettings outputSettings = new OutputSettings();
+S374,Document.java,19,private QuirksMode quirksMode = QuirksMode.noQuirks;
+S375,Document.java,21,private boolean updateMetaCharset = false;
+S376,Document.java,30,"super(Tag.valueOf(""#root""), baseUri);"
+S377,Document.java,31,this.location = baseUri;
+S378,Document.java,40,Validate.notNull(baseUri);
+S379,Document.java,42,Document doc = new Document(baseUri);
+S380,Document.java,43,"Element html = doc.appendElement(""html"");"
+S381,Document.java,44,"html.appendElement(""head"");"
+S382,Document.java,45,"html.appendElement(""body"");"
+S383,Document.java,47,return doc;
+S384,Document.java,56,return location;
+S385,Document.java,64,"return findFirstElementByTagName(""head"", this);"
+S386,Document.java,72,"return findFirstElementByTagName(""body"", this);"
+S387,Document.java,81,"Element titleEl = getElementsByTag(""title"").first();"
+S388,Document.java,82,"return titleEl != null ? StringUtil.normaliseWhitespace(titleEl.text()).trim() : """";"
+S389,Document.java,180,if (node.nodeName().equals(tag))
+S390,Document.java,181,return (Element) node;
+S391,Document.java,183,for (Node child: node.childNodes) {
+S392,Document.java,184,"Element found = findFirstElementByTagName(tag, child);"
+S393,Document.java,185,if (found != null)
+S394,Document.java,186,return found;
+S395,Document.java,189,return null;
+S396,Document.java,194,return super.html(); // no outer wrapper tag
+S397,Document.java,210,"return ""#document"";"
+S398,Document.java,238,updateMetaCharsetElement(true);
+S399,Document.java,239,outputSettings.charset(charset);
+S400,Document.java,240,ensureMetaCharsetElement();
+S401,Document.java,252,return outputSettings.charset();
+S402,Document.java,269,this.updateMetaCharset = update;
+S403,Document.java,281,return updateMetaCharset;
+S404,Document.java,311,if (updateMetaCharset) {
+S405,Document.java,312,OutputSettings.Syntax syntax = outputSettings().syntax();
+S406,Document.java,314,if (syntax == OutputSettings.Syntax.html) {
+S407,Document.java,315,"Element metaCharset = select(""meta[charset]"").first();"
+S408,Document.java,317,if (metaCharset != null) {
+S409,Document.java,318,"metaCharset.attr(""charset"", charset().displayName());"
+S410,Document.java,320,Element head = head();
+S411,Document.java,322,if (head != null) {
+S412,Document.java,323,"head.appendElement(""meta"").attr(""charset"", charset().displayName());"
+S413,Document.java,328,"select(""meta[name=charset]"").remove();"
+S414,Document.java,329,} else if (syntax == OutputSettings.Syntax.xml) {
+S415,Document.java,330,Node node = childNodes().get(0);
+S416,Document.java,332,if (node instanceof XmlDeclaration) {
+S417,Document.java,333,XmlDeclaration decl = (XmlDeclaration) node;
+S418,Document.java,335,"if (decl.attr(XmlDeclaration.DECL_KEY).equals(""xml"")) {"
+S419,Document.java,336,"decl.attr(""encoding"", charset().displayName());"
+S420,Document.java,338,"final String version = decl.attr(""version"");"
+S421,Document.java,340,if (version != null) {
+S422,Document.java,341,"decl.attr(""version"", ""1.0"");"
+S423,Document.java,343,} else {
+S424,Document.java,350,} else {
+S425,Document.java,351,"XmlDeclaration decl = new XmlDeclaration(""xml"", baseUri, false);"
+S426,Document.java,352,"decl.attr(""version"", ""1.0"");"
+S427,Document.java,353,"decl.attr(""encoding"", charset().displayName());"
+S428,Document.java,355,prependChild(decl);
+S429,Document.java,371,"public enum Syntax {html, xml}"
+S430,Document.java,373,private Entities.EscapeMode escapeMode = Entities.EscapeMode.base;
+S431,Document.java,374,"private Charset charset = Charset.forName(""UTF-8"");"
+S432,Document.java,375,private CharsetEncoder charsetEncoder = charset.newEncoder();
+S433,Document.java,376,private boolean prettyPrint = true;
+S434,Document.java,377,private boolean outline = false;
+S435,Document.java,378,private int indentAmount = 1;
+S436,Document.java,379,private Syntax syntax = Syntax.html;
+S437,Document.java,381,public OutputSettings() {}
+S438,Document.java,392,return escapeMode;
+S439,Document.java,415,return charset;
+S440,Document.java,424,this.charset = charset;
+S441,Document.java,425,charsetEncoder = charset.newEncoder();
+S442,Document.java,426,return this;
+S443,Document.java,435,charset(Charset.forName(charset));
+S444,Document.java,436,return this;
+S445,Document.java,440,return charsetEncoder;
+S446,Document.java,448,return syntax;
+S447,Document.java,458,this.syntax = syntax;
+S448,Document.java,459,return this;
+S449,Document.java,468,return prettyPrint;
+S450,Document.java,477,prettyPrint = pretty;
+S451,Document.java,478,return this;
+S452,Document.java,487,return outline;
+S453,Document.java,505,return indentAmount;
+S454,Document.java,539,return outputSettings;
+S455,Document.java,553,public enum QuirksMode {
+S456,Document.java,554,"noQuirks, quirks, limitedQuirks"
+S457,Document.java,558,return quirksMode;
+S458,Document.java,562,this.quirksMode = quirksMode;
+S459,Document.java,563,return this;
+S460,DocumentType.java,23,super(baseUri);
+S461,DocumentType.java,25,"attr(NAME, name);"
+S462,DocumentType.java,26,"attr(PUBLIC_ID, publicId);"
+S463,DocumentType.java,27,"attr(SYSTEM_ID, systemId);"
+S464,DocumentType.java,32,"return ""#doctype"";"
+S465,DocumentType.java,37,if (out.syntax() == Syntax.html && !has(PUBLIC_ID) && !has(SYSTEM_ID)) {
+S466,DocumentType.java,41,"accum.append(""<!DOCTYPE"");"
+S467,DocumentType.java,43,if (has(NAME))
+S468,DocumentType.java,44,"accum.append("" "").append(attr(NAME));"
+S469,DocumentType.java,45,if (has(PUBLIC_ID))
+S470,DocumentType.java,47,if (has(SYSTEM_ID))
+S471,DocumentType.java,49,accum.append('>');
+S472,DocumentType.java,57,return !StringUtil.isBlank(attr(attribute));
+S473,Element.java,21,public class Element extends Node {
+S474,Element.java,24,"private static final Pattern classSplit = Pattern.compile(""\\s+"");"
+S475,Element.java,36,"super(baseUri, attributes);"
+S476,Element.java,38,Validate.notNull(tag);
+S477,Element.java,39,this.tag = tag;
+S478,Element.java,51,"this(tag, baseUri, new Attributes());"
+S479,Element.java,56,return tag.getName();
+S480,Element.java,65,return tag.getName();
+S481,Element.java,87,return tag;
+S482,Element.java,97,return tag.isBlock();
+S483,Element.java,106,"return attributes.get(""id"");"
+S484,Element.java,116,"super.attr(attributeKey, attributeValue);"
+S485,Element.java,117,return this;
+S486,Element.java,154,return (Element) parentNode;
+S487,Element.java,162,Elements parents = new Elements();
+S488,Element.java,163,"accumulateParents(this, parents);"
+S489,Element.java,164,return parents;
+S490,Element.java,168,Element parent = el.parent();
+S491,Element.java,169,"if (parent != null && !parent.tagName().equals(""#root"")) {"
+S492,Element.java,170,parents.add(parent);
+S493,Element.java,171,"accumulateParents(parent, parents);"
+S494,Element.java,187,return children().get(index);
+S495,Element.java,201,List<Element> elements = new ArrayList<Element>(childNodes.size());
+S496,Element.java,202,for (Node node : childNodes) {
+S497,Element.java,203,if (node instanceof Element)
+S498,Element.java,204,elements.add((Element) node);
+S499,Element.java,206,return new Elements(elements);
+S500,Element.java,273,"return Selector.select(cssQuery, this);"
+S501,Element.java,283,Validate.notNull(child);
+S502,Element.java,286,reparentChild(child);
+S503,Element.java,287,childNodes.add(child);
+S504,Element.java,288,child.setSiblingIndex(childNodes.size() - 1);
+S505,Element.java,289,return this;
+S506,Element.java,299,Validate.notNull(child);
+S507,Element.java,301,"addChildren(0, child);"
+S508,Element.java,302,return this;
+S509,Element.java,316,"Validate.notNull(children, ""Children collection to be inserted must not be null."");"
+S510,Element.java,317,int currentSize = childNodeSize();
+S511,Element.java,318,if (index < 0) index += currentSize +1; // roll around
+S512,Element.java,319,"Validate.isTrue(index >= 0 && index <= currentSize, ""Insert position out of bounds."");"
+S513,Element.java,321,ArrayList<Node> nodes = new ArrayList<Node>(children);
+S514,Element.java,322,Node[] nodeArray = nodes.toArray(new Node[nodes.size()]);
+S515,Element.java,323,"addChildren(index, nodeArray);"
+S516,Element.java,324,return this;
+S517,Element.java,335,"Element child = new Element(Tag.valueOf(tagName), baseUri());"
+S518,Element.java,336,appendChild(child);
+S519,Element.java,337,return child;
+S520,Element.java,425,return (Element) super.before(node);
+S521,Element.java,456,childNodes.clear();
+S522,Element.java,457,return this;
+S523,Element.java,482,if (id().length() > 0)
+S524,Element.java,483,"return ""#"" + id();"
+S525,Element.java,485,StringBuilder selector = new StringBuilder(tagName());
+S526,Element.java,486,"String classes = StringUtil.join(classNames(), ""."");"
+S527,Element.java,487,if (classes.length() > 0)
+S528,Element.java,488,selector.append('.').append(classes);
+S529,Element.java,490,"if (parent() == null || parent() instanceof Document) // don't add Document to selector, as will always have a html node"
+S530,Element.java,491,return selector.toString();
+S531,Element.java,493,"selector.insert(0, "" > "");"
+S532,Element.java,494,if (parent().select(selector.toString()).size() > 1)
+S533,Element.java,495,selector.append(String.format(
+S534,Element.java,498,return parent().cssSelector() + selector.toString();
+S535,Element.java,507,if (parentNode == null)
+S536,Element.java,510,List<Element> elements = parent().children();
+S537,Element.java,511,Elements siblings = new Elements(elements.size() - 1);
+S538,Element.java,512,for (Element el: elements)
+S539,Element.java,513,if (el != this)
+S540,Element.java,514,siblings.add(el);
+S541,Element.java,515,return siblings;
+S542,Element.java,570,if (parent() == null) return 0;
+S543,Element.java,571,"return indexInList(this, parent().children());"
+S544,Element.java,584,Validate.notNull(search);
+S545,Element.java,585,Validate.notNull(elements);
+S546,Element.java,587,for (int i = 0; i < elements.size(); i++) {
+S547,Element.java,588,E element = elements.get(i);
+S548,Element.java,589,if (element == search)
+S549,Element.java,590,return i;
+S550,Element.java,603,Validate.notEmpty(tagName);
+S551,Element.java,604,tagName = tagName.toLowerCase().trim();
+S552,Element.java,606,"return Collector.collect(new Evaluator.Tag(tagName), this);"
+S553,Element.java,619,Validate.notEmpty(id);
+S554,Element.java,621,"Elements elements = Collector.collect(new Evaluator.Id(id), this);"
+S555,Element.java,622,if (elements.size() > 0)
+S556,Element.java,623,return elements.get(0);
+S557,Element.java,873,final StringBuilder accum = new StringBuilder();
+S558,Element.java,874,new NodeTraversor(new NodeVisitor() {
+S559,Element.java,876,if (node instanceof TextNode) {
+S560,Element.java,877,TextNode textNode = (TextNode) node;
+S561,Element.java,878,"appendNormalisedText(accum, textNode);"
+S562,Element.java,879,} else if (node instanceof Element) {
+S563,Element.java,880,Element element = (Element) node;
+S564,Element.java,881,if (accum.length() > 0 &&
+S565,Element.java,891,return accum.toString().trim();
+S566,Element.java,906,StringBuilder sb = new StringBuilder();
+S567,Element.java,907,ownText(sb);
+S568,Element.java,908,return sb.toString().trim();
+S569,Element.java,912,for (Node child : childNodes) {
+S570,Element.java,913,if (child instanceof TextNode) {
+S571,Element.java,914,TextNode textNode = (TextNode) child;
+S572,Element.java,915,"appendNormalisedText(accum, textNode);"
+S573,Element.java,916,} else if (child instanceof Element) {
+S574,Element.java,923,String text = textNode.getWholeText();
+S575,Element.java,925,if (preserveWhitespace(textNode.parentNode))
+S576,Element.java,926,accum.append(text);
+S577,Element.java,928,"StringUtil.appendNormalisedWhitespace(accum, text, TextNode.lastCharIsWhitespace(accum));"
+S578,Element.java,938,if (node != null && node instanceof Element) {
+S579,Element.java,939,Element element = (Element) node;
+S580,Element.java,940,return element.tag.preserveWhitespace() ||
+S581,Element.java,952,Validate.notNull(text);
+S582,Element.java,954,empty();
+S583,Element.java,955,"TextNode textNode = new TextNode(text, baseUri);"
+S584,Element.java,956,appendChild(textNode);
+S585,Element.java,958,return this;
+S586,Element.java,1008,"return attr(""class"").trim();"
+S587,Element.java,1018,String[] names = classSplit.split(className());
+S588,Element.java,1019,Set<String> classNames = new LinkedHashSet<String>(Arrays.asList(names));
+S589,Element.java,1020,"classNames.remove(""""); // if classNames() was empty, would include an empty class"
+S590,Element.java,1022,return classNames;
+S591,Element.java,1031,Validate.notNull(classNames);
+S592,Element.java,1032,"attributes.put(""class"", StringUtil.join(classNames, "" ""));"
+S593,Element.java,1033,return this;
+S594,Element.java,1050,"String classAttr = attributes.get(""class"");"
+S595,Element.java,1051,"if (classAttr.equals("""") || classAttr.length() < className.length())"
+S596,Element.java,1052,return false;
+S597,Element.java,1054,final String[] classes = classSplit.split(classAttr);
+S598,Element.java,1055,for (String name : classes) {
+S599,Element.java,1056,if (className.equalsIgnoreCase(name))
+S600,Element.java,1057,return true;
+S601,Element.java,1060,return false;
+S602,Element.java,1136,if (accum.length() > 0 && out.prettyPrint() && (tag.formatAsBlock() || (parent() != null && parent().tag().formatAsBlock()) || out.outline()) )
+S603,Element.java,1137,"indent(accum, depth, out);"
+S604,Element.java,1138,accum
+S605,Element.java,1141,"attributes.html(accum, out);"
+S606,Element.java,1144,if (childNodes.isEmpty() && tag.isSelfClosing()) {
+S607,Element.java,1145,if (out.syntax() == Document.OutputSettings.Syntax.html && tag.isEmpty())
+S608,Element.java,1146,accum.append('>');
+S609,Element.java,1148,"accum.append("" />""); // <img> in html, <img /> in xml"
+S610,Element.java,1151,"accum.append("">"");"
+S611,Element.java,1155,if (!(childNodes.isEmpty() && tag.isSelfClosing())) {
+S612,Element.java,1156,if (out.prettyPrint() && (!childNodes.isEmpty() && (
+S613,Element.java,1159,"indent(accum, depth, out);"
+S614,Element.java,1160,"accum.append(""</"").append(tagName()).append("">"");"
+S615,Element.java,1172,StringBuilder accum = new StringBuilder();
+S616,Element.java,1173,html(accum);
+S617,Element.java,1174,return getOutputSettings().prettyPrint() ? accum.toString().trim() : accum.toString();
+S618,Element.java,1178,for (Node node : childNodes)
+S619,Element.java,1179,node.outerHtml(accum);
+S620,Element.java,1195,return outerHtml();
+S621,Element.java,1200,if (this == o) return true;
+S622,Element.java,1201,if (o == null || getClass() != o.getClass()) return false;
+S623,Element.java,1202,if (!super.equals(o)) return false;
+S624,Element.java,1204,Element element = (Element) o;
+S625,Element.java,1206,return tag.equals(element.tag);
+S626,Element.java,1211,int result = super.hashCode();
+S627,Element.java,1212,result = 31 * result + (tag != null ? tag.hashCode() : 0);
+S628,Element.java,1213,return result;
+S629,Element.java,1218,return (Element) super.clone();
+S630,Elements.java,18,public Elements() {
+S631,Elements.java,22,super(initialCapacity);
+S632,Elements.java,26,super(elements);
+S633,Elements.java,30,super(elements);
+S634,Elements.java,43,Elements clone = new Elements(size());
+S635,Elements.java,45,for(Element e : this)
+S636,Elements.java,46,clone.add(e.clone());
+S637,Elements.java,48,return clone;
+S638,Elements.java,60,for (Element element : this) {
+S639,Elements.java,61,if (element.hasAttr(attributeKey))
+S640,Elements.java,62,return element.attr(attributeKey);
+S641,Elements.java,186,StringBuilder sb = new StringBuilder();
+S642,Elements.java,187,for (Element element : this) {
+S643,Elements.java,188,if (sb.length() != 0)
+S644,Elements.java,190,sb.append(element.text());
+S645,Elements.java,192,return sb.toString();
+S646,Elements.java,226,StringBuilder sb = new StringBuilder();
+S647,Elements.java,227,for (Element element : this) {
+S648,Elements.java,228,if (sb.length() != 0)
+S649,Elements.java,230,sb.append(element.outerHtml());
+S650,Elements.java,232,return sb.toString();
+S651,Elements.java,394,for (Element element : this) {
+S652,Elements.java,395,element.remove();
+S653,Elements.java,397,return this;
+S654,Elements.java,408,"return Selector.select(query, this);"
+S655,Elements.java,465,return isEmpty() ? null : get(0);
+S656,Entities.java,16,public class Entities {
+S657,Entities.java,17,public enum EscapeMode {
+S658,Entities.java,19,"xhtml(xhtmlByVal),"
+S659,Entities.java,21,"base(baseByVal),"
+S660,Entities.java,23,extended(fullByVal);
+S661,Entities.java,27,"EscapeMode(Map<Character, String> map) {"
+S662,Entities.java,28,this.map = map;
+S663,Entities.java,32,return map;
+S664,Entities.java,50,return full.containsKey(name);
+S665,Entities.java,60,return base.containsKey(name);
+S666,Entities.java,69,return full.get(name);
+S667,Entities.java,82,boolean lastWasWhite = false;
+S668,Entities.java,83,boolean reachedNonWhite = false;
+S669,Entities.java,84,final EscapeMode escapeMode = out.escapeMode();
+S670,Entities.java,85,final CharsetEncoder encoder = out.encoder();
+S671,Entities.java,86,final CoreCharset coreCharset = CoreCharset.byName(encoder.charset().name());
+S672,Entities.java,87,"final Map<Character, String> map = escapeMode.getMap();"
+S673,Entities.java,88,final int length = string.length();
+S674,Entities.java,91,for (int offset = 0; offset < length; offset += Character.charCount(codePoint)) {
+S675,Entities.java,92,codePoint = string.codePointAt(offset);
+S676,Entities.java,94,if (normaliseWhite) {
+S677,Entities.java,95,if (StringUtil.isWhitespace(codePoint)) {
+S678,Entities.java,96,if ((stripLeadingWhite && !reachedNonWhite) || lastWasWhite)
+S679,Entities.java,97,continue;
+S680,Entities.java,98,accum.append(' ');
+S681,Entities.java,99,lastWasWhite = true;
+S682,Entities.java,100,continue;
+S683,Entities.java,102,lastWasWhite = false;
+S684,Entities.java,103,reachedNonWhite = true;
+S685,Entities.java,107,if (codePoint < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+S686,Entities.java,108,final char c = (char) codePoint;
+S687,Entities.java,110,switch (c) {
+S688,Entities.java,139,"if (canEncode(coreCharset, c, encoder))"
+S689,Entities.java,140,accum.append(c);
+S690,Entities.java,141,else if (map.containsKey(c))
+S691,Entities.java,144,"accum.append(""&#x"").append(Integer.toHexString(codePoint)).append(';');"
+S692,Entities.java,146,} else {
+S693,Entities.java,186,switch (charset) {
+S694,Entities.java,188,return c < 0x80;
+S695,Entities.java,190,return true; // real is:!(Character.isLowSurrogate(c) || Character.isHighSurrogate(c)); - but already check above
+S696,Entities.java,192,return fallback.canEncode(c);
+S697,Entities.java,196,private enum CoreCharset {
+S698,Entities.java,197,"ascii, utf, fallback;"
+S699,Entities.java,200,"if (name.equals(""US-ASCII""))"
+S700,Entities.java,201,return ascii;
+S701,Entities.java,202,"if (name.startsWith(""UTF-"")) // covers UTF-8, UTF-16, et al"
+S702,Entities.java,203,return utf;
+S703,Entities.java,204,return fallback;
+S704,Entities.java,210,private static final Object[][] xhtmlArray = {
+S705,Entities.java,218,"xhtmlByVal = new HashMap<Character, String>();"
+S706,Entities.java,219,"base = loadEntities(""entities-base.properties"");  // most common / default"
+S707,Entities.java,220,baseByVal = toCharacterKey(base);
+S708,Entities.java,221,"full = loadEntities(""entities-full.properties""); // extended and overblown."
+S709,Entities.java,222,fullByVal = toCharacterKey(full);
+S710,Entities.java,224,for (Object[] entity : xhtmlArray) {
+S711,Entities.java,225,Character c = Character.valueOf((char) ((Integer) entity[1]).intValue());
+S712,Entities.java,226,"xhtmlByVal.put(c, ((String) entity[0]));"
+S713,Entities.java,231,Properties properties = new Properties();
+S714,Entities.java,232,"Map<String, Character> entities = new HashMap<String, Character>();"
+S715,Entities.java,234,InputStream in = Entities.class.getResourceAsStream(filename);
+S716,Entities.java,235,properties.load(in);
+S717,Entities.java,236,in.close();
+S718,Entities.java,241,for (Map.Entry entry: properties.entrySet()) {
+S719,Entities.java,242,"Character val = Character.valueOf((char) Integer.parseInt((String) entry.getValue(), 16));"
+S720,Entities.java,243,String name = (String) entry.getKey();
+S721,Entities.java,244,"entities.put(name, val);"
+S722,Entities.java,246,return entities;
+S723,Entities.java,250,"Map<Character, String> outMap = new HashMap<Character, String>();"
+S724,Entities.java,251,"for (Map.Entry<String, Character> entry: inMap.entrySet()) {"
+S725,Entities.java,252,Character character = entry.getValue();
+S726,Entities.java,253,String name = entry.getKey();
+S727,Entities.java,255,if (outMap.containsKey(character)) {
+S728,Entities.java,257,if (name.toLowerCase().equals(name))
+S729,Entities.java,258,"outMap.put(character, name);"
+S730,Entities.java,260,"outMap.put(character, name);"
+S731,Entities.java,263,return outMap;
+S732,Evaluator.java,20,protected Evaluator() {
+S733,Evaluator.java,39,public Tag(String tagName) {
+S734,Evaluator.java,40,this.tagName = tagName;
+S735,Evaluator.java,45,return (element.tagName().equals(tagName));
+S736,Evaluator.java,60,public Id(String id) {
+S737,Evaluator.java,61,this.id = id;
+S738,Evaluator.java,66,return (id.equals(element.id()));
+S739,Evaluator.java,82,public Class(String className) {
+S740,Evaluator.java,83,this.className = className;
+S741,Evaluator.java,88,return (element.hasClass(className));
+S742,Evaluator.java,104,public Attribute(String key) {
+S743,Evaluator.java,105,this.key = key;
+S744,Evaluator.java,110,return element.hasAttr(key);
+S745,Evaluator.java,152,"super(key, value);"
+S746,Evaluator.java,157,return element.hasAttr(key) && value.equalsIgnoreCase(element.attr(key).trim());
+S747,Evaluator.java,232,"super(key, value);"
+S748,Evaluator.java,237,return element.hasAttr(key) && element.attr(key).toLowerCase().contains(value); // value is lower case
+S749,Evaluator.java,278,"public AttributeKeyPair(String key, String value) {"
+S750,Evaluator.java,279,Validate.notEmpty(key);
+S751,Evaluator.java,280,Validate.notEmpty(value);
+S752,Evaluator.java,282,this.key = key.trim().toLowerCase();
+S753,Evaluator.java,283,"if (value.startsWith(""\"""") && value.endsWith(""\"""")) {"
+S754,Evaluator.java,284,"value = value.substring(1, value.length()-1);"
+S755,Evaluator.java,286,this.value = value.trim().toLowerCase();
+S756,Evaluator.java,293,public static final class AllElements extends Evaluator {
+S757,Evaluator.java,297,return true;
+S758,Evaluator.java,369,public static final class IsLastChild extends Evaluator {
+S759,Evaluator.java,372,final Element p = element.parent();
+S760,Evaluator.java,373,return p != null && !(p instanceof Document) && element.elementSiblingIndex() == p.children().size()-1;
+S761,Evaluator.java,384,"super(0,1);"
+S762,Evaluator.java,394,"super(0,1);"
+S763,Evaluator.java,406,"public CssNthEvaluator(int a, int b) {"
+S764,Evaluator.java,407,this.a = a;
+S765,Evaluator.java,408,this.b = b;
+S766,Evaluator.java,416,final Element p = element.parent();
+S767,Evaluator.java,417,if (p == null || (p instanceof Document)) return false;
+S768,Evaluator.java,419,"final int pos = calculatePosition(root, element);"
+S769,Evaluator.java,420,if (a == 0) return pos == b;
+S770,Evaluator.java,422,return (pos-b)*a >= 0 && (pos-b)%a==0;
+S771,Evaluator.java,447,"super(a,b);"
+S772,Evaluator.java,451,return element.elementSiblingIndex()+1;
+S773,Evaluator.java,467,"super(a,b);"
+S774,Evaluator.java,472,return element.parent().children().size() - element.elementSiblingIndex();
+S775,Evaluator.java,487,"super(a,b);"
+S776,Evaluator.java,491,int pos = 0;
+S777,Evaluator.java,492,Elements family = element.parent().children();
+S778,Evaluator.java,493,for (int i = 0; i < family.size(); i++) {
+S779,Evaluator.java,494,if (family.get(i).tag().equals(element.tag())) pos++;
+S780,Evaluator.java,495,if (family.get(i) == element) break;
+S781,Evaluator.java,497,return pos;
+S782,Evaluator.java,509,"super(a, b);"
+S783,Evaluator.java,514,int pos = 0;
+S784,Evaluator.java,515,Elements family = element.parent().children();
+S785,Evaluator.java,516,for (int i = element.elementSiblingIndex(); i < family.size(); i++) {
+S786,Evaluator.java,517,if (family.get(i).tag().equals(element.tag())) pos++;
+S787,Evaluator.java,519,return pos;
+S788,Evaluator.java,531,public static final class IsFirstChild extends Evaluator {
+S789,Evaluator.java,534,final Element p = element.parent();
+S790,Evaluator.java,535,return p != null && !(p instanceof Document) && element.elementSiblingIndex() == 0;
+S791,Evaluator.java,549,public static final class IsRoot extends Evaluator {
+S792,Evaluator.java,552,final Element r = root instanceof Document?root.child(0):root;
+S793,Evaluator.java,553,return element == r;
+S794,Evaluator.java,561,public static final class IsOnlyChild extends Evaluator {
+S795,Evaluator.java,564,final Element p = element.parent();
+S796,Evaluator.java,565,return p!=null && !(p instanceof Document) && element.siblingElements().size() == 0;
+S797,Evaluator.java,573,public static final class IsOnlyOfType extends Evaluator {
+S798,Evaluator.java,576,final Element p = element.parent();
+S799,Evaluator.java,577,if (p==null || p instanceof Document) return false;
+S800,Evaluator.java,579,int pos = 0;
+S801,Evaluator.java,580,Elements family = p.children();
+S802,Evaluator.java,581,for (int i = 0; i < family.size(); i++) {
+S803,Evaluator.java,582,if (family.get(i).tag().equals(element.tag())) pos++;
+S804,Evaluator.java,584,return pos == 1;
+S805,Evaluator.java,592,public static final class IsEmpty extends Evaluator {
+S806,Evaluator.java,595,List<Node> family = element.childNodes();
+S807,Evaluator.java,596,for (int i = 0; i < family.size(); i++) {
+S808,Evaluator.java,597,Node n = family.get(i);
+S809,Evaluator.java,598,if (!(n instanceof Comment || n instanceof XmlDeclaration || n instanceof DocumentType)) return false;
+S810,Evaluator.java,600,return true;
+S811,Evaluator.java,627,public ContainsText(String searchText) {
+S812,Evaluator.java,628,this.searchText = searchText.toLowerCase();
+S813,Evaluator.java,633,return (element.text().toLowerCase().contains(searchText));
+S814,FormElement.java,18,private final Elements elements = new Elements();
+S815,FormElement.java,28,"super(tag, baseUri, attributes);"
+S816,FormElement.java,45,elements.add(element);
+S817,FormElement.java,46,return this;
+S818,HtmlTreeBuilder.java,14,public class HtmlTreeBuilder extends TreeBuilder {
+S819,HtmlTreeBuilder.java,16,"private static final String[] TagsScriptStyle = new String[]{""script"", ""style""};"
+S820,HtmlTreeBuilder.java,17,"public static final String[] TagsSearchInScope = new String[]{""applet"", ""caption"", ""html"", ""table"", ""td"", ""th"", ""marquee"", ""object""};"
+S821,HtmlTreeBuilder.java,18,"private static final String[] TagSearchList = new String[]{""ol"", ""ul""};"
+S822,HtmlTreeBuilder.java,19,"private static final String[] TagSearchButton = new String[]{""button""};"
+S823,HtmlTreeBuilder.java,20,"private static final String[] TagSearchTableScope = new String[]{""html"", ""table""};"
+S824,HtmlTreeBuilder.java,21,"private static final String[] TagSearchSelectScope = new String[]{""optgroup"", ""option""};"
+S825,HtmlTreeBuilder.java,22,"private static final String[] TagSearchEndTags = new String[]{""dd"", ""dt"", ""li"", ""option"", ""optgroup"", ""p"", ""rp"", ""rt""};"
+S826,HtmlTreeBuilder.java,23,"private static final String[] TagSearchSpecial = new String[]{""address"", ""applet"", ""area"", ""article"", ""aside"", ""base"", ""basefont"", ""bgsound"","
+S827,HtmlTreeBuilder.java,35,private boolean baseUriSetFromDoc = false;
+S828,HtmlTreeBuilder.java,39,private ArrayList<Element> formattingElements = new ArrayList<Element>(); // active (open) formatting elements
+S829,HtmlTreeBuilder.java,40,private List<String> pendingTableCharacters = new ArrayList<String>(); // chars in table to be shifted out
+S830,HtmlTreeBuilder.java,41,private Token.EndTag emptyEnd = new Token.EndTag(); // reused empty end tag
+S831,HtmlTreeBuilder.java,43,private boolean framesetOk = true; // if ok to go into frameset
+S832,HtmlTreeBuilder.java,44,private boolean fosterInserts = false; // if next inserts should be fostered
+S833,HtmlTreeBuilder.java,45,private boolean fragmentParsing = false; // if parsing a fragment of html
+S834,HtmlTreeBuilder.java,47,HtmlTreeBuilder() {}
+S835,HtmlTreeBuilder.java,51,state = HtmlTreeBuilderState.Initial;
+S836,HtmlTreeBuilder.java,52,baseUriSetFromDoc = false;
+S837,HtmlTreeBuilder.java,53,"return super.parse(input, baseUri, errors);"
+S838,HtmlTreeBuilder.java,58,state = HtmlTreeBuilderState.Initial;
+S839,HtmlTreeBuilder.java,59,"initialiseParse(inputFragment, baseUri, errors);"
+S840,HtmlTreeBuilder.java,60,contextElement = context;
+S841,HtmlTreeBuilder.java,61,fragmentParsing = true;
+S842,HtmlTreeBuilder.java,62,Element root = null;
+S843,HtmlTreeBuilder.java,64,if (context != null) {
+S844,HtmlTreeBuilder.java,65,if (context.ownerDocument() != null) // quirks setup:
+S845,HtmlTreeBuilder.java,66,doc.quirksMode(context.ownerDocument().quirksMode());
+S846,HtmlTreeBuilder.java,69,String contextTag = context.tagName();
+S847,HtmlTreeBuilder.java,70,"if (StringUtil.in(contextTag, ""title"", ""textarea""))"
+S848,HtmlTreeBuilder.java,72,"else if (StringUtil.in(contextTag, ""iframe"", ""noembed"", ""noframes"", ""style"", ""xmp""))"
+S849,HtmlTreeBuilder.java,74,"else if (contextTag.equals(""script""))"
+S850,HtmlTreeBuilder.java,76,"else if (contextTag.equals((""noscript"")))"
+S851,HtmlTreeBuilder.java,78,"else if (contextTag.equals(""plaintext""))"
+S852,HtmlTreeBuilder.java,81,tokeniser.transition(TokeniserState.Data); // default
+S853,HtmlTreeBuilder.java,83,"root = new Element(Tag.valueOf(""html""), baseUri);"
+S854,HtmlTreeBuilder.java,84,doc.appendChild(root);
+S855,HtmlTreeBuilder.java,85,stack.add(root);
+S856,HtmlTreeBuilder.java,86,resetInsertionMode();
+S857,HtmlTreeBuilder.java,90,Elements contextChain = context.parents();
+S858,HtmlTreeBuilder.java,91,"contextChain.add(0, context);"
+S859,HtmlTreeBuilder.java,92,for (Element parent: contextChain) {
+S860,HtmlTreeBuilder.java,93,if (parent instanceof FormElement) {
+S861,HtmlTreeBuilder.java,100,runParser();
+S862,HtmlTreeBuilder.java,101,if (context != null && root != null)
+S863,HtmlTreeBuilder.java,102,return root.childNodes();
+S864,HtmlTreeBuilder.java,109,currentToken = token;
+S865,HtmlTreeBuilder.java,110,"return this.state.process(token, this);"
+S866,HtmlTreeBuilder.java,114,currentToken = token;
+S867,HtmlTreeBuilder.java,115,"return state.process(token, this);"
+S868,HtmlTreeBuilder.java,119,this.state = state;
+S869,HtmlTreeBuilder.java,123,return state;
+S870,HtmlTreeBuilder.java,127,originalState = state;
+S871,HtmlTreeBuilder.java,131,return originalState;
+S872,HtmlTreeBuilder.java,135,this.framesetOk = framesetOk;
+S873,HtmlTreeBuilder.java,139,return framesetOk;
+S874,HtmlTreeBuilder.java,143,return doc;
+S875,HtmlTreeBuilder.java,147,return baseUri;
+S876,HtmlTreeBuilder.java,151,if (baseUriSetFromDoc) // only listen to the first <base href> in parse
+S877,HtmlTreeBuilder.java,154,"String href = base.absUrl(""href"");"
+S878,HtmlTreeBuilder.java,155,if (href.length() != 0) { // ignore <base target> etc
+S879,HtmlTreeBuilder.java,156,baseUri = href;
+S880,HtmlTreeBuilder.java,157,baseUriSetFromDoc = true;
+S881,HtmlTreeBuilder.java,158,"doc.setBaseUri(href); // set on the doc so doc.createElement(Tag) will get updated base, and to update all descendants"
+S882,HtmlTreeBuilder.java,163,return fragmentParsing;
+S883,HtmlTreeBuilder.java,167,if (errors.canAddError())
+S884,HtmlTreeBuilder.java,174,if (startTag.isSelfClosing()) {
+S885,HtmlTreeBuilder.java,175,Element el = insertEmpty(startTag);
+S886,HtmlTreeBuilder.java,176,stack.add(el);
+S887,HtmlTreeBuilder.java,177,"tokeniser.transition(TokeniserState.Data); // handles <script />, otherwise needs breakout steps from script data"
+S888,HtmlTreeBuilder.java,178,tokeniser.emit(emptyEnd.reset().name(el.tagName()));  // ensure we get out of whatever state we are in. emitted for yielded processing
+S889,HtmlTreeBuilder.java,179,return el;
+S890,HtmlTreeBuilder.java,182,"Element el = new Element(Tag.valueOf(startTag.name()), baseUri, startTag.attributes);"
+S891,HtmlTreeBuilder.java,183,insert(el);
+S892,HtmlTreeBuilder.java,184,return el;
+S893,HtmlTreeBuilder.java,188,"Element el = new Element(Tag.valueOf(startTagName), baseUri);"
+S894,HtmlTreeBuilder.java,189,insert(el);
+S895,HtmlTreeBuilder.java,190,return el;
+S896,HtmlTreeBuilder.java,194,insertNode(el);
+S897,HtmlTreeBuilder.java,195,stack.add(el);
+S898,HtmlTreeBuilder.java,199,Tag tag = Tag.valueOf(startTag.name());
+S899,HtmlTreeBuilder.java,200,"Element el = new Element(tag, baseUri, startTag.attributes);"
+S900,HtmlTreeBuilder.java,201,insertNode(el);
+S901,HtmlTreeBuilder.java,202,if (startTag.isSelfClosing()) {
+S902,HtmlTreeBuilder.java,203,if (tag.isKnownTag()) {
+S903,HtmlTreeBuilder.java,204,"if (tag.isSelfClosing()) tokeniser.acknowledgeSelfClosingFlag(); // if not acked, promulagates error"
+S904,HtmlTreeBuilder.java,211,return el;
+S905,HtmlTreeBuilder.java,215,Tag tag = Tag.valueOf(startTag.name());
+S906,HtmlTreeBuilder.java,216,"FormElement el = new FormElement(tag, baseUri, startTag.attributes);"
+S907,HtmlTreeBuilder.java,217,setFormElement(el);
+S908,HtmlTreeBuilder.java,218,insertNode(el);
+S909,HtmlTreeBuilder.java,219,if (onStack)
+S910,HtmlTreeBuilder.java,220,stack.add(el);
+S911,HtmlTreeBuilder.java,221,return el;
+S912,HtmlTreeBuilder.java,225,"Comment comment = new Comment(commentToken.getData(), baseUri);"
+S913,HtmlTreeBuilder.java,226,insertNode(comment);
+S914,HtmlTreeBuilder.java,232,String tagName = currentElement().tagName();
+S915,HtmlTreeBuilder.java,233,"if (tagName.equals(""script"") || tagName.equals(""style""))"
+S916,HtmlTreeBuilder.java,234,"node = new DataNode(characterToken.getData(), baseUri);"
+S917,HtmlTreeBuilder.java,236,"node = new TextNode(characterToken.getData(), baseUri);"
+S918,HtmlTreeBuilder.java,237,"currentElement().appendChild(node); // doesn't use insertNode, because we don't foster these; and will always have a stack."
+S919,HtmlTreeBuilder.java,242,if (stack.size() == 0)
+S920,HtmlTreeBuilder.java,243,doc.appendChild(node);
+S921,HtmlTreeBuilder.java,244,else if (isFosterInserts())
+S922,HtmlTreeBuilder.java,245,insertInFosterParent(node);
+S923,HtmlTreeBuilder.java,247,currentElement().appendChild(node);
+S924,HtmlTreeBuilder.java,250,if (node instanceof Element && ((Element) node).tag().isFormListed()) {
+S925,HtmlTreeBuilder.java,251,if (formElement != null)
+S926,HtmlTreeBuilder.java,252,formElement.addElement((Element) node);
+S927,HtmlTreeBuilder.java,257,int size = stack.size();
+S928,HtmlTreeBuilder.java,258,return stack.remove(size-1);
+S929,HtmlTreeBuilder.java,266,return stack;
+S930,HtmlTreeBuilder.java,270,"return isElementInQueue(stack, el);"
+S931,HtmlTreeBuilder.java,274,for (int pos = queue.size() -1; pos >= 0; pos--) {
+S932,HtmlTreeBuilder.java,275,Element next = queue.get(pos);
+S933,HtmlTreeBuilder.java,276,if (next == element) {
+S934,HtmlTreeBuilder.java,277,return true;
+S935,HtmlTreeBuilder.java,284,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S936,HtmlTreeBuilder.java,285,Element next = stack.get(pos);
+S937,HtmlTreeBuilder.java,286,if (next.nodeName().equals(elName)) {
+S938,HtmlTreeBuilder.java,287,return next;
+S939,HtmlTreeBuilder.java,290,return null;
+S940,HtmlTreeBuilder.java,294,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S941,HtmlTreeBuilder.java,295,Element next = stack.get(pos);
+S942,HtmlTreeBuilder.java,296,if (next == el) {
+S943,HtmlTreeBuilder.java,297,stack.remove(pos);
+S944,HtmlTreeBuilder.java,298,return true;
+S945,HtmlTreeBuilder.java,305,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S946,HtmlTreeBuilder.java,306,Element next = stack.get(pos);
+S947,HtmlTreeBuilder.java,307,stack.remove(pos);
+S948,HtmlTreeBuilder.java,308,if (next.nodeName().equals(elName))
+S949,HtmlTreeBuilder.java,309,break;
+S950,HtmlTreeBuilder.java,314,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S951,HtmlTreeBuilder.java,315,Element next = stack.get(pos);
+S952,HtmlTreeBuilder.java,316,stack.remove(pos);
+S953,HtmlTreeBuilder.java,317,"if (StringUtil.in(next.nodeName(), elNames))"
+S954,HtmlTreeBuilder.java,318,break;
+S955,HtmlTreeBuilder.java,334,"clearStackToContext(""table"");"
+S956,HtmlTreeBuilder.java,338,"clearStackToContext(""tbody"", ""tfoot"", ""thead"");"
+S957,HtmlTreeBuilder.java,342,"clearStackToContext(""tr"");"
+S958,HtmlTreeBuilder.java,346,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S959,HtmlTreeBuilder.java,347,Element next = stack.get(pos);
+S960,HtmlTreeBuilder.java,348,"if (StringUtil.in(next.nodeName(), nodeNames) || next.nodeName().equals(""html""))"
+S961,HtmlTreeBuilder.java,383,boolean last = false;
+S962,HtmlTreeBuilder.java,384,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S963,HtmlTreeBuilder.java,385,Element node = stack.get(pos);
+S964,HtmlTreeBuilder.java,386,if (pos == 0) {
+S965,HtmlTreeBuilder.java,387,last = true;
+S966,HtmlTreeBuilder.java,388,node = contextElement;
+S967,HtmlTreeBuilder.java,390,String name = node.nodeName();
+S968,HtmlTreeBuilder.java,391,"if (""select"".equals(name)) {"
+S969,HtmlTreeBuilder.java,394,"} else if ((""td"".equals(name) || ""td"".equals(name) && !last)) {"
+S970,HtmlTreeBuilder.java,395,transition(HtmlTreeBuilderState.InCell);
+S971,HtmlTreeBuilder.java,396,break;
+S972,HtmlTreeBuilder.java,397,"} else if (""tr"".equals(name)) {"
+S973,HtmlTreeBuilder.java,400,"} else if (""tbody"".equals(name) || ""thead"".equals(name) || ""tfoot"".equals(name)) {"
+S974,HtmlTreeBuilder.java,403,"} else if (""caption"".equals(name)) {"
+S975,HtmlTreeBuilder.java,406,"} else if (""colgroup"".equals(name)) {"
+S976,HtmlTreeBuilder.java,409,"} else if (""table"".equals(name)) {"
+S977,HtmlTreeBuilder.java,412,"} else if (""head"".equals(name)) {"
+S978,HtmlTreeBuilder.java,415,"} else if (""body"".equals(name)) {"
+S979,HtmlTreeBuilder.java,416,transition(HtmlTreeBuilderState.InBody);
+S980,HtmlTreeBuilder.java,417,break;
+S981,HtmlTreeBuilder.java,418,"} else if (""frameset"".equals(name)) {"
+S982,HtmlTreeBuilder.java,421,"} else if (""html"".equals(name)) {"
+S983,HtmlTreeBuilder.java,424,} else if (last) {
+S984,HtmlTreeBuilder.java,432,private String[] specificScopeTarget = {null};
+S985,HtmlTreeBuilder.java,435,specificScopeTarget[0] = targetName;
+S986,HtmlTreeBuilder.java,436,"return inSpecificScope(specificScopeTarget, baseTypes, extraTypes);"
+S987,HtmlTreeBuilder.java,440,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S988,HtmlTreeBuilder.java,441,Element el = stack.get(pos);
+S989,HtmlTreeBuilder.java,442,String elName = el.nodeName();
+S990,HtmlTreeBuilder.java,443,"if (StringUtil.in(elName, targetNames))"
+S991,HtmlTreeBuilder.java,444,return true;
+S992,HtmlTreeBuilder.java,445,"if (StringUtil.in(elName, baseTypes))"
+S993,HtmlTreeBuilder.java,446,return false;
+S994,HtmlTreeBuilder.java,447,"if (extraTypes != null && StringUtil.in(elName, extraTypes))"
+S995,HtmlTreeBuilder.java,455,"return inSpecificScope(targetNames, TagsSearchInScope, null);"
+S996,HtmlTreeBuilder.java,459,"return inScope(targetName, null);"
+S997,HtmlTreeBuilder.java,463,"return inSpecificScope(targetName, TagsSearchInScope, extras);"
+S998,HtmlTreeBuilder.java,469,"return inScope(targetName, TagSearchList);"
+S999,HtmlTreeBuilder.java,473,"return inScope(targetName, TagSearchButton);"
+S1000,HtmlTreeBuilder.java,477,"return inSpecificScope(targetName, TagSearchTableScope, null);"
+S1001,HtmlTreeBuilder.java,481,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S1002,HtmlTreeBuilder.java,482,Element el = stack.get(pos);
+S1003,HtmlTreeBuilder.java,483,String elName = el.nodeName();
+S1004,HtmlTreeBuilder.java,484,if (elName.equals(targetName))
+S1005,HtmlTreeBuilder.java,485,return true;
+S1006,HtmlTreeBuilder.java,494,this.headElement = headElement;
+S1007,HtmlTreeBuilder.java,502,return fosterInserts;
+S1008,HtmlTreeBuilder.java,506,this.fosterInserts = fosterInserts;
+S1009,HtmlTreeBuilder.java,510,return formElement;
+S1010,HtmlTreeBuilder.java,514,this.formElement = formElement;
+S1011,HtmlTreeBuilder.java,518,pendingTableCharacters = new ArrayList<String>();
+S1012,HtmlTreeBuilder.java,522,return pendingTableCharacters;
+S1013,HtmlTreeBuilder.java,539,while ((excludeTag != null && !currentElement().nodeName().equals(excludeTag)) &&
+S1014,HtmlTreeBuilder.java,545,generateImpliedEndTags(null);
+S1015,HtmlTreeBuilder.java,551,String name = el.nodeName();
+S1016,HtmlTreeBuilder.java,552,"return StringUtil.in(name, TagSearchSpecial);"
+S1017,HtmlTreeBuilder.java,556,return formattingElements.size() > 0 ? formattingElements.get(formattingElements.size()-1) : null;
+S1018,HtmlTreeBuilder.java,560,int size = formattingElements.size();
+S1019,HtmlTreeBuilder.java,561,if (size > 0)
+S1020,HtmlTreeBuilder.java,562,return formattingElements.remove(size-1);
+S1021,HtmlTreeBuilder.java,569,int numSeen = 0;
+S1022,HtmlTreeBuilder.java,570,for (int pos = formattingElements.size() -1; pos >= 0; pos--) {
+S1023,HtmlTreeBuilder.java,571,Element el = formattingElements.get(pos);
+S1024,HtmlTreeBuilder.java,572,if (el == null) // marker
+S1025,HtmlTreeBuilder.java,573,break;
+S1026,HtmlTreeBuilder.java,575,"if (isSameFormattingElement(in, el))"
+S1027,HtmlTreeBuilder.java,578,if (numSeen == 3) {
+S1028,HtmlTreeBuilder.java,583,formattingElements.add(in);
+S1029,HtmlTreeBuilder.java,588,return a.nodeName().equals(b.nodeName()) &&
+S1030,HtmlTreeBuilder.java,595,Element last = lastFormattingElement();
+S1031,HtmlTreeBuilder.java,596,if (last == null || onStack(last))
+S1032,HtmlTreeBuilder.java,597,return;
+S1033,HtmlTreeBuilder.java,633,while (!formattingElements.isEmpty()) {
+S1034,HtmlTreeBuilder.java,634,Element el = removeLastFormattingElement();
+S1035,HtmlTreeBuilder.java,635,if (el == null)
+S1036,HtmlTreeBuilder.java,636,break;
+S1037,HtmlTreeBuilder.java,641,for (int pos = formattingElements.size() -1; pos >= 0; pos--) {
+S1038,HtmlTreeBuilder.java,642,Element next = formattingElements.get(pos);
+S1039,HtmlTreeBuilder.java,643,if (next == el) {
+S1040,HtmlTreeBuilder.java,644,formattingElements.remove(pos);
+S1041,HtmlTreeBuilder.java,645,break;
+S1042,HtmlTreeBuilder.java,655,for (int pos = formattingElements.size() -1; pos >= 0; pos--) {
+S1043,HtmlTreeBuilder.java,656,Element next = formattingElements.get(pos);
+S1044,HtmlTreeBuilder.java,657,if (next == null) // scope marker
+S1045,HtmlTreeBuilder.java,658,break;
+S1046,HtmlTreeBuilder.java,659,else if (next.nodeName().equals(nodeName))
+S1047,HtmlTreeBuilder.java,660,return next;
+S1048,HtmlTreeBuilder.java,662,return null;
+S1049,HtmlTreeBuilder.java,670,formattingElements.add(null);
+S1050,HtmlTreeBuilder.java,675,"Element lastTable = getFromStack(""table"");"
+S1051,HtmlTreeBuilder.java,676,boolean isLastTableParent = false;
+S1052,HtmlTreeBuilder.java,677,if (lastTable != null) {
+S1053,HtmlTreeBuilder.java,678,if (lastTable.parent() != null) {
+S1054,HtmlTreeBuilder.java,679,fosterParent = lastTable.parent();
+S1055,HtmlTreeBuilder.java,680,isLastTableParent = true;
+S1056,HtmlTreeBuilder.java,687,if (isLastTableParent) {
+S1057,HtmlTreeBuilder.java,688,Validate.notNull(lastTable); // last table cannot be null by this point.
+S1058,HtmlTreeBuilder.java,689,lastTable.before(in);
+S1059,HtmlTreeBuilderState.java,11,enum HtmlTreeBuilderState {
+S1060,HtmlTreeBuilderState.java,12,Initial {
+S1061,HtmlTreeBuilderState.java,14,if (isWhitespace(t)) {
+S1062,HtmlTreeBuilderState.java,15,return true; // ignore whitespace
+S1063,HtmlTreeBuilderState.java,16,} else if (t.isComment()) {
+S1064,HtmlTreeBuilderState.java,18,} else if (t.isDoctype()) {
+S1065,HtmlTreeBuilderState.java,21,Token.Doctype d = t.asDoctype();
+S1066,HtmlTreeBuilderState.java,22,"DocumentType doctype = new DocumentType(d.getName(), d.getPublicIdentifier(), d.getSystemIdentifier(), tb.getBaseUri());"
+S1067,HtmlTreeBuilderState.java,23,tb.getDocument().appendChild(doctype);
+S1068,HtmlTreeBuilderState.java,24,if (d.isForceQuirks())
+S1069,HtmlTreeBuilderState.java,26,tb.transition(BeforeHtml);
+S1070,HtmlTreeBuilderState.java,27,} else {
+S1071,HtmlTreeBuilderState.java,29,tb.transition(BeforeHtml);
+S1072,HtmlTreeBuilderState.java,30,return tb.process(t); // re-process token
+S1073,HtmlTreeBuilderState.java,32,return true;
+S1074,HtmlTreeBuilderState.java,35,BeforeHtml {
+S1075,HtmlTreeBuilderState.java,37,if (t.isDoctype()) {
+S1076,HtmlTreeBuilderState.java,40,} else if (t.isComment()) {
+S1077,HtmlTreeBuilderState.java,42,} else if (isWhitespace(t)) {
+S1078,HtmlTreeBuilderState.java,43,return true; // ignore whitespace
+S1079,HtmlTreeBuilderState.java,44,"} else if (t.isStartTag() && t.asStartTag().name().equals(""html"")) {"
+S1080,HtmlTreeBuilderState.java,45,tb.insert(t.asStartTag());
+S1081,HtmlTreeBuilderState.java,46,tb.transition(BeforeHead);
+S1082,HtmlTreeBuilderState.java,47,"} else if (t.isEndTag() && (StringUtil.in(t.asEndTag().name(), ""head"", ""body"", ""html"", ""br""))) {"
+S1083,HtmlTreeBuilderState.java,49,} else if (t.isEndTag()) {
+S1084,HtmlTreeBuilderState.java,53,"return anythingElse(t, tb);"
+S1085,HtmlTreeBuilderState.java,55,return true;
+S1086,HtmlTreeBuilderState.java,59,"tb.insertStartTag(""html"");"
+S1087,HtmlTreeBuilderState.java,60,tb.transition(BeforeHead);
+S1088,HtmlTreeBuilderState.java,61,return tb.process(t);
+S1089,HtmlTreeBuilderState.java,64,BeforeHead {
+S1090,HtmlTreeBuilderState.java,66,if (isWhitespace(t)) {
+S1091,HtmlTreeBuilderState.java,67,return true;
+S1092,HtmlTreeBuilderState.java,68,} else if (t.isComment()) {
+S1093,HtmlTreeBuilderState.java,70,} else if (t.isDoctype()) {
+S1094,HtmlTreeBuilderState.java,73,"} else if (t.isStartTag() && t.asStartTag().name().equals(""html"")) {"
+S1095,HtmlTreeBuilderState.java,75,"} else if (t.isStartTag() && t.asStartTag().name().equals(""head"")) {"
+S1096,HtmlTreeBuilderState.java,76,Element head = tb.insert(t.asStartTag());
+S1097,HtmlTreeBuilderState.java,77,tb.setHeadElement(head);
+S1098,HtmlTreeBuilderState.java,78,tb.transition(InHead);
+S1099,HtmlTreeBuilderState.java,79,"} else if (t.isEndTag() && (StringUtil.in(t.asEndTag().name(), ""head"", ""body"", ""html"", ""br""))) {"
+S1100,HtmlTreeBuilderState.java,82,} else if (t.isEndTag()) {
+S1101,HtmlTreeBuilderState.java,86,"tb.processStartTag(""head"");"
+S1102,HtmlTreeBuilderState.java,87,return tb.process(t);
+S1103,HtmlTreeBuilderState.java,89,return true;
+S1104,HtmlTreeBuilderState.java,92,InHead {
+S1105,HtmlTreeBuilderState.java,94,if (isWhitespace(t)) {
+S1106,HtmlTreeBuilderState.java,95,tb.insert(t.asCharacter());
+S1107,HtmlTreeBuilderState.java,96,return true;
+S1108,HtmlTreeBuilderState.java,98,switch (t.type) {
+S1109,HtmlTreeBuilderState.java,100,tb.insert(t.asComment());
+S1110,HtmlTreeBuilderState.java,101,break;
+S1111,HtmlTreeBuilderState.java,106,Token.StartTag start = t.asStartTag();
+S1112,HtmlTreeBuilderState.java,107,String name = start.name();
+S1113,HtmlTreeBuilderState.java,108,"if (name.equals(""html"")) {"
+S1114,HtmlTreeBuilderState.java,110,"} else if (StringUtil.in(name, ""base"", ""basefont"", ""bgsound"", ""command"", ""link"")) {"
+S1115,HtmlTreeBuilderState.java,111,Element el = tb.insertEmpty(start);
+S1116,HtmlTreeBuilderState.java,113,"if (name.equals(""base"") && el.hasAttr(""href""))"
+S1117,HtmlTreeBuilderState.java,114,tb.maybeSetBaseUri(el);
+S1118,HtmlTreeBuilderState.java,115,"} else if (name.equals(""meta"")) {"
+S1119,HtmlTreeBuilderState.java,116,Element meta = tb.insertEmpty(start);
+S1120,HtmlTreeBuilderState.java,118,"} else if (name.equals(""title"")) {"
+S1121,HtmlTreeBuilderState.java,119,"handleRcData(start, tb);"
+S1122,HtmlTreeBuilderState.java,120,"} else if (StringUtil.in(name, ""noframes"", ""style"")) {"
+S1123,HtmlTreeBuilderState.java,121,"handleRawtext(start, tb);"
+S1124,HtmlTreeBuilderState.java,122,"} else if (name.equals(""noscript"")) {"
+S1125,HtmlTreeBuilderState.java,126,"} else if (name.equals(""script"")) {"
+S1126,HtmlTreeBuilderState.java,129,tb.tokeniser.transition(TokeniserState.ScriptData);
+S1127,HtmlTreeBuilderState.java,130,tb.markInsertionMode();
+S1128,HtmlTreeBuilderState.java,131,tb.transition(Text);
+S1129,HtmlTreeBuilderState.java,132,tb.insert(start);
+S1130,HtmlTreeBuilderState.java,133,"} else if (name.equals(""head"")) {"
+S1131,HtmlTreeBuilderState.java,137,"return anythingElse(t, tb);"
+S1132,HtmlTreeBuilderState.java,141,Token.EndTag end = t.asEndTag();
+S1133,HtmlTreeBuilderState.java,142,name = end.name();
+S1134,HtmlTreeBuilderState.java,143,"if (name.equals(""head"")) {"
+S1135,HtmlTreeBuilderState.java,144,tb.pop();
+S1136,HtmlTreeBuilderState.java,145,tb.transition(AfterHead);
+S1137,HtmlTreeBuilderState.java,146,"} else if (StringUtil.in(name, ""body"", ""html"", ""br"")) {"
+S1138,HtmlTreeBuilderState.java,149,tb.error(this);
+S1139,HtmlTreeBuilderState.java,150,return false;
+S1140,HtmlTreeBuilderState.java,154,"return anythingElse(t, tb);"
+S1141,HtmlTreeBuilderState.java,156,return true;
+S1142,HtmlTreeBuilderState.java,160,"tb.processEndTag(""head"");"
+S1143,HtmlTreeBuilderState.java,161,return tb.process(t);
+S1144,HtmlTreeBuilderState.java,164,InHeadNoscript {
+S1145,HtmlTreeBuilderState.java,193,AfterHead {
+S1146,HtmlTreeBuilderState.java,195,if (isWhitespace(t)) {
+S1147,HtmlTreeBuilderState.java,196,tb.insert(t.asCharacter());
+S1148,HtmlTreeBuilderState.java,197,} else if (t.isComment()) {
+S1149,HtmlTreeBuilderState.java,199,} else if (t.isDoctype()) {
+S1150,HtmlTreeBuilderState.java,201,} else if (t.isStartTag()) {
+S1151,HtmlTreeBuilderState.java,202,Token.StartTag startTag = t.asStartTag();
+S1152,HtmlTreeBuilderState.java,203,String name = startTag.name();
+S1153,HtmlTreeBuilderState.java,204,"if (name.equals(""html"")) {"
+S1154,HtmlTreeBuilderState.java,206,"} else if (name.equals(""body"")) {"
+S1155,HtmlTreeBuilderState.java,207,tb.insert(startTag);
+S1156,HtmlTreeBuilderState.java,208,tb.framesetOk(false);
+S1157,HtmlTreeBuilderState.java,209,tb.transition(InBody);
+S1158,HtmlTreeBuilderState.java,210,"} else if (name.equals(""frameset"")) {"
+S1159,HtmlTreeBuilderState.java,213,"} else if (StringUtil.in(name, ""base"", ""basefont"", ""bgsound"", ""link"", ""meta"", ""noframes"", ""script"", ""style"", ""title"")) {"
+S1160,HtmlTreeBuilderState.java,223,"anythingElse(t, tb);"
+S1161,HtmlTreeBuilderState.java,225,} else if (t.isEndTag()) {
+S1162,HtmlTreeBuilderState.java,233,"anythingElse(t, tb);"
+S1163,HtmlTreeBuilderState.java,235,return true;
+S1164,HtmlTreeBuilderState.java,239,"tb.processStartTag(""body"");"
+S1165,HtmlTreeBuilderState.java,240,tb.framesetOk(true);
+S1166,HtmlTreeBuilderState.java,241,return tb.process(t);
+S1167,HtmlTreeBuilderState.java,244,InBody {
+S1168,HtmlTreeBuilderState.java,246,switch (t.type) {
+S1169,HtmlTreeBuilderState.java,248,Token.Character c = t.asCharacter();
+S1170,HtmlTreeBuilderState.java,249,if (c.getData().equals(nullString)) {
+S1171,HtmlTreeBuilderState.java,253,} else if (tb.framesetOk() && isWhitespace(c)) { // don't check if whitespace if frames already closed
+S1172,HtmlTreeBuilderState.java,257,tb.reconstructFormattingElements();
+S1173,HtmlTreeBuilderState.java,258,tb.insert(c);
+S1174,HtmlTreeBuilderState.java,259,tb.framesetOk(false);
+S1175,HtmlTreeBuilderState.java,261,break;
+S1176,HtmlTreeBuilderState.java,264,tb.insert(t.asComment());
+S1177,HtmlTreeBuilderState.java,265,break;
+S1178,HtmlTreeBuilderState.java,268,tb.error(this);
+S1179,HtmlTreeBuilderState.java,269,return false;
+S1180,HtmlTreeBuilderState.java,272,Token.StartTag startTag = t.asStartTag();
+S1181,HtmlTreeBuilderState.java,273,String name = startTag.name();
+S1182,HtmlTreeBuilderState.java,274,"if (name.equals(""html"")) {"
+S1183,HtmlTreeBuilderState.java,283,"return tb.process(t, InHead);"
+S1184,HtmlTreeBuilderState.java,284,"} else if (name.equals(""body"")) {"
+S1185,HtmlTreeBuilderState.java,317,"if (tb.inButtonScope(""p"")) {"
+S1186,HtmlTreeBuilderState.java,318,"tb.processEndTag(""p"");"
+S1187,HtmlTreeBuilderState.java,320,tb.insert(startTag);
+S1188,HtmlTreeBuilderState.java,321,"} else if (StringUtil.in(name, Constants.Headings)) {"
+S1189,HtmlTreeBuilderState.java,322,"if (tb.inButtonScope(""p"")) {"
+S1190,HtmlTreeBuilderState.java,325,"if (StringUtil.in(tb.currentElement().nodeName(), Constants.Headings)) {"
+S1191,HtmlTreeBuilderState.java,329,tb.insert(startTag);
+S1192,HtmlTreeBuilderState.java,330,"} else if (StringUtil.in(name, Constants.InBodyStartPreListing)) {"
+S1193,HtmlTreeBuilderState.java,337,"} else if (name.equals(""form"")) {"
+S1194,HtmlTreeBuilderState.java,338,if (tb.getFormElement() != null) {
+S1195,HtmlTreeBuilderState.java,342,"if (tb.inButtonScope(""p"")) {"
+S1196,HtmlTreeBuilderState.java,345,"tb.insertForm(startTag, true);"
+S1197,HtmlTreeBuilderState.java,346,"} else if (name.equals(""li"")) {"
+S1198,HtmlTreeBuilderState.java,347,tb.framesetOk(false);
+S1199,HtmlTreeBuilderState.java,348,ArrayList<Element> stack = tb.getStack();
+S1200,HtmlTreeBuilderState.java,349,for (int i = stack.size() - 1; i > 0; i--) {
+S1201,HtmlTreeBuilderState.java,350,Element el = stack.get(i);
+S1202,HtmlTreeBuilderState.java,351,"if (el.nodeName().equals(""li"")) {"
+S1203,HtmlTreeBuilderState.java,352,"tb.processEndTag(""li"");"
+S1204,HtmlTreeBuilderState.java,353,break;
+S1205,HtmlTreeBuilderState.java,355,"if (tb.isSpecial(el) && !StringUtil.in(el.nodeName(), Constants.InBodyStartLiBreakers))"
+S1206,HtmlTreeBuilderState.java,356,break;
+S1207,HtmlTreeBuilderState.java,358,"if (tb.inButtonScope(""p"")) {"
+S1208,HtmlTreeBuilderState.java,361,tb.insert(startTag);
+S1209,HtmlTreeBuilderState.java,362,"} else if (StringUtil.in(name, Constants.DdDt)) {"
+S1210,HtmlTreeBuilderState.java,363,tb.framesetOk(false);
+S1211,HtmlTreeBuilderState.java,364,ArrayList<Element> stack = tb.getStack();
+S1212,HtmlTreeBuilderState.java,365,for (int i = stack.size() - 1; i > 0; i--) {
+S1213,HtmlTreeBuilderState.java,366,Element el = stack.get(i);
+S1214,HtmlTreeBuilderState.java,367,"if (StringUtil.in(el.nodeName(), Constants.DdDt)) {"
+S1215,HtmlTreeBuilderState.java,371,"if (tb.isSpecial(el) && !StringUtil.in(el.nodeName(), Constants.InBodyStartLiBreakers))"
+S1216,HtmlTreeBuilderState.java,372,break;
+S1217,HtmlTreeBuilderState.java,374,"if (tb.inButtonScope(""p"")) {"
+S1218,HtmlTreeBuilderState.java,377,tb.insert(startTag);
+S1219,HtmlTreeBuilderState.java,378,"} else if (name.equals(""plaintext"")) {"
+S1220,HtmlTreeBuilderState.java,384,"} else if (name.equals(""button"")) {"
+S1221,HtmlTreeBuilderState.java,385,"if (tb.inButtonScope(""button"")) {"
+S1222,HtmlTreeBuilderState.java,391,tb.reconstructFormattingElements();
+S1223,HtmlTreeBuilderState.java,392,tb.insert(startTag);
+S1224,HtmlTreeBuilderState.java,393,tb.framesetOk(false);
+S1225,HtmlTreeBuilderState.java,395,"} else if (name.equals(""a"")) {"
+S1226,HtmlTreeBuilderState.java,396,"if (tb.getActiveFormattingElement(""a"") != null) {"
+S1227,HtmlTreeBuilderState.java,397,tb.error(this);
+S1228,HtmlTreeBuilderState.java,398,"tb.processEndTag(""a"");"
+S1229,HtmlTreeBuilderState.java,401,"Element remainingA = tb.getFromStack(""a"");"
+S1230,HtmlTreeBuilderState.java,402,if (remainingA != null) {
+S1231,HtmlTreeBuilderState.java,407,tb.reconstructFormattingElements();
+S1232,HtmlTreeBuilderState.java,408,Element a = tb.insert(startTag);
+S1233,HtmlTreeBuilderState.java,409,tb.pushActiveFormattingElements(a);
+S1234,HtmlTreeBuilderState.java,410,"} else if (StringUtil.in(name, Constants.Formatters)) {"
+S1235,HtmlTreeBuilderState.java,411,tb.reconstructFormattingElements();
+S1236,HtmlTreeBuilderState.java,412,Element el = tb.insert(startTag);
+S1237,HtmlTreeBuilderState.java,413,tb.pushActiveFormattingElements(el);
+S1238,HtmlTreeBuilderState.java,414,"} else if (name.equals(""nobr"")) {"
+S1239,HtmlTreeBuilderState.java,415,tb.reconstructFormattingElements();
+S1240,HtmlTreeBuilderState.java,416,"if (tb.inScope(""nobr"")) {"
+S1241,HtmlTreeBuilderState.java,421,Element el = tb.insert(startTag);
+S1242,HtmlTreeBuilderState.java,422,tb.pushActiveFormattingElements(el);
+S1243,HtmlTreeBuilderState.java,423,"} else if (StringUtil.in(name, Constants.InBodyStartApplets)) {"
+S1244,HtmlTreeBuilderState.java,428,"} else if (name.equals(""table"")) {"
+S1245,HtmlTreeBuilderState.java,429,"if (tb.getDocument().quirksMode() != Document.QuirksMode.quirks && tb.inButtonScope(""p"")) {"
+S1246,HtmlTreeBuilderState.java,432,tb.insert(startTag);
+S1247,HtmlTreeBuilderState.java,433,tb.framesetOk(false);
+S1248,HtmlTreeBuilderState.java,434,tb.transition(InTable);
+S1249,HtmlTreeBuilderState.java,435,"} else if (StringUtil.in(name, Constants.InBodyStartEmptyFormatters)) {"
+S1250,HtmlTreeBuilderState.java,436,tb.reconstructFormattingElements();
+S1251,HtmlTreeBuilderState.java,437,tb.insertEmpty(startTag);
+S1252,HtmlTreeBuilderState.java,438,tb.framesetOk(false);
+S1253,HtmlTreeBuilderState.java,439,"} else if (name.equals(""input"")) {"
+S1254,HtmlTreeBuilderState.java,440,tb.reconstructFormattingElements();
+S1255,HtmlTreeBuilderState.java,441,Element el = tb.insertEmpty(startTag);
+S1256,HtmlTreeBuilderState.java,442,"if (!el.attr(""type"").equalsIgnoreCase(""hidden""))"
+S1257,HtmlTreeBuilderState.java,443,tb.framesetOk(false);
+S1258,HtmlTreeBuilderState.java,444,"} else if (StringUtil.in(name, Constants.InBodyStartMedia)) {"
+S1259,HtmlTreeBuilderState.java,446,"} else if (name.equals(""hr"")) {"
+S1260,HtmlTreeBuilderState.java,447,"if (tb.inButtonScope(""p"")) {"
+S1261,HtmlTreeBuilderState.java,450,tb.insertEmpty(startTag);
+S1262,HtmlTreeBuilderState.java,451,tb.framesetOk(false);
+S1263,HtmlTreeBuilderState.java,452,"} else if (name.equals(""image"")) {"
+S1264,HtmlTreeBuilderState.java,457,"} else if (name.equals(""isindex"")) {"
+S1265,HtmlTreeBuilderState.java,490,tb.insert(startTag);
+S1266,HtmlTreeBuilderState.java,492,tb.tokeniser.transition(TokeniserState.Rcdata);
+S1267,HtmlTreeBuilderState.java,493,tb.markInsertionMode();
+S1268,HtmlTreeBuilderState.java,494,tb.framesetOk(false);
+S1269,HtmlTreeBuilderState.java,495,tb.transition(Text);
+S1270,HtmlTreeBuilderState.java,496,"} else if (name.equals(""xmp"")) {"
+S1271,HtmlTreeBuilderState.java,503,"} else if (name.equals(""iframe"")) {"
+S1272,HtmlTreeBuilderState.java,504,tb.framesetOk(false);
+S1273,HtmlTreeBuilderState.java,505,"handleRawtext(startTag, tb);"
+S1274,HtmlTreeBuilderState.java,506,"} else if (name.equals(""noembed"")) {"
+S1275,HtmlTreeBuilderState.java,509,"} else if (name.equals(""select"")) {"
+S1276,HtmlTreeBuilderState.java,510,tb.reconstructFormattingElements();
+S1277,HtmlTreeBuilderState.java,511,tb.insert(startTag);
+S1278,HtmlTreeBuilderState.java,512,tb.framesetOk(false);
+S1279,HtmlTreeBuilderState.java,514,HtmlTreeBuilderState state = tb.state();
+S1280,HtmlTreeBuilderState.java,515,if (state.equals(InTable) || state.equals(InCaption) || state.equals(InTableBody) || state.equals(InRow) || state.equals(InCell))
+S1281,HtmlTreeBuilderState.java,518,tb.transition(InSelect);
+S1282,HtmlTreeBuilderState.java,519,"} else if (StringUtil.in(name, Constants.InBodyStartOptions)) {"
+S1283,HtmlTreeBuilderState.java,524,"} else if (StringUtil.in(name, Constants.InBodyStartRuby)) {"
+S1284,HtmlTreeBuilderState.java,533,"} else if (name.equals(""math"")) {"
+S1285,HtmlTreeBuilderState.java,538,"} else if (name.equals(""svg"")) {"
+S1286,HtmlTreeBuilderState.java,539,tb.reconstructFormattingElements();
+S1287,HtmlTreeBuilderState.java,541,tb.insert(startTag);
+S1288,HtmlTreeBuilderState.java,542,tb.tokeniser.acknowledgeSelfClosingFlag();
+S1289,HtmlTreeBuilderState.java,543,"} else if (StringUtil.in(name, Constants.InBodyStartDrop)) {"
+S1290,HtmlTreeBuilderState.java,544,tb.error(this);
+S1291,HtmlTreeBuilderState.java,545,return false;
+S1292,HtmlTreeBuilderState.java,547,tb.reconstructFormattingElements();
+S1293,HtmlTreeBuilderState.java,548,tb.insert(startTag);
+S1294,HtmlTreeBuilderState.java,550,break;
+S1295,HtmlTreeBuilderState.java,553,Token.EndTag endTag = t.asEndTag();
+S1296,HtmlTreeBuilderState.java,554,name = endTag.name();
+S1297,HtmlTreeBuilderState.java,555,"if (name.equals(""body"")) {"
+S1298,HtmlTreeBuilderState.java,556,"if (!tb.inScope(""body"")) {"
+S1299,HtmlTreeBuilderState.java,561,tb.transition(AfterBody);
+S1300,HtmlTreeBuilderState.java,563,"} else if (name.equals(""html"")) {"
+S1301,HtmlTreeBuilderState.java,564,"boolean notIgnored = tb.processEndTag(""body"");"
+S1302,HtmlTreeBuilderState.java,565,if (notIgnored)
+S1303,HtmlTreeBuilderState.java,566,return tb.process(endTag);
+S1304,HtmlTreeBuilderState.java,568,if (!tb.inScope(name)) {
+S1305,HtmlTreeBuilderState.java,573,tb.generateImpliedEndTags();
+S1306,HtmlTreeBuilderState.java,574,if (!tb.currentElement().nodeName().equals(name))
+S1307,HtmlTreeBuilderState.java,575,tb.error(this);
+S1308,HtmlTreeBuilderState.java,576,tb.popStackToClose(name);
+S1309,HtmlTreeBuilderState.java,578,"} else if (name.equals(""form"")) {"
+S1310,HtmlTreeBuilderState.java,579,Element currentForm = tb.getFormElement();
+S1311,HtmlTreeBuilderState.java,580,tb.setFormElement(null);
+S1312,HtmlTreeBuilderState.java,581,if (currentForm == null || !tb.inScope(name)) {
+S1313,HtmlTreeBuilderState.java,585,tb.generateImpliedEndTags();
+S1314,HtmlTreeBuilderState.java,586,if (!tb.currentElement().nodeName().equals(name))
+S1315,HtmlTreeBuilderState.java,589,tb.removeFromStack(currentForm);
+S1316,HtmlTreeBuilderState.java,591,"} else if (name.equals(""p"")) {"
+S1317,HtmlTreeBuilderState.java,592,if (!tb.inButtonScope(name)) {
+S1318,HtmlTreeBuilderState.java,593,tb.error(this);
+S1319,HtmlTreeBuilderState.java,594,"tb.processStartTag(name); // if no p to close, creates an empty <p></p>"
+S1320,HtmlTreeBuilderState.java,595,return tb.process(endTag);
+S1321,HtmlTreeBuilderState.java,597,tb.generateImpliedEndTags(name);
+S1322,HtmlTreeBuilderState.java,598,if (!tb.currentElement().nodeName().equals(name))
+S1323,HtmlTreeBuilderState.java,600,tb.popStackToClose(name);
+S1324,HtmlTreeBuilderState.java,602,"} else if (name.equals(""li"")) {"
+S1325,HtmlTreeBuilderState.java,603,if (!tb.inListItemScope(name)) {
+S1326,HtmlTreeBuilderState.java,607,tb.generateImpliedEndTags(name);
+S1327,HtmlTreeBuilderState.java,608,if (!tb.currentElement().nodeName().equals(name))
+S1328,HtmlTreeBuilderState.java,610,tb.popStackToClose(name);
+S1329,HtmlTreeBuilderState.java,612,"} else if (StringUtil.in(name, Constants.DdDt)) {"
+S1330,HtmlTreeBuilderState.java,613,if (!tb.inScope(name)) {
+S1331,HtmlTreeBuilderState.java,617,tb.generateImpliedEndTags(name);
+S1332,HtmlTreeBuilderState.java,618,if (!tb.currentElement().nodeName().equals(name))
+S1333,HtmlTreeBuilderState.java,620,tb.popStackToClose(name);
+S1334,HtmlTreeBuilderState.java,622,"} else if (StringUtil.in(name, Constants.Headings)) {"
+S1335,HtmlTreeBuilderState.java,623,if (!tb.inScope(Constants.Headings)) {
+S1336,HtmlTreeBuilderState.java,627,tb.generateImpliedEndTags(name);
+S1337,HtmlTreeBuilderState.java,628,if (!tb.currentElement().nodeName().equals(name))
+S1338,HtmlTreeBuilderState.java,630,tb.popStackToClose(Constants.Headings);
+S1339,HtmlTreeBuilderState.java,632,"} else if (name.equals(""sarcasm"")) {"
+S1340,HtmlTreeBuilderState.java,635,"} else if (StringUtil.in(name, Constants.InBodyEndAdoptionFormatters)) {"
+S1341,HtmlTreeBuilderState.java,637,for (int i = 0; i < 8; i++) {
+S1342,HtmlTreeBuilderState.java,638,Element formatEl = tb.getActiveFormattingElement(name);
+S1343,HtmlTreeBuilderState.java,639,if (formatEl == null)
+S1344,HtmlTreeBuilderState.java,641,else if (!tb.onStack(formatEl)) {
+S1345,HtmlTreeBuilderState.java,645,} else if (!tb.inScope(formatEl.nodeName())) {
+S1346,HtmlTreeBuilderState.java,648,} else if (tb.currentElement() != formatEl)
+S1347,HtmlTreeBuilderState.java,651,Element furthestBlock = null;
+S1348,HtmlTreeBuilderState.java,652,Element commonAncestor = null;
+S1349,HtmlTreeBuilderState.java,653,boolean seenFormattingElement = false;
+S1350,HtmlTreeBuilderState.java,654,ArrayList<Element> stack = tb.getStack();
+S1351,HtmlTreeBuilderState.java,657,final int stackSize = stack.size();
+S1352,HtmlTreeBuilderState.java,658,for (int si = 0; si < stackSize && si < 64; si++) {
+S1353,HtmlTreeBuilderState.java,659,Element el = stack.get(si);
+S1354,HtmlTreeBuilderState.java,660,if (el == formatEl) {
+S1355,HtmlTreeBuilderState.java,661,commonAncestor = stack.get(si - 1);
+S1356,HtmlTreeBuilderState.java,662,seenFormattingElement = true;
+S1357,HtmlTreeBuilderState.java,663,} else if (seenFormattingElement && tb.isSpecial(el)) {
+S1358,HtmlTreeBuilderState.java,668,if (furthestBlock == null) {
+S1359,HtmlTreeBuilderState.java,669,tb.popStackToClose(formatEl.nodeName());
+S1360,HtmlTreeBuilderState.java,670,tb.removeFromActiveFormattingElements(formatEl);
+S1361,HtmlTreeBuilderState.java,671,return true;
+S1362,HtmlTreeBuilderState.java,725,"} else if (StringUtil.in(name, Constants.InBodyStartApplets)) {"
+S1363,HtmlTreeBuilderState.java,737,"} else if (name.equals(""br"")) {"
+S1364,HtmlTreeBuilderState.java,738,tb.error(this);
+S1365,HtmlTreeBuilderState.java,739,"tb.processStartTag(""br"");"
+S1366,HtmlTreeBuilderState.java,740,return false;
+S1367,HtmlTreeBuilderState.java,742,"return anyOtherEndTag(t, tb);"
+S1368,HtmlTreeBuilderState.java,751,return true;
+S1369,HtmlTreeBuilderState.java,755,String name = t.asEndTag().name();
+S1370,HtmlTreeBuilderState.java,756,ArrayList<Element> stack = tb.getStack();
+S1371,HtmlTreeBuilderState.java,757,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S1372,HtmlTreeBuilderState.java,758,Element node = stack.get(pos);
+S1373,HtmlTreeBuilderState.java,759,if (node.nodeName().equals(name)) {
+S1374,HtmlTreeBuilderState.java,760,tb.generateImpliedEndTags(name);
+S1375,HtmlTreeBuilderState.java,761,if (!name.equals(tb.currentElement().nodeName()))
+S1376,HtmlTreeBuilderState.java,763,tb.popStackToClose(name);
+S1377,HtmlTreeBuilderState.java,764,break;
+S1378,HtmlTreeBuilderState.java,766,if (tb.isSpecial(node)) {
+S1379,HtmlTreeBuilderState.java,767,tb.error(this);
+S1380,HtmlTreeBuilderState.java,768,return false;
+S1381,HtmlTreeBuilderState.java,772,return true;
+S1382,HtmlTreeBuilderState.java,775,Text {
+S1383,HtmlTreeBuilderState.java,778,if (t.isCharacter()) {
+S1384,HtmlTreeBuilderState.java,779,tb.insert(t.asCharacter());
+S1385,HtmlTreeBuilderState.java,780,} else if (t.isEOF()) {
+S1386,HtmlTreeBuilderState.java,781,tb.error(this);
+S1387,HtmlTreeBuilderState.java,783,tb.pop();
+S1388,HtmlTreeBuilderState.java,784,tb.transition(tb.originalState());
+S1389,HtmlTreeBuilderState.java,785,return tb.process(t);
+S1390,HtmlTreeBuilderState.java,786,} else if (t.isEndTag()) {
+S1391,HtmlTreeBuilderState.java,788,tb.pop();
+S1392,HtmlTreeBuilderState.java,789,tb.transition(tb.originalState());
+S1393,HtmlTreeBuilderState.java,791,return true;
+S1394,HtmlTreeBuilderState.java,794,InTable {
+S1395,HtmlTreeBuilderState.java,796,if (t.isCharacter()) {
+S1396,HtmlTreeBuilderState.java,797,tb.newPendingTableCharacters();
+S1397,HtmlTreeBuilderState.java,798,tb.markInsertionMode();
+S1398,HtmlTreeBuilderState.java,799,tb.transition(InTableText);
+S1399,HtmlTreeBuilderState.java,800,return tb.process(t);
+S1400,HtmlTreeBuilderState.java,801,} else if (t.isComment()) {
+S1401,HtmlTreeBuilderState.java,802,tb.insert(t.asComment());
+S1402,HtmlTreeBuilderState.java,803,return true;
+S1403,HtmlTreeBuilderState.java,804,} else if (t.isDoctype()) {
+S1404,HtmlTreeBuilderState.java,807,} else if (t.isStartTag()) {
+S1405,HtmlTreeBuilderState.java,808,Token.StartTag startTag = t.asStartTag();
+S1406,HtmlTreeBuilderState.java,809,String name = startTag.name();
+S1407,HtmlTreeBuilderState.java,810,"if (name.equals(""caption"")) {"
+S1408,HtmlTreeBuilderState.java,811,tb.clearStackToTableContext();
+S1409,HtmlTreeBuilderState.java,812,tb.insertMarkerToFormattingElements();
+S1410,HtmlTreeBuilderState.java,813,tb.insert(startTag);
+S1411,HtmlTreeBuilderState.java,814,tb.transition(InCaption);
+S1412,HtmlTreeBuilderState.java,815,"} else if (name.equals(""colgroup"")) {"
+S1413,HtmlTreeBuilderState.java,819,"} else if (name.equals(""col"")) {"
+S1414,HtmlTreeBuilderState.java,822,"} else if (StringUtil.in(name, ""tbody"", ""tfoot"", ""thead"")) {"
+S1415,HtmlTreeBuilderState.java,823,tb.clearStackToTableContext();
+S1416,HtmlTreeBuilderState.java,824,tb.insert(startTag);
+S1417,HtmlTreeBuilderState.java,825,tb.transition(InTableBody);
+S1418,HtmlTreeBuilderState.java,826,"} else if (StringUtil.in(name, ""td"", ""th"", ""tr"")) {"
+S1419,HtmlTreeBuilderState.java,827,"tb.processStartTag(""tbody"");"
+S1420,HtmlTreeBuilderState.java,828,return tb.process(t);
+S1421,HtmlTreeBuilderState.java,829,"} else if (name.equals(""table"")) {"
+S1422,HtmlTreeBuilderState.java,830,tb.error(this);
+S1423,HtmlTreeBuilderState.java,831,"boolean processed = tb.processEndTag(""table"");"
+S1424,HtmlTreeBuilderState.java,832,if (processed) // only ignored if in fragment
+S1425,HtmlTreeBuilderState.java,833,return tb.process(t);
+S1426,HtmlTreeBuilderState.java,836,"} else if (name.equals(""input"")) {"
+S1427,HtmlTreeBuilderState.java,842,"} else if (name.equals(""form"")) {"
+S1428,HtmlTreeBuilderState.java,850,"return anythingElse(t, tb);"
+S1429,HtmlTreeBuilderState.java,852,return true; // todo: check if should return processed http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#parsing-main-intable
+S1430,HtmlTreeBuilderState.java,853,} else if (t.isEndTag()) {
+S1431,HtmlTreeBuilderState.java,854,Token.EndTag endTag = t.asEndTag();
+S1432,HtmlTreeBuilderState.java,855,String name = endTag.name();
+S1433,HtmlTreeBuilderState.java,857,"if (name.equals(""table"")) {"
+S1434,HtmlTreeBuilderState.java,858,if (!tb.inTableScope(name)) {
+S1435,HtmlTreeBuilderState.java,862,"tb.popStackToClose(""table"");"
+S1436,HtmlTreeBuilderState.java,864,tb.resetInsertionMode();
+S1437,HtmlTreeBuilderState.java,865,"} else if (StringUtil.in(name,"
+S1438,HtmlTreeBuilderState.java,867,tb.error(this);
+S1439,HtmlTreeBuilderState.java,868,return false;
+S1440,HtmlTreeBuilderState.java,870,"return anythingElse(t, tb);"
+S1441,HtmlTreeBuilderState.java,872,return true; // todo: as above todo
+S1442,HtmlTreeBuilderState.java,882,tb.error(this);
+S1443,HtmlTreeBuilderState.java,884,"if (StringUtil.in(tb.currentElement().nodeName(), ""table"", ""tbody"", ""tfoot"", ""thead"", ""tr"")) {"
+S1444,HtmlTreeBuilderState.java,885,tb.setFosterInserts(true);
+S1445,HtmlTreeBuilderState.java,886,"processed = tb.process(t, InBody);"
+S1446,HtmlTreeBuilderState.java,887,tb.setFosterInserts(false);
+S1447,HtmlTreeBuilderState.java,889,"processed = tb.process(t, InBody);"
+S1448,HtmlTreeBuilderState.java,891,return processed;
+S1449,HtmlTreeBuilderState.java,894,InTableText {
+S1450,HtmlTreeBuilderState.java,896,switch (t.type) {
+S1451,HtmlTreeBuilderState.java,898,Token.Character c = t.asCharacter();
+S1452,HtmlTreeBuilderState.java,899,if (c.getData().equals(nullString)) {
+S1453,HtmlTreeBuilderState.java,903,tb.getPendingTableCharacters().add(c.getData());
+S1454,HtmlTreeBuilderState.java,905,break;
+S1455,HtmlTreeBuilderState.java,908,if (tb.getPendingTableCharacters().size() > 0) {
+S1456,HtmlTreeBuilderState.java,909,for (String character : tb.getPendingTableCharacters()) {
+S1457,HtmlTreeBuilderState.java,910,if (!isWhitespace(character)) {
+S1458,HtmlTreeBuilderState.java,912,tb.error(this);
+S1459,HtmlTreeBuilderState.java,913,"if (StringUtil.in(tb.currentElement().nodeName(), ""table"", ""tbody"", ""tfoot"", ""thead"", ""tr"")) {"
+S1460,HtmlTreeBuilderState.java,918,"tb.process(new Token.Character().data(character), InBody);"
+S1461,HtmlTreeBuilderState.java,921,tb.insert(new Token.Character().data(character));
+S1462,HtmlTreeBuilderState.java,923,tb.newPendingTableCharacters();
+S1463,HtmlTreeBuilderState.java,925,tb.transition(tb.originalState());
+S1464,HtmlTreeBuilderState.java,926,return tb.process(t);
+S1465,HtmlTreeBuilderState.java,928,return true;
+S1466,HtmlTreeBuilderState.java,931,InCaption {
+S1467,HtmlTreeBuilderState.java,933,"if (t.isEndTag() && t.asEndTag().name().equals(""caption"")) {"
+S1468,HtmlTreeBuilderState.java,934,Token.EndTag endTag = t.asEndTag();
+S1469,HtmlTreeBuilderState.java,935,String name = endTag.name();
+S1470,HtmlTreeBuilderState.java,936,if (!tb.inTableScope(name)) {
+S1471,HtmlTreeBuilderState.java,940,tb.generateImpliedEndTags();
+S1472,HtmlTreeBuilderState.java,941,"if (!tb.currentElement().nodeName().equals(""caption""))"
+S1473,HtmlTreeBuilderState.java,943,"tb.popStackToClose(""caption"");"
+S1474,HtmlTreeBuilderState.java,944,tb.clearFormattingElementsToLastMarker();
+S1475,HtmlTreeBuilderState.java,945,tb.transition(InTable);
+S1476,HtmlTreeBuilderState.java,947,} else if ((
+S1477,HtmlTreeBuilderState.java,961,"return tb.process(t, InBody);"
+S1478,HtmlTreeBuilderState.java,963,return true;
+S1479,HtmlTreeBuilderState.java,966,InColumnGroup {
+S1480,HtmlTreeBuilderState.java,1021,InTableBody {
+S1481,HtmlTreeBuilderState.java,1023,switch (t.type) {
+S1482,HtmlTreeBuilderState.java,1025,Token.StartTag startTag = t.asStartTag();
+S1483,HtmlTreeBuilderState.java,1026,String name = startTag.name();
+S1484,HtmlTreeBuilderState.java,1027,"if (name.equals(""tr"")) {"
+S1485,HtmlTreeBuilderState.java,1028,tb.clearStackToTableBodyContext();
+S1486,HtmlTreeBuilderState.java,1029,tb.insert(startTag);
+S1487,HtmlTreeBuilderState.java,1030,tb.transition(InRow);
+S1488,HtmlTreeBuilderState.java,1041,Token.EndTag endTag = t.asEndTag();
+S1489,HtmlTreeBuilderState.java,1042,name = endTag.name();
+S1490,HtmlTreeBuilderState.java,1043,"if (StringUtil.in(name, ""tbody"", ""tfoot"", ""thead"")) {"
+S1491,HtmlTreeBuilderState.java,1044,if (!tb.inTableScope(name)) {
+S1492,HtmlTreeBuilderState.java,1048,tb.clearStackToTableBodyContext();
+S1493,HtmlTreeBuilderState.java,1049,tb.pop();
+S1494,HtmlTreeBuilderState.java,1050,tb.transition(InTable);
+S1495,HtmlTreeBuilderState.java,1052,"} else if (name.equals(""table"")) {"
+S1496,HtmlTreeBuilderState.java,1053,"return exitTableBody(t, tb);"
+S1497,HtmlTreeBuilderState.java,1061,"return anythingElse(t, tb);"
+S1498,HtmlTreeBuilderState.java,1063,return true;
+S1499,HtmlTreeBuilderState.java,1067,"if (!(tb.inTableScope(""tbody"") || tb.inTableScope(""thead"") || tb.inScope(""tfoot""))) {"
+S1500,HtmlTreeBuilderState.java,1072,tb.clearStackToTableBodyContext();
+S1501,HtmlTreeBuilderState.java,1073,"tb.processEndTag(tb.currentElement().nodeName()); // tbody, tfoot, thead"
+S1502,HtmlTreeBuilderState.java,1074,return tb.process(t);
+S1503,HtmlTreeBuilderState.java,1078,"return tb.process(t, InTable);"
+S1504,HtmlTreeBuilderState.java,1081,InRow {
+S1505,HtmlTreeBuilderState.java,1083,if (t.isStartTag()) {
+S1506,HtmlTreeBuilderState.java,1084,Token.StartTag startTag = t.asStartTag();
+S1507,HtmlTreeBuilderState.java,1085,String name = startTag.name();
+S1508,HtmlTreeBuilderState.java,1087,"if (StringUtil.in(name, ""th"", ""td"")) {"
+S1509,HtmlTreeBuilderState.java,1088,tb.clearStackToTableRowContext();
+S1510,HtmlTreeBuilderState.java,1089,tb.insert(startTag);
+S1511,HtmlTreeBuilderState.java,1090,tb.transition(InCell);
+S1512,HtmlTreeBuilderState.java,1091,tb.insertMarkerToFormattingElements();
+S1513,HtmlTreeBuilderState.java,1092,"} else if (StringUtil.in(name, ""caption"", ""col"", ""colgroup"", ""tbody"", ""tfoot"", ""thead"", ""tr"")) {"
+S1514,HtmlTreeBuilderState.java,1093,"return handleMissingTr(t, tb);"
+S1515,HtmlTreeBuilderState.java,1095,"return anythingElse(t, tb);"
+S1516,HtmlTreeBuilderState.java,1097,} else if (t.isEndTag()) {
+S1517,HtmlTreeBuilderState.java,1098,Token.EndTag endTag = t.asEndTag();
+S1518,HtmlTreeBuilderState.java,1099,String name = endTag.name();
+S1519,HtmlTreeBuilderState.java,1101,"if (name.equals(""tr"")) {"
+S1520,HtmlTreeBuilderState.java,1102,if (!tb.inTableScope(name)) {
+S1521,HtmlTreeBuilderState.java,1106,tb.clearStackToTableRowContext();
+S1522,HtmlTreeBuilderState.java,1107,tb.pop(); // tr
+S1523,HtmlTreeBuilderState.java,1108,tb.transition(InTableBody);
+S1524,HtmlTreeBuilderState.java,1109,"} else if (name.equals(""table"")) {"
+S1525,HtmlTreeBuilderState.java,1110,"return handleMissingTr(t, tb);"
+S1526,HtmlTreeBuilderState.java,1124,} else {
+S1527,HtmlTreeBuilderState.java,1125,"return anythingElse(t, tb);"
+S1528,HtmlTreeBuilderState.java,1127,return true;
+S1529,HtmlTreeBuilderState.java,1131,"return tb.process(t, InTable);"
+S1530,HtmlTreeBuilderState.java,1135,"boolean processed = tb.processEndTag(""tr"");"
+S1531,HtmlTreeBuilderState.java,1136,if (processed)
+S1532,HtmlTreeBuilderState.java,1137,return tb.process(t);
+S1533,HtmlTreeBuilderState.java,1142,InCell {
+S1534,HtmlTreeBuilderState.java,1144,if (t.isEndTag()) {
+S1535,HtmlTreeBuilderState.java,1145,Token.EndTag endTag = t.asEndTag();
+S1536,HtmlTreeBuilderState.java,1146,String name = endTag.name();
+S1537,HtmlTreeBuilderState.java,1148,"if (StringUtil.in(name, ""td"", ""th"")) {"
+S1538,HtmlTreeBuilderState.java,1149,if (!tb.inTableScope(name)) {
+S1539,HtmlTreeBuilderState.java,1154,tb.generateImpliedEndTags();
+S1540,HtmlTreeBuilderState.java,1155,if (!tb.currentElement().nodeName().equals(name))
+S1541,HtmlTreeBuilderState.java,1156,tb.error(this);
+S1542,HtmlTreeBuilderState.java,1157,tb.popStackToClose(name);
+S1543,HtmlTreeBuilderState.java,1158,tb.clearFormattingElementsToLastMarker();
+S1544,HtmlTreeBuilderState.java,1159,tb.transition(InRow);
+S1545,HtmlTreeBuilderState.java,1160,"} else if (StringUtil.in(name, ""body"", ""caption"", ""col"", ""colgroup"", ""html"")) {"
+S1546,HtmlTreeBuilderState.java,1163,"} else if (StringUtil.in(name, ""table"", ""tbody"", ""tfoot"", ""thead"", ""tr"")) {"
+S1547,HtmlTreeBuilderState.java,1164,if (!tb.inTableScope(name)) {
+S1548,HtmlTreeBuilderState.java,1168,closeCell(tb);
+S1549,HtmlTreeBuilderState.java,1169,return tb.process(t);
+S1550,HtmlTreeBuilderState.java,1171,"return anythingElse(t, tb);"
+S1551,HtmlTreeBuilderState.java,1173,} else if (t.isStartTag() &&
+S1552,HtmlTreeBuilderState.java,1176,"if (!(tb.inTableScope(""td"") || tb.inTableScope(""th""))) {"
+S1553,HtmlTreeBuilderState.java,1180,closeCell(tb);
+S1554,HtmlTreeBuilderState.java,1181,return tb.process(t);
+S1555,HtmlTreeBuilderState.java,1183,"return anythingElse(t, tb);"
+S1556,HtmlTreeBuilderState.java,1185,return true;
+S1557,HtmlTreeBuilderState.java,1189,"return tb.process(t, InBody);"
+S1558,HtmlTreeBuilderState.java,1193,"if (tb.inTableScope(""td""))"
+S1559,HtmlTreeBuilderState.java,1194,"tb.processEndTag(""td"");"
+S1560,HtmlTreeBuilderState.java,1199,InSelect {
+S1561,HtmlTreeBuilderState.java,1201,switch (t.type) {
+S1562,HtmlTreeBuilderState.java,1203,Token.Character c = t.asCharacter();
+S1563,HtmlTreeBuilderState.java,1204,if (c.getData().equals(nullString)) {
+S1564,HtmlTreeBuilderState.java,1208,tb.insert(c);
+S1565,HtmlTreeBuilderState.java,1210,break;
+S1566,HtmlTreeBuilderState.java,1218,Token.StartTag start = t.asStartTag();
+S1567,HtmlTreeBuilderState.java,1219,String name = start.name();
+S1568,HtmlTreeBuilderState.java,1220,"if (name.equals(""html""))"
+S1569,HtmlTreeBuilderState.java,1222,"else if (name.equals(""option"")) {"
+S1570,HtmlTreeBuilderState.java,1223,"tb.processEndTag(""option"");"
+S1571,HtmlTreeBuilderState.java,1224,tb.insert(start);
+S1572,HtmlTreeBuilderState.java,1247,Token.EndTag end = t.asEndTag();
+S1573,HtmlTreeBuilderState.java,1248,name = end.name();
+S1574,HtmlTreeBuilderState.java,1249,"if (name.equals(""optgroup"")) {"
+S1575,HtmlTreeBuilderState.java,1256,"} else if (name.equals(""option"")) {"
+S1576,HtmlTreeBuilderState.java,1257,"if (tb.currentElement().nodeName().equals(""option""))"
+S1577,HtmlTreeBuilderState.java,1258,tb.pop();
+S1578,HtmlTreeBuilderState.java,1260,tb.error(this);
+S1579,HtmlTreeBuilderState.java,1261,"} else if (name.equals(""select"")) {"
+S1580,HtmlTreeBuilderState.java,1262,if (!tb.inSelectScope(name)) {
+S1581,HtmlTreeBuilderState.java,1266,tb.popStackToClose(name);
+S1582,HtmlTreeBuilderState.java,1267,tb.resetInsertionMode();
+S1583,HtmlTreeBuilderState.java,1279,return true;
+S1584,HtmlTreeBuilderState.java,1287,InSelectInTable {
+S1585,HtmlTreeBuilderState.java,1305,AfterBody {
+S1586,HtmlTreeBuilderState.java,1307,if (isWhitespace(t)) {
+S1587,HtmlTreeBuilderState.java,1308,"return tb.process(t, InBody);"
+S1588,HtmlTreeBuilderState.java,1309,} else if (t.isComment()) {
+S1589,HtmlTreeBuilderState.java,1310,tb.insert(t.asComment()); // into html node
+S1590,HtmlTreeBuilderState.java,1311,} else if (t.isDoctype()) {
+S1591,HtmlTreeBuilderState.java,1314,"} else if (t.isStartTag() && t.asStartTag().name().equals(""html"")) {"
+S1592,HtmlTreeBuilderState.java,1316,"} else if (t.isEndTag() && t.asEndTag().name().equals(""html"")) {"
+S1593,HtmlTreeBuilderState.java,1317,if (tb.isFragmentParsing()) {
+S1594,HtmlTreeBuilderState.java,1321,tb.transition(AfterAfterBody);
+S1595,HtmlTreeBuilderState.java,1323,} else if (t.isEOF()) {
+S1596,HtmlTreeBuilderState.java,1326,tb.error(this);
+S1597,HtmlTreeBuilderState.java,1327,tb.transition(InBody);
+S1598,HtmlTreeBuilderState.java,1328,return tb.process(t);
+S1599,HtmlTreeBuilderState.java,1330,return true;
+S1600,HtmlTreeBuilderState.java,1333,InFrameset {
+S1601,HtmlTreeBuilderState.java,1379,AfterFrameset {
+S1602,HtmlTreeBuilderState.java,1403,AfterAfterBody {
+S1603,HtmlTreeBuilderState.java,1405,if (t.isComment()) {
+S1604,HtmlTreeBuilderState.java,1406,tb.insert(t.asComment());
+S1605,HtmlTreeBuilderState.java,1407,"} else if (t.isDoctype() || isWhitespace(t) || (t.isStartTag() && t.asStartTag().name().equals(""html""))) {"
+S1606,HtmlTreeBuilderState.java,1408,"return tb.process(t, InBody);"
+S1607,HtmlTreeBuilderState.java,1409,} else if (t.isEOF()) {
+S1608,HtmlTreeBuilderState.java,1412,tb.error(this);
+S1609,HtmlTreeBuilderState.java,1413,tb.transition(InBody);
+S1610,HtmlTreeBuilderState.java,1414,return tb.process(t);
+S1611,HtmlTreeBuilderState.java,1416,return true;
+S1612,HtmlTreeBuilderState.java,1419,AfterAfterFrameset {
+S1613,HtmlTreeBuilderState.java,1436,ForeignContent {
+S1614,HtmlTreeBuilderState.java,1443,private static String nullString = String.valueOf('\u0000');
+S1615,HtmlTreeBuilderState.java,1448,if (t.isCharacter()) {
+S1616,HtmlTreeBuilderState.java,1449,String data = t.asCharacter().getData();
+S1617,HtmlTreeBuilderState.java,1450,return isWhitespace(data);
+S1618,HtmlTreeBuilderState.java,1452,return false;
+S1619,HtmlTreeBuilderState.java,1457,for (int i = 0; i < data.length(); i++) {
+S1620,HtmlTreeBuilderState.java,1458,char c = data.charAt(i);
+S1621,HtmlTreeBuilderState.java,1459,if (!StringUtil.isWhitespace(c))
+S1622,HtmlTreeBuilderState.java,1460,return false;
+S1623,HtmlTreeBuilderState.java,1462,return true;
+S1624,HtmlTreeBuilderState.java,1466,tb.insert(startTag);
+S1625,HtmlTreeBuilderState.java,1467,tb.tokeniser.transition(TokeniserState.Rcdata);
+S1626,HtmlTreeBuilderState.java,1468,tb.markInsertionMode();
+S1627,HtmlTreeBuilderState.java,1469,tb.transition(Text);
+S1628,HtmlTreeBuilderState.java,1473,tb.insert(startTag);
+S1629,HtmlTreeBuilderState.java,1474,tb.tokeniser.transition(TokeniserState.Rawtext);
+S1630,HtmlTreeBuilderState.java,1475,tb.markInsertionMode();
+S1631,HtmlTreeBuilderState.java,1476,tb.transition(Text);
+S1632,HtmlTreeBuilderState.java,1481,private static final class Constants {
+S1633,HtmlTreeBuilderState.java,1482,"private static final String[] InBodyStartToHead = new String[]{""base"", ""basefont"", ""bgsound"", ""command"", ""link"", ""meta"", ""noframes"", ""script"", ""style"", ""title""};"
+S1634,HtmlTreeBuilderState.java,1483,"private static final String[] InBodyStartPClosers = new String[]{""address"", ""article"", ""aside"", ""blockquote"", ""center"", ""details"", ""dir"", ""div"", ""dl"","
+S1635,HtmlTreeBuilderState.java,1486,"private static final String[] Headings = new String[]{""h1"", ""h2"", ""h3"", ""h4"", ""h5"", ""h6""};"
+S1636,HtmlTreeBuilderState.java,1487,"private static final String[] InBodyStartPreListing = new String[]{""pre"", ""listing""};"
+S1637,HtmlTreeBuilderState.java,1488,"private static final String[] InBodyStartLiBreakers = new String[]{""address"", ""div"", ""p""};"
+S1638,HtmlTreeBuilderState.java,1489,"private static final String[] DdDt = new String[]{""dd"", ""dt""};"
+S1639,HtmlTreeBuilderState.java,1490,"private static final String[] Formatters = new String[]{""b"", ""big"", ""code"", ""em"", ""font"", ""i"", ""s"", ""small"", ""strike"", ""strong"", ""tt"", ""u""};"
+S1640,HtmlTreeBuilderState.java,1491,"private static final String[] InBodyStartApplets = new String[]{""applet"", ""marquee"", ""object""};"
+S1641,HtmlTreeBuilderState.java,1492,"private static final String[] InBodyStartEmptyFormatters = new String[]{""area"", ""br"", ""embed"", ""img"", ""keygen"", ""wbr""};"
+S1642,HtmlTreeBuilderState.java,1493,"private static final String[] InBodyStartMedia = new String[]{""param"", ""source"", ""track""};"
+S1643,HtmlTreeBuilderState.java,1494,"private static final String[] InBodyStartInputAttribs = new String[]{""name"", ""action"", ""prompt""};"
+S1644,HtmlTreeBuilderState.java,1495,"private static final String[] InBodyStartOptions = new String[]{""optgroup"", ""option""};"
+S1645,HtmlTreeBuilderState.java,1496,"private static final String[] InBodyStartRuby = new String[]{""rp"", ""rt""};"
+S1646,HtmlTreeBuilderState.java,1497,"private static final String[] InBodyStartDrop = new String[]{""caption"", ""col"", ""colgroup"", ""frame"", ""head"", ""tbody"", ""td"", ""tfoot"", ""th"", ""thead"", ""tr""};"
+S1647,HtmlTreeBuilderState.java,1498,"private static final String[] InBodyEndClosers = new String[]{""address"", ""article"", ""aside"", ""blockquote"", ""button"", ""center"", ""details"", ""dir"", ""div"","
+S1648,HtmlTreeBuilderState.java,1501,"private static final String[] InBodyEndAdoptionFormatters = new String[]{""a"", ""b"", ""big"", ""code"", ""em"", ""font"", ""i"", ""nobr"", ""s"", ""small"", ""strike"", ""strong"", ""tt"", ""u""};"
+S1649,HtmlTreeBuilderState.java,1502,"private static final String[] InBodyEndTableFosters = new String[]{""table"", ""tbody"", ""tfoot"", ""thead"", ""tr""};"
+S1650,Jsoup.java,31,"return Parser.parse(html, baseUri);"
+S1651,Jsoup.java,45,"return parser.parseInput(html, baseUri);"
+S1652,Jsoup.java,58,"return Parser.parse(html, """");"
+S1653,Jsoup.java,88,"return DataUtil.load(in, charsetName, baseUri);"
+S1654,Jsoup.java,103,"return DataUtil.load(in, charsetName, in.getAbsolutePath());"
+S1655,Jsoup.java,118,"return DataUtil.load(in, charsetName, baseUri);"
+S1656,Jsoup.java,135,"return DataUtil.load(in, charsetName, baseUri, parser);"
+S1657,Jsoup.java,148,"return Parser.parseBodyFragment(bodyHtml, baseUri);"
+S1658,Jsoup.java,247,"Document dirty = parseBodyFragment(bodyHtml, """");"
+S1659,Jsoup.java,248,Cleaner cleaner = new Cleaner(whitelist);
+S1660,Jsoup.java,249,return cleaner.isValid(dirty);
+S1661,Node.java,32,"protected Node(String baseUri, Attributes attributes) {"
+S1662,Node.java,33,Validate.notNull(baseUri);
+S1663,Node.java,34,Validate.notNull(attributes);
+S1664,Node.java,36,childNodes = new ArrayList<Node>(4);
+S1665,Node.java,37,this.baseUri = baseUri.trim();
+S1666,Node.java,38,this.attributes = attributes;
+S1667,Node.java,42,"this(baseUri, new Attributes());"
+S1668,Node.java,48,protected Node() {
+S1669,Node.java,49,childNodes = Collections.emptyList();
+S1670,Node.java,50,attributes = null;
+S1671,Node.java,75,Validate.notNull(attributeKey);
+S1672,Node.java,77,if (attributes.hasKey(attributeKey))
+S1673,Node.java,78,return attributes.get(attributeKey);
+S1674,Node.java,79,"else if (attributeKey.toLowerCase().startsWith(""abs:""))"
+S1675,Node.java,80,"return absUrl(attributeKey.substring(""abs:"".length()));"
+S1676,Node.java,81,"else return """";"
+S1677,Node.java,89,return attributes;
+S1678,Node.java,99,"attributes.put(attributeKey, attributeValue);"
+S1679,Node.java,100,return this;
+S1680,Node.java,109,Validate.notNull(attributeKey);
+S1681,Node.java,111,"if (attributeKey.startsWith(""abs:"")) {"
+S1682,Node.java,112,"String key = attributeKey.substring(""abs:"".length());"
+S1683,Node.java,113,"if (attributes.hasKey(key) && !absUrl(key).equals(""""))"
+S1684,Node.java,114,return true;
+S1685,Node.java,116,return attributes.hasKey(attributeKey);
+S1686,Node.java,135,return baseUri;
+S1687,Node.java,143,Validate.notNull(baseUri);
+S1688,Node.java,145,traverse(new NodeVisitor() {
+S1689,Node.java,147,node.baseUri = baseUri;
+S1690,Node.java,179,Validate.notEmpty(attributeKey);
+S1691,Node.java,181,String relUrl = attr(attributeKey);
+S1692,Node.java,182,if (!hasAttr(attributeKey)) {
+S1693,Node.java,188,base = new URL(baseUri);
+S1694,Node.java,195,"if (relUrl.startsWith(""?""))"
+S1695,Node.java,197,"URL abs = new URL(base, relUrl);"
+S1696,Node.java,198,return abs.toExternalForm();
+S1697,Node.java,211,return childNodes.get(index);
+S1698,Node.java,220,return Collections.unmodifiableList(childNodes);
+S1699,Node.java,241,return childNodes.size();
+S1700,Node.java,253,return parentNode;
+S1701,Node.java,261,return parentNode;
+S1702,Node.java,269,if (this instanceof Document)
+S1703,Node.java,270,return (Document) this;
+S1704,Node.java,271,else if (parentNode == null)
+S1705,Node.java,274,return parentNode.ownerDocument();
+S1706,Node.java,281,Validate.notNull(parentNode);
+S1707,Node.java,282,parentNode.removeChild(this);
+S1708,Node.java,303,Validate.notNull(node);
+S1709,Node.java,304,Validate.notNull(parentNode);
+S1710,Node.java,306,"parentNode.addChildren(siblingIndex, node);"
+S1711,Node.java,307,return this;
+S1712,Node.java,418,if (this.parentNode != null)
+S1713,Node.java,420,this.parentNode = parentNode;
+S1714,Node.java,437,Validate.isTrue(out.parentNode == this);
+S1715,Node.java,438,final int index = out.siblingIndex;
+S1716,Node.java,439,childNodes.remove(index);
+S1717,Node.java,440,reindexChildren(index);
+S1718,Node.java,441,out.parentNode = null;
+S1719,Node.java,454,Validate.noNullElements(children);
+S1720,Node.java,455,for (int i = children.length - 1; i >= 0; i--) {
+S1721,Node.java,456,Node in = children[i];
+S1722,Node.java,457,reparentChild(in);
+S1723,Node.java,458,"childNodes.add(index, in);"
+S1724,Node.java,460,reindexChildren(index);
+S1725,Node.java,464,if (child.parentNode != null)
+S1726,Node.java,465,child.parentNode.removeChild(child);
+S1727,Node.java,466,child.setParentNode(this);
+S1728,Node.java,470,for (int i = start; i < childNodes.size(); i++) {
+S1729,Node.java,471,childNodes.get(i).setSiblingIndex(i);
+S1730,Node.java,497,if (parentNode == null)
+S1731,Node.java,498,return null; // root
+S1732,Node.java,500,final List<Node> siblings = parentNode.childNodes;
+S1733,Node.java,501,final int index = siblingIndex+1;
+S1734,Node.java,502,if (siblings.size() > index)
+S1735,Node.java,503,return siblings.get(index);
+S1736,Node.java,505,return null;
+S1737,Node.java,529,return siblingIndex;
+S1738,Node.java,533,this.siblingIndex = siblingIndex;
+S1739,Node.java,542,Validate.notNull(nodeVisitor);
+S1740,Node.java,543,NodeTraversor traversor = new NodeTraversor(nodeVisitor);
+S1741,Node.java,544,traversor.traverse(this);
+S1742,Node.java,545,return this;
+S1743,Node.java,553,StringBuilder accum = new StringBuilder(128);
+S1744,Node.java,554,outerHtml(accum);
+S1745,Node.java,555,return accum.toString();
+S1746,Node.java,559,"new NodeTraversor(new OuterHtmlVisitor(accum, getOutputSettings())).traverse(this);"
+S1747,Node.java,564,"return ownerDocument() != null ? ownerDocument().outputSettings() : (new Document("""")).outputSettings();"
+S1748,Node.java,581,"accum.append(""\n"").append(StringUtil.padding(depth * out.indentAmount()));"
+S1749,Node.java,592,if (this == o) return true;
+S1750,Node.java,593,if (o == null || getClass() != o.getClass()) return false;
+S1751,Node.java,595,Node node = (Node) o;
+S1752,Node.java,597,if (childNodes != null ? !childNodes.equals(node.childNodes) : node.childNodes != null) return false;
+S1753,Node.java,598,return !(attributes != null ? !attributes.equals(node.attributes) : node.attributes != null);
+S1754,Node.java,610,int result = childNodes != null ? childNodes.hashCode() : 0;
+S1755,Node.java,611,result = 31 * result + (attributes != null ? attributes.hashCode() : 0);
+S1756,Node.java,612,return result;
+S1757,Node.java,625,Node thisClone = doClone(null); // splits for orphan
+S1758,Node.java,628,LinkedList<Node> nodesToProcess = new LinkedList<Node>();
+S1759,Node.java,629,nodesToProcess.add(thisClone);
+S1760,Node.java,631,while (!nodesToProcess.isEmpty()) {
+S1761,Node.java,632,Node currParent = nodesToProcess.remove();
+S1762,Node.java,634,for (int i = 0; i < currParent.childNodes.size(); i++) {
+S1763,Node.java,635,Node childClone = currParent.childNodes.get(i).doClone(currParent);
+S1764,Node.java,636,"currParent.childNodes.set(i, childClone);"
+S1765,Node.java,637,nodesToProcess.add(childClone);
+S1766,Node.java,641,return thisClone;
+S1767,Node.java,652,clone = (Node) super.clone();
+S1768,Node.java,657,"clone.parentNode = parent; // can be null, to create an orphan split"
+S1769,Node.java,658,clone.siblingIndex = parent == null ? 0 : siblingIndex;
+S1770,Node.java,659,clone.attributes = attributes != null ? attributes.clone() : null;
+S1771,Node.java,660,clone.baseUri = baseUri;
+S1772,Node.java,661,clone.childNodes = new ArrayList<Node>(childNodes.size());
+S1773,Node.java,663,for (Node child: childNodes)
+S1774,Node.java,664,clone.childNodes.add(child);
+S1775,Node.java,666,return clone;
+S1776,Node.java,673,"OuterHtmlVisitor(StringBuilder accum, Document.OutputSettings out) {"
+S1777,Node.java,674,this.accum = accum;
+S1778,Node.java,675,this.out = out;
+S1779,Node.java,679,"node.outerHtmlHead(accum, depth, out);"
+S1780,Node.java,683,"if (!node.nodeName().equals(""#text"")) // saves a void hit."
+S1781,Node.java,684,"node.outerHtmlTail(accum, depth, out);"
+S1782,NodeTraversor.java,18,public NodeTraversor(NodeVisitor visitor) {
+S1783,NodeTraversor.java,19,this.visitor = visitor;
+S1784,NodeTraversor.java,27,Node node = root;
+S1785,NodeTraversor.java,28,int depth = 0;
+S1786,NodeTraversor.java,30,while (node != null) {
+S1787,NodeTraversor.java,31,"visitor.head(node, depth);"
+S1788,NodeTraversor.java,32,if (node.childNodeSize() > 0) {
+S1789,NodeTraversor.java,33,node = node.childNode(0);
+S1790,NodeTraversor.java,34,depth++;
+S1791,NodeTraversor.java,36,while (node.nextSibling() == null && depth > 0) {
+S1792,NodeTraversor.java,37,"visitor.tail(node, depth);"
+S1793,NodeTraversor.java,38,node = node.parentNode();
+S1794,NodeTraversor.java,39,depth--;
+S1795,NodeTraversor.java,41,"visitor.tail(node, depth);"
+S1796,NodeTraversor.java,42,if (node == root)
+S1797,NodeTraversor.java,43,break;
+S1798,NodeTraversor.java,44,node = node.nextSibling();
+S1799,ParseErrorList.java,15,super(initialCapacity);
+S1800,ParseErrorList.java,16,this.maxSize = maxSize;
+S1801,ParseErrorList.java,20,return size() < maxSize;
+S1802,ParseErrorList.java,28,"return new ParseErrorList(0, 0);"
+S1803,Parser.java,17,private int maxErrors = DEFAULT_MAX_ERRORS;
+S1804,Parser.java,24,public Parser(TreeBuilder treeBuilder) {
+S1805,Parser.java,25,this.treeBuilder = treeBuilder;
+S1806,Parser.java,29,errors = isTrackErrors() ? ParseErrorList.tracking(maxErrors) : ParseErrorList.noTracking();
+S1807,Parser.java,30,"return treeBuilder.parse(html, baseUri, errors);"
+S1808,Parser.java,57,return maxErrors > 0;
+S1809,Parser.java,88,TreeBuilder treeBuilder = new HtmlTreeBuilder();
+S1810,Parser.java,89,"return treeBuilder.parse(html, baseUri, ParseErrorList.noTracking());"
+S1811,Parser.java,103,HtmlTreeBuilder treeBuilder = new HtmlTreeBuilder();
+S1812,Parser.java,104,"return treeBuilder.parseFragment(fragmentHtml, context, baseUri, ParseErrorList.noTracking());"
+S1813,Parser.java,128,Document doc = Document.createShell(baseUri);
+S1814,Parser.java,129,Element body = doc.body();
+S1815,Parser.java,130,"List<Node> nodeList = parseFragment(bodyHtml, body, baseUri);"
+S1816,Parser.java,131,Node[] nodes = nodeList.toArray(new Node[nodeList.size()]); // the node list gets modified when re-parented
+S1817,Parser.java,132,for (int i = nodes.length - 1; i > 0; i--) {
+S1818,Parser.java,133,nodes[i].remove();
+S1819,Parser.java,135,for (Node node : nodes) {
+S1820,Parser.java,136,body.appendChild(node);
+S1821,Parser.java,138,return doc;
+S1822,Parser.java,171,return new Parser(new HtmlTreeBuilder());
+S1823,Parser.java,180,return new Parser(new XmlTreeBuilder());
+S1824,QueryParser.java,16,"private final static String[] combinators = {"","", "">"", ""+"", ""~"", "" ""};"
+S1825,QueryParser.java,17,"private static final String[] AttributeEvals = new String[]{""="", ""!="", ""^="", ""$="", ""*="", ""~=""};"
+S1826,QueryParser.java,21,private List<Evaluator> evals = new ArrayList<Evaluator>();
+S1827,QueryParser.java,27,private QueryParser(String query) {
+S1828,QueryParser.java,28,this.query = query;
+S1829,QueryParser.java,29,this.tq = new TokenQueue(query);
+S1830,QueryParser.java,38,QueryParser p = new QueryParser(query);
+S1831,QueryParser.java,39,return p.parse();
+S1832,QueryParser.java,47,tq.consumeWhitespace();
+S1833,QueryParser.java,49,"if (tq.matchesAny(combinators)) { // if starts with a combinator, use root as elements"
+S1834,QueryParser.java,50,evals.add(new StructuralEvaluator.Root());
+S1835,QueryParser.java,51,combinator(tq.consume());
+S1836,QueryParser.java,53,findElements();
+S1837,QueryParser.java,56,while (!tq.isEmpty()) {
+S1838,QueryParser.java,58,boolean seenWhite = tq.consumeWhitespace();
+S1839,QueryParser.java,60,if (tq.matchesAny(combinators)) {
+S1840,QueryParser.java,61,combinator(tq.consume());
+S1841,QueryParser.java,62,} else if (seenWhite) {
+S1842,QueryParser.java,63,combinator(' ');
+S1843,QueryParser.java,65,"findElements(); // take next el, #. etc off queue"
+S1844,QueryParser.java,69,if (evals.size() == 1)
+S1845,QueryParser.java,70,return evals.get(0);
+S1846,QueryParser.java,72,return new CombiningEvaluator.And(evals);
+S1847,QueryParser.java,76,tq.consumeWhitespace();
+S1848,QueryParser.java,77,String subQuery = consumeSubQuery(); // support multi > childs
+S1849,QueryParser.java,81,Evaluator newEval = parse(subQuery); // the evaluator to add into target evaluator
+S1850,QueryParser.java,82,boolean replaceRightMost = false;
+S1851,QueryParser.java,84,if (evals.size() == 1) {
+S1852,QueryParser.java,85,rootEval = currentEval = evals.get(0);
+S1853,QueryParser.java,87,"if (rootEval instanceof CombiningEvaluator.Or && combinator != ',') {"
+S1854,QueryParser.java,93,rootEval = currentEval = new CombiningEvaluator.And(evals);
+S1855,QueryParser.java,95,evals.clear();
+S1856,QueryParser.java,98,if (combinator == '>')
+S1857,QueryParser.java,99,"currentEval = new CombiningEvaluator.And(newEval, new StructuralEvaluator.ImmediateParent(currentEval));"
+S1858,QueryParser.java,100,else if (combinator == ' ')
+S1859,QueryParser.java,101,"currentEval = new CombiningEvaluator.And(newEval, new StructuralEvaluator.Parent(currentEval));"
+S1860,QueryParser.java,102,else if (combinator == '+')
+S1861,QueryParser.java,104,else if (combinator == '~')
+S1862,QueryParser.java,106,"else if (combinator == ',') { // group or."
+S1863,QueryParser.java,108,if (currentEval instanceof CombiningEvaluator.Or) {
+S1864,QueryParser.java,112,or = new CombiningEvaluator.Or();
+S1865,QueryParser.java,113,or.add(currentEval);
+S1866,QueryParser.java,114,or.add(newEval);
+S1867,QueryParser.java,116,currentEval = or;
+S1868,QueryParser.java,121,if (replaceRightMost)
+S1869,QueryParser.java,123,else rootEval = currentEval;
+S1870,QueryParser.java,124,evals.add(rootEval);
+S1871,QueryParser.java,128,StringBuilder sq = new StringBuilder();
+S1872,QueryParser.java,129,while (!tq.isEmpty()) {
+S1873,QueryParser.java,130,"if (tq.matches(""(""))"
+S1874,QueryParser.java,131,"sq.append(""("").append(tq.chompBalanced('(', ')')).append("")"");"
+S1875,QueryParser.java,132,"else if (tq.matches(""[""))"
+S1876,QueryParser.java,133,"sq.append(""["").append(tq.chompBalanced('[', ']')).append(""]"");"
+S1877,QueryParser.java,134,else if (tq.matchesAny(combinators))
+S1878,QueryParser.java,135,break;
+S1879,QueryParser.java,137,sq.append(tq.consume());
+S1880,QueryParser.java,139,return sq.toString();
+S1881,QueryParser.java,143,"if (tq.matchChomp(""#""))"
+S1882,QueryParser.java,144,byId();
+S1883,QueryParser.java,145,"else if (tq.matchChomp("".""))"
+S1884,QueryParser.java,146,byClass();
+S1885,QueryParser.java,147,else if (tq.matchesWord())
+S1886,QueryParser.java,148,byTag();
+S1887,QueryParser.java,149,"else if (tq.matches(""[""))"
+S1888,QueryParser.java,150,byAttribute();
+S1889,QueryParser.java,151,"else if (tq.matchChomp(""*""))"
+S1890,QueryParser.java,152,allElements();
+S1891,QueryParser.java,153,"else if (tq.matchChomp("":lt(""))"
+S1892,QueryParser.java,155,"else if (tq.matchChomp("":gt(""))"
+S1893,QueryParser.java,157,"else if (tq.matchChomp("":eq(""))"
+S1894,QueryParser.java,159,"else if (tq.matches("":has(""))"
+S1895,QueryParser.java,161,"else if (tq.matches("":contains(""))"
+S1896,QueryParser.java,162,contains(false);
+S1897,QueryParser.java,163,"else if (tq.matches("":containsOwn(""))"
+S1898,QueryParser.java,165,"else if (tq.matches("":matches(""))"
+S1899,QueryParser.java,167,"else if (tq.matches("":matchesOwn(""))"
+S1900,QueryParser.java,169,"else if (tq.matches("":not(""))"
+S1901,QueryParser.java,170,not();
+S1902,QueryParser.java,171,"else if (tq.matchChomp("":nth-child(""))"
+S1903,QueryParser.java,172,"cssNthChild(false, false);"
+S1904,QueryParser.java,173,"else if (tq.matchChomp("":nth-last-child(""))"
+S1905,QueryParser.java,174,"cssNthChild(true, false);"
+S1906,QueryParser.java,175,"else if (tq.matchChomp("":nth-of-type(""))"
+S1907,QueryParser.java,176,"cssNthChild(false, true);"
+S1908,QueryParser.java,177,"else if (tq.matchChomp("":nth-last-of-type(""))"
+S1909,QueryParser.java,178,"cssNthChild(true, true);"
+S1910,QueryParser.java,179,"else if (tq.matchChomp("":first-child""))"
+S1911,QueryParser.java,180,evals.add(new Evaluator.IsFirstChild());
+S1912,QueryParser.java,181,"else if (tq.matchChomp("":last-child""))"
+S1913,QueryParser.java,182,evals.add(new Evaluator.IsLastChild());
+S1914,QueryParser.java,183,"else if (tq.matchChomp("":first-of-type""))"
+S1915,QueryParser.java,184,evals.add(new Evaluator.IsFirstOfType());
+S1916,QueryParser.java,185,"else if (tq.matchChomp("":last-of-type""))"
+S1917,QueryParser.java,186,evals.add(new Evaluator.IsLastOfType());
+S1918,QueryParser.java,187,"else if (tq.matchChomp("":only-child""))"
+S1919,QueryParser.java,188,evals.add(new Evaluator.IsOnlyChild());
+S1920,QueryParser.java,189,"else if (tq.matchChomp("":only-of-type""))"
+S1921,QueryParser.java,190,evals.add(new Evaluator.IsOnlyOfType());
+S1922,QueryParser.java,191,"else if (tq.matchChomp("":empty""))"
+S1923,QueryParser.java,192,evals.add(new Evaluator.IsEmpty());
+S1924,QueryParser.java,193,"else if (tq.matchChomp("":root""))"
+S1925,QueryParser.java,194,evals.add(new Evaluator.IsRoot());
+S1926,QueryParser.java,201,String id = tq.consumeCssIdentifier();
+S1927,QueryParser.java,202,Validate.notEmpty(id);
+S1928,QueryParser.java,203,evals.add(new Evaluator.Id(id));
+S1929,QueryParser.java,207,String className = tq.consumeCssIdentifier();
+S1930,QueryParser.java,208,Validate.notEmpty(className);
+S1931,QueryParser.java,209,evals.add(new Evaluator.Class(className.trim().toLowerCase()));
+S1932,QueryParser.java,213,String tagName = tq.consumeElementSelector();
+S1933,QueryParser.java,214,Validate.notEmpty(tagName);
+S1934,QueryParser.java,217,"if (tagName.contains(""|""))"
+S1935,QueryParser.java,220,evals.add(new Evaluator.Tag(tagName.trim().toLowerCase()));
+S1936,QueryParser.java,224,"TokenQueue cq = new TokenQueue(tq.chompBalanced('[', ']')); // content queue"
+S1937,QueryParser.java,225,"String key = cq.consumeToAny(AttributeEvals); // eq, not, start, end, contain, match, (no val)"
+S1938,QueryParser.java,226,Validate.notEmpty(key);
+S1939,QueryParser.java,227,cq.consumeWhitespace();
+S1940,QueryParser.java,229,if (cq.isEmpty()) {
+S1941,QueryParser.java,230,"if (key.startsWith(""^""))"
+S1942,QueryParser.java,233,evals.add(new Evaluator.Attribute(key));
+S1943,QueryParser.java,235,"if (cq.matchChomp(""=""))"
+S1944,QueryParser.java,236,"evals.add(new Evaluator.AttributeWithValue(key, cq.remainder()));"
+S1945,QueryParser.java,238,"else if (cq.matchChomp(""!=""))"
+S1946,QueryParser.java,241,"else if (cq.matchChomp(""^=""))"
+S1947,QueryParser.java,244,"else if (cq.matchChomp(""$=""))"
+S1948,QueryParser.java,247,"else if (cq.matchChomp(""*=""))"
+S1949,QueryParser.java,248,"evals.add(new Evaluator.AttributeWithValueContaining(key, cq.remainder()));"
+S1950,QueryParser.java,258,evals.add(new Evaluator.AllElements());
+S1951,QueryParser.java,275,"private static final Pattern NTH_AB = Pattern.compile(""((\\+|-)?(\\d+)?)n(\\s*(\\+|-)?\\s*\\d+)?"", Pattern.CASE_INSENSITIVE);"
+S1952,QueryParser.java,276,"private static final Pattern NTH_B  = Pattern.compile(""(\\+|-)?(\\d+)"");"
+S1953,QueryParser.java,279,"String argS = tq.chompTo("")"").trim().toLowerCase();"
+S1954,QueryParser.java,280,Matcher mAB = NTH_AB.matcher(argS);
+S1955,QueryParser.java,281,Matcher mB = NTH_B.matcher(argS);
+S1956,QueryParser.java,283,"if (""odd"".equals(argS)) {"
+S1957,QueryParser.java,284,a = 2;
+S1958,QueryParser.java,285,b = 1;
+S1959,QueryParser.java,286,"} else if (""even"".equals(argS)) {"
+S1960,QueryParser.java,287,a = 2;
+S1961,QueryParser.java,288,b = 0;
+S1962,QueryParser.java,289,} else if (mAB.matches()) {
+S1963,QueryParser.java,290,"a = mAB.group(3) != null ? Integer.parseInt(mAB.group(1).replaceFirst(""^\\+"", """")) : 1;"
+S1964,QueryParser.java,291,"b = mAB.group(4) != null ? Integer.parseInt(mAB.group(4).replaceFirst(""^\\+"", """")) : 0;"
+S1965,QueryParser.java,292,} else if (mB.matches()) {
+S1966,QueryParser.java,293,a = 0;
+S1967,QueryParser.java,294,"b = Integer.parseInt(mB.group().replaceFirst(""^\\+"", """"));"
+S1968,QueryParser.java,298,if (ofType)
+S1969,QueryParser.java,299,if (backwards)
+S1970,QueryParser.java,300,"evals.add(new Evaluator.IsNthLastOfType(a, b));"
+S1971,QueryParser.java,302,"evals.add(new Evaluator.IsNthOfType(a, b));"
+S1972,QueryParser.java,304,if (backwards)
+S1973,QueryParser.java,305,"evals.add(new Evaluator.IsNthLastChild(a, b));"
+S1974,QueryParser.java,307,"evals.add(new Evaluator.IsNthChild(a, b));"
+S1975,QueryParser.java,327,"tq.consume(own ? "":containsOwn"" : "":contains"");"
+S1976,QueryParser.java,328,"String searchText = TokenQueue.unescape(tq.chompBalanced('(', ')'));"
+S1977,QueryParser.java,329,"Validate.notEmpty(searchText, "":contains(text) query must not be empty"");"
+S1978,QueryParser.java,330,if (own)
+S1979,QueryParser.java,333,evals.add(new Evaluator.ContainsText(searchText));
+S1980,QueryParser.java,350,"tq.consume("":not"");"
+S1981,QueryParser.java,351,"String subQuery = tq.chompBalanced('(', ')');"
+S1982,QueryParser.java,352,"Validate.notEmpty(subQuery, "":not(selector) subselect must not be empty"");"
+S1983,QueryParser.java,354,evals.add(new StructuralEvaluator.Not(parse(subQuery)));
+S1984,Selector.java,77,"private Selector(String query, Element root) {"
+S1985,Selector.java,78,Validate.notNull(query);
+S1986,Selector.java,79,query = query.trim();
+S1987,Selector.java,80,Validate.notEmpty(query);
+S1988,Selector.java,81,Validate.notNull(root);
+S1989,Selector.java,83,this.evaluator = QueryParser.parse(query);
+S1990,Selector.java,85,this.root = root;
+S1991,Selector.java,88,"private Selector(Evaluator evaluator, Element root) {"
+S1992,Selector.java,89,Validate.notNull(evaluator);
+S1993,Selector.java,90,Validate.notNull(root);
+S1994,Selector.java,92,this.evaluator = evaluator;
+S1995,Selector.java,93,this.root = root;
+S1996,Selector.java,105,"return new Selector(query, root).select();"
+S1997,Selector.java,116,"return new Selector(evaluator, root).select();"
+S1998,Selector.java,127,Validate.notEmpty(query);
+S1999,Selector.java,128,Validate.notNull(roots);
+S2000,Selector.java,129,Evaluator evaluator = QueryParser.parse(query);
+S2001,Selector.java,130,LinkedHashSet<Element> elements = new LinkedHashSet<Element>();
+S2002,Selector.java,132,for (Element root : roots) {
+S2003,Selector.java,133,"elements.addAll(select(evaluator, root));"
+S2004,Selector.java,135,return new Elements(elements);
+S2005,Selector.java,139,"return Collector.collect(evaluator, root);"
+S2006,StringUtil.java,11,"private static final String[] padding = {"""", "" "", ""  "", ""   "", ""    "", ""     "", ""      "", ""       "", ""        "", ""         "", ""          ""};"
+S2007,StringUtil.java,20,"return join(strings.iterator(), sep);"
+S2008,StringUtil.java,30,if (!strings.hasNext())
+S2009,StringUtil.java,31,"return """";"
+S2010,StringUtil.java,33,String start = strings.next().toString();
+S2011,StringUtil.java,34,"if (!strings.hasNext()) // only one, avoid builder"
+S2012,StringUtil.java,37,StringBuilder sb = new StringBuilder(64).append(start);
+S2013,StringUtil.java,38,while (strings.hasNext()) {
+S2014,StringUtil.java,39,sb.append(sep);
+S2015,StringUtil.java,40,sb.append(strings.next());
+S2016,StringUtil.java,42,return sb.toString();
+S2017,StringUtil.java,51,if (width < 0)
+S2018,StringUtil.java,54,if (width < padding.length)
+S2019,StringUtil.java,55,return padding[width];
+S2020,StringUtil.java,69,if (string == null || string.length() == 0)
+S2021,StringUtil.java,70,return true;
+S2022,StringUtil.java,72,int l = string.length();
+S2023,StringUtil.java,73,for (int i = 0; i < l; i++) {
+S2024,StringUtil.java,74,if (!StringUtil.isWhitespace(string.codePointAt(i)))
+S2025,StringUtil.java,75,return false;
+S2026,StringUtil.java,77,return true;
+S2027,StringUtil.java,103,return c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r';
+S2028,StringUtil.java,113,StringBuilder sb = new StringBuilder(string.length());
+S2029,StringUtil.java,114,"appendNormalisedWhitespace(sb, string, false);"
+S2030,StringUtil.java,115,return sb.toString();
+S2031,StringUtil.java,125,boolean lastWasWhite = false;
+S2032,StringUtil.java,126,boolean reachedNonWhite = false;
+S2033,StringUtil.java,128,int len = string.length();
+S2034,StringUtil.java,130,for (int i = 0; i < len; i+= Character.charCount(c)) {
+S2035,StringUtil.java,131,c = string.codePointAt(i);
+S2036,StringUtil.java,132,if (isWhitespace(c)) {
+S2037,StringUtil.java,133,if ((stripLeading && !reachedNonWhite) || lastWasWhite)
+S2038,StringUtil.java,134,continue;
+S2039,StringUtil.java,135,accum.append(' ');
+S2040,StringUtil.java,136,lastWasWhite = true;
+S2041,StringUtil.java,139,accum.appendCodePoint(c);
+S2042,StringUtil.java,140,lastWasWhite = false;
+S2043,StringUtil.java,141,reachedNonWhite = true;
+S2044,StringUtil.java,147,for (String hay : haystack) {
+S2045,StringUtil.java,148,if (hay.equals(needle))
+S2046,StringUtil.java,149,return true;
+S2047,StringUtil.java,151,return false;
+S2048,StructuralEvaluator.java,8,abstract class StructuralEvaluator extends Evaluator {
+S2049,StructuralEvaluator.java,11,static class Root extends Evaluator {
+S2050,StructuralEvaluator.java,13,return root == element;
+S2051,StructuralEvaluator.java,37,public Not(Evaluator evaluator) {
+S2052,StructuralEvaluator.java,38,this.evaluator = evaluator;
+S2053,StructuralEvaluator.java,42,"return !evaluator.matches(root, node);"
+S2054,StructuralEvaluator.java,52,public Parent(Evaluator evaluator) {
+S2055,StructuralEvaluator.java,53,this.evaluator = evaluator;
+S2056,StructuralEvaluator.java,57,if (root == element)
+S2057,StructuralEvaluator.java,60,Element parent = element.parent();
+S2058,StructuralEvaluator.java,61,while (parent != root) {
+S2059,StructuralEvaluator.java,62,"if (evaluator.matches(root, parent))"
+S2060,StructuralEvaluator.java,63,return true;
+S2061,StructuralEvaluator.java,64,parent = parent.parent();
+S2062,StructuralEvaluator.java,66,return false;
+S2063,StructuralEvaluator.java,76,public ImmediateParent(Evaluator evaluator) {
+S2064,StructuralEvaluator.java,77,this.evaluator = evaluator;
+S2065,StructuralEvaluator.java,81,if (root == element)
+S2066,StructuralEvaluator.java,82,return false;
+S2067,StructuralEvaluator.java,84,Element parent = element.parent();
+S2068,StructuralEvaluator.java,85,"return parent != null && evaluator.matches(root, parent);"
+S2069,StructuralEvaluator.java,120,static class ImmediatePreviousSibling extends StructuralEvaluator {
+S2070,Tag.java,14,"private static final Map<String, Tag> tags = new HashMap<String, Tag>(); // map of known tags"
+S2071,Tag.java,17,private boolean isBlock = true; // block or inline
+S2072,Tag.java,18,private boolean formatAsBlock = true; // should be formatted as a block
+S2073,Tag.java,19,private boolean canContainBlock = true; // Can this tag hold block level tags?
+S2074,Tag.java,20,private boolean canContainInline = true; // only pcdata if not
+S2075,Tag.java,21,private boolean empty = false; // can hold nothing; e.g. img
+S2076,Tag.java,22,"private boolean selfClosing = false; // can self close (<foo />). used for unknown tags that self close, without forcing them as empty."
+S2077,Tag.java,23,"private boolean preserveWhitespace = false; // for pre, textarea, script etc"
+S2078,Tag.java,24,"private boolean formList = false; // a control that appears in forms: input, textarea, output etc"
+S2079,Tag.java,25,private boolean formSubmit = false; // a control that can be submitted in a form: input etc
+S2080,Tag.java,27,private Tag(String tagName) {
+S2081,Tag.java,28,this.tagName = tagName.toLowerCase();
+S2082,Tag.java,37,return tagName;
+S2083,Tag.java,50,Validate.notNull(tagName);
+S2084,Tag.java,51,Tag tag = tags.get(tagName);
+S2085,Tag.java,53,if (tag == null) {
+S2086,Tag.java,54,tagName = tagName.trim().toLowerCase();
+S2087,Tag.java,55,Validate.notEmpty(tagName);
+S2088,Tag.java,56,tag = tags.get(tagName);
+S2089,Tag.java,58,if (tag == null) {
+S2090,Tag.java,60,tag = new Tag(tagName);
+S2091,Tag.java,61,tag.isBlock = false;
+S2092,Tag.java,62,tag.canContainBlock = true;
+S2093,Tag.java,65,return tag;
+S2094,Tag.java,74,return isBlock;
+S2095,Tag.java,83,return formatAsBlock;
+S2096,Tag.java,119,return empty;
+S2097,Tag.java,128,return empty || selfClosing;
+S2098,Tag.java,137,return tags.containsKey(tagName);
+S2099,Tag.java,156,return preserveWhitespace;
+S2100,Tag.java,164,return formList;
+S2101,Tag.java,176,selfClosing = true;
+S2102,Tag.java,177,return this;
+S2103,Tag.java,182,if (this == o) return true;
+S2104,Tag.java,183,if (!(o instanceof Tag)) return false;
+S2105,Tag.java,185,Tag tag = (Tag) o;
+S2106,Tag.java,187,if (!tagName.equals(tag.tagName)) return false;
+S2107,Tag.java,201,int result = tagName.hashCode();
+S2108,Tag.java,202,result = 31 * result + (isBlock ? 1 : 0);
+S2109,Tag.java,203,result = 31 * result + (formatAsBlock ? 1 : 0);
+S2110,Tag.java,204,result = 31 * result + (canContainBlock ? 1 : 0);
+S2111,Tag.java,205,result = 31 * result + (canContainInline ? 1 : 0);
+S2112,Tag.java,206,result = 31 * result + (empty ? 1 : 0);
+S2113,Tag.java,207,result = 31 * result + (selfClosing ? 1 : 0);
+S2114,Tag.java,208,result = 31 * result + (preserveWhitespace ? 1 : 0);
+S2115,Tag.java,209,result = 31 * result + (formList ? 1 : 0);
+S2116,Tag.java,210,result = 31 * result + (formSubmit ? 1 : 0);
+S2117,Tag.java,211,return result;
+S2118,Tag.java,221,private static final String[] blockTags = {
+S2119,Tag.java,229,private static final String[] inlineTags = {
+S2120,Tag.java,237,private static final String[] emptyTags = {
+S2121,Tag.java,241,private static final String[] formatAsInlineTags = {
+S2122,Tag.java,245,private static final String[] preserveWhitespaceTags = {
+S2123,Tag.java,250,private static final String[] formListedTags = {
+S2124,Tag.java,253,private static final String[] formSubmitTags = {
+S2125,Tag.java,259,for (String tagName : blockTags) {
+S2126,Tag.java,260,Tag tag = new Tag(tagName);
+S2127,Tag.java,261,register(tag);
+S2128,Tag.java,263,for (String tagName : inlineTags) {
+S2129,Tag.java,264,Tag tag = new Tag(tagName);
+S2130,Tag.java,265,tag.isBlock = false;
+S2131,Tag.java,266,tag.canContainBlock = false;
+S2132,Tag.java,267,tag.formatAsBlock = false;
+S2133,Tag.java,268,register(tag);
+S2134,Tag.java,272,for (String tagName : emptyTags) {
+S2135,Tag.java,273,Tag tag = tags.get(tagName);
+S2136,Tag.java,274,Validate.notNull(tag);
+S2137,Tag.java,275,tag.canContainBlock = false;
+S2138,Tag.java,276,tag.canContainInline = false;
+S2139,Tag.java,277,tag.empty = true;
+S2140,Tag.java,280,for (String tagName : formatAsInlineTags) {
+S2141,Tag.java,281,Tag tag = tags.get(tagName);
+S2142,Tag.java,282,Validate.notNull(tag);
+S2143,Tag.java,283,tag.formatAsBlock = false;
+S2144,Tag.java,286,for (String tagName : preserveWhitespaceTags) {
+S2145,Tag.java,287,Tag tag = tags.get(tagName);
+S2146,Tag.java,288,Validate.notNull(tag);
+S2147,Tag.java,289,tag.preserveWhitespace = true;
+S2148,Tag.java,292,for (String tagName : formListedTags) {
+S2149,Tag.java,293,Tag tag = tags.get(tagName);
+S2150,Tag.java,294,Validate.notNull(tag);
+S2151,Tag.java,295,tag.formList = true;
+S2152,Tag.java,298,for (String tagName : formSubmitTags) {
+S2153,Tag.java,299,Tag tag = tags.get(tagName);
+S2154,Tag.java,300,Validate.notNull(tag);
+S2155,Tag.java,301,tag.formSubmit = true;
+S2156,Tag.java,306,"tags.put(tag.tagName, tag);"
+S2157,TextNode.java,26,"public TextNode(String text, String baseUri) {"
+S2158,TextNode.java,27,this.baseUri = baseUri;
+S2159,TextNode.java,28,this.text = text;
+S2160,TextNode.java,32,"return ""#text"";"
+S2161,TextNode.java,61,return attributes == null ? text : attributes.get(TEXT_KEY);
+S2162,TextNode.java,69,return StringUtil.isBlank(getWholeText());
+S2163,TextNode.java,93,if (out.prettyPrint() && ((siblingIndex() == 0 && parentNode instanceof Element && ((Element) parentNode).tag().formatAsBlock() && !isBlank()) || (out.outline() && siblingNodes().size()>0 && !isBlank()) ))
+S2164,TextNode.java,94,"indent(accum, depth, out);"
+S2165,TextNode.java,96,boolean normaliseWhite = out.prettyPrint() && parent() instanceof Element
+S2166,TextNode.java,98,"Entities.escape(accum, getWholeText(), out, false, normaliseWhite, false);"
+S2167,TextNode.java,129,return sb.length() != 0 && sb.charAt(sb.length() - 1) == ' ';
+S2168,TextNode.java,178,if (this == o) return true;
+S2169,TextNode.java,179,if (o == null || getClass() != o.getClass()) return false;
+S2170,TextNode.java,180,if (!super.equals(o)) return false;
+S2171,TextNode.java,182,TextNode textNode = (TextNode) o;
+S2172,TextNode.java,184,return !(text != null ? !text.equals(textNode.text) : textNode.text != null);
+S2173,TextNode.java,189,int result = super.hashCode();
+S2174,TextNode.java,190,result = 31 * result + (text != null ? text.hashCode() : 0);
+S2175,TextNode.java,191,return result;
+S2176,Token.java,11,abstract class Token {
+S2177,Token.java,14,private Token() {
+S2178,Token.java,28,if (sb != null) {
+S2179,Token.java,29,"sb.delete(0, sb.length());"
+S2180,Token.java,34,final StringBuilder name = new StringBuilder();
+S2181,Token.java,35,final StringBuilder publicIdentifier = new StringBuilder();
+S2182,Token.java,36,final StringBuilder systemIdentifier = new StringBuilder();
+S2183,Token.java,37,boolean forceQuirks = false;
+S2184,Token.java,39,Doctype() {
+S2185,Token.java,40,type = TokenType.Doctype;
+S2186,Token.java,45,reset(name);
+S2187,Token.java,46,reset(publicIdentifier);
+S2188,Token.java,47,reset(systemIdentifier);
+S2189,Token.java,48,forceQuirks = false;
+S2190,Token.java,49,return this;
+S2191,Token.java,53,return name.toString();
+S2192,Token.java,57,return publicIdentifier.toString();
+S2193,Token.java,61,return systemIdentifier.toString();
+S2194,Token.java,65,return forceQuirks;
+S2195,Token.java,69,static abstract class Tag extends Token {
+S2196,Token.java,72,"private StringBuilder pendingAttributeValue = new StringBuilder(); // but values are accumulated, from e.g. & in hrefs"
+S2197,Token.java,73,private boolean hasEmptyAttributeValue = false; // distinguish boolean attribute from empty string value
+S2198,Token.java,74,private boolean hasPendingAttributeValue = false;
+S2199,Token.java,75,boolean selfClosing = false;
+S2200,Token.java,80,tagName = null;
+S2201,Token.java,81,pendingAttributeName = null;
+S2202,Token.java,82,reset(pendingAttributeValue);
+S2203,Token.java,83,hasEmptyAttributeValue = false;
+S2204,Token.java,84,hasPendingAttributeValue = false;
+S2205,Token.java,85,selfClosing = false;
+S2206,Token.java,86,attributes = null;
+S2207,Token.java,87,return this;
+S2208,Token.java,91,if (attributes == null)
+S2209,Token.java,94,if (pendingAttributeName != null) {
+S2210,Token.java,96,if (hasPendingAttributeValue)
+S2211,Token.java,97,"attribute = new Attribute(pendingAttributeName, pendingAttributeValue.toString());"
+S2212,Token.java,98,else if (hasEmptyAttributeValue)
+S2213,Token.java,99,"attribute = new Attribute(pendingAttributeName, """");"
+S2214,Token.java,101,attribute = new BooleanAttribute(pendingAttributeName);
+S2215,Token.java,102,attributes.put(attribute);
+S2216,Token.java,104,pendingAttributeName = null;
+S2217,Token.java,105,hasEmptyAttributeValue = false;
+S2218,Token.java,106,hasPendingAttributeValue = false;
+S2219,Token.java,107,reset(pendingAttributeValue);
+S2220,Token.java,112,if (pendingAttributeName != null) {
+S2221,Token.java,114,newAttribute();
+S2222,Token.java,119,Validate.isFalse(tagName == null || tagName.length() == 0);
+S2223,Token.java,120,return tagName;
+S2224,Token.java,124,tagName = name;
+S2225,Token.java,125,return this;
+S2226,Token.java,129,return selfClosing;
+S2227,Token.java,139,tagName = tagName == null ? append : tagName.concat(append);
+S2228,Token.java,143,appendTagName(String.valueOf(append));
+S2229,Token.java,147,pendingAttributeName = pendingAttributeName == null ? append : pendingAttributeName.concat(append);
+S2230,Token.java,155,ensureAttributeValue();
+S2231,Token.java,156,pendingAttributeValue.append(append);
+S2232,Token.java,160,ensureAttributeValue();
+S2233,Token.java,161,pendingAttributeValue.append(append);
+S2234,Token.java,165,ensureAttributeValue();
+S2235,Token.java,166,pendingAttributeValue.append(append);
+S2236,Token.java,170,hasEmptyAttributeValue = true;
+S2237,Token.java,174,hasPendingAttributeValue = true;
+S2238,Token.java,178,final static class StartTag extends Tag {
+S2239,Token.java,180,super();
+S2240,Token.java,181,attributes = new Attributes();
+S2241,Token.java,182,type = TokenType.StartTag;
+S2242,Token.java,187,super.reset();
+S2243,Token.java,188,attributes = new Attributes();
+S2244,Token.java,190,return this;
+S2245,Token.java,210,super();
+S2246,Token.java,211,type = TokenType.EndTag;
+S2247,Token.java,221,final StringBuilder data = new StringBuilder();
+S2248,Token.java,222,boolean bogus = false;
+S2249,Token.java,226,reset(data);
+S2250,Token.java,227,bogus = false;
+S2251,Token.java,228,return this;
+S2252,Token.java,231,Comment() {
+S2253,Token.java,232,type = TokenType.Comment;
+S2254,Token.java,236,return data.toString();
+S2255,Token.java,249,super();
+S2256,Token.java,250,type = TokenType.Character;
+S2257,Token.java,255,data = null;
+S2258,Token.java,256,return this;
+S2259,Token.java,260,this.data = data;
+S2260,Token.java,261,return this;
+S2261,Token.java,265,return data;
+S2262,Token.java,275,EOF() {
+S2263,Token.java,276,type = Token.TokenType.EOF;
+S2264,Token.java,281,return this;
+S2265,Token.java,286,return type == TokenType.Doctype;
+S2266,Token.java,290,return (Doctype) this;
+S2267,Token.java,294,return type == TokenType.StartTag;
+S2268,Token.java,298,return (StartTag) this;
+S2269,Token.java,302,return type == TokenType.EndTag;
+S2270,Token.java,306,return (EndTag) this;
+S2271,Token.java,310,return type == TokenType.Comment;
+S2272,Token.java,314,return (Comment) this;
+S2273,Token.java,318,return type == TokenType.Character;
+S2274,Token.java,322,return (Character) this;
+S2275,Token.java,326,return type == TokenType.EOF;
+S2276,Token.java,329,enum TokenType {
+S2277,Token.java,330,"Doctype,"
+S2278,Token.java,331,"StartTag,"
+S2279,Token.java,332,"EndTag,"
+S2280,Token.java,333,"Comment,"
+S2281,Token.java,334,"Character,"
+S2282,Token.java,335,EOF
+S2283,TokenQueue.java,13,private int pos = 0;
+S2284,TokenQueue.java,21,public TokenQueue(String data) {
+S2285,TokenQueue.java,22,Validate.notNull(data);
+S2286,TokenQueue.java,23,queue = data;
+S2287,TokenQueue.java,31,return remainingLength() == 0;
+S2288,TokenQueue.java,35,return queue.length() - pos;
+S2289,TokenQueue.java,70,"return queue.regionMatches(true, pos, seq, 0, seq.length());"
+S2290,TokenQueue.java,89,for (String s : seq) {
+S2291,TokenQueue.java,90,if (matches(s))
+S2292,TokenQueue.java,91,return true;
+S2293,TokenQueue.java,93,return false;
+S2294,TokenQueue.java,97,if (isEmpty())
+S2295,TokenQueue.java,100,for (char c: seq) {
+S2296,TokenQueue.java,101,if (queue.charAt(pos) == c)
+S2297,TokenQueue.java,102,return true;
+S2298,TokenQueue.java,104,return false;
+S2299,TokenQueue.java,119,if (matches(seq)) {
+S2300,TokenQueue.java,120,pos += seq.length();
+S2301,TokenQueue.java,121,return true;
+S2302,TokenQueue.java,123,return false;
+S2303,TokenQueue.java,132,return !isEmpty() && StringUtil.isWhitespace(queue.charAt(pos));
+S2304,TokenQueue.java,140,return !isEmpty() && Character.isLetterOrDigit(queue.charAt(pos));
+S2305,TokenQueue.java,155,return queue.charAt(pos++);
+S2306,TokenQueue.java,166,if (!matches(seq))
+S2307,TokenQueue.java,168,int len = seq.length();
+S2308,TokenQueue.java,169,if (len > remainingLength())
+S2309,TokenQueue.java,172,pos += len;
+S2310,TokenQueue.java,181,"int offset = queue.indexOf(seq, pos);"
+S2311,TokenQueue.java,182,if (offset != -1) {
+S2312,TokenQueue.java,183,"String consumed = queue.substring(pos, offset);"
+S2313,TokenQueue.java,184,pos += consumed.length();
+S2314,TokenQueue.java,185,return consumed;
+S2315,TokenQueue.java,223,int start = pos;
+S2316,TokenQueue.java,224,while (!isEmpty() && !matchesAny(seq)) {
+S2317,TokenQueue.java,225,pos++;
+S2318,TokenQueue.java,228,"return queue.substring(start, pos);"
+S2319,TokenQueue.java,240,String data = consumeTo(seq);
+S2320,TokenQueue.java,241,matchChomp(seq);
+S2321,TokenQueue.java,242,return data;
+S2322,TokenQueue.java,261,int start = -1;
+S2323,TokenQueue.java,262,int end = -1;
+S2324,TokenQueue.java,263,int depth = 0;
+S2325,TokenQueue.java,264,char last = 0;
+S2326,TokenQueue.java,267,if (isEmpty()) break;
+S2327,TokenQueue.java,268,Character c = consume();
+S2328,TokenQueue.java,269,if (last == 0 || last != ESC) {
+S2329,TokenQueue.java,270,if (c.equals(open)) {
+S2330,TokenQueue.java,271,depth++;
+S2331,TokenQueue.java,272,if (start == -1)
+S2332,TokenQueue.java,273,start = pos;
+S2333,TokenQueue.java,275,else if (c.equals(close))
+S2334,TokenQueue.java,276,depth--;
+S2335,TokenQueue.java,279,if (depth > 0 && last != 0)
+S2336,TokenQueue.java,280,end = pos; // don't include the outer match pair in the return
+S2337,TokenQueue.java,281,last = c;
+S2338,TokenQueue.java,282,} while (depth > 0);
+S2339,TokenQueue.java,283,"return (end >= 0) ? queue.substring(start, end) : """";"
+S2340,TokenQueue.java,292,StringBuilder out = new StringBuilder();
+S2341,TokenQueue.java,293,char last = 0;
+S2342,TokenQueue.java,294,for (char c : in.toCharArray()) {
+S2343,TokenQueue.java,295,if (c == ESC) {
+S2344,TokenQueue.java,300,out.append(c);
+S2345,TokenQueue.java,301,last = c;
+S2346,TokenQueue.java,303,return out.toString();
+S2347,TokenQueue.java,311,boolean seen = false;
+S2348,TokenQueue.java,312,while (matchesWhitespace()) {
+S2349,TokenQueue.java,313,pos++;
+S2350,TokenQueue.java,314,seen = true;
+S2351,TokenQueue.java,316,return seen;
+S2352,TokenQueue.java,349,int start = pos;
+S2353,TokenQueue.java,350,"while (!isEmpty() && (matchesWord() || matchesAny('|', '_', '-')))"
+S2354,TokenQueue.java,351,pos++;
+S2355,TokenQueue.java,353,"return queue.substring(start, pos);"
+S2356,TokenQueue.java,362,int start = pos;
+S2357,TokenQueue.java,363,"while (!isEmpty() && (matchesWord() || matchesAny('-', '_')))"
+S2358,TokenQueue.java,364,pos++;
+S2359,TokenQueue.java,366,"return queue.substring(start, pos);"
+S2360,TokenQueue.java,386,"final String remainder = queue.substring(pos, queue.length());"
+S2361,TokenQueue.java,387,pos = queue.length();
+S2362,TokenQueue.java,388,return remainder;
+S2363,Tokeniser.java,13,"private static final char[] notCharRefCharsSorted = new char[]{'\t', '\n', '\r', '\f', ' ', '<', '&'};"
+S2364,Tokeniser.java,16,Arrays.sort(notCharRefCharsSorted);
+S2365,Tokeniser.java,22,private TokeniserState state = TokeniserState.Data; // current tokenisation state
+S2366,Tokeniser.java,24,private boolean isEmitPending = false;
+S2367,Tokeniser.java,25,private String charsString = null; // characters pending an emit. Will fall to charsBuilder if more than one
+S2368,Tokeniser.java,26,"private StringBuilder charsBuilder = new StringBuilder(1024); // buffers characters to output as one token, if more than one emit per read"
+S2369,Tokeniser.java,27,StringBuilder dataBuffer = new StringBuilder(1024); // buffers data looking for </script>
+S2370,Tokeniser.java,30,Token.StartTag startPending = new Token.StartTag();
+S2371,Tokeniser.java,31,Token.EndTag endPending = new Token.EndTag();
+S2372,Tokeniser.java,32,Token.Character charPending = new Token.Character();
+S2373,Tokeniser.java,33,Token.Doctype doctypePending = new Token.Doctype(); // doctype building up
+S2374,Tokeniser.java,34,Token.Comment commentPending = new Token.Comment(); // comment building up
+S2375,Tokeniser.java,36,private boolean selfClosingFlagAcknowledged = true;
+S2376,Tokeniser.java,38,"Tokeniser(CharacterReader reader, ParseErrorList errors) {"
+S2377,Tokeniser.java,39,this.reader = reader;
+S2378,Tokeniser.java,40,this.errors = errors;
+S2379,Tokeniser.java,44,if (!selfClosingFlagAcknowledged) {
+S2380,Tokeniser.java,45,"error(""Self closing flag not acknowledged"");"
+S2381,Tokeniser.java,46,selfClosingFlagAcknowledged = true;
+S2382,Tokeniser.java,49,while (!isEmitPending)
+S2383,Tokeniser.java,50,"state.read(this, reader);"
+S2384,Tokeniser.java,53,if (charsBuilder.length() > 0) {
+S2385,Tokeniser.java,54,String str = charsBuilder.toString();
+S2386,Tokeniser.java,55,"charsBuilder.delete(0, charsBuilder.length());"
+S2387,Tokeniser.java,56,charsString = null;
+S2388,Tokeniser.java,57,return charPending.data(str);
+S2389,Tokeniser.java,58,} else if (charsString != null) {
+S2390,Tokeniser.java,59,Token token = charPending.data(charsString);
+S2391,Tokeniser.java,60,charsString = null;
+S2392,Tokeniser.java,61,return token;
+S2393,Tokeniser.java,63,isEmitPending = false;
+S2394,Tokeniser.java,64,return emitPending;
+S2395,Tokeniser.java,69,"Validate.isFalse(isEmitPending, ""There is an unread token pending!"");"
+S2396,Tokeniser.java,71,emitPending = token;
+S2397,Tokeniser.java,72,isEmitPending = true;
+S2398,Tokeniser.java,74,if (token.type == Token.TokenType.StartTag) {
+S2399,Tokeniser.java,75,Token.StartTag startTag = (Token.StartTag) token;
+S2400,Tokeniser.java,76,lastStartTag = startTag.tagName;
+S2401,Tokeniser.java,77,if (startTag.selfClosing)
+S2402,Tokeniser.java,78,selfClosingFlagAcknowledged = false;
+S2403,Tokeniser.java,79,} else if (token.type == Token.TokenType.EndTag) {
+S2404,Tokeniser.java,80,Token.EndTag endTag = (Token.EndTag) token;
+S2405,Tokeniser.java,81,if (endTag.attributes != null)
+S2406,Tokeniser.java,89,if (charsString == null) {
+S2407,Tokeniser.java,90,charsString = str;
+S2408,Tokeniser.java,93,if (charsBuilder.length() == 0) { // switching to string builder as more than one emit before read
+S2409,Tokeniser.java,94,charsBuilder.append(charsString);
+S2410,Tokeniser.java,96,charsBuilder.append(str);
+S2411,Tokeniser.java,101,emit(String.valueOf(chars));
+S2412,Tokeniser.java,105,emit(String.valueOf(c));
+S2413,Tokeniser.java,113,this.state = state;
+S2414,Tokeniser.java,117,reader.advance();
+S2415,Tokeniser.java,118,this.state = state;
+S2416,Tokeniser.java,122,selfClosingFlagAcknowledged = true;
+S2417,Tokeniser.java,125,final private char[] charRefHolder = new char[1]; // holder to not have to keep creating arrays
+S2418,Tokeniser.java,127,if (reader.isEmpty())
+S2419,Tokeniser.java,129,if (additionalAllowedCharacter != null && additionalAllowedCharacter == reader.current())
+S2420,Tokeniser.java,130,return null;
+S2421,Tokeniser.java,131,if (reader.matchesAnySorted(notCharRefCharsSorted))
+S2422,Tokeniser.java,132,return null;
+S2423,Tokeniser.java,134,final char[] charRef = charRefHolder;
+S2424,Tokeniser.java,135,reader.mark();
+S2425,Tokeniser.java,136,"if (reader.matchConsume(""#"")) { // numbered"
+S2426,Tokeniser.java,137,"boolean isHexMode = reader.matchConsumeIgnoreCase(""X"");"
+S2427,Tokeniser.java,138,String numRef = isHexMode ? reader.consumeHexSequence() : reader.consumeDigitSequence();
+S2428,Tokeniser.java,139,if (numRef.length() == 0) { // didn't match anything
+S2429,Tokeniser.java,144,"if (!reader.matchConsume("";""))"
+S2430,Tokeniser.java,146,int charval = -1;
+S2431,Tokeniser.java,148,int base = isHexMode ? 16 : 10;
+S2432,Tokeniser.java,149,"charval = Integer.valueOf(numRef, base);"
+S2433,Tokeniser.java,151,} // skip
+S2434,Tokeniser.java,152,if (charval == -1 || (charval >= 0xD800 && charval <= 0xDFFF) || charval > 0x10FFFF) {
+S2435,Tokeniser.java,159,if (charval < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+S2436,Tokeniser.java,160,charRef[0] = (char) charval;
+S2437,Tokeniser.java,161,return charRef;
+S2438,Tokeniser.java,167,String nameRef = reader.consumeLetterThenDigitSequence();
+S2439,Tokeniser.java,168,boolean looksLegit = reader.matches(';');
+S2440,Tokeniser.java,170,boolean found = (Entities.isBaseNamedEntity(nameRef) || (Entities.isNamedEntity(nameRef) && looksLegit));
+S2441,Tokeniser.java,172,if (!found) {
+S2442,Tokeniser.java,173,reader.rewindToMark();
+S2443,Tokeniser.java,174,if (looksLegit) // named with semicolon
+S2444,Tokeniser.java,176,return null;
+S2445,Tokeniser.java,178,"if (inAttribute && (reader.matchesLetter() || reader.matchesDigit() || reader.matchesAny('=', '-', '_'))) {"
+S2446,Tokeniser.java,183,"if (!reader.matchConsume("";""))"
+S2447,Tokeniser.java,185,charRef[0] = Entities.getCharacterByName(nameRef);
+S2448,Tokeniser.java,186,return charRef;
+S2449,Tokeniser.java,191,tagPending = start ? startPending.reset() : endPending.reset();
+S2450,Tokeniser.java,192,return tagPending;
+S2451,Tokeniser.java,196,tagPending.finaliseTag();
+S2452,Tokeniser.java,197,emit(tagPending);
+S2453,Tokeniser.java,201,commentPending.reset();
+S2454,Tokeniser.java,205,emit(commentPending);
+S2455,Tokeniser.java,209,doctypePending.reset();
+S2456,Tokeniser.java,213,emit(doctypePending);
+S2457,Tokeniser.java,217,Token.reset(dataBuffer);
+S2458,Tokeniser.java,221,return lastStartTag != null && tagPending.tagName.equals(lastStartTag);
+S2459,Tokeniser.java,231,if (errors.canAddError())
+S2460,Tokeniser.java,236,if (errors.canAddError())
+S2461,Tokeniser.java,246,if (errors.canAddError())
+S2462,TokeniserState.java,8,enum TokeniserState {
+S2463,TokeniserState.java,9,Data {
+S2464,TokeniserState.java,12,switch (r.current()) {
+S2465,TokeniserState.java,14,t.advanceTransition(CharacterReferenceInData);
+S2466,TokeniserState.java,15,break;
+S2467,TokeniserState.java,17,t.advanceTransition(TagOpen);
+S2468,TokeniserState.java,18,break;
+S2469,TokeniserState.java,20,t.error(this); // NOT replacement character (oddly?)
+S2470,TokeniserState.java,21,t.emit(r.consume());
+S2471,TokeniserState.java,22,break;
+S2472,TokeniserState.java,24,t.emit(new Token.EOF());
+S2473,TokeniserState.java,25,break;
+S2474,TokeniserState.java,27,String data = r.consumeData();
+S2475,TokeniserState.java,28,t.emit(data);
+S2476,TokeniserState.java,33,CharacterReferenceInData {
+S2477,TokeniserState.java,36,"char[] c = t.consumeCharacterReference(null, false);"
+S2478,TokeniserState.java,37,if (c == null)
+S2479,TokeniserState.java,38,t.emit('&');
+S2480,TokeniserState.java,40,t.emit(c);
+S2481,TokeniserState.java,41,t.transition(Data);
+S2482,TokeniserState.java,44,Rcdata {
+S2483,TokeniserState.java,47,switch (r.current()) {
+S2484,TokeniserState.java,52,t.advanceTransition(RcdataLessthanSign);
+S2485,TokeniserState.java,53,break;
+S2486,TokeniserState.java,63,"String data = r.consumeToAny('&', '<', nullChar);"
+S2487,TokeniserState.java,64,t.emit(data);
+S2488,TokeniserState.java,69,CharacterReferenceInRcdata {
+S2489,TokeniserState.java,79,Rawtext {
+S2490,TokeniserState.java,81,switch (r.current()) {
+S2491,TokeniserState.java,83,t.advanceTransition(RawtextLessthanSign);
+S2492,TokeniserState.java,84,break;
+S2493,TokeniserState.java,94,"String data = r.consumeToAny('<', nullChar);"
+S2494,TokeniserState.java,95,t.emit(data);
+S2495,TokeniserState.java,100,ScriptData {
+S2496,TokeniserState.java,102,switch (r.current()) {
+S2497,TokeniserState.java,104,t.advanceTransition(ScriptDataLessthanSign);
+S2498,TokeniserState.java,105,break;
+S2499,TokeniserState.java,112,t.emit(new Token.EOF());
+S2500,TokeniserState.java,113,break;
+S2501,TokeniserState.java,115,"String data = r.consumeToAny('<', nullChar);"
+S2502,TokeniserState.java,116,t.emit(data);
+S2503,TokeniserState.java,121,PLAINTEXT {
+S2504,TokeniserState.java,139,TagOpen {
+S2505,TokeniserState.java,142,switch (r.current()) {
+S2506,TokeniserState.java,144,t.advanceTransition(MarkupDeclarationOpen);
+S2507,TokeniserState.java,145,break;
+S2508,TokeniserState.java,147,t.advanceTransition(EndTagOpen);
+S2509,TokeniserState.java,148,break;
+S2510,TokeniserState.java,150,t.advanceTransition(BogusComment);
+S2511,TokeniserState.java,151,break;
+S2512,TokeniserState.java,153,if (r.matchesLetter()) {
+S2513,TokeniserState.java,154,t.createTagPending(true);
+S2514,TokeniserState.java,155,t.transition(TagName);
+S2515,TokeniserState.java,165,EndTagOpen {
+S2516,TokeniserState.java,167,if (r.isEmpty()) {
+S2517,TokeniserState.java,171,} else if (r.matchesLetter()) {
+S2518,TokeniserState.java,172,t.createTagPending(false);
+S2519,TokeniserState.java,173,t.transition(TagName);
+S2520,TokeniserState.java,183,TagName {
+S2521,TokeniserState.java,188,String tagName = r.consumeTagName().toLowerCase();
+S2522,TokeniserState.java,189,t.tagPending.appendTagName(tagName);
+S2523,TokeniserState.java,191,switch (r.consume()) {
+S2524,TokeniserState.java,197,t.transition(BeforeAttributeName);
+S2525,TokeniserState.java,198,break;
+S2526,TokeniserState.java,200,t.transition(SelfClosingStartTag);
+S2527,TokeniserState.java,201,break;
+S2528,TokeniserState.java,203,t.emitTagPending();
+S2529,TokeniserState.java,204,t.transition(Data);
+S2530,TokeniserState.java,205,break;
+S2531,TokeniserState.java,216,RcdataLessthanSign {
+S2532,TokeniserState.java,219,if (r.matches('/')) {
+S2533,TokeniserState.java,220,t.createTempBuffer();
+S2534,TokeniserState.java,221,t.advanceTransition(RCDATAEndTagOpen);
+S2535,TokeniserState.java,235,RCDATAEndTagOpen {
+S2536,TokeniserState.java,237,if (r.matchesLetter()) {
+S2537,TokeniserState.java,238,t.createTagPending(false);
+S2538,TokeniserState.java,239,t.tagPending.appendTagName(Character.toLowerCase(r.current()));
+S2539,TokeniserState.java,240,t.dataBuffer.append(Character.toLowerCase(r.current()));
+S2540,TokeniserState.java,241,t.advanceTransition(RCDATAEndTagName);
+S2541,TokeniserState.java,248,RCDATAEndTagName {
+S2542,TokeniserState.java,250,if (r.matchesLetter()) {
+S2543,TokeniserState.java,251,String name = r.consumeLetterSequence();
+S2544,TokeniserState.java,252,t.tagPending.appendTagName(name.toLowerCase());
+S2545,TokeniserState.java,253,t.dataBuffer.append(name);
+S2546,TokeniserState.java,254,return;
+S2547,TokeniserState.java,257,char c = r.consume();
+S2548,TokeniserState.java,258,switch (c) {
+S2549,TokeniserState.java,276,if (t.isAppropriateEndTagToken()) {
+S2550,TokeniserState.java,277,t.emitTagPending();
+S2551,TokeniserState.java,278,t.transition(Data);
+S2552,TokeniserState.java,294,RawtextLessthanSign {
+S2553,TokeniserState.java,296,if (r.matches('/')) {
+S2554,TokeniserState.java,297,t.createTempBuffer();
+S2555,TokeniserState.java,298,t.advanceTransition(RawtextEndTagOpen);
+S2556,TokeniserState.java,300,t.emit('<');
+S2557,TokeniserState.java,301,t.transition(Rawtext);
+S2558,TokeniserState.java,305,RawtextEndTagOpen {
+S2559,TokeniserState.java,307,if (r.matchesLetter()) {
+S2560,TokeniserState.java,308,t.createTagPending(false);
+S2561,TokeniserState.java,309,t.transition(RawtextEndTagName);
+S2562,TokeniserState.java,316,RawtextEndTagName {
+S2563,TokeniserState.java,318,"handleDataEndTag(t, r, Rawtext);"
+S2564,TokeniserState.java,321,ScriptDataLessthanSign {
+S2565,TokeniserState.java,323,switch (r.consume()) {
+S2566,TokeniserState.java,325,t.createTempBuffer();
+S2567,TokeniserState.java,326,t.transition(ScriptDataEndTagOpen);
+S2568,TokeniserState.java,327,break;
+S2569,TokeniserState.java,329,"t.emit(""<!"");"
+S2570,TokeniserState.java,330,t.transition(ScriptDataEscapeStart);
+S2571,TokeniserState.java,331,break;
+S2572,TokeniserState.java,333,"t.emit(""<"");"
+S2573,TokeniserState.java,334,r.unconsume();
+S2574,TokeniserState.java,335,t.transition(ScriptData);
+S2575,TokeniserState.java,339,ScriptDataEndTagOpen {
+S2576,TokeniserState.java,341,if (r.matchesLetter()) {
+S2577,TokeniserState.java,342,t.createTagPending(false);
+S2578,TokeniserState.java,343,t.transition(ScriptDataEndTagName);
+S2579,TokeniserState.java,351,ScriptDataEndTagName {
+S2580,TokeniserState.java,353,"handleDataEndTag(t, r, ScriptData);"
+S2581,TokeniserState.java,356,ScriptDataEscapeStart {
+S2582,TokeniserState.java,358,if (r.matches('-')) {
+S2583,TokeniserState.java,359,t.emit('-');
+S2584,TokeniserState.java,360,t.advanceTransition(ScriptDataEscapeStartDash);
+S2585,TokeniserState.java,362,t.transition(ScriptData);
+S2586,TokeniserState.java,366,ScriptDataEscapeStartDash {
+S2587,TokeniserState.java,368,if (r.matches('-')) {
+S2588,TokeniserState.java,369,t.emit('-');
+S2589,TokeniserState.java,370,t.advanceTransition(ScriptDataEscapedDashDash);
+S2590,TokeniserState.java,376,ScriptDataEscaped {
+S2591,TokeniserState.java,378,if (r.isEmpty()) {
+S2592,TokeniserState.java,384,switch (r.current()) {
+S2593,TokeniserState.java,386,t.emit('-');
+S2594,TokeniserState.java,387,t.advanceTransition(ScriptDataEscapedDash);
+S2595,TokeniserState.java,388,break;
+S2596,TokeniserState.java,390,t.advanceTransition(ScriptDataEscapedLessthanSign);
+S2597,TokeniserState.java,391,break;
+S2598,TokeniserState.java,398,"String data = r.consumeToAny('-', '<', nullChar);"
+S2599,TokeniserState.java,399,t.emit(data);
+S2600,TokeniserState.java,403,ScriptDataEscapedDash {
+S2601,TokeniserState.java,405,if (r.isEmpty()) {
+S2602,TokeniserState.java,411,char c = r.consume();
+S2603,TokeniserState.java,412,switch (c) {
+S2604,TokeniserState.java,414,t.emit(c);
+S2605,TokeniserState.java,415,t.transition(ScriptDataEscapedDashDash);
+S2606,TokeniserState.java,416,break;
+S2607,TokeniserState.java,426,t.emit(c);
+S2608,TokeniserState.java,427,t.transition(ScriptDataEscaped);
+S2609,TokeniserState.java,431,ScriptDataEscapedDashDash {
+S2610,TokeniserState.java,433,if (r.isEmpty()) {
+S2611,TokeniserState.java,439,char c = r.consume();
+S2612,TokeniserState.java,440,switch (c) {
+S2613,TokeniserState.java,442,t.emit(c);
+S2614,TokeniserState.java,443,break;
+S2615,TokeniserState.java,448,t.emit(c);
+S2616,TokeniserState.java,449,t.transition(ScriptData);
+S2617,TokeniserState.java,450,break;
+S2618,TokeniserState.java,457,t.emit(c);
+S2619,TokeniserState.java,458,t.transition(ScriptDataEscaped);
+S2620,TokeniserState.java,462,ScriptDataEscapedLessthanSign {
+S2621,TokeniserState.java,464,if (r.matchesLetter()) {
+S2622,TokeniserState.java,465,t.createTempBuffer();
+S2623,TokeniserState.java,466,t.dataBuffer.append(Character.toLowerCase(r.current()));
+S2624,TokeniserState.java,467,"t.emit(""<"" + r.current());"
+S2625,TokeniserState.java,468,t.advanceTransition(ScriptDataDoubleEscapeStart);
+S2626,TokeniserState.java,469,} else if (r.matches('/')) {
+S2627,TokeniserState.java,470,t.createTempBuffer();
+S2628,TokeniserState.java,471,t.advanceTransition(ScriptDataEscapedEndTagOpen);
+S2629,TokeniserState.java,473,t.emit('<');
+S2630,TokeniserState.java,474,t.transition(ScriptDataEscaped);
+S2631,TokeniserState.java,478,ScriptDataEscapedEndTagOpen {
+S2632,TokeniserState.java,480,if (r.matchesLetter()) {
+S2633,TokeniserState.java,481,t.createTagPending(false);
+S2634,TokeniserState.java,482,t.tagPending.appendTagName(Character.toLowerCase(r.current()));
+S2635,TokeniserState.java,483,t.dataBuffer.append(r.current());
+S2636,TokeniserState.java,484,t.advanceTransition(ScriptDataEscapedEndTagName);
+S2637,TokeniserState.java,491,ScriptDataEscapedEndTagName {
+S2638,TokeniserState.java,493,"handleDataEndTag(t, r, ScriptDataEscaped);"
+S2639,TokeniserState.java,496,ScriptDataDoubleEscapeStart {
+S2640,TokeniserState.java,498,"handleDataDoubleEscapeTag(t, r, ScriptDataDoubleEscaped, ScriptDataEscaped);"
+S2641,TokeniserState.java,501,ScriptDataDoubleEscaped {
+S2642,TokeniserState.java,528,ScriptDataDoubleEscapedDash {
+S2643,TokeniserState.java,555,ScriptDataDoubleEscapedDashDash {
+S2644,TokeniserState.java,585,ScriptDataDoubleEscapedLessthanSign {
+S2645,TokeniserState.java,596,ScriptDataDoubleEscapeEnd {
+S2646,TokeniserState.java,601,BeforeAttributeName {
+S2647,TokeniserState.java,604,char c = r.consume();
+S2648,TokeniserState.java,605,switch (c) {
+S2649,TokeniserState.java,611,break; // ignore whitespace
+S2650,TokeniserState.java,613,t.transition(SelfClosingStartTag);
+S2651,TokeniserState.java,614,break;
+S2652,TokeniserState.java,616,t.emitTagPending();
+S2653,TokeniserState.java,617,t.transition(Data);
+S2654,TokeniserState.java,618,break;
+S2655,TokeniserState.java,639,t.tagPending.newAttribute();
+S2656,TokeniserState.java,640,r.unconsume();
+S2657,TokeniserState.java,641,t.transition(AttributeName);
+S2658,TokeniserState.java,645,AttributeName {
+S2659,TokeniserState.java,648,String name = r.consumeToAnySorted(attributeNameCharsSorted);
+S2660,TokeniserState.java,649,t.tagPending.appendAttributeName(name.toLowerCase());
+S2661,TokeniserState.java,651,char c = r.consume();
+S2662,TokeniserState.java,652,switch (c) {
+S2663,TokeniserState.java,658,t.transition(AfterAttributeName);
+S2664,TokeniserState.java,659,break;
+S2665,TokeniserState.java,664,t.transition(BeforeAttributeValue);
+S2666,TokeniserState.java,665,break;
+S2667,TokeniserState.java,667,t.emitTagPending();
+S2668,TokeniserState.java,668,t.transition(Data);
+S2669,TokeniserState.java,669,break;
+S2670,TokeniserState.java,687,AfterAttributeName {
+S2671,TokeniserState.java,689,char c = r.consume();
+S2672,TokeniserState.java,690,switch (c) {
+S2673,TokeniserState.java,726,t.tagPending.newAttribute();
+S2674,TokeniserState.java,727,r.unconsume();
+S2675,TokeniserState.java,728,t.transition(AttributeName);
+S2676,TokeniserState.java,732,BeforeAttributeValue {
+S2677,TokeniserState.java,734,char c = r.consume();
+S2678,TokeniserState.java,735,switch (c) {
+S2679,TokeniserState.java,744,t.transition(AttributeValue_doubleQuoted);
+S2680,TokeniserState.java,745,break;
+S2681,TokeniserState.java,751,t.transition(AttributeValue_singleQuoted);
+S2682,TokeniserState.java,752,break;
+S2683,TokeniserState.java,759,t.eofError(this);
+S2684,TokeniserState.java,760,t.emitTagPending();
+S2685,TokeniserState.java,761,t.transition(Data);
+S2686,TokeniserState.java,762,break;
+S2687,TokeniserState.java,776,r.unconsume();
+S2688,TokeniserState.java,777,t.transition(AttributeValue_unquoted);
+S2689,TokeniserState.java,781,AttributeValue_doubleQuoted {
+S2690,TokeniserState.java,783,String value = r.consumeToAnySorted(attributeDoubleValueCharsSorted);
+S2691,TokeniserState.java,784,if (value.length() > 0)
+S2692,TokeniserState.java,785,t.tagPending.appendAttributeValue(value);
+S2693,TokeniserState.java,787,t.tagPending.setEmptyAttributeValue();
+S2694,TokeniserState.java,789,char c = r.consume();
+S2695,TokeniserState.java,790,switch (c) {
+S2696,TokeniserState.java,792,t.transition(AfterAttributeValue_quoted);
+S2697,TokeniserState.java,793,break;
+S2698,TokeniserState.java,795,"char[] ref = t.consumeCharacterReference('""', true);"
+S2699,TokeniserState.java,796,if (ref != null)
+S2700,TokeniserState.java,797,t.tagPending.appendAttributeValue(ref);
+S2701,TokeniserState.java,799,t.tagPending.appendAttributeValue('&');
+S2702,TokeniserState.java,800,break;
+S2703,TokeniserState.java,813,AttributeValue_singleQuoted {
+S2704,TokeniserState.java,815,String value = r.consumeToAnySorted(attributeSingleValueCharsSorted);
+S2705,TokeniserState.java,816,if (value.length() > 0)
+S2706,TokeniserState.java,817,t.tagPending.appendAttributeValue(value);
+S2707,TokeniserState.java,821,char c = r.consume();
+S2708,TokeniserState.java,822,switch (c) {
+S2709,TokeniserState.java,824,t.transition(AfterAttributeValue_quoted);
+S2710,TokeniserState.java,825,break;
+S2711,TokeniserState.java,845,AttributeValue_unquoted {
+S2712,TokeniserState.java,847,"String value = r.consumeToAny('\t', '\n', '\r', '\f', ' ', '&', '>', nullChar, '""', '\'', '<', '=', '`');"
+S2713,TokeniserState.java,848,if (value.length() > 0)
+S2714,TokeniserState.java,849,t.tagPending.appendAttributeValue(value);
+S2715,TokeniserState.java,851,char c = r.consume();
+S2716,TokeniserState.java,852,switch (c) {
+S2717,TokeniserState.java,858,t.transition(BeforeAttributeName);
+S2718,TokeniserState.java,859,break;
+S2719,TokeniserState.java,868,t.emitTagPending();
+S2720,TokeniserState.java,869,t.transition(Data);
+S2721,TokeniserState.java,870,break;
+S2722,TokeniserState.java,884,t.error(this);
+S2723,TokeniserState.java,885,t.tagPending.appendAttributeValue(c);
+S2724,TokeniserState.java,893,AfterAttributeValue_quoted {
+S2725,TokeniserState.java,895,char c = r.consume();
+S2726,TokeniserState.java,896,switch (c) {
+S2727,TokeniserState.java,902,t.transition(BeforeAttributeName);
+S2728,TokeniserState.java,903,break;
+S2729,TokeniserState.java,905,t.transition(SelfClosingStartTag);
+S2730,TokeniserState.java,906,break;
+S2731,TokeniserState.java,908,t.emitTagPending();
+S2732,TokeniserState.java,909,t.transition(Data);
+S2733,TokeniserState.java,910,break;
+S2734,TokeniserState.java,916,t.error(this);
+S2735,TokeniserState.java,917,r.unconsume();
+S2736,TokeniserState.java,918,t.transition(BeforeAttributeName);
+S2737,TokeniserState.java,923,SelfClosingStartTag {
+S2738,TokeniserState.java,925,char c = r.consume();
+S2739,TokeniserState.java,926,switch (c) {
+S2740,TokeniserState.java,928,t.tagPending.selfClosing = true;
+S2741,TokeniserState.java,929,t.emitTagPending();
+S2742,TokeniserState.java,930,t.transition(Data);
+S2743,TokeniserState.java,931,break;
+S2744,TokeniserState.java,942,BogusComment {
+S2745,TokeniserState.java,946,r.unconsume();
+S2746,TokeniserState.java,947,Token.Comment comment = new Token.Comment();
+S2747,TokeniserState.java,948,comment.bogus = true;
+S2748,TokeniserState.java,949,comment.data.append(r.consumeTo('>'));
+S2749,TokeniserState.java,951,t.emit(comment);
+S2750,TokeniserState.java,952,t.advanceTransition(Data);
+S2751,TokeniserState.java,955,MarkupDeclarationOpen {
+S2752,TokeniserState.java,957,"if (r.matchConsume(""--"")) {"
+S2753,TokeniserState.java,958,t.createCommentPending();
+S2754,TokeniserState.java,959,t.transition(CommentStart);
+S2755,TokeniserState.java,960,"} else if (r.matchConsumeIgnoreCase(""DOCTYPE"")) {"
+S2756,TokeniserState.java,961,t.transition(Doctype);
+S2757,TokeniserState.java,973,CommentStart {
+S2758,TokeniserState.java,975,char c = r.consume();
+S2759,TokeniserState.java,976,switch (c) {
+S2760,TokeniserState.java,996,t.commentPending.data.append(c);
+S2761,TokeniserState.java,997,t.transition(Comment);
+S2762,TokeniserState.java,1001,CommentStartDash {
+S2763,TokeniserState.java,1029,Comment {
+S2764,TokeniserState.java,1031,char c = r.current();
+S2765,TokeniserState.java,1032,switch (c) {
+S2766,TokeniserState.java,1034,t.advanceTransition(CommentEndDash);
+S2767,TokeniserState.java,1035,break;
+S2768,TokeniserState.java,1047,"t.commentPending.data.append(r.consumeToAny('-', nullChar));"
+S2769,TokeniserState.java,1051,CommentEndDash {
+S2770,TokeniserState.java,1053,char c = r.consume();
+S2771,TokeniserState.java,1054,switch (c) {
+S2772,TokeniserState.java,1056,t.transition(CommentEnd);
+S2773,TokeniserState.java,1057,break;
+S2774,TokeniserState.java,1069,t.commentPending.data.append('-').append(c);
+S2775,TokeniserState.java,1070,t.transition(Comment);
+S2776,TokeniserState.java,1074,CommentEnd {
+S2777,TokeniserState.java,1076,char c = r.consume();
+S2778,TokeniserState.java,1077,switch (c) {
+S2779,TokeniserState.java,1079,t.emitCommentPending();
+S2780,TokeniserState.java,1080,t.transition(Data);
+S2781,TokeniserState.java,1081,break;
+S2782,TokeniserState.java,1107,CommentEndBang {
+S2783,TokeniserState.java,1135,Doctype {
+S2784,TokeniserState.java,1137,char c = r.consume();
+S2785,TokeniserState.java,1138,switch (c) {
+S2786,TokeniserState.java,1144,t.transition(BeforeDoctypeName);
+S2787,TokeniserState.java,1145,break;
+S2788,TokeniserState.java,1162,BeforeDoctypeName {
+S2789,TokeniserState.java,1164,if (r.matchesLetter()) {
+S2790,TokeniserState.java,1165,t.createDoctypePending();
+S2791,TokeniserState.java,1166,t.transition(DoctypeName);
+S2792,TokeniserState.java,1167,return;
+S2793,TokeniserState.java,1197,DoctypeName {
+S2794,TokeniserState.java,1199,if (r.matchesLetter()) {
+S2795,TokeniserState.java,1200,String name = r.consumeLetterSequence();
+S2796,TokeniserState.java,1201,t.doctypePending.name.append(name.toLowerCase());
+S2797,TokeniserState.java,1202,return;
+S2798,TokeniserState.java,1204,char c = r.consume();
+S2799,TokeniserState.java,1205,switch (c) {
+S2800,TokeniserState.java,1207,t.emitDoctypePending();
+S2801,TokeniserState.java,1208,t.transition(Data);
+S2802,TokeniserState.java,1209,break;
+S2803,TokeniserState.java,1215,t.transition(AfterDoctypeName);
+S2804,TokeniserState.java,1216,break;
+S2805,TokeniserState.java,1232,AfterDoctypeName {
+S2806,TokeniserState.java,1234,if (r.isEmpty()) {
+S2807,TokeniserState.java,1241,"if (r.matchesAny('\t', '\n', '\r', '\f', ' '))"
+S2808,TokeniserState.java,1243,else if (r.matches('>')) {
+S2809,TokeniserState.java,1246,"} else if (r.matchConsumeIgnoreCase(""PUBLIC"")) {"
+S2810,TokeniserState.java,1247,t.transition(AfterDoctypePublicKeyword);
+S2811,TokeniserState.java,1258,AfterDoctypePublicKeyword {
+S2812,TokeniserState.java,1260,char c = r.consume();
+S2813,TokeniserState.java,1261,switch (c) {
+S2814,TokeniserState.java,1267,t.transition(BeforeDoctypePublicIdentifier);
+S2815,TokeniserState.java,1268,break;
+S2816,TokeniserState.java,1298,BeforeDoctypePublicIdentifier {
+S2817,TokeniserState.java,1300,char c = r.consume();
+S2818,TokeniserState.java,1301,switch (c) {
+S2819,TokeniserState.java,1310,t.transition(DoctypePublicIdentifier_doubleQuoted);
+S2820,TokeniserState.java,1311,break;
+S2821,TokeniserState.java,1335,DoctypePublicIdentifier_doubleQuoted {
+S2822,TokeniserState.java,1337,char c = r.consume();
+S2823,TokeniserState.java,1338,switch (c) {
+S2824,TokeniserState.java,1340,t.transition(AfterDoctypePublicIdentifier);
+S2825,TokeniserState.java,1341,break;
+S2826,TokeniserState.java,1359,t.doctypePending.publicIdentifier.append(c);
+S2827,TokeniserState.java,1363,DoctypePublicIdentifier_singleQuoted {
+S2828,TokeniserState.java,1391,AfterDoctypePublicIdentifier {
+S2829,TokeniserState.java,1393,char c = r.consume();
+S2830,TokeniserState.java,1394,switch (c) {
+S2831,TokeniserState.java,1400,t.transition(BetweenDoctypePublicAndSystemIdentifiers);
+S2832,TokeniserState.java,1401,break;
+S2833,TokeniserState.java,1429,BetweenDoctypePublicAndSystemIdentifiers {
+S2834,TokeniserState.java,1431,char c = r.consume();
+S2835,TokeniserState.java,1432,switch (c) {
+S2836,TokeniserState.java,1444,t.error(this);
+S2837,TokeniserState.java,1446,t.transition(DoctypeSystemIdentifier_doubleQuoted);
+S2838,TokeniserState.java,1447,break;
+S2839,TokeniserState.java,1466,AfterDoctypeSystemKeyword {
+S2840,TokeniserState.java,1506,BeforeDoctypeSystemIdentifier {
+S2841,TokeniserState.java,1543,DoctypeSystemIdentifier_doubleQuoted {
+S2842,TokeniserState.java,1545,char c = r.consume();
+S2843,TokeniserState.java,1546,switch (c) {
+S2844,TokeniserState.java,1548,t.transition(AfterDoctypeSystemIdentifier);
+S2845,TokeniserState.java,1549,break;
+S2846,TokeniserState.java,1567,t.doctypePending.systemIdentifier.append(c);
+S2847,TokeniserState.java,1571,DoctypeSystemIdentifier_singleQuoted {
+S2848,TokeniserState.java,1599,AfterDoctypeSystemIdentifier {
+S2849,TokeniserState.java,1601,char c = r.consume();
+S2850,TokeniserState.java,1602,switch (c) {
+S2851,TokeniserState.java,1610,t.emitDoctypePending();
+S2852,TokeniserState.java,1611,t.transition(Data);
+S2853,TokeniserState.java,1612,break;
+S2854,TokeniserState.java,1626,BogusDoctype {
+S2855,TokeniserState.java,1644,CdataSection {
+S2856,TokeniserState.java,1657,"private static final char[] attributeSingleValueCharsSorted = new char[]{'\'', '&', nullChar};"
+S2857,TokeniserState.java,1658,"private static final char[] attributeDoubleValueCharsSorted = new char[]{'""', '&', nullChar};"
+S2858,TokeniserState.java,1659,"private static final char[] attributeNameCharsSorted = new char[]{'\t', '\n', '\r', '\f', ' ', '/', '=', '>', nullChar, '""', '\'', '<'};"
+S2859,TokeniserState.java,1662,private static final String replacementStr = String.valueOf(Tokeniser.replacementChar);
+S2860,TokeniserState.java,1666,Arrays.sort(attributeSingleValueCharsSorted);
+S2861,TokeniserState.java,1667,Arrays.sort(attributeDoubleValueCharsSorted);
+S2862,TokeniserState.java,1668,Arrays.sort(attributeNameCharsSorted);
+S2863,TokeniserState.java,1676,if (r.matchesLetter()) {
+S2864,TokeniserState.java,1677,String name = r.consumeLetterSequence();
+S2865,TokeniserState.java,1678,t.tagPending.appendTagName(name.toLowerCase());
+S2866,TokeniserState.java,1679,t.dataBuffer.append(name);
+S2867,TokeniserState.java,1680,return;
+S2868,TokeniserState.java,1683,boolean needsExitTransition = false;
+S2869,TokeniserState.java,1684,if (t.isAppropriateEndTagToken() && !r.isEmpty()) {
+S2870,TokeniserState.java,1685,char c = r.consume();
+S2871,TokeniserState.java,1686,switch (c) {
+S2872,TokeniserState.java,1698,t.emitTagPending();
+S2873,TokeniserState.java,1699,t.transition(Data);
+S2874,TokeniserState.java,1700,break;
+S2875,TokeniserState.java,1705,} else {
+S2876,TokeniserState.java,1706,needsExitTransition = true;
+S2877,TokeniserState.java,1709,if (needsExitTransition) {
+S2878,TokeniserState.java,1710,"t.emit(""</"" + t.dataBuffer.toString());"
+S2879,TokeniserState.java,1711,t.transition(elseTransition);
+S2880,TokeniserState.java,1716,if (r.matchesLetter()) {
+S2881,TokeniserState.java,1717,String name = r.consumeLetterSequence();
+S2882,TokeniserState.java,1718,t.dataBuffer.append(name.toLowerCase());
+S2883,TokeniserState.java,1719,t.emit(name);
+S2884,TokeniserState.java,1720,return;
+S2885,TokeniserState.java,1723,char c = r.consume();
+S2886,TokeniserState.java,1724,switch (c) {
+S2887,TokeniserState.java,1732,"if (t.dataBuffer.toString().equals(""script""))"
+S2888,TokeniserState.java,1735,t.transition(fallback);
+S2889,TokeniserState.java,1736,t.emit(c);
+S2890,TokeniserState.java,1737,break;
+S2891,TokeniserState.java,1739,r.unconsume();
+S2892,TokeniserState.java,1740,t.transition(fallback);
+S2893,TreeBuilder.java,13,abstract class TreeBuilder {
+S2894,TreeBuilder.java,22,private Token.StartTag start = new Token.StartTag(); // start tag to process
+S2895,TreeBuilder.java,23,private Token.EndTag end  = new Token.EndTag();
+S2896,TreeBuilder.java,26,"Validate.notNull(input, ""String input must not be null"");"
+S2897,TreeBuilder.java,27,"Validate.notNull(baseUri, ""BaseURI must not be null"");"
+S2898,TreeBuilder.java,29,doc = new Document(baseUri);
+S2899,TreeBuilder.java,30,reader = new CharacterReader(input);
+S2900,TreeBuilder.java,31,this.errors = errors;
+S2901,TreeBuilder.java,32,"tokeniser = new Tokeniser(reader, errors);"
+S2902,TreeBuilder.java,33,stack = new ArrayList<Element>(32);
+S2903,TreeBuilder.java,34,this.baseUri = baseUri;
+S2904,TreeBuilder.java,38,"return parse(input, baseUri, ParseErrorList.noTracking());"
+S2905,TreeBuilder.java,42,"initialiseParse(input, baseUri, errors);"
+S2906,TreeBuilder.java,43,runParser();
+S2907,TreeBuilder.java,44,return doc;
+S2908,TreeBuilder.java,49,Token token = tokeniser.read();
+S2909,TreeBuilder.java,50,process(token);
+S2910,TreeBuilder.java,51,token.reset();
+S2911,TreeBuilder.java,53,if (token.type == Token.TokenType.EOF)
+S2912,TreeBuilder.java,54,break;
+S2913,TreeBuilder.java,61,if (currentToken == start) { // don't recycle an in-use token
+S2914,TreeBuilder.java,64,return process(start.reset().name(name));
+S2915,TreeBuilder.java,77,if (currentToken == end) { // don't recycle an in-use token
+S2916,TreeBuilder.java,78,return process(new Token.EndTag().name(name));
+S2917,TreeBuilder.java,80,return process(end.reset().name(name));
+S2918,TreeBuilder.java,85,int size = stack.size();
+S2919,TreeBuilder.java,86,return size > 0 ? stack.get(size-1) : null;
+S2920,Validate.java,15,if (obj == null)
+S2921,Validate.java,25,if (obj == null)
+S2922,Validate.java,26,throw new IllegalArgumentException(msg);
+S2923,Validate.java,34,if (!val)
+S2924,Validate.java,44,if (!val)
+S2925,Validate.java,45,throw new IllegalArgumentException(msg);
+S2926,Validate.java,53,if (val)
+S2927,Validate.java,63,if (val)
+S2928,Validate.java,72,"noNullElements(objects, ""Array must not contain any null objects"");"
+S2929,Validate.java,81,for (Object obj : objects)
+S2930,Validate.java,82,if (obj == null)
+S2931,Validate.java,91,if (string == null || string.length() == 0)
+S2932,Validate.java,101,if (string == null || string.length() == 0)
+S2933,W3CDom.java,28,public class W3CDom {
+S2934,W3CDom.java,29,protected DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+S2935,W3CDom.java,37,Validate.notNull(in);
+S2936,W3CDom.java,40,builder = factory.newDocumentBuilder();
+S2937,W3CDom.java,41,Document out = builder.newDocument();
+S2938,W3CDom.java,42,"convert(in, out);"
+S2939,W3CDom.java,43,return out;
+S2940,W3CDom.java,57,if (!StringUtil.isBlank(in.location()))
+S2941,W3CDom.java,58,out.setDocumentURI(in.location());
+S2942,W3CDom.java,60,org.jsoup.nodes.Element rootEl = in.child(0); // skip the #root node
+S2943,W3CDom.java,61,NodeTraversor traversor = new NodeTraversor(new W3CBuilder(out));
+S2944,W3CDom.java,62,traversor.traverse(rootEl);
+S2945,W3CDom.java,68,protected class W3CBuilder implements NodeVisitor {
+S2946,W3CDom.java,72,public W3CBuilder(Document doc) {
+S2947,W3CDom.java,73,this.doc = doc;
+S2948,W3CDom.java,77,if (source instanceof org.jsoup.nodes.Element) {
+S2949,W3CDom.java,78,org.jsoup.nodes.Element sourceEl = (org.jsoup.nodes.Element) source;
+S2950,W3CDom.java,79,Element el = doc.createElement(sourceEl.tagName());
+S2951,W3CDom.java,80,"copyAttributes(sourceEl, el);"
+S2952,W3CDom.java,81,if (dest == null) { // sets up the root
+S2953,W3CDom.java,82,doc.appendChild(el);
+S2954,W3CDom.java,84,dest.appendChild(el);
+S2955,W3CDom.java,86,dest = el; // descend
+S2956,W3CDom.java,87,} else if (source instanceof org.jsoup.nodes.TextNode) {
+S2957,W3CDom.java,88,org.jsoup.nodes.TextNode sourceText = (org.jsoup.nodes.TextNode) source;
+S2958,W3CDom.java,89,Text text = doc.createTextNode(sourceText.getWholeText());
+S2959,W3CDom.java,90,dest.appendChild(text);
+S2960,W3CDom.java,91,} else if (source instanceof org.jsoup.nodes.Comment) {
+S2961,W3CDom.java,92,org.jsoup.nodes.Comment sourceComment = (org.jsoup.nodes.Comment) source;
+S2962,W3CDom.java,93,Comment comment = doc.createComment(sourceComment.getData());
+S2963,W3CDom.java,94,dest.appendChild(comment);
+S2964,W3CDom.java,95,} else if (source instanceof org.jsoup.nodes.DataNode) {
+S2965,W3CDom.java,96,org.jsoup.nodes.DataNode sourceData = (org.jsoup.nodes.DataNode) source;
+S2966,W3CDom.java,97,Text node = doc.createTextNode(sourceData.getWholeData());
+S2967,W3CDom.java,98,dest.appendChild(node);
+S2968,W3CDom.java,105,if (source instanceof org.jsoup.nodes.Element && dest.getParentNode() instanceof Element) {
+S2969,W3CDom.java,106,dest = (Element) dest.getParentNode(); // undescend. cromulent.
+S2970,W3CDom.java,111,for (Attribute attribute : source.attributes()) {
+S2971,W3CDom.java,112,"el.setAttribute(attribute.getKey(), attribute.getValue());"
+S2972,W3CDom.java,124,DOMSource domSource = new DOMSource(doc);
+S2973,W3CDom.java,125,StringWriter writer = new StringWriter();
+S2974,W3CDom.java,126,StreamResult result = new StreamResult(writer);
+S2975,W3CDom.java,127,TransformerFactory tf = TransformerFactory.newInstance();
+S2976,W3CDom.java,128,Transformer transformer = tf.newTransformer();
+S2977,W3CDom.java,129,"transformer.transform(domSource, result);"
+S2978,W3CDom.java,130,return writer.toString();
+S2979,Whitelist.java,152,return new Whitelist()
+S2980,Whitelist.java,190,public Whitelist() {
+S2981,Whitelist.java,191,tagNames = new HashSet<TagName>();
+S2982,Whitelist.java,192,"attributes = new HashMap<TagName, Set<AttributeKey>>();"
+S2983,Whitelist.java,193,"enforcedAttributes = new HashMap<TagName, Map<AttributeKey, AttributeValue>>();"
+S2984,Whitelist.java,194,"protocols = new HashMap<TagName, Map<AttributeKey, Set<Protocol>>>();"
+S2985,Whitelist.java,195,preserveRelativeLinks = false;
+S2986,Whitelist.java,205,Validate.notNull(tags);
+S2987,Whitelist.java,207,for (String tagName : tags) {
+S2988,Whitelist.java,208,Validate.notEmpty(tagName);
+S2989,Whitelist.java,209,tagNames.add(TagName.valueOf(tagName));
+S2990,Whitelist.java,211,return this;
+S2991,Whitelist.java,252,Validate.notEmpty(tag);
+S2992,Whitelist.java,253,Validate.notNull(keys);
+S2993,Whitelist.java,254,"Validate.isTrue(keys.length > 0, ""No attributes supplied."");"
+S2994,Whitelist.java,256,TagName tagName = TagName.valueOf(tag);
+S2995,Whitelist.java,257,if (!tagNames.contains(tagName))
+S2996,Whitelist.java,259,Set<AttributeKey> attributeSet = new HashSet<AttributeKey>();
+S2997,Whitelist.java,260,for (String key : keys) {
+S2998,Whitelist.java,261,Validate.notEmpty(key);
+S2999,Whitelist.java,262,attributeSet.add(AttributeKey.valueOf(key));
+S3000,Whitelist.java,264,if (attributes.containsKey(tagName)) {
+S3001,Whitelist.java,268,"attributes.put(tagName, attributeSet);"
+S3002,Whitelist.java,270,return this;
+S3003,Whitelist.java,411,Validate.notEmpty(tag);
+S3004,Whitelist.java,412,Validate.notEmpty(key);
+S3005,Whitelist.java,413,Validate.notNull(protocols);
+S3006,Whitelist.java,415,TagName tagName = TagName.valueOf(tag);
+S3007,Whitelist.java,416,AttributeKey attrKey = AttributeKey.valueOf(key);
+S3008,Whitelist.java,420,if (this.protocols.containsKey(tagName)) {
+S3009,Whitelist.java,423,"attrMap = new HashMap<AttributeKey, Set<Protocol>>();"
+S3010,Whitelist.java,424,"this.protocols.put(tagName, attrMap);"
+S3011,Whitelist.java,426,if (attrMap.containsKey(attrKey)) {
+S3012,Whitelist.java,429,protSet = new HashSet<Protocol>();
+S3013,Whitelist.java,430,"attrMap.put(attrKey, protSet);"
+S3014,Whitelist.java,432,for (String protocol : protocols) {
+S3015,Whitelist.java,433,Validate.notEmpty(protocol);
+S3016,Whitelist.java,434,Protocol prot = Protocol.valueOf(protocol);
+S3017,Whitelist.java,435,protSet.add(prot);
+S3018,Whitelist.java,437,return this;
+S3019,Whitelist.java,485,return tagNames.contains(TagName.valueOf(tag));
+S3020,Whitelist.java,548,Attributes attrs = new Attributes();
+S3021,Whitelist.java,549,TagName tag = TagName.valueOf(tagName);
+S3022,Whitelist.java,550,if (enforcedAttributes.containsKey(tag)) {
+S3023,Whitelist.java,556,return attrs;
+S3024,Whitelist.java,563,super(value);
+S3025,Whitelist.java,567,return new TagName(value);
+S3026,Whitelist.java,573,super(value);
+S3027,Whitelist.java,577,return new AttributeKey(value);
+S3028,Whitelist.java,593,super(value);
+S3029,Whitelist.java,597,return new Protocol(value);
+S3030,Whitelist.java,604,TypedValue(String value) {
+S3031,Whitelist.java,605,Validate.notNull(value);
+S3032,Whitelist.java,606,this.value = value;
+S3033,Whitelist.java,611,final int prime = 31;
+S3034,Whitelist.java,612,int result = 1;
+S3035,Whitelist.java,613,result = prime * result + ((value == null) ? 0 : value.hashCode());
+S3036,Whitelist.java,614,return result;
+S3037,Whitelist.java,619,if (this == obj) return true;
+S3038,Whitelist.java,620,if (obj == null) return false;
+S3039,Whitelist.java,621,if (getClass() != obj.getClass()) return false;
+S3040,Whitelist.java,622,TypedValue other = (TypedValue) obj;
+S3041,Whitelist.java,623,if (value == null) {
+S3042,Whitelist.java,625,} else if (!value.equals(other.value)) return false;
+S3043,Whitelist.java,626,return true;
+S3044,XmlDeclaration.java,18,super(baseUri);
+S3045,XmlDeclaration.java,19,"attributes.put(DECL_KEY, data);"
+S3046,XmlDeclaration.java,20,this.isProcessingInstruction = isProcessingInstruction;
+S3047,XmlDeclaration.java,24,"return ""#declaration"";"
+S3048,XmlDeclaration.java,32,final String decl = attributes.get(DECL_KEY);
+S3049,XmlDeclaration.java,34,"if(decl.equals(""xml"") && attributes.size() > 1 ) {"
+S3050,XmlDeclaration.java,35,StringBuilder sb = new StringBuilder(decl);
+S3051,XmlDeclaration.java,36,"final String version = attributes.get(""version"");"
+S3052,XmlDeclaration.java,38,if( version != null ) {
+S3053,XmlDeclaration.java,39,"sb.append("" version=\"""").append(version).append(""\"""");"
+S3054,XmlDeclaration.java,42,"final String encoding = attributes.get(""encoding"");"
+S3055,XmlDeclaration.java,44,if( encoding != null ) {
+S3056,XmlDeclaration.java,45,"sb.append("" encoding=\"""").append(encoding).append(""\"""");"
+S3057,XmlDeclaration.java,48,return sb.toString();
+S3058,XmlDeclaration.java,56,accum
+S3059,XmlDeclaration.java,63,"void outerHtmlTail(StringBuilder accum, int depth, Document.OutputSettings out) {}"
+S3060,XmlTreeBuilder.java,15,public class XmlTreeBuilder extends TreeBuilder {
+S3061,XmlTreeBuilder.java,18,"super.initialiseParse(input, baseUri, errors);"
+S3062,XmlTreeBuilder.java,19,stack.add(doc); // place the document onto the stack. differs from HtmlTreeBuilder (not on stack)
+S3063,XmlTreeBuilder.java,20,doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+S3064,XmlTreeBuilder.java,26,switch (token.type) {
+S3065,XmlTreeBuilder.java,28,insert(token.asStartTag());
+S3066,XmlTreeBuilder.java,29,break;
+S3067,XmlTreeBuilder.java,31,popStackToClose(token.asEndTag());
+S3068,XmlTreeBuilder.java,32,break;
+S3069,XmlTreeBuilder.java,34,insert(token.asComment());
+S3070,XmlTreeBuilder.java,35,break;
+S3071,XmlTreeBuilder.java,37,insert(token.asCharacter());
+S3072,XmlTreeBuilder.java,38,break;
+S3073,XmlTreeBuilder.java,40,insert(token.asDoctype());
+S3074,XmlTreeBuilder.java,41,break;
+S3075,XmlTreeBuilder.java,43,break;
+S3076,XmlTreeBuilder.java,45,"Validate.fail(""Unexpected token type: "" + token.type);"
+S3077,XmlTreeBuilder.java,47,return true;
+S3078,XmlTreeBuilder.java,51,currentElement().appendChild(node);
+S3079,XmlTreeBuilder.java,55,Tag tag = Tag.valueOf(startTag.name());
+S3080,XmlTreeBuilder.java,57,"Element el = new Element(tag, baseUri, startTag.attributes);"
+S3081,XmlTreeBuilder.java,58,insertNode(el);
+S3082,XmlTreeBuilder.java,59,if (startTag.isSelfClosing()) {
+S3083,XmlTreeBuilder.java,60,tokeniser.acknowledgeSelfClosingFlag();
+S3084,XmlTreeBuilder.java,61,"if (!tag.isKnownTag()) // unknown tag, remember this is self closing for output. see above."
+S3085,XmlTreeBuilder.java,62,tag.setSelfClosing();
+S3086,XmlTreeBuilder.java,64,stack.add(el);
+S3087,XmlTreeBuilder.java,66,return el;
+S3088,XmlTreeBuilder.java,70,"Comment comment = new Comment(commentToken.getData(), baseUri);"
+S3089,XmlTreeBuilder.java,71,Node insert = comment;
+S3090,XmlTreeBuilder.java,72,"if (commentToken.bogus) { // xml declarations are emitted as bogus comments (which is right for html, but not xml)"
+S3091,XmlTreeBuilder.java,79,insertNode(insert);
+S3092,XmlTreeBuilder.java,83,"Node node = new TextNode(characterToken.getData(), baseUri);"
+S3093,XmlTreeBuilder.java,84,insertNode(node);
+S3094,XmlTreeBuilder.java,88,"DocumentType doctypeNode = new DocumentType(d.getName(), d.getPublicIdentifier(), d.getSystemIdentifier(), baseUri);"
+S3095,XmlTreeBuilder.java,89,insertNode(doctypeNode);
+S3096,XmlTreeBuilder.java,99,String elName = endTag.name();
+S3097,XmlTreeBuilder.java,100,Element firstFound = null;
+S3098,XmlTreeBuilder.java,102,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S3099,XmlTreeBuilder.java,103,Element next = stack.get(pos);
+S3100,XmlTreeBuilder.java,104,if (next.nodeName().equals(elName)) {
+S3101,XmlTreeBuilder.java,105,firstFound = next;
+S3102,XmlTreeBuilder.java,106,break;
+S3103,XmlTreeBuilder.java,109,if (firstFound == null)
+S3104,XmlTreeBuilder.java,110,"return; // not found, skip"
+S3105,XmlTreeBuilder.java,112,for (int pos = stack.size() -1; pos >= 0; pos--) {
+S3106,XmlTreeBuilder.java,113,Element next = stack.get(pos);
+S3107,XmlTreeBuilder.java,114,stack.remove(pos);
+S3108,XmlTreeBuilder.java,115,if (next == firstFound)
+S3109,XmlTreeBuilder.java,116,break;
