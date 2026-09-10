@@ -29,7 +29,7 @@ Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answ
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 1 | JacksonXmlModule.java:72 | 0.27735 | `super.setupModule(context);` |
+| 1 | 1 | JacksonXmlModule.java:72 | 0.288675 | `super.setupModule(context);` |
 | 2 | 3 | JacksonXmlAnnotationIntrospector.java:34 | 0.171499 | `public JacksonXmlAnnotationIntrospector(boolean defaultUseWrapper) {` |
 | 2 | 3 | JacksonXmlModule.java:61 | 0.171499 | `context.insertAnnotationIntrospector(_constructIntrospector());` |
 | 2 | 3 | JacksonXmlModule.java:123 | 0.171499 | `return new JacksonXmlAnnotationIntrospector(_cfgDefaultUseWrapper);` |

@@ -3,6 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('TypeHandler.java', 25), ('TypeHandler.java', 162)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli/TypeHandler.java', 25)]
 
 - SBFL   ranked 260 statement(s)
 - Hybrid ranked 8 statement(s)

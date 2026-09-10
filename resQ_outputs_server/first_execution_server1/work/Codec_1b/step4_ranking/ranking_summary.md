@@ -3,6 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('Caverphone.java', 59), ('Metaphone.java', 88), ('SoundexUtils.java', 53)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/codec/language/Metaphone.java', 88)]
 
 - SBFL   ranked 651 statement(s)
 - Hybrid ranked 0 statement(s)

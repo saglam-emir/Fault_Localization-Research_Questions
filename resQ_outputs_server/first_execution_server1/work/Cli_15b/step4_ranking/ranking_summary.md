@@ -3,7 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('WriteableCommandLineImpl.java', 117), ('WriteableCommandLineImpl.java', 118), ('WriteableCommandLineImpl.java', 122), ('WriteableCommandLineImpl.java', 123), ('WriteableCommandLineImpl.java', 124), ('WriteableCommandLineImpl.java', 127), ('WriteableCommandLineImpl.java', 128)]
 
 Ground_Truth_Answerable: True
-Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java', 127), ('src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java', 128)]
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java', 124), ('src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java', 127), ('src/java/org/apache/commons/cli2/commandline/WriteableCommandLineImpl.java', 128)]
 
 - SBFL   ranked 1223 statement(s)
 - Hybrid ranked 253 statement(s)

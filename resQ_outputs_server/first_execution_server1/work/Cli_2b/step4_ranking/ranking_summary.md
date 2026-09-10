@@ -3,6 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('PosixParser.java', 305), ('PosixParser.java', 309)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli/PosixParser.java', 309)]
 
 - SBFL   ranked 565 statement(s)
 - Hybrid ranked 8 statement(s)
@@ -26,9 +27,9 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 3 | Parser.java:32 | 0.447214 | `public abstract class Parser implements CommandLineParser {` |
-| 1 | 3 | PosixParser.java:30 | 0.447214 | `public class PosixParser extends Parser {` |
-| 1 | 3 | PosixParser.java:33 | 0.447214 | `private ArrayList tokens = new ArrayList();` |
+| 1 | 3 | Parser.java:32 | 0.316228 | `public abstract class Parser implements CommandLineParser {` |
+| 1 | 3 | PosixParser.java:30 | 0.316228 | `public class PosixParser extends Parser {` |
+| 1 | 3 | PosixParser.java:33 | 0.316228 | `private ArrayList tokens = new ArrayList();` |
 | 4 | 5 | CommandLine.java:43 | 0.0 | `private List args = new LinkedList();` |
 | 4 | 5 | CommandLine.java:46 | 0.0 | `private Set options = new HashSet();` |
 | 4 | 5 | Parser.java:70 | 0.0 | `return parse(options, arguments, null, false);` |

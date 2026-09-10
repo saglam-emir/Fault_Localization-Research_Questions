@@ -26,14 +26,14 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 2 | PosixParser.java:31 | 0.223607 | `public class PosixParser extends Parser {` |
-| 1 | 2 | PosixParser.java:34 | 0.223607 | `private ArrayList tokens = new ArrayList();` |
-| 3 | 6 | CommandLine.java:44 | 0.204124 | `private List args = new LinkedList();` |
-| 3 | 6 | CommandLine.java:47 | 0.204124 | `private Set options = new HashSet();` |
-| 3 | 6 | Parser.java:33 | 0.204124 | `public abstract class Parser implements CommandLineParser {` |
-| 3 | 6 | Parser.java:71 | 0.204124 | `return parse(options, arguments, null, false);` |
-| 3 | 6 | Parser.java:144 | 0.204124 | `cmd = new CommandLine();` |
-| 3 | 6 | Parser.java:227 | 0.204124 | `return cmd;` |
+| 1 | 2 | PosixParser.java:31 | 0.182574 | `public class PosixParser extends Parser {` |
+| 1 | 2 | PosixParser.java:34 | 0.182574 | `private ArrayList tokens = new ArrayList();` |
+| 3 | 6 | CommandLine.java:44 | 0.166667 | `private List args = new LinkedList();` |
+| 3 | 6 | CommandLine.java:47 | 0.166667 | `private Set options = new HashSet();` |
+| 3 | 6 | Parser.java:33 | 0.166667 | `public abstract class Parser implements CommandLineParser {` |
+| 3 | 6 | Parser.java:71 | 0.166667 | `return parse(options, arguments, null, false);` |
+| 3 | 6 | Parser.java:144 | 0.166667 | `cmd = new CommandLine();` |
+| 3 | 6 | Parser.java:227 | 0.166667 | `return cmd;` |
 | 9 | 98 | CommandLine.java:68 | 0.0 | `return options.contains( resolveOption(opt));` |
 | 9 | 98 | CommandLine.java:167 | 0.0 | `for ( Iterator it = options.iterator(); it.hasNext(); )` |
 

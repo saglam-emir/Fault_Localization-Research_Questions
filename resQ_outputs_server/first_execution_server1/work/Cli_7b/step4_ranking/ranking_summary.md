@@ -3,7 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('PatternBuilder.java', 19), ('PatternBuilder.java', 21), ('PatternBuilder.java', 67)]
 
 Ground_Truth_Answerable: True
-Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli2/builder/PatternBuilder.java', 21)]
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli2/builder/PatternBuilder.java', 19), ('src/java/org/apache/commons/cli2/builder/PatternBuilder.java', 21)]
 
 - SBFL   ranked 285 statement(s)
 - Hybrid ranked 165 statement(s)

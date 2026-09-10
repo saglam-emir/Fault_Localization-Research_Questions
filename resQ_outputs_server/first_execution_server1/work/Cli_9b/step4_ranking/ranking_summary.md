@@ -28,14 +28,14 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 8 | OptionBuilder.java:71 | 1.0 | `description = null;` |
-| 1 | 8 | OptionBuilder.java:72 | 1.0 | `argName = "arg";` |
-| 1 | 8 | OptionBuilder.java:73 | 1.0 | `longopt = null;` |
-| 1 | 8 | OptionBuilder.java:74 | 1.0 | `type = null;` |
-| 1 | 8 | OptionBuilder.java:76 | 1.0 | `numberOfArgs = Option.UNINITIALIZED;` |
-| 1 | 8 | OptionBuilder.java:80 | 1.0 | `optionalArg = false;` |
-| 1 | 8 | OptionBuilder.java:81 | 1.0 | `valuesep = (char) 0;` |
-| 1 | 8 | OptionBuilder.java:368 | 1.0 | `OptionBuilder.reset();` |
-| 9 | 78 | CommandLine.java:47 | 0.707107 | `private List args = new LinkedList();` |
-| 9 | 78 | CommandLine.java:50 | 0.707107 | `private Set options = new HashSet();` |
+| 1 | 8 | OptionBuilder.java:71 | 0.707107 | `description = null;` |
+| 1 | 8 | OptionBuilder.java:72 | 0.707107 | `argName = "arg";` |
+| 1 | 8 | OptionBuilder.java:73 | 0.707107 | `longopt = null;` |
+| 1 | 8 | OptionBuilder.java:74 | 0.707107 | `type = null;` |
+| 1 | 8 | OptionBuilder.java:76 | 0.707107 | `numberOfArgs = Option.UNINITIALIZED;` |
+| 1 | 8 | OptionBuilder.java:80 | 0.707107 | `optionalArg = false;` |
+| 1 | 8 | OptionBuilder.java:81 | 0.707107 | `valuesep = (char) 0;` |
+| 1 | 8 | OptionBuilder.java:368 | 0.707107 | `OptionBuilder.reset();` |
+| 9 | 78 | CommandLine.java:47 | 0.5 | `private List args = new LinkedList();` |
+| 9 | 78 | CommandLine.java:50 | 0.5 | `private Set options = new HashSet();` |
 

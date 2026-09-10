@@ -5,6 +5,7 @@ Ground truth faulty statement(s) (diff line): [('GroupImpl.java', 250), ('GroupI
 Statement-line-normalized for matching (multi-line statement, first-line attribution - see ground_truth.normalize_statement_line): [('GroupImpl.java', 261, '->', 255)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli2/option/GroupImpl.java', 252)]
 
 - SBFL   ranked 1271 statement(s)
 - Hybrid ranked 358 statement(s)

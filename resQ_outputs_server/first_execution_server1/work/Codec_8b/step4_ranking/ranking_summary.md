@@ -3,6 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('Base64.java', 419), ('Base64.java', 420), ('Base64.java', 421), ('Base64.java', 422), ('Base64.java', 423), ('Base64.java', 424), ('Base64.java', 425), ('Base64InputStream.java', 169), ('Base64InputStream.java', 170), ('Base64InputStream.java', 171)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/codec/binary/Base64.java', 419), ('src/java/org/apache/commons/codec/binary/Base64.java', 424), ('src/java/org/apache/commons/codec/binary/Base64.java', 425), ('src/java/org/apache/commons/codec/binary/Base64InputStream.java', 171)]
 
 - SBFL   ranked 375 statement(s)
 - Hybrid ranked 17 statement(s)

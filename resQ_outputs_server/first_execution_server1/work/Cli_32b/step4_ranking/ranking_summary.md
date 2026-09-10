@@ -5,6 +5,7 @@ Ground truth faulty statement(s) (diff line): [('HelpFormatter.java', 937), ('He
 Statement-line-normalized for matching (multi-line statement, first-line attribution - see ground_truth.normalize_statement_line): [('HelpFormatter.java', 938, '->', 937), ('HelpFormatter.java', 939, '->', 937)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/cli/HelpFormatter.java', 937), ('src/main/java/org/apache/commons/cli/HelpFormatter.java', 939), ('src/main/java/org/apache/commons/cli/HelpFormatter.java', 941)]
 
 - SBFL   ranked 553 statement(s)
 - Hybrid ranked 10 statement(s)

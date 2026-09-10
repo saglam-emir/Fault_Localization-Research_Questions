@@ -3,6 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('CSVFormat.java', 316), ('CSVFormat.java', 665), ('CSVFormat.java', 666), ('CSVFormat.java', 667), ('CSVFormat.java', 668), ('CSVFormat.java', 669), ('CSVFormat.java', 670), ('CSVFormat.java', 671)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/csv/CSVFormat.java', 670), ('src/main/java/org/apache/commons/csv/CSVFormat.java', 671)]
 
 - SBFL   ranked 554 statement(s)
 - Hybrid ranked 1 statement(s)

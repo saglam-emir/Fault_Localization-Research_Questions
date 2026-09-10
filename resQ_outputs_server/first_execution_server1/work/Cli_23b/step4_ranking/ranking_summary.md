@@ -5,6 +5,7 @@ Ground truth faulty statement(s) (diff line): [('HelpFormatter.java', 824), ('He
 Statement-line-normalized for matching (multi-line statement, first-line attribution - see ground_truth.normalize_statement_line): [('HelpFormatter.java', 834, '->', 833), ('HelpFormatter.java', 835, '->', 833)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli/HelpFormatter.java', 833), ('src/java/org/apache/commons/cli/HelpFormatter.java', 835)]
 
 - SBFL   ranked 524 statement(s)
 - Hybrid ranked 55 statement(s)
@@ -28,14 +29,14 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 46 | HelpFormatter.java:144 | 0.707107 | `this.defaultWidth = width;` |
-| 1 | 46 | Option.java:56 | 0.707107 | `private String argName = "arg";` |
-| 1 | 46 | Option.java:68 | 0.707107 | `private int numberOfArgs = UNINITIALIZED;` |
-| 1 | 46 | Option.java:74 | 0.707107 | `private List values = new ArrayList();` |
-| 1 | 46 | Option.java:123 | 0.707107 | `OptionValidator.validateOption(opt);` |
-| 1 | 46 | Option.java:125 | 0.707107 | `this.opt = opt;` |
-| 1 | 46 | Option.java:126 | 0.707107 | `this.longOpt = longOpt;` |
-| 1 | 46 | Option.java:129 | 0.707107 | `if (hasArg)` |
-| 1 | 46 | Option.java:131 | 0.707107 | `this.numberOfArgs = 1;` |
-| 1 | 46 | Option.java:134 | 0.707107 | `this.description = description;` |
+| 1 | 46 | HelpFormatter.java:144 | 0.5 | `this.defaultWidth = width;` |
+| 1 | 46 | Option.java:56 | 0.5 | `private String argName = "arg";` |
+| 1 | 46 | Option.java:68 | 0.5 | `private int numberOfArgs = UNINITIALIZED;` |
+| 1 | 46 | Option.java:74 | 0.5 | `private List values = new ArrayList();` |
+| 1 | 46 | Option.java:123 | 0.5 | `OptionValidator.validateOption(opt);` |
+| 1 | 46 | Option.java:125 | 0.5 | `this.opt = opt;` |
+| 1 | 46 | Option.java:126 | 0.5 | `this.longOpt = longOpt;` |
+| 1 | 46 | Option.java:129 | 0.5 | `if (hasArg)` |
+| 1 | 46 | Option.java:131 | 0.5 | `this.numberOfArgs = 1;` |
+| 1 | 46 | Option.java:134 | 0.5 | `this.description = description;` |
 

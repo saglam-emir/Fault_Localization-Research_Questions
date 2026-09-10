@@ -3,7 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('OptionGroup.java', 22), ('OptionGroup.java', 24), ('OptionGroup.java', 37), ('Options.java', 24), ('Options.java', 61)]
 
 Ground_Truth_Answerable: True
-Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/cli/OptionGroup.java', 24)]
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/cli/OptionGroup.java', 22), ('src/main/java/org/apache/commons/cli/OptionGroup.java', 24), ('src/main/java/org/apache/commons/cli/Options.java', 24)]
 
 - SBFL   ranked 826 statement(s)
 - Hybrid ranked 68 statement(s)

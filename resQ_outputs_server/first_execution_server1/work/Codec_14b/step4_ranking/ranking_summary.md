@@ -3,7 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('Lang.java', 98), ('Lang.java', 102), ('PhoneticEngine.java', 31), ('PhoneticEngine.java', 338), ('PhoneticEngine.java', 361), ('PhoneticEngine.java', 364), ('Rule.java', 158), ('ash_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0), ('gen_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0), ('sep_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0)]
 
 Ground_Truth_Answerable: True
-Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/codec/language/bm/Rule.java', 158), ('src/main/resources/org/apache/commons/codec/language/bm/ash_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0), ('src/main/resources/org/apache/commons/codec/language/bm/gen_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0), ('src/main/resources/org/apache/commons/codec/language/bm/sep_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0)]
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/codec/language/bm/Lang.java', 98), ('src/main/java/org/apache/commons/codec/language/bm/PhoneticEngine.java', 31), ('src/main/java/org/apache/commons/codec/language/bm/Rule.java', 158), ('src/main/resources/org/apache/commons/codec/language/bm/ash_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0), ('src/main/resources/org/apache/commons/codec/language/bm/gen_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0), ('src/main/resources/org/apache/commons/codec/language/bm/sep_lang.txt\t1969-12-31 16:00:00.000000000 -0800', 0)]
 
 - SBFL   ranked 421 statement(s)
 - Hybrid ranked 0 statement(s)

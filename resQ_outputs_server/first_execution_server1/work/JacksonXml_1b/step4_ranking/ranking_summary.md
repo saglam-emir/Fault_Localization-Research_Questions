@@ -28,10 +28,10 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 4 | DefaultXmlPrettyPrinter.java:60 | 0.218218 | `protected Indenter _arrayIndenter = new FixedSpaceIndenter();` |
-| 1 | 4 | DefaultXmlPrettyPrinter.java:68 | 0.218218 | `protected Indenter _objectIndenter = new Lf2SpacesIndenter();` |
-| 1 | 4 | DefaultXmlPrettyPrinter.java:457 | 0.218218 | `public FixedSpaceIndenter() { }` |
-| 1 | 4 | DefaultXmlPrettyPrinter.java:500 | 0.218218 | `public Lf2SpacesIndenter() { }` |
+| 1 | 4 | DefaultXmlPrettyPrinter.java:60 | 0.235702 | `protected Indenter _arrayIndenter = new FixedSpaceIndenter();` |
+| 1 | 4 | DefaultXmlPrettyPrinter.java:68 | 0.235702 | `protected Indenter _objectIndenter = new Lf2SpacesIndenter();` |
+| 1 | 4 | DefaultXmlPrettyPrinter.java:457 | 0.235702 | `public FixedSpaceIndenter() { }` |
+| 1 | 4 | DefaultXmlPrettyPrinter.java:500 | 0.235702 | `public Lf2SpacesIndenter() { }` |
 | 5 | 62 | ElementWrapper.java:28 | 0.204124 | `_parent = parent;` |
 | 5 | 62 | ElementWrapper.java:29 | 0.204124 | `_wrapperName = wrapperLocalName;` |
 | 5 | 62 | ElementWrapper.java:30 | 0.204124 | `_wrapperNamespace = (wrapperNamespace == null) ? "" : wrapperNamespace;` |

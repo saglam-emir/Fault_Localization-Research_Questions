@@ -5,7 +5,7 @@ Ground truth faulty statement(s) (diff line): [('CommandLine.java', 19), ('Comma
 Statement-line-normalized for matching (multi-line statement, first-line attribution - see ground_truth.normalize_statement_line): [('CommandLine.java', 153, '->', 152), ('CommandLine.java', 280, '->', 279), ('CommandLine.java', 284, '->', 283)]
 
 Ground_Truth_Answerable: True
-Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli/CommandLine.java', 169), ('src/java/org/apache/commons/cli/CommandLine.java', 170)]
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli/CommandLine.java', 19), ('src/java/org/apache/commons/cli/CommandLine.java', 23), ('src/java/org/apache/commons/cli/CommandLine.java', 155), ('src/java/org/apache/commons/cli/CommandLine.java', 169), ('src/java/org/apache/commons/cli/CommandLine.java', 170), ('src/java/org/apache/commons/cli/CommandLine.java', 281), ('src/java/org/apache/commons/cli/CommandLine.java', 282), ('src/java/org/apache/commons/cli/CommandLine.java', 283), ('src/java/org/apache/commons/cli/CommandLine.java', 284), ('src/java/org/apache/commons/cli/CommandLine.java', 286), ('src/java/org/apache/commons/cli/CommandLine.java', 308), ('src/java/org/apache/commons/cli/CommandLine.java', 316)]
 
 - SBFL   ranked 571 statement(s)
 - Hybrid ranked 121 statement(s)
@@ -29,14 +29,14 @@ Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answ
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 2 | CommandLine.java:137 | 0.57735 | `return getOptionValue(String.valueOf(opt));` |
-| 1 | 2 | CommandLine.java:151 | 0.57735 | `String key = opt;` |
-| 3 | 119 | CommandLine.java:43 | 0.5 | `private List args = new LinkedList();` |
-| 3 | 119 | CommandLine.java:46 | 0.5 | `private Map options = new HashMap();` |
-| 3 | 119 | CommandLine.java:47 | 0.5 | `private Map names = new HashMap();` |
-| 3 | 119 | CommandLine.java:51 | 0.5 | `private Map hashcodeMap = new HashMap();` |
-| 3 | 119 | CommandLine.java:123 | 0.5 | `String[] values = getOptionValues(opt);` |
-| 3 | 119 | CommandLine.java:149 | 0.5 | `opt = Util.stripLeadingHyphens(opt);` |
-| 3 | 119 | CommandLine.java:152 | 0.5 | `if (names.containsKey(opt))` |
-| 3 | 119 | CommandLine.java:154 | 0.5 | `key = (String) names.get(opt);` |
+| 1 | 2 | CommandLine.java:137 | 0.408248 | `return getOptionValue(String.valueOf(opt));` |
+| 1 | 2 | CommandLine.java:151 | 0.408248 | `String key = opt;` |
+| 3 | 119 | CommandLine.java:43 | 0.353553 | `private List args = new LinkedList();` |
+| 3 | 119 | CommandLine.java:46 | 0.353553 | `private Map options = new HashMap();` |
+| 3 | 119 | CommandLine.java:47 | 0.353553 | `private Map names = new HashMap();` |
+| 3 | 119 | CommandLine.java:51 | 0.353553 | `private Map hashcodeMap = new HashMap();` |
+| 3 | 119 | CommandLine.java:123 | 0.353553 | `String[] values = getOptionValues(opt);` |
+| 3 | 119 | CommandLine.java:149 | 0.353553 | `opt = Util.stripLeadingHyphens(opt);` |
+| 3 | 119 | CommandLine.java:152 | 0.353553 | `if (names.containsKey(opt))` |
+| 3 | 119 | CommandLine.java:154 | 0.353553 | `key = (String) names.get(opt);` |
 

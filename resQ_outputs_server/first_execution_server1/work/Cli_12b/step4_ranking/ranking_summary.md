@@ -28,13 +28,13 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 1 | GnuParser.java:31 | 0.774597 | `public class GnuParser extends Parser {` |
-| 2 | 1 | Parser.java:34 | 0.654654 | `public abstract class Parser implements CommandLineParser {` |
-| 3 | 1 | Parser.java:86 | 0.57735 | `return parse(options, arguments, null, false);` |
-| 4 | 4 | CommandLine.java:47 | 0.471405 | `private List args = new LinkedList();` |
-| 4 | 4 | CommandLine.java:50 | 0.471405 | `private Set options = new HashSet();` |
-| 4 | 4 | Parser.java:158 | 0.471405 | `cmd = new CommandLine();` |
-| 4 | 4 | Parser.java:241 | 0.471405 | `return cmd;` |
+| 1 | 1 | GnuParser.java:31 | 0.67082 | `public class GnuParser extends Parser {` |
+| 2 | 1 | Parser.java:34 | 0.566947 | `public abstract class Parser implements CommandLineParser {` |
+| 3 | 1 | Parser.java:86 | 0.5 | `return parse(options, arguments, null, false);` |
+| 4 | 4 | CommandLine.java:47 | 0.408248 | `private List args = new LinkedList();` |
+| 4 | 4 | CommandLine.java:50 | 0.408248 | `private Set options = new HashSet();` |
+| 4 | 4 | Parser.java:158 | 0.408248 | `cmd = new CommandLine();` |
+| 4 | 4 | Parser.java:241 | 0.408248 | `return cmd;` |
 | 8 | 3 | Parser.java:105 | 0.0 | `return parse(options, arguments, properties, false);` |
 | 8 | 3 | PosixParser.java:31 | 0.0 | `public class PosixParser extends Parser {` |
 | 8 | 3 | PosixParser.java:34 | 0.0 | `private ArrayList tokens = new ArrayList();` |

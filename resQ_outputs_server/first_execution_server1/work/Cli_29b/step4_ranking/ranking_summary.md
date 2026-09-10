@@ -5,6 +5,7 @@ Ground truth faulty statement(s) (diff line): [('Util.java', 65), ('Util.java', 
 Statement-line-normalized for matching (multi-line statement, first-line attribution - see ground_truth.normalize_statement_line): [('Util.java', 66, '->', 65)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli/Util.java', 68)]
 
 - SBFL   ranked 649 statement(s)
 - Hybrid ranked 12 statement(s)
@@ -28,11 +29,11 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 5 | Util.java:65 | 0.707107 | `if (str.startsWith("\""))` |
-| 1 | 5 | Util.java:69 | 0.707107 | `int length = str.length();` |
-| 1 | 5 | Util.java:70 | 0.707107 | `if (str.endsWith("\""))` |
-| 1 | 5 | Util.java:72 | 0.707107 | `str = str.substring(0, length - 1);` |
-| 1 | 5 | Util.java:75 | 0.707107 | `return str;` |
+| 1 | 5 | Util.java:65 | 0.5 | `if (str.startsWith("\""))` |
+| 1 | 5 | Util.java:69 | 0.5 | `int length = str.length();` |
+| 1 | 5 | Util.java:70 | 0.5 | `if (str.endsWith("\""))` |
+| 1 | 5 | Util.java:72 | 0.5 | `str = str.substring(0, length - 1);` |
+| 1 | 5 | Util.java:75 | 0.5 | `return str;` |
 | 6 | 7 | Util.java:38 | 0.0 | `if (str == null)` |
 | 6 | 7 | Util.java:40 | 0.0 | `return null;` |
 | 6 | 7 | Util.java:42 | 0.0 | `if (str.startsWith("--"))` |

@@ -26,14 +26,14 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 1 | Parser.java:242 | 1.0 | `checkRequiredOptions();` |
-| 2 | 2 | Parser.java:241 | 0.707107 | `processProperties(properties);` |
-| 2 | 2 | Parser.java:254 | 0.707107 | `if (properties == null)` |
-| 4 | 3 | Parser.java:54 | 0.57735 | `return options;` |
-| 4 | 3 | PosixParser.java:54 | 0.57735 | `eatTheRest = false;` |
-| 4 | 3 | PosixParser.java:99 | 0.57735 | `this.options = options;` |
-| 7 | 16 | Option.java:159 | 0.447214 | `return longOpt;` |
-| 7 | 16 | OptionBuilder.java:75 | 0.447214 | `longopt = null;` |
-| 7 | 16 | OptionBuilder.java:82 | 0.447214 | `optionalArg = false;` |
-| 7 | 16 | OptionBuilder.java:170 | 0.447214 | `OptionBuilder.valuesep = sep;` |
+| 1 | 1 | Parser.java:242 | 0.707107 | `checkRequiredOptions();` |
+| 2 | 2 | Parser.java:241 | 0.5 | `processProperties(properties);` |
+| 2 | 2 | Parser.java:254 | 0.5 | `if (properties == null)` |
+| 4 | 3 | Parser.java:54 | 0.408248 | `return options;` |
+| 4 | 3 | PosixParser.java:54 | 0.408248 | `eatTheRest = false;` |
+| 4 | 3 | PosixParser.java:99 | 0.408248 | `this.options = options;` |
+| 7 | 16 | Option.java:159 | 0.316228 | `return longOpt;` |
+| 7 | 16 | OptionBuilder.java:75 | 0.316228 | `longopt = null;` |
+| 7 | 16 | OptionBuilder.java:82 | 0.316228 | `optionalArg = false;` |
+| 7 | 16 | OptionBuilder.java:170 | 0.316228 | `OptionBuilder.valuesep = sep;` |
 

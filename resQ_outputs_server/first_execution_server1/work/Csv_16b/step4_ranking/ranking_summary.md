@@ -3,7 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('CSVParser.java', 289), ('CSVParser.java', 357), ('CSVParser.java', 523), ('CSVParser.java', 571)]
 
 Ground_Truth_Answerable: True
-Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/csv/CSVParser.java', 289)]
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/csv/CSVParser.java', 289), ('src/main/java/org/apache/commons/csv/CSVParser.java', 571)]
 
 - SBFL   ranked 608 statement(s)
 - Hybrid ranked 216 statement(s)

@@ -3,6 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('Option.java', 72), ('OptionBuilder.java', 84)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/cli/Option.java', 72)]
 
 - SBFL   ranked 793 statement(s)
 - Hybrid ranked 226 statement(s)

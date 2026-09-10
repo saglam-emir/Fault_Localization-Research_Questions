@@ -5,6 +5,7 @@ Ground truth faulty statement(s) (diff line): [('PosixParser.java', 128), ('Posi
 Statement-line-normalized for matching (multi-line statement, first-line attribution - see ground_truth.normalize_statement_line): [('PosixParser.java', 214, '->', 213), ('PosixParser.java', 241, '->', 238)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/java/org/apache/commons/cli/PosixParser.java', 213), ('src/java/org/apache/commons/cli/PosixParser.java', 214), ('src/java/org/apache/commons/cli/PosixParser.java', 216)]
 
 - SBFL   ranked 643 statement(s)
 - Hybrid ranked 0 statement(s)

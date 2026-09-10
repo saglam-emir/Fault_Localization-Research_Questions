@@ -3,6 +3,7 @@
 Ground truth faulty statement(s) (diff line): [('IteratorUtils.java', 605), ('IteratorUtils.java', 626), ('IteratorUtils.java', 648)]
 
 Ground_Truth_Answerable: True
+Unanswerable fault line(s) (dead code in the buggy build - see ground_truth_answerability.csv): [('src/main/java/org/apache/commons/collections4/IteratorUtils.java', 626), ('src/main/java/org/apache/commons/collections4/IteratorUtils.java', 648)]
 
 - SBFL   ranked 1438 statement(s)
 - Hybrid ranked 89 statement(s)

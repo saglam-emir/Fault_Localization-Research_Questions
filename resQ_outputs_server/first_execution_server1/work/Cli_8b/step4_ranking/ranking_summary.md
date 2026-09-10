@@ -26,14 +26,14 @@ Ground_Truth_Answerable: True
 
 | Rank | Tie Size | File:Line | Ochiai | Code |
 |------|----------|-----------|--------|------|
-| 1 | 12 | HelpFormatter.java:803 | 0.377964 | `sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);` |
-| 1 | 12 | HelpFormatter.java:807 | 0.377964 | `final String padding = createPadding(nextLineTabStop);` |
-| 1 | 12 | HelpFormatter.java:811 | 0.377964 | `text = padding + text.substring(pos).trim();` |
-| 1 | 12 | HelpFormatter.java:812 | 0.377964 | `pos = findWrapPos(text, width, nextLineTabStop);` |
-| 1 | 12 | HelpFormatter.java:814 | 0.377964 | `if (pos == -1)` |
-| 1 | 12 | HelpFormatter.java:816 | 0.377964 | `sb.append(text);` |
-| 1 | 12 | HelpFormatter.java:855 | 0.377964 | `pos = startPos + width;` |
-| 1 | 12 | HelpFormatter.java:860 | 0.377964 | `&& (c != '\n') && (c != '\r'))` |
-| 1 | 12 | HelpFormatter.java:862 | 0.377964 | `--pos;` |
-| 1 | 12 | HelpFormatter.java:866 | 0.377964 | `if (pos > startPos)` |
+| 1 | 12 | HelpFormatter.java:803 | 0.267261 | `sb.append(rtrim(text.substring(0, pos))).append(defaultNewLine);` |
+| 1 | 12 | HelpFormatter.java:807 | 0.267261 | `final String padding = createPadding(nextLineTabStop);` |
+| 1 | 12 | HelpFormatter.java:811 | 0.267261 | `text = padding + text.substring(pos).trim();` |
+| 1 | 12 | HelpFormatter.java:812 | 0.267261 | `pos = findWrapPos(text, width, nextLineTabStop);` |
+| 1 | 12 | HelpFormatter.java:814 | 0.267261 | `if (pos == -1)` |
+| 1 | 12 | HelpFormatter.java:816 | 0.267261 | `sb.append(text);` |
+| 1 | 12 | HelpFormatter.java:855 | 0.267261 | `pos = startPos + width;` |
+| 1 | 12 | HelpFormatter.java:860 | 0.267261 | `&& (c != '\n') && (c != '\r'))` |
+| 1 | 12 | HelpFormatter.java:862 | 0.267261 | `--pos;` |
+| 1 | 12 | HelpFormatter.java:866 | 0.267261 | `if (pos > startPos)` |
 
