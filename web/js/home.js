@@ -62,8 +62,8 @@ function renderInfo(meta) {
 }
 
 function renderProjectsPanel(summary) {
-  document.getElementById('proj-count').textContent = summary.total_projects;
-  document.getElementById('bug-count').textContent = fmt.format(summary.total_buggy_versions);
+  animateCount(document.getElementById('proj-count'), summary.total_projects, { duration: 1400 });
+  animateCount(document.getElementById('bug-count'), summary.total_buggy_versions, { duration: 1400 });
 
   const sorted = [...summary.projects].sort((a, b) => b.buggy_versions - a.buggy_versions);
   const max = sorted[0].buggy_versions;

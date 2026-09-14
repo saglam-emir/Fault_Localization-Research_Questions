@@ -4,6 +4,55 @@
 const RQ = (() => {
   const fmt = new Intl.NumberFormat('en-US');
   const pct = v => `${(v * 100).toFixed(1)}%`;
+  const reducedMotion = () => {
+    try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+  };
+
+  // ---- animated count-up, for headline stat numbers ------------------
+  // Same simulate-from-zero treatment as the Home page's hero stats,
+  // shared here so every page's summary cards count up the same way
+  // instead of just appearing. `format` (default fmt.format, rounded) is
+  // called with the in-flight value on every frame, so a percentage or
+  // duration formatter (RQ.pct, a page's own formatSeconds, etc.) can
+  // drive the animation just as well as a plain integer count.
+  function animateCount(el, value, { decimals = 0, duration = 1000, format } = {}) {
+    const fmtFn = format || (v => decimals > 0 ? v.toFixed(decimals) : fmt.format(Math.round(v)));
+    if (reducedMotion()) { el.textContent = fmtFn(value); return; }
+    const start = performance.now();
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    function tick(now) {
+      const p = Math.min(1, (now - start) / duration);
+      el.textContent = fmtFn(value * easeOut(p));
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = fmtFn(value);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // ---- rq-card-stat summary row, animated on every render ------------
+  // cards: [{value, label, format, decimals, duration, emph, sub}].
+  // `value` a finite number counts up from zero (formatted each frame by
+  // `format`, default fmt.format); anything else (a string like a bug ID,
+  // or null/undefined) is written once, unanimated, so a "no data" '—'
+  // never tries to animate.
+  function renderStatCards(el, cards) {
+    el.innerHTML = cards.map(c => {
+      const isNum = typeof c.value === 'number' && isFinite(c.value);
+      const initial = isNum ? '0' : (c.value == null ? '—' : c.value);
+      return `
+        <div class="rq-card-stat" style="${c.emph ? 'outline:2px solid var(--accent)' : ''}">
+          <div class="n" style="${c.emph ? 'color:var(--accent)' : ''}">${initial}</div>
+          <div class="l">${c.label}</div>
+          ${c.sub ? `<div class="sub">${c.sub}</div>` : ''}
+        </div>`;
+    }).join('');
+    el.querySelectorAll('.rq-card-stat').forEach((card, i) => {
+      const c = cards[i];
+      if (typeof c.value === 'number' && isFinite(c.value)) {
+        animateCount(card.querySelector('.n'), c.value, { decimals: c.decimals, duration: c.duration, format: c.format });
+      }
+    });
+  }
 
   // ---- segmented control (tabs) -------------------------------------
   // options: [{value, label}]. Re-renders on every call; caller re-invokes
@@ -278,5 +327,5 @@ const RQ = (() => {
     return { refresh: render };
   }
 
-  return { fmt, pct, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, renderMatrix2x2, renderLineChart, createDataTable };
+  return { fmt, pct, animateCount, renderStatCards, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, renderMatrix2x2, renderLineChart, createDataTable };
 })();

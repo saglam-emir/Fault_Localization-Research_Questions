@@ -37,14 +37,13 @@ function metricSeriesDef(c) {
 function renderSummaryCards() {
   const withUncaught = ALL_ROWS.filter(r => r.uncaught_exception > 0).length;
   const cards = [
-    { n: RQ.fmt.format(ALL_ROWS.length), l: 'Buggy Versions Analyzed' },
-    { n: RQ.fmt.format(sum(ALL_ROWS, 'pass_tc') + sum(ALL_ROWS, 'fail_tc')), l: 'Total Test Cases' },
-    { n: RQ.fmt.format(sum(ALL_ROWS, 'pass_tc')), l: 'Passing Test Cases' },
-    { n: RQ.fmt.format(sum(ALL_ROWS, 'fail_tc')), l: 'Failing Test Cases' },
-    { n: RQ.fmt.format(withUncaught), l: 'With Uncaught Exceptions' },
+    { value: ALL_ROWS.length, label: 'Buggy Versions Analyzed' },
+    { value: sum(ALL_ROWS, 'pass_tc') + sum(ALL_ROWS, 'fail_tc'), label: 'Total Test Cases' },
+    { value: sum(ALL_ROWS, 'pass_tc'), label: 'Passing Test Cases' },
+    { value: sum(ALL_ROWS, 'fail_tc'), label: 'Failing Test Cases' },
+    { value: withUncaught, label: 'With Uncaught Exceptions' },
   ];
-  document.getElementById('rq1-cards').innerHTML = cards.map(c => `
-    <div class="rq-card-stat"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+  RQ.renderStatCards(document.getElementById('rq1-cards'), cards);
 }
 
 function renderControls() {

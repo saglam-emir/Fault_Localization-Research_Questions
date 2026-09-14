@@ -36,14 +36,13 @@ function renderSummaryCards() {
   const both = ALL_ROWS.filter(r => r.trace_any_found && r.slice_any_found).length;
   const neither = ALL_ROWS.filter(r => !r.trace_any_found && !r.slice_any_found).length;
   const cards = [
-    { n: RQ.fmt.format(n), l: 'Buggy Versions Analyzed' },
-    { n: RQ.fmt.format(traceIncl), l: 'Trace Included' },
-    { n: RQ.fmt.format(sliceIncl), l: 'Slice Included' },
-    { n: RQ.fmt.format(both), l: 'Both Included — Best Case', emph: true },
-    { n: RQ.fmt.format(neither), l: 'Neither Included' },
+    { value: n, label: 'Buggy Versions Analyzed' },
+    { value: traceIncl, label: 'Trace Included' },
+    { value: sliceIncl, label: 'Slice Included' },
+    { value: both, label: 'Both Included — Best Case', emph: true },
+    { value: neither, label: 'Neither Included' },
   ];
-  document.getElementById('rq4-cards').innerHTML = cards.map(c => `
-    <div class="rq-card-stat" style="${c.emph ? 'outline:2px solid var(--accent)' : ''}"><div class="n" style="${c.emph ? 'color:var(--accent)' : ''}">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+  RQ.renderStatCards(document.getElementById('rq4-cards'), cards);
 }
 
 function renderControls() {

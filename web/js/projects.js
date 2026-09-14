@@ -46,13 +46,12 @@ function goToDetail(project, bugId) {
 function renderOverviewSummary() {
   const completed = PROJECT_ROWS.filter(r => r.status === 'OK').length;
   const cards = [
-    { n: SUMMARY.total_projects, l: 'Total Projects' },
-    { n: PROJECT_ROWS.length, l: 'Total Buggy Versions' },
-    { n: completed, l: 'Completed Buggy Versions' },
-    { n: PROJECT_ROWS.length - completed, l: 'Failed / Incomplete' },
+    { value: SUMMARY.total_projects, label: 'Total Projects' },
+    { value: PROJECT_ROWS.length, label: 'Total Buggy Versions' },
+    { value: completed, label: 'Completed Buggy Versions' },
+    { value: PROJECT_ROWS.length - completed, label: 'Failed / Incomplete' },
   ];
-  document.getElementById('projects-summary-cards').innerHTML = cards.map(c => `
-    <div class="rq-card-stat"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+  RQ.renderStatCards(document.getElementById('projects-summary-cards'), cards);
 }
 
 function renderProjectBarChart() {
@@ -84,10 +83,10 @@ function renderBugsView() {
   const rows = PROJECT_ROWS.filter(r => r.project === state.project);
   const ok = rows.filter(r => r.status === 'OK').length;
   const totalFaultLines = rows.reduce((s, r) => s + (r.total_fault_lines || 0), 0);
-  document.getElementById('bugs-summary-cards').innerHTML = [
-    { n: rows.length, l: 'Buggy Versions' }, { n: ok, l: 'Completed' }, { n: rows.length - ok, l: 'Not Available' },
-    { n: totalFaultLines, l: 'Ground-Truth Fault Lines' },
-  ].map(c => `<div class="rq-card-stat"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+  RQ.renderStatCards(document.getElementById('bugs-summary-cards'), [
+    { value: rows.length, label: 'Buggy Versions' }, { value: ok, label: 'Completed' }, { value: rows.length - ok, label: 'Not Available' },
+    { value: totalFaultLines, label: 'Ground-Truth Fault Lines' },
+  ]);
 
   RQ.createDataTable(document.getElementById('bugs-table'), {
     columns: [
@@ -166,14 +165,15 @@ function renderOverviewTab(el) {
   const c = colors();
   const rq1 = d.rq1, rq2 = d.rq2;
   el.innerHTML = `
-    <div class="rq-cards" style="margin-top:0">
-      <div class="rq-card-stat"><div class="n">${rq1 ? fmtNum(Number(rq1.Pass_TC) + Number(rq1.Fail_TC)) : '—'}</div><div class="l">Total Test Cases</div></div>
-      <div class="rq-card-stat"><div class="n">${rq1 ? fmtNum(rq1.Pass_TC) : '—'}</div><div class="l">Passing Test Cases</div></div>
-      <div class="rq-card-stat"><div class="n">${rq1 ? fmtNum(rq1.Fail_TC) : '—'}</div><div class="l">Failing Test Cases</div></div>
-      <div class="rq-card-stat"><div class="n">${rq2 ? fmtNum(rq2.full_execution_size) : '—'}</div><div class="l">Executed Statements</div></div>
-    </div>
+    <div class="rq-cards" id="overview-metric-cards" style="margin-top:0"></div>
     <div class="rq-chart-panel" style="margin-top:24px"><div id="overview-pf-chart"></div></div>
   `;
+  RQ.renderStatCards(document.getElementById('overview-metric-cards'), [
+    { value: rq1 ? Number(rq1.Pass_TC) + Number(rq1.Fail_TC) : null, label: 'Total Test Cases' },
+    { value: rq1 ? Number(rq1.Pass_TC) : null, label: 'Passing Test Cases' },
+    { value: rq1 ? Number(rq1.Fail_TC) : null, label: 'Failing Test Cases' },
+    { value: rq2 ? Number(rq2.full_execution_size) : null, label: 'Executed Statements' },
+  ]);
   if (rq1) {
     RQ.renderComparisonBars(document.getElementById('overview-pf-chart'), [
       { label: 'Passing Tests', value: Number(rq1.Pass_TC), color: c.ok },

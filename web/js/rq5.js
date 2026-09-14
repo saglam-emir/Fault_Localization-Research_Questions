@@ -83,13 +83,12 @@ function renderSummaryCards() {
   const rows = currentRows();
   const answerable = rows.filter(r => !isUnanswerable(r));
   const cards = [
-    { n: RQ.fmt.format(rows.length), l: 'Fault Lines (current scope)' },
-    { n: RQ.fmt.format(answerable.length), l: 'Answerable' },
-    { n: RQ.pct(rate(answerable, 'trace', state.diff)), l: `Trace Success @ diff=${state.diff}` },
-    { n: RQ.pct(rate(answerable, 'slice', state.diff)), l: `Slice Success @ diff=${state.diff}` },
+    { value: rows.length, label: 'Fault Lines (current scope)' },
+    { value: answerable.length, label: 'Answerable' },
+    { value: rate(answerable, 'trace', state.diff), label: `Trace Success @ diff=${state.diff}`, format: RQ.pct },
+    { value: rate(answerable, 'slice', state.diff), label: `Slice Success @ diff=${state.diff}`, format: RQ.pct },
   ];
-  document.getElementById('rq5-cards').innerHTML = cards.map(c => `
-    <div class="rq-card-stat"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+  RQ.renderStatCards(document.getElementById('rq5-cards'), cards);
 }
 
 // ------------------------------------------------------------ main chart --

@@ -13,13 +13,12 @@ async function loadJSON(path) {
 
 function renderScopeCards(summary) {
   const cards = [
-    { n: summary.total_projects, l: 'Defects4J Projects' },
-    { n: summary.total_buggy_versions, l: 'Buggy Versions' },
-    { n: summary.total_test_cases, l: 'Test Cases' },
-    { n: summary.total_ground_truth_fault_lines, l: 'Ground-Truth Fault Lines' },
+    { value: summary.total_projects, label: 'Defects4J Projects' },
+    { value: summary.total_buggy_versions, label: 'Buggy Versions' },
+    { value: summary.total_test_cases, label: 'Test Cases' },
+    { value: summary.total_ground_truth_fault_lines, label: 'Ground-Truth Fault Lines' },
   ];
-  document.getElementById('scope-cards').innerHTML = cards.map(c => `
-    <div class="rq-card-stat"><div class="n">${fmt.format(c.n)}</div><div class="l">${c.l}</div></div>`).join('');
+  RQ.renderStatCards(document.getElementById('scope-cards'), cards);
 }
 
 function renderProvenance(summary, meta) {

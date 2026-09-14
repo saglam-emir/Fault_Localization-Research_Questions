@@ -30,13 +30,12 @@ function colors() {
 function renderSummaryCards() {
   const ratios = ALL_ROWS.map(r => r.all_reduction_ratio);
   const cards = [
-    { n: RQ.fmt.format(ALL_ROWS.length), l: 'Buggy Versions Analyzed' },
-    { n: RQ.pct(ratios.reduce((a, b) => a + b, 0) / ratios.length), l: 'Average Reduction Ratio' },
-    { n: RQ.pct(median(ratios)), l: 'Median Reduction Ratio' },
-    { n: RQ.pct(Math.max(...ratios)), l: 'Maximum Reduction Ratio' },
+    { value: ALL_ROWS.length, label: 'Buggy Versions Analyzed' },
+    { value: ratios.reduce((a, b) => a + b, 0) / ratios.length, label: 'Average Reduction Ratio', format: RQ.pct },
+    { value: median(ratios), label: 'Median Reduction Ratio', format: RQ.pct },
+    { value: Math.max(...ratios), label: 'Maximum Reduction Ratio', format: RQ.pct },
   ];
-  document.getElementById('rq2-cards').innerHTML = cards.map(c => `
-    <div class="rq-card-stat"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+  RQ.renderStatCards(document.getElementById('rq2-cards'), cards);
 }
 
 function renderControls() {

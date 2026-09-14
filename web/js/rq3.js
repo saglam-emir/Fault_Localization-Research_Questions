@@ -42,14 +42,13 @@ function renderSummaryCards() {
   const highestMem = [...ALL_ROWS].sort((a, b) => b.peak_memory_kb - a.peak_memory_kb)[0];
   const totalHybrid = ALL_ROWS.reduce((s, r) => s + r.hybrid_time, 0);
   const cards = [
-    { n: RQ.fmt.format(ALL_ROWS.length), l: 'Analyzed Buggy Versions' },
-    { n: formatSeconds(totalHybrid), l: 'Total Runtime (Hybrid)' },
-    { n: formatSeconds(totalHybrid / ALL_ROWS.length), l: 'Average Runtime (Hybrid)' },
-    { n: `${slowest.project}_${slowest.bug_id}`, l: `Slowest (${formatSeconds(slowest.hybrid_time)})` },
-    { n: formatKB(highestMem.peak_memory_kb), l: `Peak Memory (${highestMem.project}_${highestMem.bug_id})` },
+    { value: ALL_ROWS.length, label: 'Analyzed Buggy Versions' },
+    { value: totalHybrid, label: 'Total Runtime (Hybrid)', format: formatSeconds },
+    { value: totalHybrid / ALL_ROWS.length, label: 'Average Runtime (Hybrid)', format: formatSeconds },
+    { value: `${slowest.project}_${slowest.bug_id}`, label: `Slowest (${formatSeconds(slowest.hybrid_time)})` },
+    { value: highestMem.peak_memory_kb, label: `Peak Memory (${highestMem.project}_${highestMem.bug_id})`, format: formatKB },
   ];
-  document.getElementById('rq3-cards').innerHTML = cards.map(c => `
-    <div class="rq-card-stat"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+  RQ.renderStatCards(document.getElementById('rq3-cards'), cards);
 }
 
 function renderControls() {
