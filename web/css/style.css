@@ -404,6 +404,49 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
   border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer;
 }
 
+/* ---------------------------------------------------------- diff hero --- */
+.diff-hero {
+  margin-top: 28px; padding: 28px 30px; background: var(--surface); border-radius: 16px; text-align: center;
+}
+.diff-hero-label {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink-faint); margin-bottom: 16px;
+}
+.diff-seg {
+  display: inline-flex; background: var(--surface-2); border-radius: 12px; padding: 5px; gap: 4px;
+}
+.diff-seg button {
+  font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--ink-muted);
+  background: transparent; border: none; border-radius: 9px; width: 64px; height: 52px; cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.diff-seg button:hover { color: var(--ink); }
+.diff-seg button.active { background: var(--accent); color: var(--accent-ink); }
+.diff-hero-explain { font-size: 13.5px; color: var(--ink-muted); margin-top: 16px; max-width: 60ch; margin-inline: auto; }
+
+/* -------------------------------------------------------- breadcrumb --- */
+.rq-breadcrumb {
+  display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px;
+  color: var(--ink-faint); margin-top: 22px;
+}
+.rq-breadcrumb a, .rq-breadcrumb span.current { color: var(--ink-muted); cursor: pointer; }
+.rq-breadcrumb a:hover { color: var(--accent); }
+.rq-breadcrumb span.current { color: var(--ink); font-weight: 600; cursor: default; }
+.rq-breadcrumb .sep { color: var(--ink-faint); }
+
+/* ------------------------------------------------------------- status --- */
+.status-boxes-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 700px) { .status-boxes-row { grid-template-columns: 1fr; } }
+.status-col-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 10px; }
+.status-boxes { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+.status-box { border-radius: 10px; padding: 16px 10px; text-align: center; background: var(--surface); }
+.status-box .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: .04em; color: var(--ink-muted); }
+.status-box .n { font-family: var(--font-display); font-size: 26px; font-weight: 600; margin-top: 6px; color: var(--ink); }
+.status-box.success { background: var(--ok-soft); } .status-box.success .n { color: var(--ok); }
+.status-box.gap { background: var(--fail-soft); } .status-box.gap .n { color: var(--fail); }
+.status-box.project { background: var(--accent-soft); } .status-box.project .n { color: var(--accent); }
+.status-box.other { opacity: .75; }
+
 /* ------------------------------------------------------------- matrix --- */
 .matrix-2x2 {
   display: grid; grid-template-columns: 110px repeat(2, 1fr); gap: 8px; max-width: 520px;
@@ -477,6 +520,27 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .bug-detail-grid .k { font-size: 11px; color: var(--ink-faint); margin-bottom: 2px; }
 .bug-detail-grid .v { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--ink); }
 
+.fault-line-block { background: var(--surface); border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; }
+.fault-line-block:last-child { margin-bottom: 0; }
+.fault-line-heading { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink); margin-bottom: 10px; }
+.trace-slice-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ts-col-label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; color: var(--ink-faint); margin-bottom: 6px; }
+.ts-row { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.ts-row:last-child { border-bottom: none; }
+.ts-row span:first-child { color: var(--ink-muted); }
+
+/* --------------------------------------------------------- tolerance vis */
+.tol-vis { position: relative; height: 64px; margin: 30px 20px 0; }
+.tol-line { position: absolute; top: 30px; left: 0; right: 0; height: 2px; background: var(--border); }
+.tol-range { position: absolute; top: 29px; height: 4px; background: var(--accent); opacity: .35; border-radius: 2px; }
+.tol-tick { position: absolute; top: 22px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; }
+.tol-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-faint); }
+.tol-tick.in-range .tol-dot { background: var(--accent); }
+.tol-tick.zero .tol-dot { width: 12px; height: 12px; background: var(--ink); }
+.tol-tick.zero.in-range .tol-dot { background: var(--accent); }
+.tol-tick-label { font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-top: 6px; white-space: nowrap; }
+.tol-tick.zero .tol-tick-label { color: var(--ink); font-weight: 600; }
+
 /* ------------------------------------------------------------- rq table --- */
 .rq-table-section { margin-top: 44px; }
 .table-toolbar {
@@ -512,6 +576,45 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 .table-pagination button:hover:not(:disabled) { color: var(--ink); border-color: var(--accent); }
 .table-pagination button:disabled { opacity: .4; cursor: default; }
 .table-pagination .page-info { font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); padding: 0 6px; }
+
+/* =========================================================================
+   Projects / Buggy Versions explorer
+   ========================================================================== */
+.project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.project-card {
+  background: var(--surface); border-radius: 12px; padding: 18px 20px; cursor: pointer;
+  transition: background .12s ease; display: flex; flex-direction: column; gap: 8px;
+}
+.project-card:hover { background: var(--surface-2); }
+.project-card h3 { font-size: 17px; }
+.project-card .n { font-family: var(--font-display); font-size: 26px; font-weight: 600; }
+.project-card .stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--ink-muted); }
+.project-card .fail-tag { color: var(--fail); font-family: var(--font-mono); }
+
+.detail-section { margin-bottom: 32px; }
+.detail-section h3 { font-size: 15px; margin-bottom: 12px; }
+.detail-section .eyebrow-sm {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint);
+  margin-bottom: 6px; display: block;
+}
+.kv-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px;
+  background: var(--border); border-radius: 10px; overflow: hidden;
+}
+.kv-item { background: var(--surface); padding: 13px 16px; }
+.kv-item .k { font-size: 11px; color: var(--ink-faint); margin-bottom: 3px; }
+.kv-item .v { font-family: var(--font-mono); font-size: 15px; font-weight: 600; color: var(--ink); }
+
+.ranking-table-scroll { overflow-x: auto; background: var(--surface); border-radius: 10px; }
+.ranking-table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+.ranking-table th { text-align: left; font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; color: var(--ink-faint); padding: 8px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.ranking-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); font-family: var(--font-mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 320px; }
+.ranking-table tbody tr:last-child td { border-bottom: none; }
+
+.md-block {
+  background: var(--surface); border-radius: 10px; padding: 16px 20px; font-family: var(--font-mono);
+  font-size: 12.5px; line-height: 1.7; white-space: pre-wrap; color: var(--ink-muted); max-height: 340px; overflow-y: auto;
+}
 
 /* ----------------------------------------------------------------- footer --- */
 .site-footer { border-top: 1px solid var(--border); padding-block: 32px; margin-top: 24px; }

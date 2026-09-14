@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RQ5 — Fault Localization Ranking · resQ</title>
-<meta name="description" content="RQ5: how well does trace-based and slice-based ranking actually locate the faulty statement, and how does the answer change as the definition of a hit is progressively relaxed?">
+<meta name="description" content="RQ5: how effectively do trace-based and slice-based ranking locate the actual faulty line, and how does success change as a small positional tolerance is allowed?">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -38,71 +38,94 @@
   <header class="rq-page-header">
     <span class="rq-badge">RQ5</span>
     <h1>Fault Localization Ranking</h1>
-    <p class="rq-question-text">When a fault is reachable at all, how well does the trace-based and slice-based
-      ranking actually locate it — and how does the answer change as the definition of "found it" is progressively
-      relaxed from an exact line match to a small line-distance tolerance?</p>
+    <p class="rq-question-text">How effectively do the trace-based and slice-based rankings locate the actual faulty
+      line?</p>
   </header>
 
   <section class="rq-purpose">
     <p class="label">Purpose</p>
-    <p>This research question measures ranking accuracy at the level of the individual ground-truth fault line, and
-      quantifies near-misses rather than treating every non-exact hit as an undifferentiated failure. Per the
-      project's data definitions: <strong>diff = 0</strong> is an exact fault-line match; <strong>diff = 1</strong>
-      relaxes success to an exact match <em>or</em> a one-line distance; <strong>diff = 2</strong> and
-      <strong>diff = 3</strong> extend that tolerance further. A fault line already flagged structurally
-      unanswerable (dead code, or never executed by this run's own test suite) is excluded from the default view -
-      no technique could ever find it, and scoring it as a miss would penalize the technique for a limitation of the
-      benchmark, not of the ranking.</p>
+    <p>RQ5 evaluates how effectively the fault localization approaches rank the actual faulty lines. In addition to
+      exact line matches, the analysis considers the <strong>distance</strong> between the predicted and actual
+      faulty locations, letting you interactively investigate how localization success changes when a small
+      positional deviation is accepted — <strong>without ever moving the prediction itself</strong>, only the
+      tolerance used to judge it.</p>
   </section>
+
+  <!-- =================================================== DIFF === -->
+  <section class="diff-hero">
+    <p class="diff-hero-label">DIFF — Positional Tolerance</p>
+    <div class="diff-seg" id="diff-seg"></div>
+    <p class="diff-hero-explain" id="diff-explain"></p>
+  </section>
+
+  <div id="breadcrumb" class="rq-breadcrumb"></div>
 
   <div class="rq-cards" id="rq5-cards"></div>
 
-  <!-- ===================================== DIFF TOLERANCE EXPLORER === -->
+  <!-- ============================================ MAIN CHART === -->
   <section class="section tight">
     <div class="section-head">
-      <p class="eyebrow">Interactive Analysis</p>
-      <h2>Diff Tolerance Explorer</h2>
-      <p>Relax the definition of a "hit" and watch the Trace vs. Slice success rate respond.</p>
+      <p class="eyebrow" id="main-chart-eyebrow">Overall + Project</p>
+      <h2 id="main-chart-title">Success Rate</h2>
+      <p id="main-chart-desc">Click a project bar to drill down into its buggy versions.</p>
     </div>
-
     <div class="rq-controls">
-      <div class="seg-group"><span class="seg-label">Tolerance</span><div class="seg" id="tolerance-seg"></div></div>
-      <div class="seg-group"><span class="seg-label">Fault Set</span><div class="seg" id="faultset-seg"></div></div>
-      <div class="seg-group"><span class="seg-label">Scope</span><div class="seg" id="scope-seg"></div></div>
+      <div class="seg-group"><span class="seg-label">Approach</span><div class="seg" id="approach-seg"></div></div>
     </div>
+    <div class="rq-chart-panel"><div id="rq5-main-chart"></div></div>
+  </section>
 
-    <div class="rq-chart-panel">
-      <div id="rq5-chart"></div>
-    </div>
-    <div class="rq-note" id="rq5-tolerance-note">
-      <span class="ic">ⓘ</span>
-      <span id="rq5-tolerance-note-text"></span>
-    </div>
-
-    <div class="section-head" style="margin-top:36px">
-      <p class="eyebrow">The Curve</p>
-      <h2>Success Rate as Tolerance Relaxes</h2>
-      <p>Overall (not scope-filtered) - the marginal gain from each extra line of tolerance.</p>
+  <!-- ==================================== DIFF PROGRESSION === -->
+  <section class="section tight">
+    <div class="section-head">
+      <p class="eyebrow">Diff Progression</p>
+      <h2 id="progression-title">Success Rate: 0 → 1 → 2 → 3</h2>
+      <p>Follows the current drill-down level (Overall / selected project / selected buggy version).</p>
     </div>
     <div class="rq-chart-panel"><div id="rq5-curve"></div></div>
   </section>
 
-  <!-- ==================================== UNANSWERABLE BREAKDOWN === -->
+  <!-- =============================================== CLASSIFICATION === -->
   <section class="section tight">
     <div class="section-head">
-      <p class="eyebrow">Answerability</p>
-      <h2>Why a Fault Line Is Unanswerable</h2>
-      <p>Structurally unanswerable fault lines, by reason - excluded from the success rates above by default.</p>
+      <p class="eyebrow">Classification at Current Diff</p>
+      <h2>Success, Pipeline Gap, Project-Caused</h2>
+      <p>Distinguishes a genuine ranking failure from a fault lost earlier in the pipeline or caused by the
+        project's own test suite / dead code - never mixed with ordinary localization misses.</p>
     </div>
-    <div class="rq-chart-panel"><div id="rq5-unanswerable-chart"></div></div>
+    <div class="status-boxes-row">
+      <div class="status-col">
+        <p class="status-col-label">Trace</p>
+        <div class="status-boxes" id="status-boxes-trace"></div>
+      </div>
+      <div class="status-col">
+        <p class="status-col-label">Slice</p>
+        <div class="status-boxes" id="status-boxes-slice"></div>
+      </div>
+    </div>
   </section>
+
+  <!-- =============================================== TOLERANCE VIS === -->
+  <section class="section tight">
+    <div class="section-head">
+      <p class="eyebrow">What DIFF Means</p>
+      <h2>Exact Match vs. Positional Tolerance</h2>
+    </div>
+    <div class="rq-chart-panel"><div id="rq5-tolerance-vis"></div></div>
+  </section>
+
+  <!-- =============================================== BUG DETAIL === -->
+  <div class="bug-detail-panel" id="bug-detail" hidden>
+    <h4></h4>
+    <div id="bug-detail-fault-lines"></div>
+  </div>
 
   <!-- ========================================== DETAILED RESULTS === -->
   <section class="rq-table-section">
     <div class="section-head">
       <p class="eyebrow">Detailed Results</p>
       <h2>rq5.csv — Per Fault Line</h2>
-      <p>One row per ground-truth fault line (not per bug). Search, filter, and sort every ranking diagnostic.</p>
+      <p>Trace/Slice Status columns react to the selected DIFF above.</p>
     </div>
     <div id="rq5-table"></div>
   </section>
