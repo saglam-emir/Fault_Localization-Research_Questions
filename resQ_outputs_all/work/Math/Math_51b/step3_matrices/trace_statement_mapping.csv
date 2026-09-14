@@ -1,0 +1,1407 @@
+statement_id,file,line,code
+S1,AbstractIntegrator.java,86,public AbstractIntegrator(final String name) {
+S2,AbstractIntegrator.java,87,this.name = name;
+S3,AbstractIntegrator.java,88,stepHandlers = new ArrayList<StepHandler>();
+S4,AbstractIntegrator.java,89,stepStart = Double.NaN;
+S5,AbstractIntegrator.java,90,stepSize  = Double.NaN;
+S6,AbstractIntegrator.java,91,eventsStates = new ArrayList<EventState>();
+S7,AbstractIntegrator.java,92,statesInitialized = false;
+S8,AbstractIntegrator.java,93,setMaxEvaluations(-1);
+S9,AbstractIntegrator.java,94,resetEvaluations();
+S10,AbstractIntegrator.java,139,"eventsStates.add(new EventState(handler, maxCheckInterval, convergence,"
+S11,AbstractIntegrator.java,169,this.maxEvaluations = (maxEvaluations < 0) ? Integer.MAX_VALUE : maxEvaluations;
+S12,AbstractIntegrator.java,185,evaluations = 0;
+S13,AbstractIntegrator.java,193,this.equations = equations;
+S14,AbstractIntegrator.java,205,if (++evaluations > maxEvaluations) {
+S15,AbstractIntegrator.java,208,"equations.computeDerivatives(t, y, yDot);"
+S16,AbstractIntegrator.java,219,this.statesInitialized = stateInitialized;
+S17,AbstractIntegrator.java,237,double previousT = interpolator.getGlobalPreviousTime();
+S18,AbstractIntegrator.java,238,final double currentT = interpolator.getGlobalCurrentTime();
+S19,AbstractIntegrator.java,239,resetOccurred = false;
+S20,AbstractIntegrator.java,242,if (! statesInitialized) {
+S21,AbstractIntegrator.java,243,for (EventState state : eventsStates) {
+S22,AbstractIntegrator.java,244,state.reinitializeBegin(interpolator);
+S23,AbstractIntegrator.java,246,statesInitialized = true;
+S24,AbstractIntegrator.java,250,final int orderingSign = interpolator.isForward() ? +1 : -1;
+S25,AbstractIntegrator.java,251,SortedSet<EventState> occuringEvents = new TreeSet<EventState>(new Comparator<EventState>() {
+S26,AbstractIntegrator.java,255,"return orderingSign * Double.compare(es0.getEventTime(), es1.getEventTime());"
+S27,AbstractIntegrator.java,260,for (final EventState state : eventsStates) {
+S28,AbstractIntegrator.java,261,if (state.evaluateStep(interpolator)) {
+S29,AbstractIntegrator.java,263,occuringEvents.add(state);
+S30,AbstractIntegrator.java,267,while (!occuringEvents.isEmpty()) {
+S31,AbstractIntegrator.java,270,final Iterator<EventState> iterator = occuringEvents.iterator();
+S32,AbstractIntegrator.java,271,final EventState currentEvent = iterator.next();
+S33,AbstractIntegrator.java,272,iterator.remove();
+S34,AbstractIntegrator.java,275,final double eventT = currentEvent.getEventTime();
+S35,AbstractIntegrator.java,276,interpolator.setSoftPreviousTime(previousT);
+S36,AbstractIntegrator.java,277,interpolator.setSoftCurrentTime(eventT);
+S37,AbstractIntegrator.java,280,interpolator.setInterpolatedTime(eventT);
+S38,AbstractIntegrator.java,281,final double[] eventY = interpolator.getInterpolatedState();
+S39,AbstractIntegrator.java,282,"currentEvent.stepAccepted(eventT, eventY);"
+S40,AbstractIntegrator.java,283,isLastStep = currentEvent.stop();
+S41,AbstractIntegrator.java,286,for (final StepHandler handler : stepHandlers) {
+S42,AbstractIntegrator.java,290,if (isLastStep) {
+S43,AbstractIntegrator.java,292,"System.arraycopy(eventY, 0, y, 0, y.length);"
+S44,AbstractIntegrator.java,293,return eventT;
+S45,AbstractIntegrator.java,318,interpolator.setInterpolatedTime(currentT);
+S46,AbstractIntegrator.java,319,final double[] currentY = interpolator.getInterpolatedState();
+S47,AbstractIntegrator.java,320,for (final EventState state : eventsStates) {
+S48,AbstractIntegrator.java,321,"state.stepAccepted(currentT, currentY);"
+S49,AbstractIntegrator.java,322,isLastStep = isLastStep || state.stop();
+S50,AbstractIntegrator.java,324,"isLastStep = isLastStep || MathUtils.equals(currentT, tEnd, 1);"
+S51,AbstractIntegrator.java,327,for (StepHandler handler : stepHandlers) {
+S52,AbstractIntegrator.java,331,return currentT;
+S53,AbstractIntegrator.java,357,if (ode.getDimension() != y0.length) {
+S54,AbstractIntegrator.java,362,if (ode.getDimension() != y.length) {
+S55,AbstractIntegrator.java,367,"if (FastMath.abs(t - t0) <= 1.0e-12 * FastMath.max(FastMath.abs(t0), FastMath.abs(t))) {"
+S56,AbstractStepInterpolator.java,94,protected AbstractStepInterpolator() {
+S57,AbstractStepInterpolator.java,95,globalPreviousTime      = Double.NaN;
+S58,AbstractStepInterpolator.java,96,globalCurrentTime       = Double.NaN;
+S59,AbstractStepInterpolator.java,97,softPreviousTime        = Double.NaN;
+S60,AbstractStepInterpolator.java,98,softCurrentTime         = Double.NaN;
+S61,AbstractStepInterpolator.java,99,h                       = Double.NaN;
+S62,AbstractStepInterpolator.java,100,interpolatedTime        = Double.NaN;
+S63,AbstractStepInterpolator.java,101,currentState            = null;
+S64,AbstractStepInterpolator.java,102,interpolatedState       = null;
+S65,AbstractStepInterpolator.java,103,interpolatedDerivatives = null;
+S66,AbstractStepInterpolator.java,104,finalized               = false;
+S67,AbstractStepInterpolator.java,105,this.forward            = true;
+S68,AbstractStepInterpolator.java,106,this.dirtyState         = true;
+S69,AbstractStepInterpolator.java,114,"protected AbstractStepInterpolator(final double[] y, final boolean forward) {"
+S70,AbstractStepInterpolator.java,116,globalPreviousTime = Double.NaN;
+S71,AbstractStepInterpolator.java,117,globalCurrentTime  = Double.NaN;
+S72,AbstractStepInterpolator.java,118,softPreviousTime   = Double.NaN;
+S73,AbstractStepInterpolator.java,119,softCurrentTime    = Double.NaN;
+S74,AbstractStepInterpolator.java,120,h                  = Double.NaN;
+S75,AbstractStepInterpolator.java,121,interpolatedTime   = Double.NaN;
+S76,AbstractStepInterpolator.java,123,currentState            = y;
+S77,AbstractStepInterpolator.java,124,interpolatedState       = new double[y.length];
+S78,AbstractStepInterpolator.java,125,interpolatedDerivatives = new double[y.length];
+S79,AbstractStepInterpolator.java,127,finalized         = false;
+S80,AbstractStepInterpolator.java,128,this.forward      = forward;
+S81,AbstractStepInterpolator.java,129,this.dirtyState   = true;
+S82,AbstractStepInterpolator.java,150,protected AbstractStepInterpolator(final AbstractStepInterpolator interpolator) {
+S83,AbstractStepInterpolator.java,152,globalPreviousTime = interpolator.globalPreviousTime;
+S84,AbstractStepInterpolator.java,153,globalCurrentTime  = interpolator.globalCurrentTime;
+S85,AbstractStepInterpolator.java,154,softPreviousTime   = interpolator.softPreviousTime;
+S86,AbstractStepInterpolator.java,155,softCurrentTime    = interpolator.softCurrentTime;
+S87,AbstractStepInterpolator.java,156,h                  = interpolator.h;
+S88,AbstractStepInterpolator.java,157,interpolatedTime   = interpolator.interpolatedTime;
+S89,AbstractStepInterpolator.java,159,if (interpolator.currentState != null) {
+S90,AbstractStepInterpolator.java,164,currentState            = null;
+S91,AbstractStepInterpolator.java,165,interpolatedState       = null;
+S92,AbstractStepInterpolator.java,166,interpolatedDerivatives = null;
+S93,AbstractStepInterpolator.java,169,finalized  = interpolator.finalized;
+S94,AbstractStepInterpolator.java,170,forward    = interpolator.forward;
+S95,AbstractStepInterpolator.java,171,dirtyState = interpolator.dirtyState;
+S96,AbstractStepInterpolator.java,182,globalPreviousTime = Double.NaN;
+S97,AbstractStepInterpolator.java,183,globalCurrentTime  = Double.NaN;
+S98,AbstractStepInterpolator.java,184,softPreviousTime   = Double.NaN;
+S99,AbstractStepInterpolator.java,185,softCurrentTime    = Double.NaN;
+S100,AbstractStepInterpolator.java,186,h                  = Double.NaN;
+S101,AbstractStepInterpolator.java,187,interpolatedTime   = Double.NaN;
+S102,AbstractStepInterpolator.java,189,currentState            = y;
+S103,AbstractStepInterpolator.java,190,interpolatedState       = new double[y.length];
+S104,AbstractStepInterpolator.java,191,interpolatedDerivatives = new double[y.length];
+S105,AbstractStepInterpolator.java,193,finalized         = false;
+S106,AbstractStepInterpolator.java,194,this.forward      = isForward;
+S107,AbstractStepInterpolator.java,195,this.dirtyState   = true;
+S108,AbstractStepInterpolator.java,203,finalizeStep();
+S109,AbstractStepInterpolator.java,206,return doCopy();
+S110,AbstractStepInterpolator.java,224,globalPreviousTime = globalCurrentTime;
+S111,AbstractStepInterpolator.java,225,softPreviousTime   = globalPreviousTime;
+S112,AbstractStepInterpolator.java,226,softCurrentTime    = globalCurrentTime;
+S113,AbstractStepInterpolator.java,234,globalCurrentTime = t;
+S114,AbstractStepInterpolator.java,235,softCurrentTime   = globalCurrentTime;
+S115,AbstractStepInterpolator.java,236,h                 = globalCurrentTime - globalPreviousTime;
+S116,AbstractStepInterpolator.java,237,setInterpolatedTime(t);
+S117,AbstractStepInterpolator.java,240,finalized  = false;
+S118,AbstractStepInterpolator.java,255,this.softPreviousTime = softPreviousTime;
+S119,AbstractStepInterpolator.java,269,this.softCurrentTime  = softCurrentTime;
+S120,AbstractStepInterpolator.java,277,return globalPreviousTime;
+S121,AbstractStepInterpolator.java,285,return globalCurrentTime;
+S122,AbstractStepInterpolator.java,294,return softPreviousTime;
+S123,AbstractStepInterpolator.java,303,return softCurrentTime;
+S124,AbstractStepInterpolator.java,313,interpolatedTime = time;
+S125,AbstractStepInterpolator.java,314,dirtyState       = true;
+S126,AbstractStepInterpolator.java,319,return forward;
+S127,AbstractStepInterpolator.java,340,if (dirtyState) {
+S128,AbstractStepInterpolator.java,341,final double oneMinusThetaH = globalCurrentTime - interpolatedTime;
+S129,AbstractStepInterpolator.java,342,final double theta = (h == 0) ? 0 : (h - oneMinusThetaH) / h;
+S130,AbstractStepInterpolator.java,343,"computeInterpolatedStateAndDerivatives(theta, oneMinusThetaH);"
+S131,AbstractStepInterpolator.java,344,dirtyState = false;
+S132,AbstractStepInterpolator.java,347,return interpolatedState;
+S133,AbstractStepInterpolator.java,409,if (! finalized) {
+S134,AbstractStepInterpolator.java,410,doFinalize();
+S135,AbstractStepInterpolator.java,411,finalized = true;
+S136,AbstractUnivariateRealSolver.java,37,super(absoluteAccuracy);
+S137,AbstractUnivariateRealSolver.java,47,"super(relativeAccuracy, absoluteAccuracy);"
+S138,AdaptiveStepsizeIntegrator.java,109,super(name);
+S139,AdaptiveStepsizeIntegrator.java,110,"setStepSizeControl(minStep, maxStep, scalAbsoluteTolerance, scalRelativeTolerance);"
+S140,AdaptiveStepsizeIntegrator.java,111,resetInternalState();
+S141,AdaptiveStepsizeIntegrator.java,156,minStep     = FastMath.abs(minimalStep);
+S142,AdaptiveStepsizeIntegrator.java,157,maxStep     = FastMath.abs(maximalStep);
+S143,AdaptiveStepsizeIntegrator.java,158,initialStep = -1;
+S144,AdaptiveStepsizeIntegrator.java,160,scalAbsoluteTolerance = absoluteTolerance;
+S145,AdaptiveStepsizeIntegrator.java,161,scalRelativeTolerance = relativeTolerance;
+S146,AdaptiveStepsizeIntegrator.java,162,vecAbsoluteTolerance  = null;
+S147,AdaptiveStepsizeIntegrator.java,163,vecRelativeTolerance  = null;
+S148,AdaptiveStepsizeIntegrator.java,229,"super.sanityChecks(equations, t0, y0, t, y);"
+S149,AdaptiveStepsizeIntegrator.java,231,if (equations instanceof ExtendedFirstOrderDifferentialEquations) {
+S150,AdaptiveStepsizeIntegrator.java,234,mainSetDimension = equations.getDimension();
+S151,AdaptiveStepsizeIntegrator.java,237,if ((vecAbsoluteTolerance != null) && (vecAbsoluteTolerance.length != mainSetDimension)) {
+S152,AdaptiveStepsizeIntegrator.java,242,if ((vecRelativeTolerance != null) && (vecRelativeTolerance.length != mainSetDimension)) {
+S153,AdaptiveStepsizeIntegrator.java,269,if (initialStep > 0) {
+S154,AdaptiveStepsizeIntegrator.java,277,double yOnScale2 = 0;
+S155,AdaptiveStepsizeIntegrator.java,278,double yDotOnScale2 = 0;
+S156,AdaptiveStepsizeIntegrator.java,279,for (int j = 0; j < scale.length; ++j) {
+S157,AdaptiveStepsizeIntegrator.java,280,ratio         = y0[j] / scale[j];
+S158,AdaptiveStepsizeIntegrator.java,281,yOnScale2    += ratio * ratio;
+S159,AdaptiveStepsizeIntegrator.java,282,ratio         = yDot0[j] / scale[j];
+S160,AdaptiveStepsizeIntegrator.java,283,yDotOnScale2 += ratio * ratio;
+S161,AdaptiveStepsizeIntegrator.java,286,double h = ((yOnScale2 < 1.0e-10) || (yDotOnScale2 < 1.0e-10)) ?
+S162,AdaptiveStepsizeIntegrator.java,288,if (! forward) {
+S163,AdaptiveStepsizeIntegrator.java,293,for (int j = 0; j < y0.length; ++j) {
+S164,AdaptiveStepsizeIntegrator.java,294,y1[j] = y0[j] + h * yDot0[j];
+S165,AdaptiveStepsizeIntegrator.java,296,"computeDerivatives(t0 + h, y1, yDot1);"
+S166,AdaptiveStepsizeIntegrator.java,299,double yDDotOnScale = 0;
+S167,AdaptiveStepsizeIntegrator.java,300,for (int j = 0; j < scale.length; ++j) {
+S168,AdaptiveStepsizeIntegrator.java,301,ratio         = (yDot1[j] - yDot0[j]) / scale[j];
+S169,AdaptiveStepsizeIntegrator.java,302,yDDotOnScale += ratio * ratio;
+S170,AdaptiveStepsizeIntegrator.java,304,yDDotOnScale = FastMath.sqrt(yDDotOnScale) / h;
+S171,AdaptiveStepsizeIntegrator.java,308,"final double maxInv2 = FastMath.max(FastMath.sqrt(yDotOnScale2), yDDotOnScale);"
+S172,AdaptiveStepsizeIntegrator.java,309,final double h1 = (maxInv2 < 1.0e-15) ?
+S173,AdaptiveStepsizeIntegrator.java,312,"h = FastMath.min(100.0 * FastMath.abs(h), h1);"
+S174,AdaptiveStepsizeIntegrator.java,313,"h = FastMath.max(h, 1.0e-12 * FastMath.abs(t0));  // avoids cancellation when computing t1 - t0"
+S175,AdaptiveStepsizeIntegrator.java,314,if (h < getMinStep()) {
+S176,AdaptiveStepsizeIntegrator.java,317,if (h > getMaxStep()) {
+S177,AdaptiveStepsizeIntegrator.java,320,if (! forward) {
+S178,AdaptiveStepsizeIntegrator.java,324,return h;
+S179,AdaptiveStepsizeIntegrator.java,340,double filteredH = h;
+S180,AdaptiveStepsizeIntegrator.java,341,if (FastMath.abs(h) < minStep) {
+S181,AdaptiveStepsizeIntegrator.java,351,if (filteredH > maxStep) {
+S182,AdaptiveStepsizeIntegrator.java,353,} else if (filteredH < -maxStep) {
+S183,AdaptiveStepsizeIntegrator.java,357,return filteredH;
+S184,AdaptiveStepsizeIntegrator.java,375,stepStart = Double.NaN;
+S185,AdaptiveStepsizeIntegrator.java,376,stepSize  = FastMath.sqrt(minStep * maxStep);
+S186,AdaptiveStepsizeIntegrator.java,383,return minStep;
+S187,AdaptiveStepsizeIntegrator.java,390,return maxStep;
+S188,AllowedSolution.java,41,public enum AllowedSolution {
+S189,AllowedSolution.java,48,"ANY_SIDE,"
+S190,AllowedSolution.java,55,"LEFT_SIDE,"
+S191,AllowedSolution.java,62,"RIGHT_SIDE,"
+S192,AllowedSolution.java,68,"BELOW_SIDE,"
+S193,AllowedSolution.java,74,ABOVE_SIDE;
+S194,ArgUtils.java,42,final List<Object> list = new ArrayList<Object>();
+S195,ArgUtils.java,43,if (array != null) {
+S196,ArgUtils.java,44,for (Object o : array) {
+S197,ArgUtils.java,45,if (o instanceof Object[]) {
+S198,ArgUtils.java,46,for (Object oR : flatten((Object[]) o)) {
+S199,ArgUtils.java,50,list.add(o);
+S200,ArgUtils.java,54,return list.toArray();
+S201,BaseAbstractUnivariateRealSolver.java,49,private final Incrementor evaluations = new Incrementor();
+S202,BaseAbstractUnivariateRealSolver.java,65,"this(DEFAULT_RELATIVE_ACCURACY,"
+S203,BaseAbstractUnivariateRealSolver.java,78,"this(relativeAccuracy,"
+S204,BaseAbstractUnivariateRealSolver.java,92,final double functionValueAccuracy) {
+S205,BaseAbstractUnivariateRealSolver.java,93,this.absoluteAccuracy = absoluteAccuracy;
+S206,BaseAbstractUnivariateRealSolver.java,94,this.relativeAccuracy = relativeAccuracy;
+S207,BaseAbstractUnivariateRealSolver.java,95,this.functionValueAccuracy = functionValueAccuracy;
+S208,BaseAbstractUnivariateRealSolver.java,104,return evaluations.getCount();
+S209,BaseAbstractUnivariateRealSolver.java,110,return searchMin;
+S210,BaseAbstractUnivariateRealSolver.java,116,return searchMax;
+S211,BaseAbstractUnivariateRealSolver.java,122,return searchStart;
+S212,BaseAbstractUnivariateRealSolver.java,128,return absoluteAccuracy;
+S213,BaseAbstractUnivariateRealSolver.java,134,return relativeAccuracy;
+S214,BaseAbstractUnivariateRealSolver.java,140,return functionValueAccuracy;
+S215,BaseAbstractUnivariateRealSolver.java,153,incrementEvaluationCount();
+S216,BaseAbstractUnivariateRealSolver.java,154,return function.value(point);
+S217,BaseAbstractUnivariateRealSolver.java,173,MathUtils.checkNotNull(f);
+S218,BaseAbstractUnivariateRealSolver.java,176,searchMin = min;
+S219,BaseAbstractUnivariateRealSolver.java,177,searchMax = max;
+S220,BaseAbstractUnivariateRealSolver.java,178,searchStart = startValue;
+S221,BaseAbstractUnivariateRealSolver.java,179,function = f;
+S222,BaseAbstractUnivariateRealSolver.java,180,evaluations.setMaximalCount(maxEval);
+S223,BaseAbstractUnivariateRealSolver.java,181,evaluations.resetCount();
+S224,BaseAbstractUnivariateRealSolver.java,187,"setup(maxEval, f, min, max, startValue);"
+S225,BaseAbstractUnivariateRealSolver.java,190,return doSolve();
+S226,BaseAbstractUnivariateRealSolver.java,195,"return solve(maxEval, f, min, max, min + 0.5 * (max - min));"
+S227,BaseAbstractUnivariateRealSolver.java,268,"UnivariateRealSolverUtils.verifySequence(lower, initial, upper);"
+S228,BaseAbstractUnivariateRealSolver.java,282,"UnivariateRealSolverUtils.verifyBracketing(function, lower, upper);"
+S229,BaseAbstractUnivariateRealSolver.java,294,evaluations.incrementCount();
+S230,BaseAbstractUnivariateRealSolver.java,295,} catch (MaxCountExceededException e) {
+S231,BaseAbstractUnivariateRealSolver.java,296,throw new TooManyEvaluationsException(e.getMax());
+S232,BaseSecantSolver.java,68,super(absoluteAccuracy);
+S233,BaseSecantSolver.java,69,this.allowed = AllowedSolution.ANY_SIDE;
+S234,BaseSecantSolver.java,70,this.method = method;
+S235,BaseSecantSolver.java,83,"super(relativeAccuracy, absoluteAccuracy);"
+S236,BaseSecantSolver.java,84,this.allowed = AllowedSolution.ANY_SIDE;
+S237,BaseSecantSolver.java,85,this.method = method;
+S238,BaseSecantSolver.java,109,"return solve(maxEval, f, min, max, min + 0.5 * (max - min), allowedSolution);"
+S239,BaseSecantSolver.java,116,this.allowed = allowedSolution;
+S240,BaseSecantSolver.java,117,"return super.solve(maxEval, f, min, max, startValue);"
+S241,BaseSecantSolver.java,124,"return solve(maxEval, f, min, max, startValue, AllowedSolution.ANY_SIDE);"
+S242,BaseSecantSolver.java,130,double x0 = getMin();
+S243,BaseSecantSolver.java,131,double x1 = getMax();
+S244,BaseSecantSolver.java,132,double f0 = computeObjectiveValue(x0);
+S245,BaseSecantSolver.java,133,double f1 = computeObjectiveValue(x1);
+S246,BaseSecantSolver.java,138,if (f0 == 0.0) {
+S247,BaseSecantSolver.java,139,return x0;
+S248,BaseSecantSolver.java,141,if (f1 == 0.0) {
+S249,BaseSecantSolver.java,146,"verifyBracketing(x0, x1);"
+S250,BaseSecantSolver.java,149,final double ftol = getFunctionValueAccuracy();
+S251,BaseSecantSolver.java,150,final double atol = getAbsoluteAccuracy();
+S252,BaseSecantSolver.java,151,final double rtol = getRelativeAccuracy();
+S253,BaseSecantSolver.java,155,boolean inverted = false;
+S254,BaseSecantSolver.java,160,final double x = x1 - ((f1 * (x1 - x0)) / (f1 - f0));
+S255,BaseSecantSolver.java,161,final double fx = computeObjectiveValue(x);
+S256,BaseSecantSolver.java,166,if (fx == 0.0) {
+S257,BaseSecantSolver.java,167,return x;
+S258,BaseSecantSolver.java,171,if (f1 * fx < 0) {
+S259,BaseSecantSolver.java,174,x0 = x1;
+S260,BaseSecantSolver.java,175,f0 = f1;
+S261,BaseSecantSolver.java,176,inverted = !inverted;
+S262,BaseSecantSolver.java,178,switch (method) {
+S263,BaseSecantSolver.java,183,f0 *= f1 / (f1 + fx);
+S264,BaseSecantSolver.java,184,break;
+S265,BaseSecantSolver.java,192,x1 = x;
+S266,BaseSecantSolver.java,193,f1 = fx;
+S267,BaseSecantSolver.java,198,if (FastMath.abs(f1) <= ftol) {
+S268,BaseSecantSolver.java,199,switch (allowed) {
+S269,BaseSecantSolver.java,208,if (!inverted) {
+S270,BaseSecantSolver.java,209,return x1;
+S271,BaseSecantSolver.java,229,"if (FastMath.abs(x1 - x0) < FastMath.max(rtol * FastMath.abs(x1),"
+S272,BaseSecantSolver.java,231,switch (allowed) {
+S273,BaseSecantSolver.java,237,return inverted ? x0 : x1;
+S274,BaseSecantSolver.java,250,protected enum Method {
+S275,BaseSecantSolver.java,256,"REGULA_FALSI,"
+S276,BaseSecantSolver.java,259,"ILLINOIS,"
+S277,BaseSecantSolver.java,262,PEGASUS;
+S278,BrentSolver.java,53,super(absoluteAccuracy);
+S279,BrentSolver.java,83,double min = getMin();
+S280,BrentSolver.java,84,double max = getMax();
+S281,BrentSolver.java,85,final double initial = getStartValue();
+S282,BrentSolver.java,86,final double functionValueAccuracy = getFunctionValueAccuracy();
+S283,BrentSolver.java,88,"verifySequence(min, initial, max);"
+S284,BrentSolver.java,91,double yInitial = computeObjectiveValue(initial);
+S285,BrentSolver.java,92,if (FastMath.abs(yInitial) <= functionValueAccuracy) {
+S286,BrentSolver.java,97,double yMin = computeObjectiveValue(min);
+S287,BrentSolver.java,98,if (FastMath.abs(yMin) <= functionValueAccuracy) {
+S288,BrentSolver.java,99,return min;
+S289,BrentSolver.java,103,if (yInitial * yMin < 0) {
+S290,BrentSolver.java,108,double yMax = computeObjectiveValue(max);
+S291,BrentSolver.java,109,if (FastMath.abs(yMax) <= functionValueAccuracy) {
+S292,BrentSolver.java,114,if (yInitial * yMax < 0) {
+S293,BrentSolver.java,115,"return brent(initial, max, yInitial, yMax);"
+S294,BrentSolver.java,139,double a = lo;
+S295,BrentSolver.java,140,double fa = fLo;
+S296,BrentSolver.java,141,double b = hi;
+S297,BrentSolver.java,142,double fb = fHi;
+S298,BrentSolver.java,143,double c = a;
+S299,BrentSolver.java,144,double fc = fa;
+S300,BrentSolver.java,145,double d = b - a;
+S301,BrentSolver.java,146,double e = d;
+S302,BrentSolver.java,148,final double t = getAbsoluteAccuracy();
+S303,BrentSolver.java,149,final double eps = getRelativeAccuracy();
+S304,BrentSolver.java,152,if (FastMath.abs(fc) < FastMath.abs(fb)) {
+S305,BrentSolver.java,153,a = b;
+S306,BrentSolver.java,154,b = c;
+S307,BrentSolver.java,155,c = a;
+S308,BrentSolver.java,156,fa = fb;
+S309,BrentSolver.java,157,fb = fc;
+S310,BrentSolver.java,158,fc = fa;
+S311,BrentSolver.java,161,final double tol = 2 * eps * FastMath.abs(b) + t;
+S312,BrentSolver.java,162,final double m = 0.5 * (c - b);
+S313,BrentSolver.java,164,if (FastMath.abs(m) <= tol ||
+S314,BrentSolver.java,166,return b;
+S315,BrentSolver.java,168,if (FastMath.abs(e) < tol ||
+S316,BrentSolver.java,174,double s = fb / fa;
+S317,BrentSolver.java,180,if (a == c) {
+S318,BrentSolver.java,182,p = 2 * m * s;
+S319,BrentSolver.java,183,q = 1 - s;
+S320,BrentSolver.java,186,q = fa / fc;
+S321,BrentSolver.java,187,final double r = fb / fc;
+S322,BrentSolver.java,188,p = s * (2 * m * q * (q - r) - (b - a) * (r - 1));
+S323,BrentSolver.java,189,q = (q - 1) * (r - 1) * (s - 1);
+S324,BrentSolver.java,191,if (p > 0) {
+S325,BrentSolver.java,192,q = -q;
+S326,BrentSolver.java,194,p = -p;
+S327,BrentSolver.java,196,s = e;
+S328,BrentSolver.java,197,e = d;
+S329,BrentSolver.java,198,if (p >= 1.5 * m * q - FastMath.abs(tol * q) ||
+S330,BrentSolver.java,206,d = p / q;
+S331,BrentSolver.java,209,a = b;
+S332,BrentSolver.java,210,fa = fb;
+S333,BrentSolver.java,212,if (FastMath.abs(d) > tol) {
+S334,BrentSolver.java,213,b += d;
+S335,BrentSolver.java,214,} else if (m > 0) {
+S336,BrentSolver.java,215,b += tol;
+S337,BrentSolver.java,219,fb = computeObjectiveValue(b);
+S338,BrentSolver.java,220,if ((fb > 0 && fc > 0) ||
+S339,BrentSolver.java,222,c = a;
+S340,BrentSolver.java,223,fc = fa;
+S341,BrentSolver.java,224,d = b - a;
+S342,BrentSolver.java,225,e = d;
+S343,DormandPrince853Integrator.java,63,private static final double[] STATIC_C = {
+S344,DormandPrince853Integrator.java,70,private static final double[][] STATIC_A = {
+S345,DormandPrince853Integrator.java,137,private static final double[] STATIC_B = {
+S346,DormandPrince853Integrator.java,220,"super(METHOD_NAME, true, STATIC_C, STATIC_A, STATIC_B,"
+S347,DormandPrince853Integrator.java,247,return 8;
+S348,DormandPrince853Integrator.java,255,double error1 = 0;
+S349,DormandPrince853Integrator.java,256,double error2 = 0;
+S350,DormandPrince853Integrator.java,258,for (int j = 0; j < mainSetDimension; ++j) {
+S351,DormandPrince853Integrator.java,259,final double errSum1 = E1_01 * yDotK[0][j]  + E1_06 * yDotK[5][j] +
+S352,DormandPrince853Integrator.java,263,final double errSum2 = E2_01 * yDotK[0][j]  + E2_06 * yDotK[5][j] +
+S353,DormandPrince853Integrator.java,268,"final double yScale = FastMath.max(FastMath.abs(y0[j]), FastMath.abs(y1[j]));"
+S354,DormandPrince853Integrator.java,269,final double tol = (vecAbsoluteTolerance == null) ?
+S355,DormandPrince853Integrator.java,272,final double ratio1  = errSum1 / tol;
+S356,DormandPrince853Integrator.java,273,error1        += ratio1 * ratio1;
+S357,DormandPrince853Integrator.java,274,final double ratio2  = errSum2 / tol;
+S358,DormandPrince853Integrator.java,275,error2        += ratio2 * ratio2;
+S359,DormandPrince853Integrator.java,278,double den = error1 + 0.01 * error2;
+S360,DormandPrince853Integrator.java,279,if (den <= 0.0) {
+S361,DormandPrince853Integrator.java,283,return FastMath.abs(h) * error1 / FastMath.sqrt(mainSetDimension * den);
+S362,DormandPrince853StepInterpolator.java,180,private static final double[][] D = {
+S363,DormandPrince853StepInterpolator.java,231,super();
+S364,DormandPrince853StepInterpolator.java,232,yDotKLast = null;
+S365,DormandPrince853StepInterpolator.java,233,v         = null;
+S366,DormandPrince853StepInterpolator.java,234,vectorsInitialized = false;
+S367,DormandPrince853StepInterpolator.java,244,super(interpolator);
+S368,DormandPrince853StepInterpolator.java,246,if (interpolator.currentState == null) {
+S369,DormandPrince853StepInterpolator.java,248,yDotKLast = null;
+S370,DormandPrince853StepInterpolator.java,249,v         = null;
+S371,DormandPrince853StepInterpolator.java,250,vectorsInitialized = false;
+S372,DormandPrince853StepInterpolator.java,278,return new DormandPrince853StepInterpolator(this);
+S373,DormandPrince853StepInterpolator.java,286,"super.reinitialize(integrator, y, yDotK, forward);"
+S374,DormandPrince853StepInterpolator.java,288,final int dimension = currentState.length;
+S375,DormandPrince853StepInterpolator.java,290,yDotKLast = new double[3][];
+S376,DormandPrince853StepInterpolator.java,291,for (int k = 0; k < yDotKLast.length; ++k) {
+S377,DormandPrince853StepInterpolator.java,292,yDotKLast[k] = new double[dimension];
+S378,DormandPrince853StepInterpolator.java,295,v = new double[7][];
+S379,DormandPrince853StepInterpolator.java,296,for (int k = 0; k < v.length; ++k) {
+S380,DormandPrince853StepInterpolator.java,297,v[k]  = new double[dimension];
+S381,DormandPrince853StepInterpolator.java,300,vectorsInitialized = false;
+S382,DormandPrince853StepInterpolator.java,307,super.storeTime(t);
+S383,DormandPrince853StepInterpolator.java,308,vectorsInitialized = false;
+S384,DormandPrince853StepInterpolator.java,317,if (! vectorsInitialized) {
+S385,DormandPrince853StepInterpolator.java,319,if (v == null) {
+S386,DormandPrince853StepInterpolator.java,327,finalizeStep();
+S387,DormandPrince853StepInterpolator.java,330,for (int i = 0; i < interpolatedState.length; ++i) {
+S388,DormandPrince853StepInterpolator.java,331,final double yDot1  = yDotK[0][i];
+S389,DormandPrince853StepInterpolator.java,332,final double yDot6  = yDotK[5][i];
+S390,DormandPrince853StepInterpolator.java,333,final double yDot7  = yDotK[6][i];
+S391,DormandPrince853StepInterpolator.java,334,final double yDot8  = yDotK[7][i];
+S392,DormandPrince853StepInterpolator.java,335,final double yDot9  = yDotK[8][i];
+S393,DormandPrince853StepInterpolator.java,336,final double yDot10 = yDotK[9][i];
+S394,DormandPrince853StepInterpolator.java,337,final double yDot11 = yDotK[10][i];
+S395,DormandPrince853StepInterpolator.java,338,final double yDot12 = yDotK[11][i];
+S396,DormandPrince853StepInterpolator.java,339,final double yDot13 = yDotK[12][i];
+S397,DormandPrince853StepInterpolator.java,340,final double yDot14 = yDotKLast[0][i];
+S398,DormandPrince853StepInterpolator.java,341,final double yDot15 = yDotKLast[1][i];
+S399,DormandPrince853StepInterpolator.java,342,final double yDot16 = yDotKLast[2][i];
+S400,DormandPrince853StepInterpolator.java,343,v[0][i] = B_01 * yDot1  + B_06 * yDot6 + B_07 * yDot7 +
+S401,DormandPrince853StepInterpolator.java,346,v[1][i] = yDot1 - v[0][i];
+S402,DormandPrince853StepInterpolator.java,347,v[2][i] = v[0][i] - v[1][i] - yDotK[12][i];
+S403,DormandPrince853StepInterpolator.java,348,for (int k = 0; k < D.length; ++k) {
+S404,DormandPrince853StepInterpolator.java,349,v[k+3][i] = D[k][0] * yDot1  + D[k][1]  * yDot6  + D[k][2]  * yDot7  +
+S405,DormandPrince853StepInterpolator.java,356,vectorsInitialized = true;
+S406,DormandPrince853StepInterpolator.java,360,final double eta      = 1 - theta;
+S407,DormandPrince853StepInterpolator.java,361,final double twoTheta = 2 * theta;
+S408,DormandPrince853StepInterpolator.java,362,final double theta2   = theta * theta;
+S409,DormandPrince853StepInterpolator.java,363,final double dot1 = 1 - twoTheta;
+S410,DormandPrince853StepInterpolator.java,364,final double dot2 = theta * (2 - 3 * theta);
+S411,DormandPrince853StepInterpolator.java,365,final double dot3 = twoTheta * (1 + theta * (twoTheta -3));
+S412,DormandPrince853StepInterpolator.java,366,final double dot4 = theta2 * (3 + theta * (5 * theta - 8));
+S413,DormandPrince853StepInterpolator.java,367,final double dot5 = theta2 * (3 + theta * (-12 + theta * (15 - 6 * theta)));
+S414,DormandPrince853StepInterpolator.java,368,final double dot6 = theta2 * theta * (4 + theta * (-15 + theta * (18 - 7 * theta)));
+S415,DormandPrince853StepInterpolator.java,370,for (int i = 0; i < interpolatedState.length; ++i) {
+S416,DormandPrince853StepInterpolator.java,371,interpolatedState[i] = currentState[i] -
+S417,DormandPrince853StepInterpolator.java,379,interpolatedDerivatives[i] =  v[0][i] + dot1 * v[1][i] + dot2 * v[2][i] +
+S418,DormandPrince853StepInterpolator.java,391,if (currentState == null) {
+S419,DormandPrince853StepInterpolator.java,393,return;
+S420,DormandPrince853StepInterpolator.java,397,final double[] yTmp = new double[currentState.length];
+S421,DormandPrince853StepInterpolator.java,398,final double pT = getGlobalPreviousTime();
+S422,DormandPrince853StepInterpolator.java,401,for (int j = 0; j < currentState.length; ++j) {
+S423,DormandPrince853StepInterpolator.java,402,s = K14_01 * yDotK[0][j]  + K14_06 * yDotK[5][j]  + K14_07 * yDotK[6][j] +
+S424,DormandPrince853StepInterpolator.java,405,yTmp[j] = currentState[j] + h * s;
+S425,DormandPrince853StepInterpolator.java,407,"integrator.computeDerivatives(pT + C14 * h, yTmp, yDotKLast[0]);"
+S426,DormandPrince853StepInterpolator.java,410,for (int j = 0; j < currentState.length; ++j) {
+S427,DormandPrince853StepInterpolator.java,411,s = K15_01 * yDotK[0][j]  + K15_06 * yDotK[5][j]  + K15_07 * yDotK[6][j] +
+S428,DormandPrince853StepInterpolator.java,415,yTmp[j] = currentState[j] + h * s;
+S429,DormandPrince853StepInterpolator.java,417,"integrator.computeDerivatives(pT + C15 * h, yTmp, yDotKLast[1]);"
+S430,DormandPrince853StepInterpolator.java,420,for (int j = 0; j < currentState.length; ++j) {
+S431,DormandPrince853StepInterpolator.java,421,s = K16_01 * yDotK[0][j]  + K16_06 * yDotK[5][j]  + K16_07 * yDotK[6][j] +
+S432,DormandPrince853StepInterpolator.java,425,yTmp[j] = currentState[j] + h * s;
+S433,DormandPrince853StepInterpolator.java,427,"integrator.computeDerivatives(pT + C16 * h, yTmp, yDotKLast[2]);"
+S434,DummyStepInterpolator.java,70,"super(y, forward);"
+S435,DummyStepInterpolator.java,71,currentDerivative = yDot;
+S436,DummyStepInterpolator.java,102,"System.arraycopy(currentState,      0, interpolatedState,       0, currentState.length);"
+S437,DummyStepInterpolator.java,103,"System.arraycopy(currentDerivative, 0, interpolatedDerivatives, 0, currentDerivative.length);"
+S438,EmbeddedRungeKuttaIntegrator.java,116,"super(name, minStep, maxStep, scalAbsoluteTolerance, scalRelativeTolerance);"
+S439,EmbeddedRungeKuttaIntegrator.java,118,this.fsal      = fsal;
+S440,EmbeddedRungeKuttaIntegrator.java,119,this.c         = c;
+S441,EmbeddedRungeKuttaIntegrator.java,120,this.a         = a;
+S442,EmbeddedRungeKuttaIntegrator.java,121,this.b         = b;
+S443,EmbeddedRungeKuttaIntegrator.java,122,this.prototype = prototype;
+S444,EmbeddedRungeKuttaIntegrator.java,124,exp = -1.0 / getOrder();
+S445,EmbeddedRungeKuttaIntegrator.java,127,setSafety(0.9);
+S446,EmbeddedRungeKuttaIntegrator.java,128,setMinReduction(0.2);
+S447,EmbeddedRungeKuttaIntegrator.java,129,setMaxGrowth(10.0);
+S448,EmbeddedRungeKuttaIntegrator.java,187,this.safety = safety;
+S449,EmbeddedRungeKuttaIntegrator.java,197,"sanityChecks(equations, t0, y0, t, y);"
+S450,EmbeddedRungeKuttaIntegrator.java,198,setEquations(equations);
+S451,EmbeddedRungeKuttaIntegrator.java,199,resetEvaluations();
+S452,EmbeddedRungeKuttaIntegrator.java,200,final boolean forward = t > t0;
+S453,EmbeddedRungeKuttaIntegrator.java,203,final int stages = c.length + 1;
+S454,EmbeddedRungeKuttaIntegrator.java,204,if (y != y0) {
+S455,EmbeddedRungeKuttaIntegrator.java,207,final double[][] yDotK = new double[stages][y0.length];
+S456,EmbeddedRungeKuttaIntegrator.java,208,final double[] yTmp    = new double[y0.length];
+S457,EmbeddedRungeKuttaIntegrator.java,209,final double[] yDotTmp = new double[y0.length];
+S458,EmbeddedRungeKuttaIntegrator.java,212,final RungeKuttaStepInterpolator interpolator = (RungeKuttaStepInterpolator) prototype.copy();
+S459,EmbeddedRungeKuttaIntegrator.java,213,"interpolator.reinitialize(this, yTmp, yDotK, forward);"
+S460,EmbeddedRungeKuttaIntegrator.java,214,interpolator.storeTime(t0);
+S461,EmbeddedRungeKuttaIntegrator.java,217,stepStart         = t0;
+S462,EmbeddedRungeKuttaIntegrator.java,218,double  hNew      = 0;
+S463,EmbeddedRungeKuttaIntegrator.java,219,boolean firstTime = true;
+S464,EmbeddedRungeKuttaIntegrator.java,220,for (StepHandler handler : stepHandlers) {
+S465,EmbeddedRungeKuttaIntegrator.java,223,setStateInitialized(false);
+S466,EmbeddedRungeKuttaIntegrator.java,226,isLastStep = false;
+S467,EmbeddedRungeKuttaIntegrator.java,229,interpolator.shift();
+S468,EmbeddedRungeKuttaIntegrator.java,232,double error = 10;
+S469,EmbeddedRungeKuttaIntegrator.java,233,while (error >= 1.0) {
+S470,EmbeddedRungeKuttaIntegrator.java,235,if (firstTime || !fsal) {
+S471,EmbeddedRungeKuttaIntegrator.java,237,"computeDerivatives(stepStart, y, yDotK[0]);"
+S472,EmbeddedRungeKuttaIntegrator.java,240,if (firstTime) {
+S473,EmbeddedRungeKuttaIntegrator.java,241,final double[] scale = new double[mainSetDimension];
+S474,EmbeddedRungeKuttaIntegrator.java,242,if (vecAbsoluteTolerance == null) {
+S475,EmbeddedRungeKuttaIntegrator.java,243,for (int i = 0; i < scale.length; ++i) {
+S476,EmbeddedRungeKuttaIntegrator.java,244,scale[i] = scalAbsoluteTolerance + scalRelativeTolerance * FastMath.abs(y[i]);
+S477,EmbeddedRungeKuttaIntegrator.java,251,"hNew = initializeStep(equations, forward, getOrder(), scale,"
+S478,EmbeddedRungeKuttaIntegrator.java,253,firstTime = false;
+S479,EmbeddedRungeKuttaIntegrator.java,256,stepSize = hNew;
+S480,EmbeddedRungeKuttaIntegrator.java,259,for (int k = 1; k < stages; ++k) {
+S481,EmbeddedRungeKuttaIntegrator.java,261,for (int j = 0; j < y0.length; ++j) {
+S482,EmbeddedRungeKuttaIntegrator.java,262,double sum = a[k-1][0] * yDotK[0][j];
+S483,EmbeddedRungeKuttaIntegrator.java,263,for (int l = 1; l < k; ++l) {
+S484,EmbeddedRungeKuttaIntegrator.java,264,sum += a[k-1][l] * yDotK[l][j];
+S485,EmbeddedRungeKuttaIntegrator.java,266,yTmp[j] = y[j] + stepSize * sum;
+S486,EmbeddedRungeKuttaIntegrator.java,269,"computeDerivatives(stepStart + c[k-1] * stepSize, yTmp, yDotK[k]);"
+S487,EmbeddedRungeKuttaIntegrator.java,274,for (int j = 0; j < y0.length; ++j) {
+S488,EmbeddedRungeKuttaIntegrator.java,275,double sum    = b[0] * yDotK[0][j];
+S489,EmbeddedRungeKuttaIntegrator.java,276,for (int l = 1; l < stages; ++l) {
+S490,EmbeddedRungeKuttaIntegrator.java,277,sum    += b[l] * yDotK[l][j];
+S491,EmbeddedRungeKuttaIntegrator.java,279,yTmp[j] = y[j] + stepSize * sum;
+S492,EmbeddedRungeKuttaIntegrator.java,283,"error = estimateError(yDotK, y, yTmp, stepSize);"
+S493,EmbeddedRungeKuttaIntegrator.java,284,if (error >= 1.0) {
+S494,EmbeddedRungeKuttaIntegrator.java,295,interpolator.storeTime(stepStart + stepSize);
+S495,EmbeddedRungeKuttaIntegrator.java,296,"System.arraycopy(yTmp, 0, y, 0, y0.length);"
+S496,EmbeddedRungeKuttaIntegrator.java,297,"System.arraycopy(yDotK[stages - 1], 0, yDotTmp, 0, y0.length);"
+S497,EmbeddedRungeKuttaIntegrator.java,298,"stepStart = acceptStep(interpolator, y, yDotTmp, t);"
+S498,EmbeddedRungeKuttaIntegrator.java,300,if (!isLastStep) {
+S499,EmbeddedRungeKuttaIntegrator.java,303,interpolator.storeTime(stepStart);
+S500,EmbeddedRungeKuttaIntegrator.java,305,if (fsal) {
+S501,EmbeddedRungeKuttaIntegrator.java,307,"System.arraycopy(yDotTmp, 0, yDotK[0], 0, y0.length);"
+S502,EmbeddedRungeKuttaIntegrator.java,311,final double factor =
+S503,EmbeddedRungeKuttaIntegrator.java,313,final double  scaledH    = stepSize * factor;
+S504,EmbeddedRungeKuttaIntegrator.java,314,final double  nextT      = stepStart + scaledH;
+S505,EmbeddedRungeKuttaIntegrator.java,315,final boolean nextIsLast = forward ? (nextT >= t) : (nextT <= t);
+S506,EmbeddedRungeKuttaIntegrator.java,316,"hNew = filterStep(scaledH, forward, nextIsLast);"
+S507,EmbeddedRungeKuttaIntegrator.java,318,final double  filteredNextT      = stepStart + hNew;
+S508,EmbeddedRungeKuttaIntegrator.java,319,final boolean filteredNextIsLast = forward ? (filteredNextT >= t) : (filteredNextT <= t);
+S509,EmbeddedRungeKuttaIntegrator.java,320,if (filteredNextIsLast) {
+S510,EmbeddedRungeKuttaIntegrator.java,321,hNew = t - stepStart;
+S511,EmbeddedRungeKuttaIntegrator.java,326,} while (!isLastStep);
+S512,EmbeddedRungeKuttaIntegrator.java,328,final double stopTime = stepStart;
+S513,EmbeddedRungeKuttaIntegrator.java,329,resetInternalState();
+S514,EmbeddedRungeKuttaIntegrator.java,330,return stopTime;
+S515,EmbeddedRungeKuttaIntegrator.java,345,this.minReduction = minReduction;
+S516,EmbeddedRungeKuttaIntegrator.java,359,this.maxGrowth = maxGrowth;
+S517,EventState.java,44,public class EventState {
+S518,EventState.java,102,final UnivariateRealSolver solver) {
+S519,EventState.java,103,this.handler           = handler;
+S520,EventState.java,104,this.maxCheckInterval  = maxCheckInterval;
+S521,EventState.java,105,this.convergence       = FastMath.abs(convergence);
+S522,EventState.java,106,this.maxIterationCount = maxIterationCount;
+S523,EventState.java,107,this.solver            = solver;
+S524,EventState.java,110,t0                = Double.NaN;
+S525,EventState.java,111,g0                = Double.NaN;
+S526,EventState.java,112,g0Positive        = true;
+S527,EventState.java,113,pendingEvent      = false;
+S528,EventState.java,114,pendingEventTime  = Double.NaN;
+S529,EventState.java,115,previousEventTime = Double.NaN;
+S530,EventState.java,116,increasing        = true;
+S531,EventState.java,117,nextAction        = EventHandler.CONTINUE;
+S532,EventState.java,158,t0 = interpolator.getPreviousTime();
+S533,EventState.java,159,interpolator.setInterpolatedTime(t0);
+S534,EventState.java,160,"g0 = handler.g(t0, interpolator.getInterpolatedState());"
+S535,EventState.java,161,if (g0 == 0) {
+S536,EventState.java,181,g0Positive = g0 >= 0;
+S537,EventState.java,203,forward = interpolator.isForward();
+S538,EventState.java,204,final double t1 = interpolator.getCurrentTime();
+S539,EventState.java,205,final double dt = t1 - t0;
+S540,EventState.java,206,if (FastMath.abs(dt) < convergence) {
+S541,EventState.java,210,"final int    n = FastMath.max(1, (int) FastMath.ceil(FastMath.abs(dt) / maxCheckInterval));"
+S542,EventState.java,211,final double h = dt / n;
+S543,EventState.java,213,final UnivariateRealFunction f = new UnivariateRealFunction() {
+S544,EventState.java,216,interpolator.setInterpolatedTime(t);
+S545,EventState.java,217,"return handler.g(t, interpolator.getInterpolatedState());"
+S546,EventState.java,224,double ta = t0;
+S547,EventState.java,225,double ga = g0;
+S548,EventState.java,226,for (int i = 0; i < n; ++i) {
+S549,EventState.java,229,final double tb = t0 + (i + 1) * h;
+S550,EventState.java,230,interpolator.setInterpolatedTime(tb);
+S551,EventState.java,231,"final double gb = handler.g(tb, interpolator.getInterpolatedState());"
+S552,EventState.java,234,if (g0Positive ^ (gb >= 0)) {
+S553,EventState.java,238,increasing = gb >= ga;
+S554,EventState.java,242,if (solver instanceof BracketedUnivariateRealSolver<?>) {
+S555,EventState.java,244,BracketedUnivariateRealSolver<UnivariateRealFunction> bracketing =
+S556,EventState.java,246,root = forward ?
+S557,EventState.java,249,} else {
+S558,EventState.java,250,final double baseRoot = forward ?
+S559,EventState.java,253,final int remainingEval = maxIterationCount - solver.getEvaluations();
+S560,EventState.java,254,BracketedUnivariateRealSolver<UnivariateRealFunction> bracketing =
+S561,EventState.java,256,root = forward ?
+S562,EventState.java,263,if ((!Double.isNaN(previousEventTime)) &&
+S563,EventState.java,268,ta = forward ? ta + convergence : ta - convergence;
+S564,EventState.java,269,ga = f.value(ta);
+S565,EventState.java,270,--i;
+S566,EventState.java,271,} else if (Double.isNaN(previousEventTime) ||
+S567,EventState.java,273,pendingEventTime = root;
+S568,EventState.java,274,pendingEvent = true;
+S569,EventState.java,275,return true;
+S570,EventState.java,282,} else {
+S571,EventState.java,284,ta = tb;
+S572,EventState.java,285,ga = gb;
+S573,EventState.java,291,pendingEvent     = false;
+S574,EventState.java,292,pendingEventTime = Double.NaN;
+S575,EventState.java,293,return false;
+S576,EventState.java,306,return pendingEvent ?
+S577,EventState.java,322,t0 = t;
+S578,EventState.java,323,"g0 = handler.g(t, y);"
+S579,EventState.java,325,if (pendingEvent && (FastMath.abs(pendingEventTime - t) <= convergence)) {
+S580,EventState.java,327,previousEventTime = t;
+S581,EventState.java,328,g0Positive        = increasing;
+S582,EventState.java,329,"nextAction        = handler.eventOccurred(t, y, !(increasing ^ forward));"
+S583,EventState.java,331,g0Positive = g0 >= 0;
+S584,EventState.java,332,nextAction = EventHandler.CONTINUE;
+S585,EventState.java,341,return nextAction == EventHandler.STOP;
+S586,ExceptionContext.java,39,public class ExceptionContext implements Serializable {
+S587,ExceptionContext.java,45,private List<Localizable> msgPatterns = new ArrayList<Localizable>();
+S588,ExceptionContext.java,51,private List<Object[]> msgArguments = new ArrayList<Object[]>();
+S589,ExceptionContext.java,55,"private Map<String, Object> context = new HashMap<String, Object>();"
+S590,ExceptionContext.java,66,msgPatterns.add(pattern);
+S591,ExceptionContext.java,67,msgArguments.add(ArgUtils.flatten(arguments));
+S592,ExceptionContext.java,107,return getMessage(Locale.US);
+S593,ExceptionContext.java,116,return getMessage(Locale.getDefault());
+S594,ExceptionContext.java,126,"return buildMessage(locale, "": "");"
+S595,ExceptionContext.java,150,final StringBuilder sb = new StringBuilder();
+S596,ExceptionContext.java,151,int count = 0;
+S597,ExceptionContext.java,152,final int len = msgPatterns.size();
+S598,ExceptionContext.java,153,for (int i = 0; i < len; i++) {
+S599,ExceptionContext.java,154,final Localizable pat = msgPatterns.get(i);
+S600,ExceptionContext.java,155,final Object[] args = msgArguments.get(i);
+S601,ExceptionContext.java,156,"final MessageFormat fmt = new MessageFormat(pat.getLocalizedString(locale),"
+S602,ExceptionContext.java,158,sb.append(fmt.format(args));
+S603,ExceptionContext.java,159,if (++count < len) {
+S604,ExceptionContext.java,161,sb.append(separator);
+S605,ExceptionContext.java,165,return sb.toString();
+S606,FastMath.java,80,private static final double EXP_INT_TABLE_A[] = new double[1500];
+S607,FastMath.java,85,private static final double EXP_INT_TABLE_B[] = new double[1500];
+S608,FastMath.java,90,private static final double EXP_FRAC_TABLE_A[] = new double[1025];
+S609,FastMath.java,95,private static final double EXP_FRAC_TABLE_B[] = new double[1025];
+S610,FastMath.java,98,private static final double FACT[] = new double[20];
+S611,FastMath.java,101,private static final double LN_MANT[][] = new double[1024][];
+S612,FastMath.java,110,private static final double LN_SPLIT_COEF[][] = {
+S613,FastMath.java,130,private static final double LN_QUICK_COEF[][] = {
+S614,FastMath.java,143,private static final double LN_HI_PREC_COEF[][] = {
+S615,FastMath.java,153,private static final double SINE_TABLE_A[] = new double[14];
+S616,FastMath.java,156,private static final double SINE_TABLE_B[] = new double[14];
+S617,FastMath.java,159,private static final double COSINE_TABLE_A[] = new double[14];
+S618,FastMath.java,162,private static final double COSINE_TABLE_B[] = new double[14];
+S619,FastMath.java,165,private static final double TANGENT_TABLE_A[] = new double[14];
+S620,FastMath.java,168,private static final double TANGENT_TABLE_B[] = new double[14];
+S621,FastMath.java,171,private static final long RECIP_2PI[] = new long[] {
+S622,FastMath.java,192,private static final long PI_O_4_BITS[] = new long[] {
+S623,FastMath.java,200,"private static final double EIGHTHS[] = {0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.125, 1.25, 1.375, 1.5, 1.625};"
+S624,FastMath.java,203,"private static final double CBRTTWO[] = { 0.6299605249474366,"
+S625,FastMath.java,233,FACT[0] = 1.0;
+S626,FastMath.java,234,for (i = 1; i < FACT.length; i++) {
+S627,FastMath.java,235,FACT[i] = FACT[i-1] * i;
+S628,FastMath.java,238,double tmp[] = new double[2];
+S629,FastMath.java,239,double recip[] = new double[2];
+S630,FastMath.java,242,for (i = 0; i < 750; i++) {
+S631,FastMath.java,243,"expint(i, tmp);"
+S632,FastMath.java,244,EXP_INT_TABLE_A[i+750] = tmp[0];
+S633,FastMath.java,245,EXP_INT_TABLE_B[i+750] = tmp[1];
+S634,FastMath.java,247,if (i != 0) {
+S635,FastMath.java,249,"splitReciprocal(tmp, recip);"
+S636,FastMath.java,250,EXP_INT_TABLE_A[750-i] = recip[0];
+S637,FastMath.java,251,EXP_INT_TABLE_B[750-i] = recip[1];
+S638,FastMath.java,256,for (i = 0; i < EXP_FRAC_TABLE_A.length; i++) {
+S639,FastMath.java,257,"slowexp(i/1024.0, tmp);"
+S640,FastMath.java,258,EXP_FRAC_TABLE_A[i] = tmp[0];
+S641,FastMath.java,259,EXP_FRAC_TABLE_B[i] = tmp[1];
+S642,FastMath.java,263,for (i = 0; i < LN_MANT.length; i++) {
+S643,FastMath.java,264,double d = Double.longBitsToDouble( (((long) i) << 42) | 0x3ff0000000000000L );
+S644,FastMath.java,265,LN_MANT[i] = slowLog(d);
+S645,FastMath.java,269,buildSinCosTables();
+S646,FastMath.java,302,return Math.sqrt(a);
+S647,FastMath.java,741,if (x < 0.0) {
+S648,FastMath.java,742,intVal = (int) -x;
+S649,FastMath.java,744,if (intVal > 746) {
+S650,FastMath.java,752,if (intVal > 709) {
+S651,FastMath.java,762,if (intVal == 709) {
+S652,FastMath.java,772,intVal++;
+S653,FastMath.java,774,intPartA = EXP_INT_TABLE_A[750-intVal];
+S654,FastMath.java,775,intPartB = EXP_INT_TABLE_B[750-intVal];
+S655,FastMath.java,777,intVal = -intVal;
+S656,FastMath.java,779,intVal = (int) x;
+S657,FastMath.java,781,if (intVal > 709) {
+S658,FastMath.java,789,intPartA = EXP_INT_TABLE_A[750+intVal];
+S659,FastMath.java,790,intPartB = EXP_INT_TABLE_B[750+intVal];
+S660,FastMath.java,797,final int intFrac = (int) ((x - intVal) * 1024.0);
+S661,FastMath.java,798,final double fracPartA = EXP_FRAC_TABLE_A[intFrac];
+S662,FastMath.java,799,final double fracPartB = EXP_FRAC_TABLE_B[intFrac];
+S663,FastMath.java,805,final double epsilon = x - (intVal + intFrac / 1024.0);
+S664,FastMath.java,814,double z = 0.04168701738764507;
+S665,FastMath.java,815,z = z * epsilon + 0.1666666505023083;
+S666,FastMath.java,816,z = z * epsilon + 0.5000000000042687;
+S667,FastMath.java,817,z = z * epsilon + 1.0;
+S668,FastMath.java,818,z = z * epsilon + -3.940510424527919E-20;
+S669,FastMath.java,825,double tempA = intPartA * fracPartA;
+S670,FastMath.java,826,double tempB = intPartA * fracPartB + intPartB * fracPartA + intPartB * fracPartB;
+S671,FastMath.java,832,final double tempC = tempB + tempA;
+S672,FastMath.java,834,if (extra != 0.0) {
+S673,FastMath.java,835,result = tempC*extra*z + tempC*extra + tempC*z + tempB + tempA;
+S674,FastMath.java,840,if (hiPrec != null) {
+S675,FastMath.java,846,return result;
+S676,FastMath.java,1012,final double xs[] = new double[2];
+S677,FastMath.java,1013,final double ys[] = new double[2];
+S678,FastMath.java,1014,final double facts[] = new double[2];
+S679,FastMath.java,1015,final double as[] = new double[2];
+S680,FastMath.java,1016,"split(x, xs);"
+S681,FastMath.java,1017,ys[0] = ys[1] = 0.0;
+S682,FastMath.java,1019,for (int i = 19; i >= 0; i--) {
+S683,FastMath.java,1020,"splitMult(xs, ys, as);"
+S684,FastMath.java,1021,ys[0] = as[0];
+S685,FastMath.java,1022,ys[1] = as[1];
+S686,FastMath.java,1024,"split(FACT[i], as);"
+S687,FastMath.java,1025,"splitReciprocal(as, facts);"
+S688,FastMath.java,1027,"splitAdd(ys, facts, as);"
+S689,FastMath.java,1028,ys[0] = as[0];
+S690,FastMath.java,1029,ys[1] = as[1];
+S691,FastMath.java,1032,if (result != null) {
+S692,FastMath.java,1033,result[0] = ys[0];
+S693,FastMath.java,1034,result[1] = ys[1];
+S694,FastMath.java,1037,return ys[0] + ys[1];
+S695,FastMath.java,1046,if (d < 8e298 && d > -8e298) {
+S696,FastMath.java,1047,final double a = d * HEX_40000000;
+S697,FastMath.java,1048,split[0] = (d + a) - a;
+S698,FastMath.java,1049,split[1] = d - split[0];
+S699,FastMath.java,1050,} else {
+S700,FastMath.java,1062,final double c = a[0] + a[1];
+S701,FastMath.java,1063,final double d = -(c - a[0] - a[1]);
+S702,FastMath.java,1065,if (c < 8e298 && c > -8e298) {
+S703,FastMath.java,1066,double z = c * HEX_40000000;
+S704,FastMath.java,1067,a[0] = (c + z) - z;
+S705,FastMath.java,1068,a[1] = c - a[0] + d;
+S706,FastMath.java,1069,} else {
+S707,FastMath.java,1070,double z = c * 9.31322574615478515625E-10;
+S708,FastMath.java,1071,a[0] = (c + z - c) * HEX_40000000;
+S709,FastMath.java,1072,a[1] = c - a[0] + d;
+S710,FastMath.java,1082,ans[0] = a[0] * b[0];
+S711,FastMath.java,1083,ans[1] = a[0] * b[1] + a[1] * b[0] + a[1] * b[1];
+S712,FastMath.java,1086,resplit(ans);
+S713,FastMath.java,1095,ans[0] = a[0] + b[0];
+S714,FastMath.java,1096,ans[1] = a[1] + b[1];
+S715,FastMath.java,1098,resplit(ans);
+S716,FastMath.java,1120,final double b = 1.0/4194304.0;
+S717,FastMath.java,1121,final double a = 1.0 - b;
+S718,FastMath.java,1123,if (in[0] == 0.0) {
+S719,FastMath.java,1128,result[0] = a / in[0];
+S720,FastMath.java,1129,result[1] = (b*in[0]-a*in[1]) / (in[0]*in[0] + in[0]*in[1]);
+S721,FastMath.java,1131,if (result[1] != result[1]) { // can happen if result[1] is NAN
+S722,FastMath.java,1132,result[1] = 0.0;
+S723,FastMath.java,1136,resplit(result);
+S724,FastMath.java,1138,for (int i = 0; i < 2; i++) {
+S725,FastMath.java,1140,double err = 1.0 - result[0] * in[0] - result[0] * in[1] -
+S726,FastMath.java,1143,err = err * (result[0] + result[1]);
+S727,FastMath.java,1145,result[1] += err;
+S728,FastMath.java,1155,final double xs[] = new double[2];
+S729,FastMath.java,1156,final double ys[] = new double[2];
+S730,FastMath.java,1157,final double zs[] = new double[2];
+S731,FastMath.java,1160,"split(a[0], xs);"
+S732,FastMath.java,1161,"split(b[0], ys);"
+S733,FastMath.java,1162,"splitMult(xs, ys, zs);"
+S734,FastMath.java,1164,result[0] = zs[0];
+S735,FastMath.java,1165,result[1] = zs[1];
+S736,FastMath.java,1168,"split(b[1], ys);"
+S737,FastMath.java,1169,"splitMult(xs, ys, zs);"
+S738,FastMath.java,1171,double tmp = result[0] + zs[0];
+S739,FastMath.java,1172,result[1] = result[1] - (tmp - result[0] - zs[0]);
+S740,FastMath.java,1173,result[0] = tmp;
+S741,FastMath.java,1174,tmp = result[0] + zs[1];
+S742,FastMath.java,1175,result[1] = result[1] - (tmp - result[0] - zs[1]);
+S743,FastMath.java,1176,result[0] = tmp;
+S744,FastMath.java,1179,"split(a[1], xs);"
+S745,FastMath.java,1180,"split(b[0], ys);"
+S746,FastMath.java,1181,"splitMult(xs, ys, zs);"
+S747,FastMath.java,1183,tmp = result[0] + zs[0];
+S748,FastMath.java,1184,result[1] = result[1] - (tmp - result[0] - zs[0]);
+S749,FastMath.java,1185,result[0] = tmp;
+S750,FastMath.java,1186,tmp = result[0] + zs[1];
+S751,FastMath.java,1187,result[1] = result[1] - (tmp - result[0] - zs[1]);
+S752,FastMath.java,1188,result[0] = tmp;
+S753,FastMath.java,1191,"split(a[1], xs);"
+S754,FastMath.java,1192,"split(b[1], ys);"
+S755,FastMath.java,1193,"splitMult(xs, ys, zs);"
+S756,FastMath.java,1195,tmp = result[0] + zs[0];
+S757,FastMath.java,1196,result[1] = result[1] - (tmp - result[0] - zs[0]);
+S758,FastMath.java,1197,result[0] = tmp;
+S759,FastMath.java,1198,tmp = result[0] + zs[1];
+S760,FastMath.java,1199,result[1] = result[1] - (tmp - result[0] - zs[1]);
+S761,FastMath.java,1200,result[0] = tmp;
+S762,FastMath.java,1210,final double xs[] = new double[2];
+S763,FastMath.java,1211,final double as[] = new double[2];
+S764,FastMath.java,1212,final double ys[] = new double[2];
+S765,FastMath.java,1221,xs[0] = 2.718281828459045;
+S766,FastMath.java,1222,xs[1] = 1.4456468917292502E-16;
+S767,FastMath.java,1224,"split(1.0, ys);"
+S768,FastMath.java,1226,while (p > 0) {
+S769,FastMath.java,1227,if ((p & 1) != 0) {
+S770,FastMath.java,1228,"quadMult(ys, xs, as);"
+S771,FastMath.java,1229,ys[0] = as[0]; ys[1] = as[1];
+S772,FastMath.java,1232,"quadMult(xs, xs, as);"
+S773,FastMath.java,1233,xs[0] = as[0]; xs[1] = as[1];
+S774,FastMath.java,1235,p >>= 1;
+S775,FastMath.java,1238,if (result != null) {
+S776,FastMath.java,1239,result[0] = ys[0];
+S777,FastMath.java,1240,result[1] = ys[1];
+S778,FastMath.java,1242,resplit(result);
+S779,FastMath.java,1245,return ys[0] + ys[1];
+S780,FastMath.java,1266,if (x==0) { // Handle special case of +0/-0
+S781,FastMath.java,1269,long bits = Double.doubleToLongBits(x);
+S782,FastMath.java,1272,if ((bits & 0x8000000000000000L) != 0 || x != x) {
+S783,FastMath.java,1283,if (x == Double.POSITIVE_INFINITY) {
+S784,FastMath.java,1292,int exp = (int)(bits >> 52)-1023;
+S785,FastMath.java,1294,if ((bits & 0x7ff0000000000000L) == 0) {
+S786,FastMath.java,1314,if (exp == -1 || exp == 0) {
+S787,FastMath.java,1362,double lnm[] = LN_MANT[(int)((bits & 0x000ffc0000000000L) >> 42)];
+S788,FastMath.java,1373,double epsilon = (bits & 0x3ffffffffffL) / (TWO_POWER_52 + (bits & 0x000ffc0000000000L));
+S789,FastMath.java,1375,double lnza = 0.0;
+S790,FastMath.java,1376,double lnzb = 0.0;
+S791,FastMath.java,1378,if (hiPrec != null) {
+S792,FastMath.java,1380,double tmp = epsilon * HEX_40000000;
+S793,FastMath.java,1381,double aa = epsilon + tmp - tmp;
+S794,FastMath.java,1382,double ab = epsilon - aa;
+S795,FastMath.java,1383,double xa = aa;
+S796,FastMath.java,1384,double xb = ab;
+S797,FastMath.java,1387,double numer = bits & 0x3ffffffffffL;
+S798,FastMath.java,1388,double denom = TWO_POWER_52 + (bits & 0x000ffc0000000000L);
+S799,FastMath.java,1389,aa = numer - xa*denom - xb * denom;
+S800,FastMath.java,1390,xb += aa / denom;
+S801,FastMath.java,1393,double ya = LN_HI_PREC_COEF[LN_HI_PREC_COEF.length-1][0];
+S802,FastMath.java,1394,double yb = LN_HI_PREC_COEF[LN_HI_PREC_COEF.length-1][1];
+S803,FastMath.java,1396,for (int i = LN_HI_PREC_COEF.length - 2; i >= 0; i--) {
+S804,FastMath.java,1398,aa = ya * xa;
+S805,FastMath.java,1399,ab = ya * xb + yb * xa + yb * xb;
+S806,FastMath.java,1401,tmp = aa * HEX_40000000;
+S807,FastMath.java,1402,ya = aa + tmp - tmp;
+S808,FastMath.java,1403,yb = aa - ya + ab;
+S809,FastMath.java,1406,aa = ya + LN_HI_PREC_COEF[i][0];
+S810,FastMath.java,1407,ab = yb + LN_HI_PREC_COEF[i][1];
+S811,FastMath.java,1409,tmp = aa * HEX_40000000;
+S812,FastMath.java,1410,ya = aa + tmp - tmp;
+S813,FastMath.java,1411,yb = aa - ya + ab;
+S814,FastMath.java,1415,aa = ya * xa;
+S815,FastMath.java,1416,ab = ya * xb + yb * xa + yb * xb;
+S816,FastMath.java,1424,lnza = aa + ab;
+S817,FastMath.java,1425,lnzb = -(lnza - aa - ab);
+S818,FastMath.java,1426,} else {
+S819,FastMath.java,1452,double a = LN_2_A*exp;
+S820,FastMath.java,1453,double b = 0.0;
+S821,FastMath.java,1454,double c = a+lnm[0];
+S822,FastMath.java,1455,double d = -(c-a-lnm[0]);
+S823,FastMath.java,1456,a = c;
+S824,FastMath.java,1457,b = b + d;
+S825,FastMath.java,1459,c = a + lnza;
+S826,FastMath.java,1460,d = -(c - a - lnza);
+S827,FastMath.java,1461,a = c;
+S828,FastMath.java,1462,b = b + d;
+S829,FastMath.java,1464,c = a + LN_2_B*exp;
+S830,FastMath.java,1465,d = -(c - a - LN_2_B*exp);
+S831,FastMath.java,1466,a = c;
+S832,FastMath.java,1467,b = b + d;
+S833,FastMath.java,1469,c = a + lnm[1];
+S834,FastMath.java,1470,d = -(c - a - lnm[1]);
+S835,FastMath.java,1471,a = c;
+S836,FastMath.java,1472,b = b + d;
+S837,FastMath.java,1474,c = a + lnzb;
+S838,FastMath.java,1475,d = -(c - a - lnzb);
+S839,FastMath.java,1476,a = c;
+S840,FastMath.java,1477,b = b + d;
+S841,FastMath.java,1479,if (hiPrec != null) {
+S842,FastMath.java,1480,hiPrec[0] = a;
+S843,FastMath.java,1481,hiPrec[1] = b;
+S844,FastMath.java,1484,return a + b;
+S845,FastMath.java,1560,final double lns[] = new double[2];
+S846,FastMath.java,1562,if (y == 0.0) {
+S847,FastMath.java,1566,if (x != x) { // X is NaN
+S848,FastMath.java,1571,if (x == 0) {
+S849,FastMath.java,1600,if (x == Double.POSITIVE_INFINITY) {
+S850,FastMath.java,1611,if (y == Double.POSITIVE_INFINITY) {
+S851,FastMath.java,1623,if (x == Double.NEGATIVE_INFINITY) {
+S852,FastMath.java,1647,if (y == Double.NEGATIVE_INFINITY) {
+S853,FastMath.java,1661,if (x < 0) {
+S854,FastMath.java,1678,if (y < 8e298 && y > -8e298) {
+S855,FastMath.java,1679,double tmp1 = y * HEX_40000000;
+S856,FastMath.java,1680,ya = y + tmp1 - tmp1;
+S857,FastMath.java,1681,yb = y - ya;
+S858,FastMath.java,1682,} else {
+S859,FastMath.java,1690,"final double lores = log(x, lns);"
+S860,FastMath.java,1691,if (Double.isInfinite(lores)){ // don't allow this to be converted to NaN
+S861,FastMath.java,1695,double lna = lns[0];
+S862,FastMath.java,1696,double lnb = lns[1];
+S863,FastMath.java,1699,double tmp1 = lna * HEX_40000000;
+S864,FastMath.java,1700,double tmp2 = lna + tmp1 - tmp1;
+S865,FastMath.java,1701,lnb += lna - tmp2;
+S866,FastMath.java,1702,lna = tmp2;
+S867,FastMath.java,1705,final double aa = lna * ya;
+S868,FastMath.java,1706,final double ab = lna * yb + lnb * ya + lnb * yb;
+S869,FastMath.java,1708,lna = aa+ab;
+S870,FastMath.java,1709,lnb = -(lna - aa - ab);
+S871,FastMath.java,1711,double z = 1.0 / 120.0;
+S872,FastMath.java,1712,z = z * lnb + (1.0 / 24.0);
+S873,FastMath.java,1713,z = z * lnb + (1.0 / 6.0);
+S874,FastMath.java,1714,z = z * lnb + 0.5;
+S875,FastMath.java,1715,z = z * lnb + 1.0;
+S876,FastMath.java,1716,z = z * lnb;
+S877,FastMath.java,1718,"final double result = exp(lna, z, null);"
+S878,FastMath.java,1720,return result;
+S879,FastMath.java,1743,double x[] = new double[2];
+S880,FastMath.java,1744,double x2[] = new double[2];
+S881,FastMath.java,1745,double y[] = new double[2];
+S882,FastMath.java,1746,double a[] = new double[2];
+S883,FastMath.java,1748,"split(xi, x);"
+S884,FastMath.java,1751,x[0] += 1.0;
+S885,FastMath.java,1752,resplit(x);
+S886,FastMath.java,1753,"splitReciprocal(x, a);"
+S887,FastMath.java,1754,x[0] -= 2.0;
+S888,FastMath.java,1755,resplit(x);
+S889,FastMath.java,1756,"splitMult(x, a, y);"
+S890,FastMath.java,1757,x[0] = y[0];
+S891,FastMath.java,1758,x[1] = y[1];
+S892,FastMath.java,1761,"splitMult(x, x, x2);"
+S893,FastMath.java,1767,y[0] = LN_SPLIT_COEF[LN_SPLIT_COEF.length-1][0];
+S894,FastMath.java,1768,y[1] = LN_SPLIT_COEF[LN_SPLIT_COEF.length-1][1];
+S895,FastMath.java,1770,for (int i = LN_SPLIT_COEF.length-2; i >= 0; i--) {
+S896,FastMath.java,1771,"splitMult(y, x2, a);"
+S897,FastMath.java,1772,y[0] = a[0];
+S898,FastMath.java,1773,y[1] = a[1];
+S899,FastMath.java,1774,"splitAdd(y, LN_SPLIT_COEF[i], a);"
+S900,FastMath.java,1775,y[0] = a[0];
+S901,FastMath.java,1776,y[1] = a[1];
+S902,FastMath.java,1779,"splitMult(y, x, a);"
+S903,FastMath.java,1780,y[0] = a[0];
+S904,FastMath.java,1781,y[1] = a[1];
+S905,FastMath.java,1783,return y;
+S906,FastMath.java,1793,final double xs[] = new double[2];
+S907,FastMath.java,1794,final double ys[] = new double[2];
+S908,FastMath.java,1795,final double facts[] = new double[2];
+S909,FastMath.java,1796,final double as[] = new double[2];
+S910,FastMath.java,1797,"split(x, xs);"
+S911,FastMath.java,1798,ys[0] = ys[1] = 0.0;
+S912,FastMath.java,1800,for (int i = 19; i >= 0; i--) {
+S913,FastMath.java,1801,"splitMult(xs, ys, as);"
+S914,FastMath.java,1802,ys[0] = as[0]; ys[1] = as[1];
+S915,FastMath.java,1804,if ( (i & 1) == 0) {
+S916,FastMath.java,1805,continue;
+S917,FastMath.java,1808,"split(FACT[i], as);"
+S918,FastMath.java,1809,"splitReciprocal(as, facts);"
+S919,FastMath.java,1811,if ( (i & 2) != 0 ) {
+S920,FastMath.java,1812,facts[0] = -facts[0];
+S921,FastMath.java,1813,facts[1] = -facts[1];
+S922,FastMath.java,1816,"splitAdd(ys, facts, as);"
+S923,FastMath.java,1817,ys[0] = as[0]; ys[1] = as[1];
+S924,FastMath.java,1820,if (result != null) {
+S925,FastMath.java,1821,result[0] = ys[0];
+S926,FastMath.java,1822,result[1] = ys[1];
+S927,FastMath.java,1825,return ys[0] + ys[1];
+S928,FastMath.java,1836,final double xs[] = new double[2];
+S929,FastMath.java,1837,final double ys[] = new double[2];
+S930,FastMath.java,1838,final double facts[] = new double[2];
+S931,FastMath.java,1839,final double as[] = new double[2];
+S932,FastMath.java,1840,"split(x, xs);"
+S933,FastMath.java,1841,ys[0] = ys[1] = 0.0;
+S934,FastMath.java,1843,for (int i = 19; i >= 0; i--) {
+S935,FastMath.java,1844,"splitMult(xs, ys, as);"
+S936,FastMath.java,1845,ys[0] = as[0]; ys[1] = as[1];
+S937,FastMath.java,1847,if ( (i & 1) != 0) {
+S938,FastMath.java,1848,continue;
+S939,FastMath.java,1851,"split(FACT[i], as);"
+S940,FastMath.java,1852,"splitReciprocal(as, facts);"
+S941,FastMath.java,1854,if ( (i & 2) != 0 ) {
+S942,FastMath.java,1855,facts[0] = -facts[0];
+S943,FastMath.java,1856,facts[1] = -facts[1];
+S944,FastMath.java,1859,"splitAdd(ys, facts, as);"
+S945,FastMath.java,1860,ys[0] = as[0]; ys[1] = as[1];
+S946,FastMath.java,1863,if (result != null) {
+S947,FastMath.java,1864,result[0] = ys[0];
+S948,FastMath.java,1865,result[1] = ys[1];
+S949,FastMath.java,1868,return ys[0] + ys[1];
+S950,FastMath.java,1874,final double result[] = new double[2];
+S951,FastMath.java,1877,for (int i = 0; i < 7; i++) {
+S952,FastMath.java,1878,double x = i / 8.0;
+S953,FastMath.java,1880,"slowSin(x, result);"
+S954,FastMath.java,1881,SINE_TABLE_A[i] = result[0];
+S955,FastMath.java,1882,SINE_TABLE_B[i] = result[1];
+S956,FastMath.java,1884,"slowCos(x, result);"
+S957,FastMath.java,1885,COSINE_TABLE_A[i] = result[0];
+S958,FastMath.java,1886,COSINE_TABLE_B[i] = result[1];
+S959,FastMath.java,1890,for (int i = 7; i < 14; i++) {
+S960,FastMath.java,1891,double xs[] = new double[2];
+S961,FastMath.java,1892,double ys[] = new double[2];
+S962,FastMath.java,1893,double as[] = new double[2];
+S963,FastMath.java,1894,double bs[] = new double[2];
+S964,FastMath.java,1895,double temps[] = new double[2];
+S965,FastMath.java,1897,if ( (i & 1) == 0) {
+S966,FastMath.java,1899,xs[0] = SINE_TABLE_A[i/2];
+S967,FastMath.java,1900,xs[1] = SINE_TABLE_B[i/2];
+S968,FastMath.java,1901,ys[0] = COSINE_TABLE_A[i/2];
+S969,FastMath.java,1902,ys[1] = COSINE_TABLE_B[i/2];
+S970,FastMath.java,1905,"splitMult(xs, ys, result);"
+S971,FastMath.java,1906,SINE_TABLE_A[i] = result[0] * 2.0;
+S972,FastMath.java,1907,SINE_TABLE_B[i] = result[1] * 2.0;
+S973,FastMath.java,1910,"splitMult(ys, ys, as);"
+S974,FastMath.java,1911,"splitMult(xs, xs, temps);"
+S975,FastMath.java,1912,temps[0] = -temps[0];
+S976,FastMath.java,1913,temps[1] = -temps[1];
+S977,FastMath.java,1914,"splitAdd(as, temps, result);"
+S978,FastMath.java,1915,COSINE_TABLE_A[i] = result[0];
+S979,FastMath.java,1916,COSINE_TABLE_B[i] = result[1];
+S980,FastMath.java,1918,xs[0] = SINE_TABLE_A[i/2];
+S981,FastMath.java,1919,xs[1] = SINE_TABLE_B[i/2];
+S982,FastMath.java,1920,ys[0] = COSINE_TABLE_A[i/2];
+S983,FastMath.java,1921,ys[1] = COSINE_TABLE_B[i/2];
+S984,FastMath.java,1922,as[0] = SINE_TABLE_A[i/2+1];
+S985,FastMath.java,1923,as[1] = SINE_TABLE_B[i/2+1];
+S986,FastMath.java,1924,bs[0] = COSINE_TABLE_A[i/2+1];
+S987,FastMath.java,1925,bs[1] = COSINE_TABLE_B[i/2+1];
+S988,FastMath.java,1928,"splitMult(xs, bs, temps);"
+S989,FastMath.java,1929,"splitMult(ys, as, result);"
+S990,FastMath.java,1930,"splitAdd(result, temps, result);"
+S991,FastMath.java,1931,SINE_TABLE_A[i] = result[0];
+S992,FastMath.java,1932,SINE_TABLE_B[i] = result[1];
+S993,FastMath.java,1935,"splitMult(ys, bs, result);"
+S994,FastMath.java,1936,"splitMult(xs, as, temps);"
+S995,FastMath.java,1937,temps[0] = -temps[0];
+S996,FastMath.java,1938,temps[1] = -temps[1];
+S997,FastMath.java,1939,"splitAdd(result, temps, result);"
+S998,FastMath.java,1940,COSINE_TABLE_A[i] = result[0];
+S999,FastMath.java,1941,COSINE_TABLE_B[i] = result[1];
+S1000,FastMath.java,1946,for (int i = 0; i < 14; i++) {
+S1001,FastMath.java,1947,double xs[] = new double[2];
+S1002,FastMath.java,1948,double ys[] = new double[2];
+S1003,FastMath.java,1949,double as[] = new double[2];
+S1004,FastMath.java,1951,as[0] = COSINE_TABLE_A[i];
+S1005,FastMath.java,1952,as[1] = COSINE_TABLE_B[i];
+S1006,FastMath.java,1954,"splitReciprocal(as, ys);"
+S1007,FastMath.java,1956,xs[0] = SINE_TABLE_A[i];
+S1008,FastMath.java,1957,xs[1] = SINE_TABLE_B[i];
+S1009,FastMath.java,1959,"splitMult(xs, ys, as);"
+S1010,FastMath.java,1961,TANGENT_TABLE_A[i] = as[0];
+S1011,FastMath.java,1962,TANGENT_TABLE_B[i] = as[1];
+S1012,FastMath.java,3392,return (x < 0l) ? -x : x;
+S1013,FastMath.java,3410,return (x < 0.0) ? -x : (x == 0.0) ? 0.0 : x; // -0.0 => +0.0
+S1014,FastMath.java,3724,if (x != x) { // NaN
+S1015,FastMath.java,3728,if (x >= TWO_POWER_52 || x <= -TWO_POWER_52) {
+S1016,FastMath.java,3732,y = (long) x;
+S1017,FastMath.java,3733,if (x < 0 && y != x) {
+S1018,FastMath.java,3737,if (y == 0) {
+S1019,FastMath.java,3738,return x*y;
+S1020,FastMath.java,3741,return y;
+S1021,FastMath.java,3751,if (x != x) { // NaN
+S1022,FastMath.java,3755,y = floor(x);
+S1023,FastMath.java,3756,if (y == x) {
+S1024,FastMath.java,3757,return y;
+S1025,FastMath.java,3760,y += 1.0;
+S1026,FastMath.java,3762,if (y == 0) {
+S1027,FastMath.java,3766,return y;
+S1028,FastMath.java,3857,if (a > b) {
+S1029,FastMath.java,3858,return b;
+S1030,FastMath.java,3860,if (a < b) {
+S1031,FastMath.java,3861,return a;
+S1032,FastMath.java,3882,return (a <= b) ? b : a;
+S1033,FastMath.java,3925,if (a > b) {
+S1034,FastMath.java,3926,return a;
+S1035,FastMath.java,3928,if (a < b) {
+S1036,FastMath.java,3929,return b;
+S1037,Incrementor.java,28,public class Incrementor {
+S1038,Incrementor.java,44,maximalCount = max;
+S1039,Incrementor.java,62,return count;
+S1040,Incrementor.java,84,if (++count > maximalCount) {
+S1041,Incrementor.java,85,throw new MaxCountExceededException(maximalCount);
+S1042,Incrementor.java,93,count = 0;
+S1043,LocalizedFormats.java,39,public enum LocalizedFormats implements Localizable {
+S1044,LocalizedFormats.java,44,"ARGUMENT_OUTSIDE_DOMAIN(""Argument {0} outside domain [{1} ; {2}]""),"
+S1045,LocalizedFormats.java,45,"ARRAY_SIZES_SHOULD_HAVE_DIFFERENCE_1(""array sizes should have difference 1 ({0} != {1} + 1)""),"
+S1046,LocalizedFormats.java,46,"ARRAY_SUMS_TO_ZERO(""array sums to zero""),"
+S1047,LocalizedFormats.java,47,"ASSYMETRIC_EIGEN_NOT_SUPPORTED(""eigen decomposition of assymetric matrices not supported yet""),"
+S1048,LocalizedFormats.java,48,"AT_LEAST_ONE_COLUMN(""matrix must have at least one column""),"
+S1049,LocalizedFormats.java,49,"AT_LEAST_ONE_ROW(""matrix must have at least one row""),"
+S1050,LocalizedFormats.java,50,"BANDWIDTH(""bandwidth ({0})""),"
+S1051,LocalizedFormats.java,51,"BINOMIAL_INVALID_PARAMETERS_ORDER(""must have n >= k for binomial coefficient (n, k), got k = {0}, n = {1}""),"
+S1052,LocalizedFormats.java,52,"BINOMIAL_NEGATIVE_PARAMETER(""must have n >= 0 for binomial coefficient (n, k), got n = {0}""),"
+S1053,LocalizedFormats.java,53,"CANNOT_CLEAR_STATISTIC_CONSTRUCTED_FROM_EXTERNAL_MOMENTS(""statistics constructed from external moments cannot be cleared""),"
+S1054,LocalizedFormats.java,54,"CANNOT_COMPUTE_0TH_ROOT_OF_UNITY(""cannot compute 0-th root of unity, indefinite result""),"
+S1055,LocalizedFormats.java,55,"CANNOT_COMPUTE_BETA_DENSITY_AT_0_FOR_SOME_ALPHA(""cannot compute beta density at 0 when alpha = {0,number}""),"
+S1056,LocalizedFormats.java,56,"CANNOT_COMPUTE_BETA_DENSITY_AT_1_FOR_SOME_BETA(""cannot compute beta density at 1 when beta = %.3g""),"
+S1057,LocalizedFormats.java,57,"CANNOT_COMPUTE_NTH_ROOT_FOR_NEGATIVE_N(""cannot compute nth root for null or negative n: {0}""),"
+S1058,LocalizedFormats.java,58,"CANNOT_CONVERT_OBJECT_TO_FRACTION(""cannot convert given object to a fraction number: {0}""),"
+S1059,LocalizedFormats.java,59,"CANNOT_DISCARD_NEGATIVE_NUMBER_OF_ELEMENTS(""cannot discard a negative number of elements ({0})""),"
+S1060,LocalizedFormats.java,60,"CANNOT_FORMAT_INSTANCE_AS_3D_VECTOR(""cannot format a {0} instance as a 3D vector""),"
+S1061,LocalizedFormats.java,61,"CANNOT_FORMAT_INSTANCE_AS_COMPLEX(""cannot format a {0} instance as a complex number""),"
+S1062,LocalizedFormats.java,62,"CANNOT_FORMAT_INSTANCE_AS_REAL_VECTOR(""cannot format a {0} instance as a real vector""),"
+S1063,LocalizedFormats.java,63,"CANNOT_FORMAT_OBJECT_TO_FRACTION(""cannot format given object as a fraction number""),"
+S1064,LocalizedFormats.java,64,"CANNOT_INCREMENT_STATISTIC_CONSTRUCTED_FROM_EXTERNAL_MOMENTS(""statistics constructed from external moments cannot be incremented""),"
+S1065,LocalizedFormats.java,65,"CANNOT_NORMALIZE_A_ZERO_NORM_VECTOR(""cannot normalize a zero norm vector""),"
+S1066,LocalizedFormats.java,66,"CANNOT_RETRIEVE_AT_NEGATIVE_INDEX(""elements cannot be retrieved from a negative array index {0}""),"
+S1067,LocalizedFormats.java,67,"CANNOT_SET_AT_NEGATIVE_INDEX(""cannot set an element at a negative index {0}""),"
+S1068,LocalizedFormats.java,68,"CANNOT_SUBSTITUTE_ELEMENT_FROM_EMPTY_ARRAY(""cannot substitute an element from an empty array""),"
+S1069,LocalizedFormats.java,69,"CANNOT_TRANSFORM_TO_DOUBLE(""Conversion Exception in Transformation: {0}""),"
+S1070,LocalizedFormats.java,70,"CARDAN_ANGLES_SINGULARITY(""Cardan angles singularity""),"
+S1071,LocalizedFormats.java,71,"CLASS_DOESNT_IMPLEMENT_COMPARABLE(""class ({0}) does not implement Comparable""),"
+S1072,LocalizedFormats.java,72,"CLOSEST_ORTHOGONAL_MATRIX_HAS_NEGATIVE_DETERMINANT(""the closest orthogonal matrix has a negative determinant {0}""),"
+S1073,LocalizedFormats.java,73,"COLUMN_INDEX_OUT_OF_RANGE(""column index {0} out of allowed range [{1}, {2}]""),"
+S1074,LocalizedFormats.java,74,"COLUMN_INDEX(""column index ({0})""), /* keep */"
+S1075,LocalizedFormats.java,75,"CONTINUED_FRACTION_INFINITY_DIVERGENCE(""Continued fraction convergents diverged to +/- infinity for value {0}""),"
+S1076,LocalizedFormats.java,76,"CONTINUED_FRACTION_NAN_DIVERGENCE(""Continued fraction diverged to NaN for value {0}""),"
+S1077,LocalizedFormats.java,77,"CONTRACTION_CRITERIA_SMALLER_THAN_EXPANSION_FACTOR(""contraction criteria ({0}) smaller than the expansion factor ({1}).  This would lead to a never ending loop of expansion and contraction as a newly expanded internal storage array would immediately satisfy the criteria for contraction.""),"
+S1078,LocalizedFormats.java,78,"CONTRACTION_CRITERIA_SMALLER_THAN_ONE(""contraction criteria smaller than one ({0}).  This would lead to a never ending loop of expansion and contraction as an internal storage array length equal to the number of elements would satisfy the contraction criteria.""),"
+S1079,LocalizedFormats.java,79,"CONVERGENCE_FAILED(""convergence failed""), /* keep */"
+S1080,LocalizedFormats.java,80,"CROSSING_BOUNDARY_LOOPS(""some outline boundary loops cross each other""),"
+S1081,LocalizedFormats.java,81,"CUMULATIVE_PROBABILITY_RETURNED_NAN(""Cumulative probability function returned NaN for argument {0} p = {1}""),"
+S1082,LocalizedFormats.java,82,"DIFFERENT_ROWS_LENGTHS(""some rows have length {0} while others have length {1}""),"
+S1083,LocalizedFormats.java,83,"DIGEST_NOT_INITIALIZED(""digest not initialized""),"
+S1084,LocalizedFormats.java,84,"DIMENSIONS_MISMATCH_2x2(""got {0}x{1} but expected {2}x{3}""), /* keep */"
+S1085,LocalizedFormats.java,85,"DIMENSIONS_MISMATCH_SIMPLE(""{0} != {1}""), /* keep */"
+S1086,LocalizedFormats.java,86,"DIMENSIONS_MISMATCH(""dimensions mismatch""), /* keep */"
+S1087,LocalizedFormats.java,87,"DISCRETE_CUMULATIVE_PROBABILITY_RETURNED_NAN(""Discrete cumulative probability function returned NaN for argument {0}""),"
+S1088,LocalizedFormats.java,88,"DISTRIBUTION_NOT_LOADED(""distribution not loaded""),"
+S1089,LocalizedFormats.java,89,"DUPLICATED_ABSCISSA(""Abscissa {0} is duplicated at both indices {1} and {2}""),"
+S1090,LocalizedFormats.java,90,"EMPTY_CLUSTER_IN_K_MEANS(""empty cluster in k-means""),"
+S1091,LocalizedFormats.java,91,"EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY(""empty polynomials coefficients array""), /* keep */"
+S1092,LocalizedFormats.java,92,"EMPTY_SELECTED_COLUMN_INDEX_ARRAY(""empty selected column index array""),"
+S1093,LocalizedFormats.java,93,"EMPTY_SELECTED_ROW_INDEX_ARRAY(""empty selected row index array""),"
+S1094,LocalizedFormats.java,94,"EMPTY_STRING_FOR_IMAGINARY_CHARACTER(""empty string for imaginary character""),"
+S1095,LocalizedFormats.java,95,"ENDPOINTS_NOT_AN_INTERVAL(""endpoints do not specify an interval: [{0}, {1}]""),"
+S1096,LocalizedFormats.java,96,"EQUAL_VERTICES_IN_SIMPLEX(""equal vertices {0} and {1} in simplex configuration""),"
+S1097,LocalizedFormats.java,97,"EULER_ANGLES_SINGULARITY(""Euler angles singularity""),"
+S1098,LocalizedFormats.java,98,"EVALUATION_FAILED(""evaluation failed for argument = {0}""),"
+S1099,LocalizedFormats.java,99,"EVALUATION(""evaluation""), /* keep */"
+S1100,LocalizedFormats.java,100,"EXPANSION_FACTOR_SMALLER_THAN_ONE(""expansion factor smaller than one ({0})""),"
+S1101,LocalizedFormats.java,101,"FACTORIAL_NEGATIVE_PARAMETER(""must have n >= 0 for n!, got n = {0}""),"
+S1102,LocalizedFormats.java,102,"FAILED_BRACKETING(""number of iterations={4}, maximum iterations={5}, initial={6}, lower bound={7}, upper bound={8}, final a value={0}, final b value={1}, f(a)={2}, f(b)={3}""),"
+S1103,LocalizedFormats.java,103,"FAILED_FRACTION_CONVERSION(""Unable to convert {0} to fraction after {1} iterations""),"
+S1104,LocalizedFormats.java,104,"FIRST_COLUMNS_NOT_INITIALIZED_YET(""first {0} columns are not initialized yet""),"
+S1105,LocalizedFormats.java,105,"FIRST_ELEMENT_NOT_ZERO(""first element is not 0: {0}""),"
+S1106,LocalizedFormats.java,106,"FIRST_ROWS_NOT_INITIALIZED_YET(""first {0} rows are not initialized yet""),"
+S1107,LocalizedFormats.java,107,"FRACTION_CONVERSION_OVERFLOW(""Overflow trying to convert {0} to fraction ({1}/{2})""),"
+S1108,LocalizedFormats.java,108,"FUNCTION_NOT_DIFFERENTIABLE(""function is not differentiable""),"
+S1109,LocalizedFormats.java,109,"FUNCTION_NOT_POLYNOMIAL(""function is not polynomial""),"
+S1110,LocalizedFormats.java,110,"GCD_OVERFLOW_32_BITS(""overflow: gcd({0}, {1}) is 2^31""),"
+S1111,LocalizedFormats.java,111,"GCD_OVERFLOW_64_BITS(""overflow: gcd({0}, {1}) is 2^63""),"
+S1112,LocalizedFormats.java,112,"HOLE_BETWEEN_MODELS_TIME_RANGES(""{0} wide hole between models time ranges""),"
+S1113,LocalizedFormats.java,113,"IDENTICAL_ABSCISSAS_DIVISION_BY_ZERO(""identical abscissas x[{0}] == x[{1}] == {2} cause division by zero""),"
+S1114,LocalizedFormats.java,114,"INDEX_LARGER_THAN_MAX(""the index specified: {0} is larger than the current maximal index {1}""),"
+S1115,LocalizedFormats.java,115,"INDEX_NOT_POSITIVE(""index ({0}) is not positive""),"
+S1116,LocalizedFormats.java,116,"INDEX_OUT_OF_RANGE(""index {0} out of allowed range [{1}, {2}]""),"
+S1117,LocalizedFormats.java,117,"INDEX(""index ({0})""), /* keep */"
+S1118,LocalizedFormats.java,118,"NOT_FINITE_NUMBER(""{0} is not a finite number""), /* keep */"
+S1119,LocalizedFormats.java,119,"ARRAY_ELEMENT(""value {0} at index {1}""), /* keep */"
+S1120,LocalizedFormats.java,120,"INFINITE_ARRAY_ELEMENT(""Array contains an infinite element, {0} at index {1}""),"
+S1121,LocalizedFormats.java,121,"INFINITE_VALUE_CONVERSION(""cannot convert infinite value""),"
+S1122,LocalizedFormats.java,122,"INITIAL_CAPACITY_NOT_POSITIVE(""initial capacity ({0}) is not positive""),"
+S1123,LocalizedFormats.java,123,"INITIAL_COLUMN_AFTER_FINAL_COLUMN(""initial column {1} after final column {0}""),"
+S1124,LocalizedFormats.java,124,"INITIAL_ROW_AFTER_FINAL_ROW(""initial row {1} after final row {0}""),"
+S1125,LocalizedFormats.java,125,"INPUT_DATA_FROM_UNSUPPORTED_DATASOURCE(""input data comes from unsupported datasource: {0}, supported sources: {1}, {2}""),"
+S1126,LocalizedFormats.java,126,"INSTANCES_NOT_COMPARABLE_TO_EXISTING_VALUES(""instance of class {0} not comparable to existing values""),"
+S1127,LocalizedFormats.java,127,"INSUFFICIENT_DATA_FOR_T_STATISTIC(""insufficient data for t statistic, needs at least 2, got {0}""),"
+S1128,LocalizedFormats.java,128,"INSUFFICIENT_DIMENSION(""insufficient dimension {0}, must be at least {1}""),"
+S1129,LocalizedFormats.java,129,"DIMENSION(""dimension ({0})""), /* keep */"
+S1130,LocalizedFormats.java,130,"INSUFFICIENT_OBSERVED_POINTS_IN_SAMPLE(""sample contains {0} observed points, at least {1} are required""),"
+S1131,LocalizedFormats.java,131,"INSUFFICIENT_ROWS_AND_COLUMNS(""insufficient data: only {0} rows and {1} columns.""),"
+S1132,LocalizedFormats.java,132,"INTEGRATION_METHOD_NEEDS_AT_LEAST_TWO_PREVIOUS_POINTS(""{0} method needs at least two previous points""),"
+S1133,LocalizedFormats.java,133,"INTERNAL_ERROR(""internal error, please fill a bug report at {0}""),"
+S1134,LocalizedFormats.java,134,"INVALID_BINARY_DIGIT(""invalid binary digit: {0}""),"
+S1135,LocalizedFormats.java,135,"INVALID_BRACKETING_PARAMETERS(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}""),"
+S1136,LocalizedFormats.java,136,"INVALID_INTERVAL_INITIAL_VALUE_PARAMETERS(""invalid interval, initial value parameters:  lower={0}, initial={1}, upper={2}""),"
+S1137,LocalizedFormats.java,137,"INVALID_ITERATIONS_LIMITS(""invalid iteration limits: min={0}, max={1}""),"
+S1138,LocalizedFormats.java,138,"INVALID_MAX_ITERATIONS(""bad value for maximum iterations number: {0}""),"
+S1139,LocalizedFormats.java,139,"INVALID_REGRESSION_ARRAY(""input data array length = {0} does not match the number of observations = {1} and the number of regressors = {2}""),"
+S1140,LocalizedFormats.java,140,"INVALID_REGRESSION_OBSERVATION(""length of regressor array = {0} does not match the number of variables = {1} in the model""),"
+S1141,LocalizedFormats.java,141,"INVALID_ROUNDING_METHOD(""invalid rounding method {0}, valid methods: {1} ({2}), {3} ({4}), {5} ({6}), {7} ({8}), {9} ({10}), {11} ({12}), {13} ({14}), {15} ({16})""),"
+S1142,LocalizedFormats.java,142,"ITERATOR_EXHAUSTED(""iterator exhausted""),"
+S1143,LocalizedFormats.java,143,"LCM_OVERFLOW_32_BITS(""overflow: lcm({0}, {1}) is 2^31""),"
+S1144,LocalizedFormats.java,144,"LCM_OVERFLOW_64_BITS(""overflow: lcm({0}, {1}) is 2^63""),"
+S1145,LocalizedFormats.java,145,"LIST_OF_CHROMOSOMES_BIGGER_THAN_POPULATION_SIZE(""list of chromosomes bigger than maxPopulationSize""),"
+S1146,LocalizedFormats.java,146,"LOESS_EXPECTS_AT_LEAST_ONE_POINT(""Loess expects at least 1 point""),"
+S1147,LocalizedFormats.java,147,"LOWER_BOUND_NOT_BELOW_UPPER_BOUND(""lower bound ({0}) must be strictly less than upper bound ({1})""), /* keep */"
+S1148,LocalizedFormats.java,148,"LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT(""lower endpoint ({0}) must be less than or equal to upper endpoint ({1})""),"
+S1149,LocalizedFormats.java,149,"MAP_MODIFIED_WHILE_ITERATING(""map has been modified while iterating""),"
+S1150,LocalizedFormats.java,150,"EVALUATIONS(""evaluations""), /* keep */"
+S1151,LocalizedFormats.java,151,"MAX_COUNT_EXCEEDED(""maximal count ({0}) exceeded""), /* keep */"
+S1152,LocalizedFormats.java,152,"MAX_EVALUATIONS_EXCEEDED(""maximal number of evaluations ({0}) exceeded""),"
+S1153,LocalizedFormats.java,153,"MAX_ITERATIONS_EXCEEDED(""maximal number of iterations ({0}) exceeded""),"
+S1154,LocalizedFormats.java,154,"MINIMAL_STEPSIZE_REACHED_DURING_INTEGRATION(""minimal step size ({0,number,0.00E00}) reached, integration needs {1,number,0.00E00}""),"
+S1155,LocalizedFormats.java,155,"MISMATCHED_LOESS_ABSCISSA_ORDINATE_ARRAYS(""Loess expects the abscissa and ordinate arrays to be of the same size, but got {0} abscissae and {1} ordinatae""),"
+S1156,LocalizedFormats.java,156,"NAN_ELEMENT_AT_INDEX(""element {0} is NaN""),"
+S1157,LocalizedFormats.java,157,"NAN_VALUE_CONVERSION(""cannot convert NaN value""),"
+S1158,LocalizedFormats.java,158,"NEGATIVE_BRIGHTNESS_EXPONENT(""brightness exponent should be positive or null, but got {0}""),"
+S1159,LocalizedFormats.java,159,"NEGATIVE_COMPLEX_MODULE(""negative complex module {0}""),"
+S1160,LocalizedFormats.java,160,"NEGATIVE_ELEMENT_AT_2D_INDEX(""element ({0}, {1}) is negative: {2}""),"
+S1161,LocalizedFormats.java,161,"NEGATIVE_ELEMENT_AT_INDEX(""element {0} is negative: {1}""),"
+S1162,LocalizedFormats.java,162,"NEGATIVE_NUMBER_OF_SUCCESSES(""number of successes must be non-negative ({0})""),"
+S1163,LocalizedFormats.java,163,"NUMBER_OF_SUCCESSES(""number of successes ({0})""), /* keep */"
+S1164,LocalizedFormats.java,164,"NEGATIVE_NUMBER_OF_TRIALS(""number of trials must be non-negative ({0})""),"
+S1165,LocalizedFormats.java,165,"NUMBER_OF_INTERPOLATION_POINTS(""number of interpolation points ({0})""), /* keep */"
+S1166,LocalizedFormats.java,166,"NUMBER_OF_TRIALS(""number of trials ({0})""),"
+S1167,LocalizedFormats.java,167,"ROBUSTNESS_ITERATIONS(""number of robustness iterations ({0})""),"
+S1168,LocalizedFormats.java,168,"START_POSITION(""start position ({0})""), /* keep */"
+S1169,LocalizedFormats.java,169,"NON_CONVERGENT_CONTINUED_FRACTION(""Continued fraction convergents failed to converge (in less than {0} iterations) for value {1}""),"
+S1170,LocalizedFormats.java,170,"NON_INVERTIBLE_TRANSFORM(""non-invertible affine transform collapses some lines into single points""),"
+S1171,LocalizedFormats.java,171,"NON_POSITIVE_MICROSPHERE_ELEMENTS(""number of microsphere elements must be positive, but got {0}""),"
+S1172,LocalizedFormats.java,172,"NON_POSITIVE_POLYNOMIAL_DEGREE(""polynomial degree must be positive: degree={0}""),"
+S1173,LocalizedFormats.java,173,"NON_REAL_FINITE_ABSCISSA(""all abscissae must be finite real numbers, but {0}-th is {1}""),"
+S1174,LocalizedFormats.java,174,"NON_REAL_FINITE_ORDINATE(""all ordinatae must be finite real numbers, but {0}-th is {1}""),"
+S1175,LocalizedFormats.java,175,"NON_REAL_FINITE_WEIGHT(""all weights must be finite real numbers, but {0}-th is {1}""),"
+S1176,LocalizedFormats.java,176,"NON_SQUARE_MATRIX(""non square ({0}x{1}) matrix""),"
+S1177,LocalizedFormats.java,177,"NORMALIZE_INFINITE(""Cannot normalize to an infinite value""),"
+S1178,LocalizedFormats.java,178,"NORMALIZE_NAN(""Cannot normalize to NaN""),"
+S1179,LocalizedFormats.java,179,"NOT_ADDITION_COMPATIBLE_MATRICES(""{0}x{1} and {2}x{3} matrices are not addition compatible""),"
+S1180,LocalizedFormats.java,180,"NOT_DECREASING_NUMBER_OF_POINTS(""points {0} and {1} are not decreasing ({2} < {3})""),"
+S1181,LocalizedFormats.java,181,"NOT_DECREASING_SEQUENCE(""points {3} and {2} are not decreasing ({1} < {0})""), /* keep */"
+S1182,LocalizedFormats.java,182,"NOT_ENOUGH_DATA_FOR_NUMBER_OF_PREDICTORS(""not enough data ({0} rows) for this many predictors ({1} predictors)""),"
+S1183,LocalizedFormats.java,183,"NOT_ENOUGH_POINTS_IN_SPLINE_PARTITION(""spline partition must have at least {0} points, got {1}""),"
+S1184,LocalizedFormats.java,184,"NOT_INCREASING_NUMBER_OF_POINTS(""points {0} and {1} are not increasing ({2} > {3})""),"
+S1185,LocalizedFormats.java,185,"NOT_INCREASING_SEQUENCE(""points {3} and {2} are not increasing ({1} > {0})""), /* keep */"
+S1186,LocalizedFormats.java,186,"NOT_MULTIPLICATION_COMPATIBLE_MATRICES(""{0}x{1} and {2}x{3} matrices are not multiplication compatible""),"
+S1187,LocalizedFormats.java,187,"ALPHA(""alpha""), /* keep */"
+S1188,LocalizedFormats.java,188,"BETA(""beta""), /* keep */"
+S1189,LocalizedFormats.java,189,"NOT_POSITIVE_COLUMNDIMENSION(""invalid column dimension: {0} (must be positive)""),"
+S1190,LocalizedFormats.java,190,"NOT_POSITIVE_DEFINITE_MATRIX(""not positive definite matrix""),"
+S1191,LocalizedFormats.java,191,"NON_POSITIVE_DEFINITE_MATRIX(""not positive definite matrix: diagonal element at ({0},{0}) is larger than {2}""), /* keep */"
+S1192,LocalizedFormats.java,192,"NON_POSITIVE_DEFINITE_LINEAR_OPERATOR(""non positive definite linear operator""), /* keep */"
+S1193,LocalizedFormats.java,193,"NON_SELF_ADJOINT_LINEAR_OPERATOR(""non self-adjoint linear operator""), /* keep */"
+S1194,LocalizedFormats.java,194,"NON_SQUARE_LINEAR_OPERATOR(""non square ({0}x{1}) linear operator""), /* keep */"
+S1195,LocalizedFormats.java,195,"DEGREES_OF_FREEDOM(""degrees of freedom ({0})""), /* keep */"
+S1196,LocalizedFormats.java,196,"NOT_POSITIVE_DEGREES_OF_FREEDOM(""degrees of freedom must be positive ({0})""),"
+S1197,LocalizedFormats.java,197,"NOT_POSITIVE_ELEMENT_AT_INDEX(""element {0} is not positive: {1}""),"
+S1198,LocalizedFormats.java,198,"NOT_POSITIVE_EXPONENT(""invalid exponent {0} (must be positive)""),"
+S1199,LocalizedFormats.java,199,"EXPONENT(""exponent ({0})""), /* keep */"
+S1200,LocalizedFormats.java,200,"NOT_POSITIVE_LENGTH(""length must be positive ({0})""),"
+S1201,LocalizedFormats.java,201,"LENGTH(""length ({0})""), /* keep */"
+S1202,LocalizedFormats.java,202,"NOT_POSITIVE_MEAN(""mean must be positive ({0})""),"
+S1203,LocalizedFormats.java,203,"MEAN(""mean ({0})""), /* keep */"
+S1204,LocalizedFormats.java,204,"NOT_POSITIVE_NUMBER_OF_SAMPLES(""number of sample is not positive: {0}""),"
+S1205,LocalizedFormats.java,205,"NUMBER_OF_SAMPLES(""number of samples ({0})""), /* keep */"
+S1206,LocalizedFormats.java,206,"NOT_POSITIVE_PERMUTATION(""permutation k ({0}) must be positive""),"
+S1207,LocalizedFormats.java,207,"PERMUTATION_SIZE(""permutation size ({0}""), /* keep */"
+S1208,LocalizedFormats.java,208,"NOT_POSITIVE_POISSON_MEAN(""the Poisson mean must be positive ({0})""),"
+S1209,LocalizedFormats.java,209,"NOT_POSITIVE_POPULATION_SIZE(""population size must be positive ({0})""),"
+S1210,LocalizedFormats.java,210,"POPULATION_SIZE(""population size ({0})""), /* keep */"
+S1211,LocalizedFormats.java,211,"NOT_POSITIVE_ROW_DIMENSION(""invalid row dimension: {0} (must be positive)""),"
+S1212,LocalizedFormats.java,212,"NOT_POSITIVE_SAMPLE_SIZE(""sample size must be positive ({0})""),"
+S1213,LocalizedFormats.java,213,"NOT_POSITIVE_SCALE(""scale must be positive ({0})""),"
+S1214,LocalizedFormats.java,214,"SCALE(""scale ({0})""), /* keep */"
+S1215,LocalizedFormats.java,215,"NOT_POSITIVE_SHAPE(""shape must be positive ({0})""),"
+S1216,LocalizedFormats.java,216,"SHAPE(""shape ({0})""), /* keep */"
+S1217,LocalizedFormats.java,217,"NOT_POSITIVE_STANDARD_DEVIATION(""standard deviation must be positive ({0})""),"
+S1218,LocalizedFormats.java,218,"STANDARD_DEVIATION(""standard deviation ({0})""), /* keep */"
+S1219,LocalizedFormats.java,219,"NOT_POSITIVE_UPPER_BOUND(""upper bound must be positive ({0})""),"
+S1220,LocalizedFormats.java,220,"NOT_POSITIVE_WINDOW_SIZE(""window size must be positive ({0})""),"
+S1221,LocalizedFormats.java,221,"NOT_POWER_OF_TWO(""{0} is not a power of 2""),"
+S1222,LocalizedFormats.java,222,"NOT_POWER_OF_TWO_CONSIDER_PADDING(""{0} is not a power of 2, consider padding for fix""),"
+S1223,LocalizedFormats.java,223,"NOT_POWER_OF_TWO_PLUS_ONE(""{0} is not a power of 2 plus one""),"
+S1224,LocalizedFormats.java,224,"NOT_STRICTLY_DECREASING_NUMBER_OF_POINTS(""points {0} and {1} are not strictly decreasing ({2} <= {3})""),"
+S1225,LocalizedFormats.java,225,"NOT_STRICTLY_DECREASING_SEQUENCE(""points {3} and {2} are not strictly decreasing ({1} <= {0})""), /* keep */"
+S1226,LocalizedFormats.java,226,"NOT_STRICTLY_INCREASING_KNOT_VALUES(""knot values must be strictly increasing""),"
+S1227,LocalizedFormats.java,227,"NOT_STRICTLY_INCREASING_NUMBER_OF_POINTS(""points {0} and {1} are not strictly increasing ({2} >= {3})""),"
+S1228,LocalizedFormats.java,228,"NOT_STRICTLY_INCREASING_SEQUENCE(""points {3} and {2} are not strictly increasing ({1} >= {0})""), /* keep */"
+S1229,LocalizedFormats.java,229,"NOT_SUBTRACTION_COMPATIBLE_MATRICES(""{0}x{1} and {2}x{3} matrices are not subtraction compatible""),"
+S1230,LocalizedFormats.java,230,"NOT_SUPPORTED_IN_DIMENSION_N(""method not supported in dimension {0}""),"
+S1231,LocalizedFormats.java,231,"NOT_SYMMETRIC_MATRIX(""not symmetric matrix""),"
+S1232,LocalizedFormats.java,232,"NON_SYMMETRIC_MATRIX(""non symmetric matrix: the difference between entries at ({0},{1}) and ({1},{0}) is larger than {2}""), /* keep */"
+S1233,LocalizedFormats.java,233,"NO_BIN_SELECTED(""no bin selected""),"
+S1234,LocalizedFormats.java,234,"NO_CONVERGENCE_WITH_ANY_START_POINT(""none of the {0} start points lead to convergence""), /* keep */"
+S1235,LocalizedFormats.java,235,"NO_DATA(""no data""), /* keep */"
+S1236,LocalizedFormats.java,236,"NO_DEGREES_OF_FREEDOM(""no degrees of freedom ({0} measurements, {1} parameters)""),"
+S1237,LocalizedFormats.java,237,"NO_DENSITY_FOR_THIS_DISTRIBUTION(""This distribution does not have a density function implemented""),"
+S1238,LocalizedFormats.java,238,"NO_FEASIBLE_SOLUTION(""no feasible solution""),"
+S1239,LocalizedFormats.java,239,"NO_OPTIMUM_COMPUTED_YET(""no optimum computed yet""), /* keep */"
+S1240,LocalizedFormats.java,240,"NO_REGRESSORS(""Regression model must include at least one regressor""),"
+S1241,LocalizedFormats.java,241,"NO_RESULT_AVAILABLE(""no result available""),"
+S1242,LocalizedFormats.java,242,"NO_SUCH_MATRIX_ENTRY(""no entry at indices ({0}, {1}) in a {2}x{3} matrix""),"
+S1243,LocalizedFormats.java,243,"NULL_NOT_ALLOWED(""null is not allowed""), /* keep */"
+S1244,LocalizedFormats.java,244,"COVARIANCE_MATRIX(""covariance matrix""), /* keep */"
+S1245,LocalizedFormats.java,245,"DENOMINATOR(""denominator""), /* keep */"
+S1246,LocalizedFormats.java,246,"DENOMINATOR_FORMAT(""denominator format""), /* keep */"
+S1247,LocalizedFormats.java,247,"FRACTION(""fraction""), /* keep */"
+S1248,LocalizedFormats.java,248,"FUNCTION(""function""), /* keep */"
+S1249,LocalizedFormats.java,249,"IMAGINARY_FORMAT(""imaginary format""), /* keep */"
+S1250,LocalizedFormats.java,250,"INPUT_ARRAY(""input array""), /* keep */"
+S1251,LocalizedFormats.java,251,"NUMERATOR(""numerator""), /* keep */"
+S1252,LocalizedFormats.java,252,"NUMERATOR_FORMAT(""numerator format""), /* keep */"
+S1253,LocalizedFormats.java,253,"OBJECT_TRANSFORMATION(""conversion exception in transformation""), /* keep */"
+S1254,LocalizedFormats.java,254,"REAL_FORMAT(""real format""), /* keep */"
+S1255,LocalizedFormats.java,255,"WHOLE_FORMAT(""whole format""), /* keep */"
+S1256,LocalizedFormats.java,256,"NUMBER_TOO_LARGE(""{0} is larger than the maximum ({1})""), /* keep */"
+S1257,LocalizedFormats.java,257,"NUMBER_TOO_SMALL(""{0} is smaller than the minimum ({1})""), /* keep */"
+S1258,LocalizedFormats.java,258,"NUMBER_TOO_LARGE_BOUND_EXCLUDED(""{0} is larger than, or equal to, the maximum ({1})""), /* keep */"
+S1259,LocalizedFormats.java,259,"NUMBER_TOO_SMALL_BOUND_EXCLUDED(""{0} is smaller than, or equal to, the minimum ({1})""), /* keep */"
+S1260,LocalizedFormats.java,260,"NUMBER_OF_SUCCESS_LARGER_THAN_POPULATION_SIZE(""number of successes ({0}) must be less than or equal to population size ({1})""),"
+S1261,LocalizedFormats.java,261,"NUMERATOR_OVERFLOW_AFTER_MULTIPLY(""overflow, numerator too large after multiply: {0}""),"
+S1262,LocalizedFormats.java,262,"N_POINTS_GAUSS_LEGENDRE_INTEGRATOR_NOT_SUPPORTED(""{0} points Legendre-Gauss integrator not supported, number of points must be in the {1}-{2} range""),"
+S1263,LocalizedFormats.java,263,"OBSERVED_COUNTS_ALL_ZERO(""observed counts are all 0 in observed array {0}""),"
+S1264,LocalizedFormats.java,264,"OBSERVED_COUNTS_BOTTH_ZERO_FOR_ENTRY(""observed counts are both zero for entry {0}""),"
+S1265,LocalizedFormats.java,265,"BOBYQA_BOUND_DIFFERENCE_CONDITION(""the difference between the upper and lower bound must be larger than twice the initial trust region radius ({0})""),"
+S1266,LocalizedFormats.java,266,"OUT_OF_BOUNDS_QUANTILE_VALUE(""out of bounds quantile value: {0}, must be in (0, 100]""),"
+S1267,LocalizedFormats.java,267,"OUT_OF_BOUND_SIGNIFICANCE_LEVEL(""out of bounds significance level {0}, must be between {1} and {2}""),"
+S1268,LocalizedFormats.java,268,"SIGNIFICANCE_LEVEL(""significance level ({0})""), /* keep */"
+S1269,LocalizedFormats.java,269,"OUT_OF_ORDER_ABSCISSA_ARRAY(""the abscissae array must be sorted in a strictly increasing order, but the {0}-th element is {1} whereas {2}-th is {3}""),"
+S1270,LocalizedFormats.java,270,"OUT_OF_RANGE_ROOT_OF_UNITY_INDEX(""out of range root of unity index {0} (must be in [{1};{2}])""),"
+S1271,LocalizedFormats.java,271,"OUT_OF_RANGE(""out of range""), /* keep */"
+S1272,LocalizedFormats.java,272,"OUT_OF_RANGE_SIMPLE(""{0} out of [{1}, {2}] range""), /* keep */"
+S1273,LocalizedFormats.java,273,"OUTLINE_BOUNDARY_LOOP_OPEN(""an outline boundary loop is open""),"
+S1274,LocalizedFormats.java,274,"OVERFLOW_IN_FRACTION(""overflow in fraction {0}/{1}, cannot negate""),"
+S1275,LocalizedFormats.java,275,"OVERFLOW_IN_ADDITION(""overflow in addition: {0} + {1}""),"
+S1276,LocalizedFormats.java,276,"OVERFLOW_IN_SUBTRACTION(""overflow in subtraction: {0} - {1}""),"
+S1277,LocalizedFormats.java,277,"PERCENTILE_IMPLEMENTATION_CANNOT_ACCESS_METHOD(""cannot access {0} method in percentile implementation {1}""),"
+S1278,LocalizedFormats.java,278,"PERCENTILE_IMPLEMENTATION_UNSUPPORTED_METHOD(""percentile implementation {0} does not support {1}""),"
+S1279,LocalizedFormats.java,279,"PERMUTATION_EXCEEDS_N(""permutation size ({0}) exceeds permuation domain ({1})""), /* keep */"
+S1280,LocalizedFormats.java,280,"POLYNOMIAL(""polynomial""), /* keep */"
+S1281,LocalizedFormats.java,281,"POLYNOMIAL_INTERPOLANTS_MISMATCH_SEGMENTS(""number of polynomial interpolants must match the number of segments ({0} != {1} - 1)""),"
+S1282,LocalizedFormats.java,282,"POPULATION_LIMIT_NOT_POSITIVE(""population limit has to be positive""),"
+S1283,LocalizedFormats.java,283,"POSITION_SIZE_MISMATCH_INPUT_ARRAY(""position {0} and size {1} don't fit to the size of the input array {2}""),"
+S1284,LocalizedFormats.java,284,"POWER_NEGATIVE_PARAMETERS(""cannot raise an integral value to a negative power ({0}^{1})""),"
+S1285,LocalizedFormats.java,285,"PROPAGATION_DIRECTION_MISMATCH(""propagation direction mismatch""),"
+S1286,LocalizedFormats.java,286,"RANDOMKEY_MUTATION_WRONG_CLASS(""RandomKeyMutation works only with RandomKeys, not {0}""),"
+S1287,LocalizedFormats.java,287,"ROOTS_OF_UNITY_NOT_COMPUTED_YET(""roots of unity have not been computed yet""),"
+S1288,LocalizedFormats.java,288,"ROTATION_MATRIX_DIMENSIONS(""a {0}x{1} matrix cannot be a rotation matrix""),"
+S1289,LocalizedFormats.java,289,"ROW_INDEX_OUT_OF_RANGE(""row index {0} out of allowed range [{1}, {2}]""),"
+S1290,LocalizedFormats.java,290,"ROW_INDEX(""row index ({0})""), /* keep */"
+S1291,LocalizedFormats.java,291,"SAME_SIGN_AT_ENDPOINTS(""function values at endpoints do not have different signs, endpoints: [{0}, {1}], values: [{2}, {3}]""),"
+S1292,LocalizedFormats.java,292,"SAMPLE_SIZE_EXCEEDS_COLLECTION_SIZE(""sample size ({0}) exceeds collection size ({1})""), /* keep */"
+S1293,LocalizedFormats.java,293,"SAMPLE_SIZE_LARGER_THAN_POPULATION_SIZE(""sample size ({0}) must be less than or equal to population size ({1})""),"
+S1294,LocalizedFormats.java,294,"SIMPLEX_NEED_ONE_POINT(""simplex must contain at least one point""),"
+S1295,LocalizedFormats.java,295,"SIMPLE_MESSAGE(""{0}""),"
+S1296,LocalizedFormats.java,296,"SINGULAR_MATRIX(""matrix is singular""), /* keep */"
+S1297,LocalizedFormats.java,297,"SUBARRAY_ENDS_AFTER_ARRAY_END(""subarray ends after array end""),"
+S1298,LocalizedFormats.java,298,"TOO_LARGE_CUTOFF_SINGULAR_VALUE(""cutoff singular value is {0}, should be at most {1}""),"
+S1299,LocalizedFormats.java,299,"TOO_MANY_ELEMENTS_TO_DISCARD_FROM_ARRAY(""cannot discard {0} elements from a {1} elements array""),"
+S1300,LocalizedFormats.java,300,"TOO_MUCH_CANCELLATION(""too much cancellation in a denominator""),"
+S1301,LocalizedFormats.java,301,"TOO_MANY_REGRESSORS(""too many regressors ({0}) specified, only {1} in the model""),"
+S1302,LocalizedFormats.java,302,"TOO_SMALL_COST_RELATIVE_TOLERANCE(""cost relative tolerance is too small ({0}), no further reduction in the sum of squares is possible""),"
+S1303,LocalizedFormats.java,303,"TOO_SMALL_INTEGRATION_INTERVAL(""too small integration interval: length = {0}""),"
+S1304,LocalizedFormats.java,304,"TOO_SMALL_ORTHOGONALITY_TOLERANCE(""orthogonality tolerance is too small ({0}), solution is orthogonal to the jacobian""),"
+S1305,LocalizedFormats.java,305,"TOO_SMALL_PARAMETERS_RELATIVE_TOLERANCE(""parameters relative tolerance is too small ({0}), no further improvement in the approximate solution is possible""),"
+S1306,LocalizedFormats.java,306,"TRUST_REGION_STEP_FAILED(""trust region step has failed to reduce Q""),"
+S1307,LocalizedFormats.java,307,"TWO_OR_MORE_CATEGORIES_REQUIRED(""two or more categories required, got {0}""),"
+S1308,LocalizedFormats.java,308,"TWO_OR_MORE_VALUES_IN_CATEGORY_REQUIRED(""two or more values required in each category, one has {0}""),"
+S1309,LocalizedFormats.java,309,"UNABLE_TO_BRACKET_OPTIMUM_IN_LINE_SEARCH(""unable to bracket optimum in line search""),"
+S1310,LocalizedFormats.java,310,"UNABLE_TO_COMPUTE_COVARIANCE_SINGULAR_PROBLEM(""unable to compute covariances: singular problem""),"
+S1311,LocalizedFormats.java,311,"UNABLE_TO_FIRST_GUESS_HARMONIC_COEFFICIENTS(""unable to first guess the harmonic coefficients""),"
+S1312,LocalizedFormats.java,312,"UNABLE_TO_ORTHOGONOLIZE_MATRIX(""unable to orthogonalize matrix in {0} iterations""),"
+S1313,LocalizedFormats.java,313,"UNABLE_TO_PERFORM_QR_DECOMPOSITION_ON_JACOBIAN(""unable to perform Q.R decomposition on the {0}x{1} jacobian matrix""),"
+S1314,LocalizedFormats.java,314,"UNABLE_TO_SOLVE_SINGULAR_PROBLEM(""unable to solve: singular problem""),"
+S1315,LocalizedFormats.java,315,"UNBOUNDED_SOLUTION(""unbounded solution""),"
+S1316,LocalizedFormats.java,316,"UNKNOWN_MODE(""unknown mode {0}, known modes: {1} ({2}), {3} ({4}), {5} ({6}), {7} ({8}), {9} ({10}) and {11} ({12})""),"
+S1317,LocalizedFormats.java,317,"CANNOT_PARSE_AS_TYPE(""string {0} unparseable (from position {1}) as an object of type {2}""), /* keep */"
+S1318,LocalizedFormats.java,318,"CANNOT_PARSE(""string {0} unparseable (from position {1})""), /* keep */"
+S1319,LocalizedFormats.java,319,"UNPARSEABLE_3D_VECTOR(""unparseable 3D vector: \""{0}\""""),"
+S1320,LocalizedFormats.java,320,"UNPARSEABLE_COMPLEX_NUMBER(""unparseable complex number: \""{0}\""""),"
+S1321,LocalizedFormats.java,321,"UNPARSEABLE_FRACTION_NUMBER(""unparseable fraction number: \""{0}\""""),"
+S1322,LocalizedFormats.java,322,"UNPARSEABLE_REAL_VECTOR(""unparseable real vector: \""{0}\""""),"
+S1323,LocalizedFormats.java,323,"UNSUPPORTED_EXPANSION_MODE(""unsupported expansion mode {0}, supported modes are {1} ({2}) and {3} ({4})""),"
+S1324,LocalizedFormats.java,324,"UNSUPPORTED_OPERATION(""unsupported operation""), /* keep */"
+S1325,LocalizedFormats.java,325,"ARITHMETIC_EXCEPTION(""arithmetic exception""), /* keep */"
+S1326,LocalizedFormats.java,326,"ILLEGAL_STATE(""illegal state""), /* keep */"
+S1327,LocalizedFormats.java,327,"USER_EXCEPTION(""exception generated in user code""), /* keep */"
+S1328,LocalizedFormats.java,328,"URL_CONTAINS_NO_DATA(""URL {0} contains no data""),"
+S1329,LocalizedFormats.java,329,"VALUES_ADDED_BEFORE_CONFIGURING_STATISTIC(""{0} values have been added before statistic is configured""),"
+S1330,LocalizedFormats.java,330,"VECTOR_LENGTH_MISMATCH(""vector length mismatch: got {0} but expected {1}""),"
+S1331,LocalizedFormats.java,331,"VECTOR_MUST_HAVE_AT_LEAST_ONE_ELEMENT(""vector must have at least one element""),"
+S1332,LocalizedFormats.java,332,"WEIGHT_AT_LEAST_ONE_NON_ZERO(""weigth array must contain at least one non-zero value""),"
+S1333,LocalizedFormats.java,333,"WRONG_BLOCK_LENGTH(""wrong array shape (block length = {0}, expected {1})""),"
+S1334,LocalizedFormats.java,334,"WRONG_NUMBER_OF_POINTS(""{0} points are required, got only {1}""),"
+S1335,LocalizedFormats.java,335,"NUMBER_OF_POINTS(""number of points ({0})""), /* keep */"
+S1336,LocalizedFormats.java,336,"ZERO_DENOMINATOR(""denominator must be different from 0""),"
+S1337,LocalizedFormats.java,337,"ZERO_DENOMINATOR_IN_FRACTION(""zero denominator in fraction {0}/{1}""),"
+S1338,LocalizedFormats.java,338,"ZERO_FRACTION_TO_DIVIDE_BY(""the fraction to divide by must not be zero: {0}/{1}""),"
+S1339,LocalizedFormats.java,339,"ZERO_NORM(""zero norm""),"
+S1340,LocalizedFormats.java,340,"ZERO_NORM_FOR_ROTATION_AXIS(""zero norm for rotation axis""),"
+S1341,LocalizedFormats.java,341,"ZERO_NORM_FOR_ROTATION_DEFINING_VECTOR(""zero norm for rotation defining vector""),"
+S1342,LocalizedFormats.java,342,"ZERO_NOT_ALLOWED(""zero not allowed here"");"
+S1343,LocalizedFormats.java,355,private LocalizedFormats(final String sourceFormat) {
+S1344,LocalizedFormats.java,356,this.sourceFormat = sourceFormat;
+S1345,LocalizedFormats.java,367,ResourceBundle bundle =
+S1346,LocalizedFormats.java,374,} catch (MissingResourceException mre) {
+S1347,LocalizedFormats.java,380,return sourceFormat;
+S1348,MathIllegalStateException.java,36,private final ExceptionContext context = new ExceptionContext();
+S1349,MathIllegalStateException.java,45,Object ... args) {
+S1350,MathIllegalStateException.java,46,"context.addMessage(pattern, args);"
+S1351,MathIllegalStateException.java,67,this(LocalizedFormats.ILLEGAL_STATE);
+S1352,MathIllegalStateException.java,72,return context;
+S1353,MathIllegalStateException.java,78,return context.getMessage();
+S1354,MathIllegalStateException.java,84,return context.getLocalizedMessage();
+S1355,MathUtils.java,85,private static final long[] FACTORIALS = new long[] {
+S1356,MathUtils.java,611,"return equals(x, y, 1);"
+S1357,MathUtils.java,675,long xInt = Double.doubleToLongBits(x);
+S1358,MathUtils.java,676,long yInt = Double.doubleToLongBits(y);
+S1359,MathUtils.java,679,if (xInt < 0) {
+S1360,MathUtils.java,680,xInt = SGN_MASK - xInt;
+S1361,MathUtils.java,682,if (yInt < 0) {
+S1362,MathUtils.java,686,final boolean isEqual = FastMath.abs(xInt - yInt) <= maxUlps;
+S1363,MathUtils.java,688,return isEqual && !Double.isNaN(x) && !Double.isNaN(y);
+S1364,MathUtils.java,1946,public static enum OrderDirection {
+S1365,MathUtils.java,1948,"INCREASING,"
+S1366,MathUtils.java,1950,DECREASING
+S1367,MathUtils.java,2334,if (o == null) {
+S1368,MaxCountExceededException.java,42,"this(LocalizedFormats.MAX_COUNT_EXCEEDED, max);"
+S1369,MaxCountExceededException.java,53,Object ... args) {
+S1370,MaxCountExceededException.java,54,"getContext().addMessage(specific, max, args);"
+S1371,MaxCountExceededException.java,55,this.max = max;
+S1372,MaxCountExceededException.java,62,return max;
+S1373,PegasusSolver.java,67,"super(relativeAccuracy, absoluteAccuracy, Method.PEGASUS);"
+S1374,RegulaFalsiSolver.java,43,"super(DEFAULT_ABSOLUTE_ACCURACY, Method.REGULA_FALSI);"
+S1375,RungeKuttaStepInterpolator.java,57,super();
+S1376,RungeKuttaStepInterpolator.java,58,yDotK      = null;
+S1377,RungeKuttaStepInterpolator.java,59,integrator = null;
+S1378,RungeKuttaStepInterpolator.java,81,super(interpolator);
+S1379,RungeKuttaStepInterpolator.java,83,if (interpolator.currentState != null) {
+S1380,RungeKuttaStepInterpolator.java,94,yDotK = null;
+S1381,RungeKuttaStepInterpolator.java,99,integrator = null;
+S1382,RungeKuttaStepInterpolator.java,126,"reinitialize(y, forward);"
+S1383,RungeKuttaStepInterpolator.java,127,this.yDotK = yDotArray;
+S1384,RungeKuttaStepInterpolator.java,128,this.integrator = rkIntegrator;
+S1385,TooManyEvaluationsException.java,37,super(max);
+S1386,TooManyEvaluationsException.java,38,getContext().addMessage(LocalizedFormats.EVALUATIONS);
+S1387,UnivariateRealSolverUtils.java,99,if (allowedSolution == AllowedSolution.ANY_SIDE) {
+S1388,UnivariateRealSolverUtils.java,105,"final double step = FastMath.max(bracketing.getAbsoluteAccuracy(),"
+S1389,UnivariateRealSolverUtils.java,107,"double xLo        = FastMath.max(min, baseRoot - step);"
+S1390,UnivariateRealSolverUtils.java,108,double fLo        = f.value(xLo);
+S1391,UnivariateRealSolverUtils.java,109,"double xHi        = FastMath.min(max, baseRoot + step);"
+S1392,UnivariateRealSolverUtils.java,110,double fHi        = f.value(xHi);
+S1393,UnivariateRealSolverUtils.java,111,int remainingEval = maxEval - 2;
+S1394,UnivariateRealSolverUtils.java,112,while (remainingEval > 0) {
+S1395,UnivariateRealSolverUtils.java,114,if ((fLo >= 0 && fHi <= 0) || (fLo <= 0 && fHi >= 0)) {
+S1396,UnivariateRealSolverUtils.java,116,"return bracketing.solve(remainingEval, f, xLo, xHi, baseRoot, allowedSolution);"
+S1397,UnivariateRealSolverUtils.java,305,if (function == null) {
+S1398,UnivariateRealSolverUtils.java,308,final double fLo = function.value(lower);
+S1399,UnivariateRealSolverUtils.java,309,final double fHi = function.value(upper);
+S1400,UnivariateRealSolverUtils.java,310,return (fLo >= 0 && fHi <= 0) || (fLo <= 0 && fHi >= 0);
+S1401,UnivariateRealSolverUtils.java,336,if (lower >= upper) {
+S1402,UnivariateRealSolverUtils.java,354,"verifyInterval(lower, initial);"
+S1403,UnivariateRealSolverUtils.java,355,"verifyInterval(initial, upper);"
+S1404,UnivariateRealSolverUtils.java,371,if (function == null) {
+S1405,UnivariateRealSolverUtils.java,374,"verifyInterval(lower, upper);"
+S1406,UnivariateRealSolverUtils.java,375,"if (!isBracketing(function, lower, upper)) {"

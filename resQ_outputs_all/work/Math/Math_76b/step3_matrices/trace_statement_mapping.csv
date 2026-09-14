@@ -1,0 +1,972 @@
+statement_id,file,line,code
+S1,AbstractRealMatrix.java,43,protected AbstractRealMatrix() {
+S2,AbstractRealMatrix.java,44,lu = null;
+S3,AbstractRealMatrix.java,55,throws IllegalArgumentException {
+S4,AbstractRealMatrix.java,56,if (rowDimension <= 0 ) {
+S5,AbstractRealMatrix.java,61,if (columnDimension <= 0) {
+S6,AbstractRealMatrix.java,66,lu = null;
+S7,AbstractRealMatrix.java,195,return walkInColumnOrder(new RealMatrixPreservingVisitor() {
+S8,AbstractRealMatrix.java,210,this.endRow = endRow;
+S9,AbstractRealMatrix.java,211,columnSum   = 0;
+S10,AbstractRealMatrix.java,212,maxColSum   = 0;
+S11,AbstractRealMatrix.java,217,columnSum += Math.abs(value);
+S12,AbstractRealMatrix.java,218,if (row == endRow) {
+S13,AbstractRealMatrix.java,219,"maxColSum = Math.max(maxColSum, columnSum);"
+S14,AbstractRealMatrix.java,220,columnSum = 0;
+S15,AbstractRealMatrix.java,226,return maxColSum;
+S16,AbstractRealMatrix.java,264,"MatrixUtils.checkSubMatrixIndex(this, startRow, endRow, startColumn, endColumn);"
+S17,AbstractRealMatrix.java,266,final RealMatrix subMatrix =
+S18,AbstractRealMatrix.java,268,for (int i = startRow; i <= endRow; ++i) {
+S19,AbstractRealMatrix.java,269,for (int j = startColumn; j <= endColumn; ++j) {
+S20,AbstractRealMatrix.java,270,"subMatrix.setEntry(i - startRow, j - startColumn, getEntry(i, j));"
+S21,AbstractRealMatrix.java,274,return subMatrix;
+S22,AbstractRealMatrix.java,500,"return new ArrayRealVector(getColumn(column), false);"
+S23,AbstractRealMatrix.java,507,"MatrixUtils.checkColumnIndex(this, column);"
+S24,AbstractRealMatrix.java,508,final int nRows = getRowDimension();
+S25,AbstractRealMatrix.java,509,if (vector.getDimension() != nRows) {
+S26,AbstractRealMatrix.java,514,for (int i = 0; i < nRows; ++i) {
+S27,AbstractRealMatrix.java,515,"setEntry(i, column, vector.getEntry(i));"
+S28,AbstractRealMatrix.java,556,"MatrixUtils.checkColumnIndex(this, column);"
+S29,AbstractRealMatrix.java,557,final int nRows = getRowDimension();
+S30,AbstractRealMatrix.java,558,final double[] out = new double[nRows];
+S31,AbstractRealMatrix.java,559,for (int i = 0; i < nRows; ++i) {
+S32,AbstractRealMatrix.java,560,"out[i] = getEntry(i, column);"
+S33,AbstractRealMatrix.java,563,return out;
+S34,AbstractRealMatrix.java,603,final int nRows = getRowDimension();
+S35,AbstractRealMatrix.java,604,final int nCols = getColumnDimension();
+S36,AbstractRealMatrix.java,605,"final RealMatrix out = createMatrix(nCols, nRows);"
+S37,AbstractRealMatrix.java,606,walkInOptimizedOrder(new DefaultRealMatrixPreservingVisitor() {
+S38,AbstractRealMatrix.java,611,"out.setEntry(column, row, value);"
+S39,AbstractRealMatrix.java,616,return out;
+S40,AbstractRealMatrix.java,701,"return new ArrayRealVector(operate(((ArrayRealVector) v).getDataRef()), false);"
+S41,AbstractRealMatrix.java,702,} catch (ClassCastException cce) {
+S42,AbstractRealMatrix.java,703,final int nRows = getRowDimension();
+S43,AbstractRealMatrix.java,704,final int nCols = getColumnDimension();
+S44,AbstractRealMatrix.java,705,if (v.getDimension() != nCols) {
+S45,AbstractRealMatrix.java,706,throw MathRuntimeException.createIllegalArgumentException(
+S46,AbstractRealMatrix.java,711,final double[] out = new double[nRows];
+S47,AbstractRealMatrix.java,712,for (int row = 0; row < nRows; ++row) {
+S48,AbstractRealMatrix.java,713,double sum = 0;
+S49,AbstractRealMatrix.java,714,for (int i = 0; i < nCols; ++i) {
+S50,AbstractRealMatrix.java,715,"sum += getEntry(row, i) * v.getEntry(i);"
+S51,AbstractRealMatrix.java,717,out[row] = sum;
+S52,AbstractRealMatrix.java,720,"return new ArrayRealVector(out, false);"
+S53,AbstractRealMatrix.java,919,return walkInRowOrder(visitor);
+S54,AbstractRealMatrix.java,935,"return walkInRowOrder(visitor, startRow, endRow, startColumn, endColumn);"
+S55,AbstractRealVector.java,34,public abstract class AbstractRealVector implements RealVector {
+S56,Array2DRowRealMatrix.java,96,"super(rowDimension, columnDimension);"
+S57,Array2DRowRealMatrix.java,97,data = new double[rowDimension][columnDimension];
+S58,Array2DRowRealMatrix.java,114,"throws IllegalArgumentException, NullPointerException {"
+S59,Array2DRowRealMatrix.java,115,copyIn(d);
+S60,Array2DRowRealMatrix.java,134,"throws IllegalArgumentException, NullPointerException {"
+S61,Array2DRowRealMatrix.java,135,if (copyArray) {
+S62,Array2DRowRealMatrix.java,138,if (d == null) {
+S63,Array2DRowRealMatrix.java,141,final int nRows = d.length;
+S64,Array2DRowRealMatrix.java,142,if (nRows == 0) {
+S65,Array2DRowRealMatrix.java,146,final int nCols = d[0].length;
+S66,Array2DRowRealMatrix.java,147,if (nCols == 0) {
+S67,Array2DRowRealMatrix.java,151,for (int r = 1; r < nRows; r++) {
+S68,Array2DRowRealMatrix.java,152,if (d[r].length != nCols) {
+S69,Array2DRowRealMatrix.java,157,data = d;
+S70,Array2DRowRealMatrix.java,181,"return new Array2DRowRealMatrix(rowDimension, columnDimension);"
+S71,Array2DRowRealMatrix.java,235,return subtract((Array2DRowRealMatrix) m);
+S72,Array2DRowRealMatrix.java,252,"MatrixUtils.checkSubtractionCompatible(this, m);"
+S73,Array2DRowRealMatrix.java,254,final int rowCount    = getRowDimension();
+S74,Array2DRowRealMatrix.java,255,final int columnCount = getColumnDimension();
+S75,Array2DRowRealMatrix.java,256,final double[][] outData = new double[rowCount][columnCount];
+S76,Array2DRowRealMatrix.java,257,for (int row = 0; row < rowCount; row++) {
+S77,Array2DRowRealMatrix.java,258,final double[] dataRow    = data[row];
+S78,Array2DRowRealMatrix.java,259,final double[] mRow       = m.data[row];
+S79,Array2DRowRealMatrix.java,260,final double[] outDataRow = outData[row];
+S80,Array2DRowRealMatrix.java,261,for (int col = 0; col < columnCount; col++) {
+S81,Array2DRowRealMatrix.java,262,outDataRow[col] = dataRow[col] - mRow[col];
+S82,Array2DRowRealMatrix.java,266,"return new Array2DRowRealMatrix(outData, false);"
+S83,Array2DRowRealMatrix.java,275,return multiply((Array2DRowRealMatrix) m);
+S84,Array2DRowRealMatrix.java,292,"MatrixUtils.checkMultiplicationCompatible(this, m);"
+S85,Array2DRowRealMatrix.java,294,final int nRows = this.getRowDimension();
+S86,Array2DRowRealMatrix.java,295,final int nCols = m.getColumnDimension();
+S87,Array2DRowRealMatrix.java,296,final int nSum = this.getColumnDimension();
+S88,Array2DRowRealMatrix.java,297,final double[][] outData = new double[nRows][nCols];
+S89,Array2DRowRealMatrix.java,298,for (int row = 0; row < nRows; row++) {
+S90,Array2DRowRealMatrix.java,299,final double[] dataRow    = data[row];
+S91,Array2DRowRealMatrix.java,300,final double[] outDataRow = outData[row];
+S92,Array2DRowRealMatrix.java,301,for (int col = 0; col < nCols; col++) {
+S93,Array2DRowRealMatrix.java,302,double sum = 0;
+S94,Array2DRowRealMatrix.java,303,for (int i = 0; i < nSum; i++) {
+S95,Array2DRowRealMatrix.java,304,sum += dataRow[i] * m.data[i][col];
+S96,Array2DRowRealMatrix.java,306,outDataRow[col] = sum;
+S97,Array2DRowRealMatrix.java,310,"return new Array2DRowRealMatrix(outData, false);"
+S98,Array2DRowRealMatrix.java,317,return copyOut();
+S99,Array2DRowRealMatrix.java,335,if (data == null) {
+S100,Array2DRowRealMatrix.java,336,if (row > 0) {
+S101,Array2DRowRealMatrix.java,340,if (column > 0) {
+S102,Array2DRowRealMatrix.java,344,final int nRows = subMatrix.length;
+S103,Array2DRowRealMatrix.java,345,if (nRows == 0) {
+S104,Array2DRowRealMatrix.java,350,final int nCols = subMatrix[0].length;
+S105,Array2DRowRealMatrix.java,351,if (nCols == 0) {
+S106,Array2DRowRealMatrix.java,355,data = new double[subMatrix.length][nCols];
+S107,Array2DRowRealMatrix.java,356,for (int i = 0; i < data.length; ++i) {
+S108,Array2DRowRealMatrix.java,357,if (subMatrix[i].length != nCols) {
+S109,Array2DRowRealMatrix.java,361,"System.arraycopy(subMatrix[i], 0, data[i + row], column, nCols);"
+S110,Array2DRowRealMatrix.java,363,} else {
+S111,Array2DRowRealMatrix.java,374,return data[row][column];
+S112,Array2DRowRealMatrix.java,386,data[row][column] = value;
+S113,Array2DRowRealMatrix.java,398,data[row][column] += increment;
+S114,Array2DRowRealMatrix.java,420,return (data == null) ? 0 : data.length;
+S115,Array2DRowRealMatrix.java,426,return ((data == null) || (data[0] == null)) ? 0 : data[0].length;
+S116,Array2DRowRealMatrix.java,433,final int nRows = this.getRowDimension();
+S117,Array2DRowRealMatrix.java,434,final int nCols = this.getColumnDimension();
+S118,Array2DRowRealMatrix.java,435,if (v.length != nCols) {
+S119,Array2DRowRealMatrix.java,436,throw MathRuntimeException.createIllegalArgumentException(
+S120,Array2DRowRealMatrix.java,439,final double[] out = new double[nRows];
+S121,Array2DRowRealMatrix.java,440,for (int row = 0; row < nRows; row++) {
+S122,Array2DRowRealMatrix.java,441,final double[] dataRow = data[row];
+S123,Array2DRowRealMatrix.java,442,double sum = 0;
+S124,Array2DRowRealMatrix.java,443,for (int i = 0; i < nCols; i++) {
+S125,Array2DRowRealMatrix.java,444,sum += dataRow[i] * v[i];
+S126,Array2DRowRealMatrix.java,446,out[row] = sum;
+S127,Array2DRowRealMatrix.java,448,return out;
+S128,Array2DRowRealMatrix.java,496,final int rows    = getRowDimension();
+S129,Array2DRowRealMatrix.java,497,final int columns = getColumnDimension();
+S130,Array2DRowRealMatrix.java,498,"visitor.start(rows, columns, 0, rows - 1, 0, columns - 1);"
+S131,Array2DRowRealMatrix.java,499,for (int i = 0; i < rows; ++i) {
+S132,Array2DRowRealMatrix.java,500,final double[] rowI = data[i];
+S133,Array2DRowRealMatrix.java,501,for (int j = 0; j < columns; ++j) {
+S134,Array2DRowRealMatrix.java,502,"visitor.visit(i, j, rowI[j]);"
+S135,Array2DRowRealMatrix.java,505,return visitor.end();
+S136,Array2DRowRealMatrix.java,532,"MatrixUtils.checkSubMatrixIndex(this, startRow, endRow, startColumn, endColumn);"
+S137,Array2DRowRealMatrix.java,533,"visitor.start(getRowDimension(), getColumnDimension(),"
+S138,Array2DRowRealMatrix.java,535,for (int i = startRow; i <= endRow; ++i) {
+S139,Array2DRowRealMatrix.java,536,final double[] rowI = data[i];
+S140,Array2DRowRealMatrix.java,537,for (int j = startColumn; j <= endColumn; ++j) {
+S141,Array2DRowRealMatrix.java,538,"visitor.visit(i, j, rowI[j]);"
+S142,Array2DRowRealMatrix.java,541,return visitor.end();
+S143,Array2DRowRealMatrix.java,564,final int rows    = getRowDimension();
+S144,Array2DRowRealMatrix.java,565,final int columns = getColumnDimension();
+S145,Array2DRowRealMatrix.java,566,"visitor.start(rows, columns, 0, rows - 1, 0, columns - 1);"
+S146,Array2DRowRealMatrix.java,567,for (int j = 0; j < columns; ++j) {
+S147,Array2DRowRealMatrix.java,568,for (int i = 0; i < rows; ++i) {
+S148,Array2DRowRealMatrix.java,569,"visitor.visit(i, j, data[i][j]);"
+S149,Array2DRowRealMatrix.java,572,return visitor.end();
+S150,Array2DRowRealMatrix.java,616,final int nRows = this.getRowDimension();
+S151,Array2DRowRealMatrix.java,617,final double[][] out = new double[nRows][this.getColumnDimension()];
+S152,Array2DRowRealMatrix.java,619,for (int i = 0; i < nRows; i++) {
+S153,Array2DRowRealMatrix.java,620,"System.arraycopy(data[i], 0, out[i], 0, data[i].length);"
+S154,Array2DRowRealMatrix.java,622,return out;
+S155,Array2DRowRealMatrix.java,636,"setSubMatrix(in, 0, 0);"
+S156,ArrayRealVector.java,41,private static final RealVectorFormat DEFAULT_FORMAT =
+S157,ArrayRealVector.java,82,public ArrayRealVector(double[] d) {
+S158,ArrayRealVector.java,83,data = d.clone();
+S159,ArrayRealVector.java,101,"throws NullPointerException, IllegalArgumentException {"
+S160,ArrayRealVector.java,102,if (d == null) {
+S161,ArrayRealVector.java,105,if (d.length == 0) {
+S162,ArrayRealVector.java,108,data = copyArray ? d.clone() :  d;
+S163,ArrayRealVector.java,309,if (v instanceof ArrayRealVector) {
+S164,ArrayRealVector.java,310,return subtract((ArrayRealVector) v);
+S165,ArrayRealVector.java,326,checkVectorDimensions(v.length);
+S166,ArrayRealVector.java,327,double[] out = data.clone();
+S167,ArrayRealVector.java,328,for (int i = 0; i < data.length; i++) {
+S168,ArrayRealVector.java,329,out[i] -= v[i];
+S169,ArrayRealVector.java,331,"return new ArrayRealVector(out, false);"
+S170,ArrayRealVector.java,342,return (ArrayRealVector) subtract(v.data);
+S171,ArrayRealVector.java,654,return data;
+S172,ArrayRealVector.java,699,double sum = 0;
+S173,ArrayRealVector.java,700,for (double a : data) {
+S174,ArrayRealVector.java,701,sum += a * a;
+S175,ArrayRealVector.java,703,return Math.sqrt(sum);
+S176,ArrayRealVector.java,946,return data[index];
+S177,ArrayRealVector.java,951,return data.length;
+S178,ArrayRealVector.java,1081,if (data.length != n) {
+S179,BiDiagonalTransformer.java,60,public BiDiagonalTransformer(RealMatrix matrix) {
+S180,BiDiagonalTransformer.java,62,final int m = matrix.getRowDimension();
+S181,BiDiagonalTransformer.java,63,final int n = matrix.getColumnDimension();
+S182,BiDiagonalTransformer.java,64,"final int p = Math.min(m, n);"
+S183,BiDiagonalTransformer.java,65,householderVectors = matrix.getData();
+S184,BiDiagonalTransformer.java,66,main      = new double[p];
+S185,BiDiagonalTransformer.java,67,secondary = new double[p - 1];
+S186,BiDiagonalTransformer.java,68,cachedU   = null;
+S187,BiDiagonalTransformer.java,69,cachedB   = null;
+S188,BiDiagonalTransformer.java,70,cachedV   = null;
+S189,BiDiagonalTransformer.java,73,if (m >= n) {
+S190,BiDiagonalTransformer.java,74,transformToUpperBiDiagonal();
+S191,BiDiagonalTransformer.java,76,transformToLowerBiDiagonal();
+S192,BiDiagonalTransformer.java,88,if (cachedU == null) {
+S193,BiDiagonalTransformer.java,90,final int m = householderVectors.length;
+S194,BiDiagonalTransformer.java,91,final int n = householderVectors[0].length;
+S195,BiDiagonalTransformer.java,92,final int p = main.length;
+S196,BiDiagonalTransformer.java,93,final int diagOffset    = (m >= n) ? 0 : 1;
+S197,BiDiagonalTransformer.java,94,final double[] diagonal = (m >= n) ? main : secondary;
+S198,BiDiagonalTransformer.java,95,"cachedU = MatrixUtils.createRealMatrix(m, m);"
+S199,BiDiagonalTransformer.java,98,for (int k = m - 1; k >= p; --k) {
+S200,BiDiagonalTransformer.java,99,"cachedU.setEntry(k, k, 1);"
+S201,BiDiagonalTransformer.java,103,for (int k = p - 1; k >= diagOffset; --k) {
+S202,BiDiagonalTransformer.java,104,final double[] hK = householderVectors[k];
+S203,BiDiagonalTransformer.java,105,"cachedU.setEntry(k, k, 1);"
+S204,BiDiagonalTransformer.java,106,if (hK[k - diagOffset] != 0.0) {
+S205,BiDiagonalTransformer.java,107,for (int j = k; j < m; ++j) {
+S206,BiDiagonalTransformer.java,108,double alpha = 0;
+S207,BiDiagonalTransformer.java,109,for (int i = k; i < m; ++i) {
+S208,BiDiagonalTransformer.java,110,"alpha -= cachedU.getEntry(i, j) * householderVectors[i][k - diagOffset];"
+S209,BiDiagonalTransformer.java,112,alpha /= diagonal[k - diagOffset] * hK[k - diagOffset];
+S210,BiDiagonalTransformer.java,114,for (int i = k; i < m; ++i) {
+S211,BiDiagonalTransformer.java,115,"cachedU.addToEntry(i, j, -alpha * householderVectors[i][k - diagOffset]);"
+S212,BiDiagonalTransformer.java,120,if (diagOffset > 0) {
+S213,BiDiagonalTransformer.java,121,"cachedU.setEntry(0, 0, 1);"
+S214,BiDiagonalTransformer.java,127,return cachedU;
+S215,BiDiagonalTransformer.java,169,if (cachedV == null) {
+S216,BiDiagonalTransformer.java,171,final int m = householderVectors.length;
+S217,BiDiagonalTransformer.java,172,final int n = householderVectors[0].length;
+S218,BiDiagonalTransformer.java,173,final int p = main.length;
+S219,BiDiagonalTransformer.java,174,final int diagOffset    = (m >= n) ? 1 : 0;
+S220,BiDiagonalTransformer.java,175,final double[] diagonal = (m >= n) ? secondary : main;
+S221,BiDiagonalTransformer.java,176,"cachedV = MatrixUtils.createRealMatrix(n, n);"
+S222,BiDiagonalTransformer.java,179,for (int k = n - 1; k >= p; --k) {
+S223,BiDiagonalTransformer.java,180,"cachedV.setEntry(k, k, 1);"
+S224,BiDiagonalTransformer.java,184,for (int k = p - 1; k >= diagOffset; --k) {
+S225,BiDiagonalTransformer.java,185,final double[] hK = householderVectors[k - diagOffset];
+S226,BiDiagonalTransformer.java,186,"cachedV.setEntry(k, k, 1);"
+S227,BiDiagonalTransformer.java,187,if (hK[k] != 0.0) {
+S228,BiDiagonalTransformer.java,188,for (int j = k; j < n; ++j) {
+S229,BiDiagonalTransformer.java,189,double beta = 0;
+S230,BiDiagonalTransformer.java,190,for (int i = k; i < n; ++i) {
+S231,BiDiagonalTransformer.java,191,"beta -= cachedV.getEntry(i, j) * hK[i];"
+S232,BiDiagonalTransformer.java,193,beta /= diagonal[k - diagOffset] * hK[k];
+S233,BiDiagonalTransformer.java,195,for (int i = k; i < n; ++i) {
+S234,BiDiagonalTransformer.java,196,"cachedV.addToEntry(i, j, -beta * hK[i]);"
+S235,BiDiagonalTransformer.java,201,if (diagOffset > 0) {
+S236,BiDiagonalTransformer.java,202,"cachedV.setEntry(0, 0, 1);"
+S237,BiDiagonalTransformer.java,208,return cachedV;
+S238,BiDiagonalTransformer.java,229,return main;
+S239,BiDiagonalTransformer.java,239,return secondary;
+S240,BiDiagonalTransformer.java,257,final int m = householderVectors.length;
+S241,BiDiagonalTransformer.java,258,final int n = householderVectors[0].length;
+S242,BiDiagonalTransformer.java,259,for (int k = 0; k < n; k++) {
+S243,BiDiagonalTransformer.java,262,double xNormSqr = 0;
+S244,BiDiagonalTransformer.java,263,for (int i = k; i < m; ++i) {
+S245,BiDiagonalTransformer.java,264,final double c = householderVectors[i][k];
+S246,BiDiagonalTransformer.java,265,xNormSqr += c * c;
+S247,BiDiagonalTransformer.java,267,final double[] hK = householderVectors[k];
+S248,BiDiagonalTransformer.java,268,final double a = (hK[k] > 0) ? -Math.sqrt(xNormSqr) : Math.sqrt(xNormSqr);
+S249,BiDiagonalTransformer.java,269,main[k] = a;
+S250,BiDiagonalTransformer.java,270,if (a != 0.0) {
+S251,BiDiagonalTransformer.java,271,hK[k] -= a;
+S252,BiDiagonalTransformer.java,272,for (int j = k + 1; j < n; ++j) {
+S253,BiDiagonalTransformer.java,273,double alpha = 0;
+S254,BiDiagonalTransformer.java,274,for (int i = k; i < m; ++i) {
+S255,BiDiagonalTransformer.java,275,final double[] hI = householderVectors[i];
+S256,BiDiagonalTransformer.java,276,alpha -= hI[j] * hI[k];
+S257,BiDiagonalTransformer.java,278,alpha /= a * householderVectors[k][k];
+S258,BiDiagonalTransformer.java,279,for (int i = k; i < m; ++i) {
+S259,BiDiagonalTransformer.java,280,final double[] hI = householderVectors[i];
+S260,BiDiagonalTransformer.java,281,hI[j] -= alpha * hI[k];
+S261,BiDiagonalTransformer.java,286,if (k < n - 1) {
+S262,BiDiagonalTransformer.java,288,xNormSqr = 0;
+S263,BiDiagonalTransformer.java,289,for (int j = k + 1; j < n; ++j) {
+S264,BiDiagonalTransformer.java,290,final double c = hK[j];
+S265,BiDiagonalTransformer.java,291,xNormSqr += c * c;
+S266,BiDiagonalTransformer.java,293,final double b = (hK[k + 1] > 0) ? -Math.sqrt(xNormSqr) : Math.sqrt(xNormSqr);
+S267,BiDiagonalTransformer.java,294,secondary[k] = b;
+S268,BiDiagonalTransformer.java,295,if (b != 0.0) {
+S269,BiDiagonalTransformer.java,296,hK[k + 1] -= b;
+S270,BiDiagonalTransformer.java,297,for (int i = k + 1; i < m; ++i) {
+S271,BiDiagonalTransformer.java,298,final double[] hI = householderVectors[i];
+S272,BiDiagonalTransformer.java,299,double beta = 0;
+S273,BiDiagonalTransformer.java,300,for (int j = k + 1; j < n; ++j) {
+S274,BiDiagonalTransformer.java,301,beta -= hI[j] * hK[j];
+S275,BiDiagonalTransformer.java,303,beta /= b * hK[k + 1];
+S276,BiDiagonalTransformer.java,304,for (int j = k + 1; j < n; ++j) {
+S277,BiDiagonalTransformer.java,305,hI[j] -= beta * hK[j];
+S278,BiDiagonalTransformer.java,321,final int m = householderVectors.length;
+S279,BiDiagonalTransformer.java,322,final int n = householderVectors[0].length;
+S280,BiDiagonalTransformer.java,323,for (int k = 0; k < m; k++) {
+S281,BiDiagonalTransformer.java,326,final double[] hK = householderVectors[k];
+S282,BiDiagonalTransformer.java,327,double xNormSqr = 0;
+S283,BiDiagonalTransformer.java,328,for (int j = k; j < n; ++j) {
+S284,BiDiagonalTransformer.java,329,final double c = hK[j];
+S285,BiDiagonalTransformer.java,330,xNormSqr += c * c;
+S286,BiDiagonalTransformer.java,332,final double a = (hK[k] > 0) ? -Math.sqrt(xNormSqr) : Math.sqrt(xNormSqr);
+S287,BiDiagonalTransformer.java,333,main[k] = a;
+S288,BiDiagonalTransformer.java,334,if (a != 0.0) {
+S289,BiDiagonalTransformer.java,335,hK[k] -= a;
+S290,BiDiagonalTransformer.java,336,for (int i = k + 1; i < m; ++i) {
+S291,BiDiagonalTransformer.java,337,final double[] hI = householderVectors[i];
+S292,BiDiagonalTransformer.java,338,double alpha = 0;
+S293,BiDiagonalTransformer.java,339,for (int j = k; j < n; ++j) {
+S294,BiDiagonalTransformer.java,340,alpha -= hI[j] * hK[j];
+S295,BiDiagonalTransformer.java,342,alpha /= a * householderVectors[k][k];
+S296,BiDiagonalTransformer.java,343,for (int j = k; j < n; ++j) {
+S297,BiDiagonalTransformer.java,344,hI[j] -= alpha * hK[j];
+S298,BiDiagonalTransformer.java,349,if (k < m - 1) {
+S299,BiDiagonalTransformer.java,351,final double[] hKp1 = householderVectors[k + 1];
+S300,BiDiagonalTransformer.java,352,xNormSqr = 0;
+S301,BiDiagonalTransformer.java,353,for (int i = k + 1; i < m; ++i) {
+S302,BiDiagonalTransformer.java,354,final double c = householderVectors[i][k];
+S303,BiDiagonalTransformer.java,355,xNormSqr += c * c;
+S304,BiDiagonalTransformer.java,357,final double b = (hKp1[k] > 0) ? -Math.sqrt(xNormSqr) : Math.sqrt(xNormSqr);
+S305,BiDiagonalTransformer.java,358,secondary[k] = b;
+S306,BiDiagonalTransformer.java,359,if (b != 0.0) {
+S307,BiDiagonalTransformer.java,360,hKp1[k] -= b;
+S308,BiDiagonalTransformer.java,361,for (int j = k + 1; j < n; ++j) {
+S309,BiDiagonalTransformer.java,362,double beta = 0;
+S310,BiDiagonalTransformer.java,363,for (int i = k + 1; i < m; ++i) {
+S311,BiDiagonalTransformer.java,364,final double[] hI = householderVectors[i];
+S312,BiDiagonalTransformer.java,365,beta -= hI[j] * hI[k];
+S313,BiDiagonalTransformer.java,367,beta /= b * hKp1[k];
+S314,BiDiagonalTransformer.java,368,for (int i = k + 1; i < m; ++i) {
+S315,BiDiagonalTransformer.java,369,final double[] hI = householderVectors[i];
+S316,BiDiagonalTransformer.java,370,hI[j] -= beta * hI[k];
+S317,CompositeFormat.java,30,public abstract class CompositeFormat extends Format {
+S318,CompositeFormat.java,53,final NumberFormat nf = NumberFormat.getInstance(locale);
+S319,CompositeFormat.java,54,nf.setMaximumFractionDigits(2);
+S320,CompositeFormat.java,55,return nf;
+S321,DefaultRealMatrixPreservingVisitor.java,30,public class DefaultRealMatrixPreservingVisitor implements RealMatrixPreservingVisitor {
+S322,DefaultRealMatrixPreservingVisitor.java,44,return 0;
+S323,EigenDecompositionImpl.java,191,throws InvalidMatrixException {
+S324,EigenDecompositionImpl.java,193,this.main      = main.clone();
+S325,EigenDecompositionImpl.java,194,this.secondary = secondary.clone();
+S326,EigenDecompositionImpl.java,195,transformer    = null;
+S327,EigenDecompositionImpl.java,198,squaredSecondary = new double[secondary.length];
+S328,EigenDecompositionImpl.java,199,for (int i = 0; i < squaredSecondary.length; ++i) {
+S329,EigenDecompositionImpl.java,200,final double s = secondary[i];
+S330,EigenDecompositionImpl.java,201,squaredSecondary[i] = s * s;
+S331,EigenDecompositionImpl.java,204,this.splitTolerance = splitTolerance;
+S332,EigenDecompositionImpl.java,205,decompose();
+S333,EigenDecompositionImpl.java,237,cachedV  = null;
+S334,EigenDecompositionImpl.java,238,cachedD  = null;
+S335,EigenDecompositionImpl.java,239,cachedVt = null;
+S336,EigenDecompositionImpl.java,240,work     = new double[6 * main.length];
+S337,EigenDecompositionImpl.java,243,computeGershgorinCircles();
+S338,EigenDecompositionImpl.java,246,findEigenvalues();
+S339,EigenDecompositionImpl.java,249,eigenvectors = null;
+S340,EigenDecompositionImpl.java,257,if (cachedV == null) {
+S341,EigenDecompositionImpl.java,259,if (eigenvectors == null) {
+S342,EigenDecompositionImpl.java,260,findEigenVectors();
+S343,EigenDecompositionImpl.java,263,final int m = eigenvectors.length;
+S344,EigenDecompositionImpl.java,264,"cachedV = MatrixUtils.createRealMatrix(m, m);"
+S345,EigenDecompositionImpl.java,265,for (int k = 0; k < m; ++k) {
+S346,EigenDecompositionImpl.java,266,"cachedV.setColumnVector(k, eigenvectors[k]);"
+S347,EigenDecompositionImpl.java,272,return cachedV;
+S348,EigenDecompositionImpl.java,312,return realEigenvalues.clone();
+S349,EigenDecompositionImpl.java,571,final int m     = main.length;
+S350,EigenDecompositionImpl.java,572,final int lowerStart = 4 * m;
+S351,EigenDecompositionImpl.java,573,final int upperStart = 5 * m;
+S352,EigenDecompositionImpl.java,574,lowerSpectra = Double.POSITIVE_INFINITY;
+S353,EigenDecompositionImpl.java,575,upperSpectra = Double.NEGATIVE_INFINITY;
+S354,EigenDecompositionImpl.java,576,double eMax = 0;
+S355,EigenDecompositionImpl.java,578,double eCurrent = 0;
+S356,EigenDecompositionImpl.java,579,for (int i = 0; i < m - 1; ++i) {
+S357,EigenDecompositionImpl.java,581,final double dCurrent = main[i];
+S358,EigenDecompositionImpl.java,582,final double ePrevious = eCurrent;
+S359,EigenDecompositionImpl.java,583,eCurrent = Math.abs(secondary[i]);
+S360,EigenDecompositionImpl.java,584,"eMax = Math.max(eMax, eCurrent);"
+S361,EigenDecompositionImpl.java,585,final double radius = ePrevious + eCurrent;
+S362,EigenDecompositionImpl.java,587,final double lower = dCurrent - radius;
+S363,EigenDecompositionImpl.java,588,work[lowerStart + i] = lower;
+S364,EigenDecompositionImpl.java,589,"lowerSpectra = Math.min(lowerSpectra, lower);"
+S365,EigenDecompositionImpl.java,591,final double upper = dCurrent + radius;
+S366,EigenDecompositionImpl.java,592,work[upperStart + i] = upper;
+S367,EigenDecompositionImpl.java,593,"upperSpectra = Math.max(upperSpectra, upper);"
+S368,EigenDecompositionImpl.java,597,final double dCurrent = main[m - 1];
+S369,EigenDecompositionImpl.java,598,final double lower = dCurrent - eCurrent;
+S370,EigenDecompositionImpl.java,599,work[lowerStart + m - 1] = lower;
+S371,EigenDecompositionImpl.java,600,"lowerSpectra = Math.min(lowerSpectra, lower);"
+S372,EigenDecompositionImpl.java,601,final double upper = dCurrent + eCurrent;
+S373,EigenDecompositionImpl.java,602,work[upperStart + m - 1] = upper;
+S374,EigenDecompositionImpl.java,603,"upperSpectra = Math.max(upperSpectra, upper);"
+S375,EigenDecompositionImpl.java,604,"minPivot = MathUtils.SAFE_MIN * Math.max(1.0, eMax * eMax);"
+S376,EigenDecompositionImpl.java,616,List<Integer> splitIndices = computeSplits();
+S377,EigenDecompositionImpl.java,619,realEigenvalues = new double[main.length];
+S378,EigenDecompositionImpl.java,620,imagEigenvalues = new double[main.length];
+S379,EigenDecompositionImpl.java,621,int begin = 0;
+S380,EigenDecompositionImpl.java,622,for (final int end : splitIndices) {
+S381,EigenDecompositionImpl.java,623,final int n = end - begin;
+S382,EigenDecompositionImpl.java,624,switch (n) {
+S383,EigenDecompositionImpl.java,628,process1RowBlock(begin);
+S384,EigenDecompositionImpl.java,629,break;
+S385,EigenDecompositionImpl.java,633,process2RowsBlock(begin);
+S386,EigenDecompositionImpl.java,634,break;
+S387,EigenDecompositionImpl.java,638,process3RowsBlock(begin);
+S388,EigenDecompositionImpl.java,639,break;
+S389,EigenDecompositionImpl.java,644,"final double[] range       = eigenvaluesRange(begin, n);"
+S390,EigenDecompositionImpl.java,645,final double oneFourth     = 0.25 * (3 * range[0] + range[1]);
+S391,EigenDecompositionImpl.java,646,"final int oneFourthCount   = countEigenValues(oneFourth, begin, n);"
+S392,EigenDecompositionImpl.java,647,final double threeFourth   = 0.25 * (range[0] + 3 * range[1]);
+S393,EigenDecompositionImpl.java,648,"final int threeFourthCount = countEigenValues(threeFourth, begin, n);"
+S394,EigenDecompositionImpl.java,649,final boolean chooseLeft   = (oneFourthCount - 1) >= (n - threeFourthCount);
+S395,EigenDecompositionImpl.java,650,final double lambda        = chooseLeft ? range[0] : range[1];
+S396,EigenDecompositionImpl.java,652,tau = (range[1] - range[0]) * MathUtils.EPSILON * n + 2 * minPivot;
+S397,EigenDecompositionImpl.java,655,"ldlTDecomposition(lambda, begin, n);"
+S398,EigenDecompositionImpl.java,658,processGeneralBlock(n);
+S399,EigenDecompositionImpl.java,661,if (chooseLeft) {
+S400,EigenDecompositionImpl.java,662,for (int i = 0; i < n; ++i) {
+S401,EigenDecompositionImpl.java,663,realEigenvalues[begin + i] = lambda + work[4 * i];
+S402,EigenDecompositionImpl.java,672,begin = end;
+S403,EigenDecompositionImpl.java,676,Arrays.sort(realEigenvalues);
+S404,EigenDecompositionImpl.java,677,int j = realEigenvalues.length - 1;
+S405,EigenDecompositionImpl.java,678,for (int i = 0; i < j; ++i) {
+S406,EigenDecompositionImpl.java,679,final double tmp = realEigenvalues[i];
+S407,EigenDecompositionImpl.java,680,realEigenvalues[i] = realEigenvalues[j];
+S408,EigenDecompositionImpl.java,681,realEigenvalues[j] = tmp;
+S409,EigenDecompositionImpl.java,682,--j;
+S410,EigenDecompositionImpl.java,693,final List<Integer> list = new ArrayList<Integer>();
+S411,EigenDecompositionImpl.java,696,double absDCurrent = Math.abs(main[0]);
+S412,EigenDecompositionImpl.java,697,for (int i = 0; i < secondary.length; ++i) {
+S413,EigenDecompositionImpl.java,698,final double absDPrevious = absDCurrent;
+S414,EigenDecompositionImpl.java,699,absDCurrent = Math.abs(main[i + 1]);
+S415,EigenDecompositionImpl.java,700,final double max = splitTolerance * Math.sqrt(absDPrevious * absDCurrent);
+S416,EigenDecompositionImpl.java,701,if (Math.abs(secondary[i]) <= max) {
+S417,EigenDecompositionImpl.java,702,list.add(i + 1);
+S418,EigenDecompositionImpl.java,703,secondary[i] = 0;
+S419,EigenDecompositionImpl.java,704,squaredSecondary[i] = 0;
+S420,EigenDecompositionImpl.java,708,list.add(secondary.length + 1);
+S421,EigenDecompositionImpl.java,709,return list;
+S422,EigenDecompositionImpl.java,719,realEigenvalues[index] = main[index];
+S423,EigenDecompositionImpl.java,733,final double q0   = main[index];
+S424,EigenDecompositionImpl.java,734,final double q1   = main[index + 1];
+S425,EigenDecompositionImpl.java,735,final double e12  = squaredSecondary[index];
+S426,EigenDecompositionImpl.java,737,final double s     = q0 + q1;
+S427,EigenDecompositionImpl.java,738,final double p     = q0 * q1 - e12;
+S428,EigenDecompositionImpl.java,739,final double delta = s * s - 4 * p;
+S429,EigenDecompositionImpl.java,740,if (delta < 0) {
+S430,EigenDecompositionImpl.java,744,final double largestRoot = 0.5 * (s + Math.sqrt(delta));
+S431,EigenDecompositionImpl.java,745,realEigenvalues[index]     = largestRoot;
+S432,EigenDecompositionImpl.java,746,realEigenvalues[index + 1] = p / largestRoot;
+S433,EigenDecompositionImpl.java,761,final double q0       = main[index];
+S434,EigenDecompositionImpl.java,762,final double q1       = main[index + 1];
+S435,EigenDecompositionImpl.java,763,final double q2       = main[index + 2];
+S436,EigenDecompositionImpl.java,764,final double e12      = squaredSecondary[index];
+S437,EigenDecompositionImpl.java,765,final double q1q2Me22 = q1 * q2 - squaredSecondary[index + 1];
+S438,EigenDecompositionImpl.java,768,final double b        = -(q0 + q1 + q2);
+S439,EigenDecompositionImpl.java,769,final double c        = q0 * q1 + q0 * q2 + q1q2Me22 - e12;
+S440,EigenDecompositionImpl.java,770,final double d        = q2 * e12 - q0 * q1q2Me22;
+S441,EigenDecompositionImpl.java,773,final double b2       = b * b;
+S442,EigenDecompositionImpl.java,774,final double q        = (3 * c - b2) / 9;
+S443,EigenDecompositionImpl.java,775,final double r        = ((9 * c - 2 * b2) * b - 27 * d) / 54;
+S444,EigenDecompositionImpl.java,776,final double delta    = q * q * q + r * r;
+S445,EigenDecompositionImpl.java,777,if (delta >= 0) {
+S446,EigenDecompositionImpl.java,783,final double sqrtMq = Math.sqrt(-q);
+S447,EigenDecompositionImpl.java,784,final double theta  = Math.acos(r / (-q * sqrtMq));
+S448,EigenDecompositionImpl.java,785,final double alpha  = 2 * sqrtMq;
+S449,EigenDecompositionImpl.java,786,final double beta   = b / 3;
+S450,EigenDecompositionImpl.java,788,double z0 = alpha * Math.cos(theta / 3) - beta;
+S451,EigenDecompositionImpl.java,789,double z1 = alpha * Math.cos((theta + 2 * Math.PI) / 3) - beta;
+S452,EigenDecompositionImpl.java,790,double z2 = alpha * Math.cos((theta + 4 * Math.PI) / 3) - beta;
+S453,EigenDecompositionImpl.java,791,if (z0 < z1) {
+S454,EigenDecompositionImpl.java,796,if (z1 < z2) {
+S455,EigenDecompositionImpl.java,797,final double t = z1;
+S456,EigenDecompositionImpl.java,798,z1 = z2;
+S457,EigenDecompositionImpl.java,799,z2 = t;
+S458,EigenDecompositionImpl.java,801,if (z0 < z1) {
+S459,EigenDecompositionImpl.java,806,realEigenvalues[index]     = z0;
+S460,EigenDecompositionImpl.java,807,realEigenvalues[index + 1] = z1;
+S461,EigenDecompositionImpl.java,808,realEigenvalues[index + 2] = z2;
+S462,EigenDecompositionImpl.java,827,double sumOffDiag = 0;
+S463,EigenDecompositionImpl.java,828,for (int i = 0; i < n - 1; ++i) {
+S464,EigenDecompositionImpl.java,829,final int fourI = 4 * i;
+S465,EigenDecompositionImpl.java,830,final double ei = work[fourI + 2];
+S466,EigenDecompositionImpl.java,831,sumOffDiag += ei;
+S467,EigenDecompositionImpl.java,834,if (sumOffDiag == 0) {
+S468,EigenDecompositionImpl.java,840,flipEveryOtherIfWarranted(n);
+S469,EigenDecompositionImpl.java,843,initialSplits(n);
+S470,EigenDecompositionImpl.java,846,tType = 0;
+S471,EigenDecompositionImpl.java,847,dMin1 = 0;
+S472,EigenDecompositionImpl.java,848,dMin2 = 0;
+S473,EigenDecompositionImpl.java,849,dN    = 0;
+S474,EigenDecompositionImpl.java,850,dN1   = 0;
+S475,EigenDecompositionImpl.java,851,dN2   = 0;
+S476,EigenDecompositionImpl.java,852,tau   = 0;
+S477,EigenDecompositionImpl.java,855,int i0 = 0;
+S478,EigenDecompositionImpl.java,856,int n0 = n;
+S479,EigenDecompositionImpl.java,857,while (n0 > 0) {
+S480,EigenDecompositionImpl.java,860,sigma    = (n0 == n) ? 0 : -work[4 * n0 - 2];
+S481,EigenDecompositionImpl.java,861,sigmaLow = 0;
+S482,EigenDecompositionImpl.java,864,double offDiagMin = (i0 == n0) ? 0 : work[4 * n0 - 6];
+S483,EigenDecompositionImpl.java,865,double offDiagMax = 0;
+S484,EigenDecompositionImpl.java,866,double diagMax    = work[4 * n0 - 4];
+S485,EigenDecompositionImpl.java,867,double diagMin    = diagMax;
+S486,EigenDecompositionImpl.java,868,i0 = 0;
+S487,EigenDecompositionImpl.java,869,for (int i = 4 * (n0 - 2); i >= 0; i -= 4) {
+S488,EigenDecompositionImpl.java,870,if (work[i + 2] <= 0) {
+S489,EigenDecompositionImpl.java,874,if (diagMin >= 4 * offDiagMax) {
+S490,EigenDecompositionImpl.java,875,"diagMin    = Math.min(diagMin, work[i + 4]);"
+S491,EigenDecompositionImpl.java,876,"offDiagMax = Math.max(offDiagMax, work[i + 2]);"
+S492,EigenDecompositionImpl.java,878,"diagMax    = Math.max(diagMax, work[i] + work[i + 2]);"
+S493,EigenDecompositionImpl.java,879,"offDiagMin = Math.min(offDiagMin, work[i + 2]);"
+S494,EigenDecompositionImpl.java,881,work[4 * n0 - 2] = offDiagMin;
+S495,EigenDecompositionImpl.java,884,"dMin = -Math.max(0, diagMin - 2 * Math.sqrt(diagMin * offDiagMax));"
+S496,EigenDecompositionImpl.java,886,pingPong = 0;
+S497,EigenDecompositionImpl.java,887,int maxIter = 30 * (n0 - i0);
+S498,EigenDecompositionImpl.java,888,for (int k = 0; i0 < n0; ++k) {
+S499,EigenDecompositionImpl.java,889,if (k >= maxIter) {
+S500,EigenDecompositionImpl.java,894,"n0 = goodStep(i0, n0);"
+S501,EigenDecompositionImpl.java,895,pingPong = 1 - pingPong;
+S502,EigenDecompositionImpl.java,899,if ((pingPong == 0) && (n0 - i0 > 3) &&
+S503,EigenDecompositionImpl.java,937,pingPong = 0;
+S504,EigenDecompositionImpl.java,938,for (int k = 0; k < 2; ++k) {
+S505,EigenDecompositionImpl.java,941,double d = work[4 * (n - 1) + pingPong];
+S506,EigenDecompositionImpl.java,942,for (int i = 4 * (n - 2) + pingPong; i >= 0; i -= 4) {
+S507,EigenDecompositionImpl.java,943,if (work[i + 2] <= TOLERANCE_2 * d) {
+S508,EigenDecompositionImpl.java,947,d *= work[i] / (d + work[i + 2]);
+S509,EigenDecompositionImpl.java,952,d = work[pingPong];
+S510,EigenDecompositionImpl.java,953,for (int i = 2 + pingPong; i < 4 * n - 2; i += 4) {
+S511,EigenDecompositionImpl.java,954,final int j = i - 2 * pingPong - 1;
+S512,EigenDecompositionImpl.java,955,work[j] = d + work[i];
+S513,EigenDecompositionImpl.java,956,if (work[i] <= TOLERANCE_2 * d) {
+S514,EigenDecompositionImpl.java,961,} else if ((MathUtils.SAFE_MIN * work[i + 2] < work[j]) &&
+S515,EigenDecompositionImpl.java,963,final double tmp = work[i + 2] / work[j];
+S516,EigenDecompositionImpl.java,964,work[j + 2] = work[i] * tmp;
+S517,EigenDecompositionImpl.java,965,d *= tmp;
+S518,EigenDecompositionImpl.java,966,} else {
+S519,EigenDecompositionImpl.java,971,work[4 * n - 3 - pingPong] = d;
+S520,EigenDecompositionImpl.java,974,pingPong = 1 - pingPong;
+S521,EigenDecompositionImpl.java,993,g = 0.0;
+S522,EigenDecompositionImpl.java,996,int deflatedEnd = end;
+S523,EigenDecompositionImpl.java,997,for (boolean deflating = true; deflating;) {
+S524,EigenDecompositionImpl.java,999,if (start >= deflatedEnd) {
+S525,EigenDecompositionImpl.java,1001,return deflatedEnd;
+S526,EigenDecompositionImpl.java,1004,final int k = 4 * deflatedEnd + pingPong - 1;
+S527,EigenDecompositionImpl.java,1006,if ((start == deflatedEnd - 1) ||
+S528,EigenDecompositionImpl.java,1012,work[4 * deflatedEnd - 4] = sigma + work[4 * deflatedEnd - 4 + pingPong];
+S529,EigenDecompositionImpl.java,1013,deflatedEnd -= 1;
+S530,EigenDecompositionImpl.java,1015,} else if ((start == deflatedEnd - 2) ||
+S531,EigenDecompositionImpl.java,1020,if (work[k - 3] > work[k - 7]) {
+S532,EigenDecompositionImpl.java,1026,if (work[k - 5] > TOLERANCE_2 * work[k - 3]) {
+S533,EigenDecompositionImpl.java,1027,double t = 0.5 * ((work[k - 7] - work[k - 3]) + work[k - 5]);
+S534,EigenDecompositionImpl.java,1028,double s = work[k - 3] * (work[k - 5] / t);
+S535,EigenDecompositionImpl.java,1029,if (s <= t) {
+S536,EigenDecompositionImpl.java,1030,s = work[k - 3] * work[k - 5] / (t * (1 + Math.sqrt(1 + s / t)));
+S537,EigenDecompositionImpl.java,1034,t = work[k - 7] + (s + work[k - 5]);
+S538,EigenDecompositionImpl.java,1035,work[k - 3] *= work[k - 7] / t;
+S539,EigenDecompositionImpl.java,1036,work[k - 7]  = t;
+S540,EigenDecompositionImpl.java,1038,work[4 * deflatedEnd - 8] = sigma + work[k - 7];
+S541,EigenDecompositionImpl.java,1039,work[4 * deflatedEnd - 4] = sigma + work[k - 3];
+S542,EigenDecompositionImpl.java,1040,deflatedEnd -= 2;
+S543,EigenDecompositionImpl.java,1044,deflating = false;
+S544,EigenDecompositionImpl.java,1050,final int l = 4 * deflatedEnd + pingPong - 1;
+S545,EigenDecompositionImpl.java,1053,if ((dMin <= 0) || (deflatedEnd < end)) {
+S546,EigenDecompositionImpl.java,1054,if (flipAllIfWarranted(deflatedEnd)) {
+S547,EigenDecompositionImpl.java,1067,if ((dMin < 0) ||
+S548,EigenDecompositionImpl.java,1072,"computeShiftIncrement(start, deflatedEnd, end - deflatedEnd);"
+S549,EigenDecompositionImpl.java,1075,for (boolean loop = true; loop;) {
+S550,EigenDecompositionImpl.java,1078,"dqds(start, deflatedEnd);"
+S551,EigenDecompositionImpl.java,1081,if ((dMin >= 0) && (dMin1 > 0)) {
+S552,EigenDecompositionImpl.java,1083,updateSigma(tau);
+S553,EigenDecompositionImpl.java,1084,return deflatedEnd;
+S554,EigenDecompositionImpl.java,1119,"dqd(start, deflatedEnd);"
+S555,EigenDecompositionImpl.java,1121,return deflatedEnd;
+S556,EigenDecompositionImpl.java,1131,if (1.5 * work[pingPong] >= work[4 * (n - 1) + pingPong]) {
+S557,EigenDecompositionImpl.java,1132,return false;
+S558,EigenDecompositionImpl.java,1162,if (1.5 * work[pingPong] >= work[4 * (n - 1) + pingPong]) {
+S559,EigenDecompositionImpl.java,1163,return false;
+S560,EigenDecompositionImpl.java,1190,final int lowerStart = 4 * main.length;
+S561,EigenDecompositionImpl.java,1191,final int upperStart = 5 * main.length;
+S562,EigenDecompositionImpl.java,1192,double lower = Double.POSITIVE_INFINITY;
+S563,EigenDecompositionImpl.java,1193,double upper = Double.NEGATIVE_INFINITY;
+S564,EigenDecompositionImpl.java,1194,for (int i = 0; i < n; ++i) {
+S565,EigenDecompositionImpl.java,1195,"lower = Math.min(lower, work[lowerStart + index +i]);"
+S566,EigenDecompositionImpl.java,1196,"upper = Math.max(upper, work[upperStart + index +i]);"
+S567,EigenDecompositionImpl.java,1200,"final double tNorm = Math.max(Math.abs(lower), Math.abs(upper));"
+S568,EigenDecompositionImpl.java,1201,final double relativeTolerance = Math.sqrt(MathUtils.EPSILON);
+S569,EigenDecompositionImpl.java,1202,final double absoluteTolerance = 4 * minPivot;
+S570,EigenDecompositionImpl.java,1203,final int maxIter =
+S571,EigenDecompositionImpl.java,1205,final double margin = 2 * (tNorm * MathUtils.EPSILON * n + 2 * minPivot);
+S572,EigenDecompositionImpl.java,1208,double left  = lower - margin;
+S573,EigenDecompositionImpl.java,1209,double right = upper + margin;
+S574,EigenDecompositionImpl.java,1210,for (int i = 0; i < maxIter; ++i) {
+S575,EigenDecompositionImpl.java,1212,final double range = right - left;
+S576,EigenDecompositionImpl.java,1213,if ((range < absoluteTolerance) ||
+S577,EigenDecompositionImpl.java,1216,break;
+S578,EigenDecompositionImpl.java,1219,final double middle = 0.5 * (left + right);
+S579,EigenDecompositionImpl.java,1220,"if (countEigenValues(middle, index, n) >= 1) {"
+S580,EigenDecompositionImpl.java,1221,right = middle;
+S581,EigenDecompositionImpl.java,1223,left = middle;
+S582,EigenDecompositionImpl.java,1227,"lower = Math.max(lower, left - 100 * MathUtils.EPSILON * Math.abs(left));"
+S583,EigenDecompositionImpl.java,1230,left  = lower - margin;
+S584,EigenDecompositionImpl.java,1231,right = upper + margin;
+S585,EigenDecompositionImpl.java,1232,for (int i = 0; i < maxIter; ++i) {
+S586,EigenDecompositionImpl.java,1234,final double range = right - left;
+S587,EigenDecompositionImpl.java,1235,if ((range < absoluteTolerance) ||
+S588,EigenDecompositionImpl.java,1238,break;
+S589,EigenDecompositionImpl.java,1241,final double middle = 0.5 * (left + right);
+S590,EigenDecompositionImpl.java,1242,"if (countEigenValues(middle, index, n) >= n) {"
+S591,EigenDecompositionImpl.java,1243,right = middle;
+S592,EigenDecompositionImpl.java,1245,left = middle;
+S593,EigenDecompositionImpl.java,1249,"upper = Math.min(upper, right + 100 * MathUtils.EPSILON * Math.abs(right));"
+S594,EigenDecompositionImpl.java,1251,"return new double[] { lower, upper };"
+S595,EigenDecompositionImpl.java,1263,double ratio = main[index] - t;
+S596,EigenDecompositionImpl.java,1264,int count = (ratio > 0) ? 0 : 1;
+S597,EigenDecompositionImpl.java,1265,for (int i = 1; i < n; ++i) {
+S598,EigenDecompositionImpl.java,1266,ratio = main[index + i] - squaredSecondary[index + i - 1] / ratio - t;
+S599,EigenDecompositionImpl.java,1267,if (ratio <= 0) {
+S600,EigenDecompositionImpl.java,1268,++count;
+S601,EigenDecompositionImpl.java,1271,return count;
+S602,EigenDecompositionImpl.java,1286,double di = main[index] - lambda;
+S603,EigenDecompositionImpl.java,1287,work[0] = Math.abs(di);
+S604,EigenDecompositionImpl.java,1288,for (int i = 1; i < n; ++i) {
+S605,EigenDecompositionImpl.java,1289,final int    fourI = 4 * i;
+S606,EigenDecompositionImpl.java,1290,final double eiM1  = secondary[index + i - 1];
+S607,EigenDecompositionImpl.java,1291,final double ratio = eiM1 / di;
+S608,EigenDecompositionImpl.java,1292,work[fourI - 2] = ratio * ratio * Math.abs(di);
+S609,EigenDecompositionImpl.java,1293,di = (main[index + i] - lambda) - eiM1 * ratio;
+S610,EigenDecompositionImpl.java,1294,work[fourI] = Math.abs(di);
+S611,EigenDecompositionImpl.java,1306,eMin = work[4 * start + pingPong + 4];
+S612,EigenDecompositionImpl.java,1307,double d = work[4 * start + pingPong] - tau;
+S613,EigenDecompositionImpl.java,1308,dMin = d;
+S614,EigenDecompositionImpl.java,1309,dMin1 = -work[4 * start + pingPong];
+S615,EigenDecompositionImpl.java,1311,if (pingPong == 0) {
+S616,EigenDecompositionImpl.java,1312,for (int j4 = 4 * start + 3; j4 <= 4 * (end - 3); j4 += 4) {
+S617,EigenDecompositionImpl.java,1313,work[j4 - 2] = d + work[j4 - 1];
+S618,EigenDecompositionImpl.java,1314,final double tmp = work[j4 + 1] / work[j4 - 2];
+S619,EigenDecompositionImpl.java,1315,d = d * tmp - tau;
+S620,EigenDecompositionImpl.java,1316,"dMin = Math.min(dMin, d);"
+S621,EigenDecompositionImpl.java,1317,work[j4] = work[j4 - 1] * tmp;
+S622,EigenDecompositionImpl.java,1318,"eMin = Math.min(work[j4], eMin);"
+S623,EigenDecompositionImpl.java,1321,for (int j4 = 4 * start + 3; j4 <= 4 * (end - 3); j4 += 4) {
+S624,EigenDecompositionImpl.java,1322,work[j4 - 3] = d + work[j4];
+S625,EigenDecompositionImpl.java,1323,final double tmp = work[j4 + 2] / work[j4 - 3];
+S626,EigenDecompositionImpl.java,1324,d = d * tmp - tau;
+S627,EigenDecompositionImpl.java,1325,"dMin = Math.min(dMin, d);"
+S628,EigenDecompositionImpl.java,1326,work[j4 - 1] = work[j4] * tmp;
+S629,EigenDecompositionImpl.java,1327,"eMin = Math.min(work[j4 - 1], eMin);"
+S630,EigenDecompositionImpl.java,1332,dN2 = d;
+S631,EigenDecompositionImpl.java,1333,dMin2 = dMin;
+S632,EigenDecompositionImpl.java,1334,int j4 = 4 * (end - 2) - pingPong - 1;
+S633,EigenDecompositionImpl.java,1335,int j4p2 = j4 + 2 * pingPong - 1;
+S634,EigenDecompositionImpl.java,1336,work[j4 - 2] = dN2 + work[j4p2];
+S635,EigenDecompositionImpl.java,1337,work[j4] = work[j4p2 + 2] * (work[j4p2] / work[j4 - 2]);
+S636,EigenDecompositionImpl.java,1338,dN1 = work[j4p2 + 2] * (dN2 / work[j4 - 2]) - tau;
+S637,EigenDecompositionImpl.java,1339,"dMin = Math.min(dMin, dN1);"
+S638,EigenDecompositionImpl.java,1341,dMin1 = dMin;
+S639,EigenDecompositionImpl.java,1342,j4 = j4 + 4;
+S640,EigenDecompositionImpl.java,1343,j4p2 = j4 + 2 * pingPong - 1;
+S641,EigenDecompositionImpl.java,1344,work[j4 - 2] = dN1 + work[j4p2];
+S642,EigenDecompositionImpl.java,1345,work[j4] = work[j4p2 + 2] * (work[j4p2] / work[j4 - 2]);
+S643,EigenDecompositionImpl.java,1346,dN = work[j4p2 + 2] * (dN1 / work[j4 - 2]) - tau;
+S644,EigenDecompositionImpl.java,1347,"dMin = Math.min(dMin, dN);"
+S645,EigenDecompositionImpl.java,1349,work[j4 + 2] = dN;
+S646,EigenDecompositionImpl.java,1350,work[4 * end - pingPong - 1] = eMin;
+S647,EigenDecompositionImpl.java,1363,eMin = work[4 * start + pingPong + 4];
+S648,EigenDecompositionImpl.java,1364,double d = work[4 * start + pingPong];
+S649,EigenDecompositionImpl.java,1365,dMin = d;
+S650,EigenDecompositionImpl.java,1367,if (pingPong == 0) {
+S651,EigenDecompositionImpl.java,1368,for (int j4 = 4 * start + 3; j4 < 4 * (end - 3); j4 += 4) {
+S652,EigenDecompositionImpl.java,1369,work[j4 - 2] = d + work[j4 - 1];
+S653,EigenDecompositionImpl.java,1370,if (work[j4 - 2] == 0.0) {
+S654,EigenDecompositionImpl.java,1375,} else if ((MathUtils.SAFE_MIN * work[j4 + 1] < work[j4 - 2]) &&
+S655,EigenDecompositionImpl.java,1377,final double tmp = work[j4 + 1] / work[j4 - 2];
+S656,EigenDecompositionImpl.java,1378,work[j4] = work[j4 - 1] * tmp;
+S657,EigenDecompositionImpl.java,1379,d *= tmp;
+S658,EigenDecompositionImpl.java,1380,} else {
+S659,EigenDecompositionImpl.java,1384,"dMin = Math.min(dMin, d);"
+S660,EigenDecompositionImpl.java,1385,"eMin = Math.min(eMin, work[j4]);"
+S661,EigenDecompositionImpl.java,1388,for (int j4 = 4 * start + 3; j4 < 4 * (end - 3); j4 += 4) {
+S662,EigenDecompositionImpl.java,1410,dN2   = d;
+S663,EigenDecompositionImpl.java,1411,dMin2 = dMin;
+S664,EigenDecompositionImpl.java,1412,int j4 = 4 * (end - 2) - pingPong - 1;
+S665,EigenDecompositionImpl.java,1413,int j4p2 = j4 + 2 * pingPong - 1;
+S666,EigenDecompositionImpl.java,1414,work[j4 - 2] = dN2 + work[j4p2];
+S667,EigenDecompositionImpl.java,1415,if (work[j4 - 2] == 0.0) {
+S668,EigenDecompositionImpl.java,1420,} else if ((MathUtils.SAFE_MIN * work[j4p2 + 2] < work[j4 - 2]) &&
+S669,EigenDecompositionImpl.java,1422,final double tmp = work[j4p2 + 2] / work[j4 - 2];
+S670,EigenDecompositionImpl.java,1423,work[j4] = work[j4p2] * tmp;
+S671,EigenDecompositionImpl.java,1424,dN1 = dN2 * tmp;
+S672,EigenDecompositionImpl.java,1425,} else {
+S673,EigenDecompositionImpl.java,1429,"dMin = Math.min(dMin, dN1);"
+S674,EigenDecompositionImpl.java,1431,dMin1 = dMin;
+S675,EigenDecompositionImpl.java,1432,j4 = j4 + 4;
+S676,EigenDecompositionImpl.java,1433,j4p2 = j4 + 2 * pingPong - 1;
+S677,EigenDecompositionImpl.java,1434,work[j4 - 2] = dN1 + work[j4p2];
+S678,EigenDecompositionImpl.java,1435,if (work[j4 - 2] == 0.0) {
+S679,EigenDecompositionImpl.java,1440,} else if ((MathUtils.SAFE_MIN * work[j4p2 + 2] < work[j4 - 2]) &&
+S680,EigenDecompositionImpl.java,1442,final double tmp = work[j4p2 + 2] / work[j4 - 2];
+S681,EigenDecompositionImpl.java,1443,work[j4] = work[j4p2] * tmp;
+S682,EigenDecompositionImpl.java,1444,dN = dN1 * tmp;
+S683,EigenDecompositionImpl.java,1445,} else {
+S684,EigenDecompositionImpl.java,1449,"dMin = Math.min(dMin, dN);"
+S685,EigenDecompositionImpl.java,1451,work[j4 + 2] = dN;
+S686,EigenDecompositionImpl.java,1452,work[4 * end - pingPong - 1] = eMin;
+S687,EigenDecompositionImpl.java,1465,final double cnst1 = 0.563;
+S688,EigenDecompositionImpl.java,1466,final double cnst2 = 1.010;
+S689,EigenDecompositionImpl.java,1467,final double cnst3 = 1.05;
+S690,EigenDecompositionImpl.java,1471,if (dMin <= 0.0) {
+S691,EigenDecompositionImpl.java,1472,tau = -dMin;
+S692,EigenDecompositionImpl.java,1473,tType = -1;
+S693,EigenDecompositionImpl.java,1474,return;
+S694,EigenDecompositionImpl.java,1477,int nn = 4 * end + pingPong - 1;
+S695,EigenDecompositionImpl.java,1478,switch (deflated) {
+S696,EigenDecompositionImpl.java,1481,if (dMin == dN || dMin == dN1) {
+S697,EigenDecompositionImpl.java,1483,double b1 = Math.sqrt(work[nn - 3]) * Math.sqrt(work[nn - 5]);
+S698,EigenDecompositionImpl.java,1484,double b2 = Math.sqrt(work[nn - 7]) * Math.sqrt(work[nn - 9]);
+S699,EigenDecompositionImpl.java,1485,double a2 = work[nn - 7] + work[nn - 5];
+S700,EigenDecompositionImpl.java,1487,if (dMin == dN && dMin1 == dN1) {
+S701,EigenDecompositionImpl.java,1489,final double gap2 = dMin2 - a2 - dMin2 * 0.25;
+S702,EigenDecompositionImpl.java,1490,final double gap1 = a2 - dN - ((gap2 > 0.0 && gap2 > b2) ? (b2 / gap2) * b2 : (b1 + b2));
+S703,EigenDecompositionImpl.java,1491,if (gap1 > 0.0 && gap1 > b1) {
+S704,EigenDecompositionImpl.java,1492,"tau   = Math.max(dN - (b1 / gap1) * b1, 0.5 * dMin);"
+S705,EigenDecompositionImpl.java,1493,tType = -2;
+S706,EigenDecompositionImpl.java,1505,} else {
+S707,EigenDecompositionImpl.java,1559,} else if (dMin == dN2) {
+S708,EigenDecompositionImpl.java,1715,if (shift < sigma) {
+S709,EigenDecompositionImpl.java,1716,sigmaLow += shift;
+S710,EigenDecompositionImpl.java,1717,final double t = sigma + sigmaLow;
+S711,EigenDecompositionImpl.java,1718,sigmaLow -= t - sigma;
+S712,EigenDecompositionImpl.java,1719,sigma = t;
+S713,EigenDecompositionImpl.java,1720,} else {
+S714,EigenDecompositionImpl.java,1721,final double t = sigma + shift;
+S715,EigenDecompositionImpl.java,1722,sigmaLow += sigma - (t - shift);
+S716,EigenDecompositionImpl.java,1723,sigma = t;
+S717,EigenDecompositionImpl.java,1732,final int m = main.length;
+S718,EigenDecompositionImpl.java,1733,eigenvectors = new ArrayRealVector[m];
+S719,EigenDecompositionImpl.java,1736,final double[] d = new double[m];
+S720,EigenDecompositionImpl.java,1737,final double[] l = new double[m - 1];
+S721,EigenDecompositionImpl.java,1739,final double mu = realEigenvalues[m-1] <= 0 && realEigenvalues[0] > 0 ? 0.5-realEigenvalues[m-1] : 0;
+S722,EigenDecompositionImpl.java,1740,double di = main[0]+mu;
+S723,EigenDecompositionImpl.java,1741,d[0] = di;
+S724,EigenDecompositionImpl.java,1742,for (int i = 1; i < m; ++i) {
+S725,EigenDecompositionImpl.java,1743,final double eiM1  = secondary[i - 1];
+S726,EigenDecompositionImpl.java,1744,final double ratio = eiM1 / di;
+S727,EigenDecompositionImpl.java,1745,di       = main[i] - eiM1 * ratio + mu;
+S728,EigenDecompositionImpl.java,1746,l[i - 1] = ratio;
+S729,EigenDecompositionImpl.java,1747,d[i]     = di;
+S730,EigenDecompositionImpl.java,1751,for (int i = 0; i < m; ++i) {
+S731,EigenDecompositionImpl.java,1752,"eigenvectors[i] = findEigenvector(realEigenvalues[i]+mu, d, l);"
+S732,EigenDecompositionImpl.java,1771,final int m = main.length;
+S733,EigenDecompositionImpl.java,1772,"stationaryQuotientDifferenceWithShift(d, l, eigenvalue);"
+S734,EigenDecompositionImpl.java,1773,"progressiveQuotientDifferenceWithShift(d, l, eigenvalue);"
+S735,EigenDecompositionImpl.java,1777,int r = m - 1;
+S736,EigenDecompositionImpl.java,1778,double minG = Math.abs(work[6 * r] + work[6 * r + 3] + eigenvalue);
+S737,EigenDecompositionImpl.java,1779,int sixI = 0;
+S738,EigenDecompositionImpl.java,1780,for (int i = 0; i < m - 1; ++i) {
+S739,EigenDecompositionImpl.java,1781,final double absG = Math.abs(work[sixI] + d[i] * work[sixI + 9] / work[sixI + 10]);
+S740,EigenDecompositionImpl.java,1782,if (absG < minG) {
+S741,EigenDecompositionImpl.java,1783,r = i;
+S742,EigenDecompositionImpl.java,1784,minG = absG;
+S743,EigenDecompositionImpl.java,1786,sixI += 6;
+S744,EigenDecompositionImpl.java,1791,double[] eigenvector = new double[m];
+S745,EigenDecompositionImpl.java,1792,double n2 = 1;
+S746,EigenDecompositionImpl.java,1793,eigenvector[r] = 1;
+S747,EigenDecompositionImpl.java,1794,double z = 1;
+S748,EigenDecompositionImpl.java,1795,for (int i = r - 1; i >= 0; --i) {
+S749,EigenDecompositionImpl.java,1796,z *= -work[6 * i + 2];
+S750,EigenDecompositionImpl.java,1797,eigenvector[i] = z;
+S751,EigenDecompositionImpl.java,1798,n2 += z * z;
+S752,EigenDecompositionImpl.java,1800,z = 1;
+S753,EigenDecompositionImpl.java,1801,for (int i = r + 1; i < m; ++i) {
+S754,EigenDecompositionImpl.java,1802,z *= -work[6 * i - 1];
+S755,EigenDecompositionImpl.java,1803,eigenvector[i] = z;
+S756,EigenDecompositionImpl.java,1804,n2 += z * z;
+S757,EigenDecompositionImpl.java,1808,final double inv = 1.0 / Math.sqrt(n2);
+S758,EigenDecompositionImpl.java,1809,for (int i = 0; i < m; ++i) {
+S759,EigenDecompositionImpl.java,1810,eigenvector[i] *= inv;
+S760,EigenDecompositionImpl.java,1813,return (transformer == null) ?
+S761,EigenDecompositionImpl.java,1829,final int nM1 = d.length - 1;
+S762,EigenDecompositionImpl.java,1830,double si = -lambda;
+S763,EigenDecompositionImpl.java,1831,int sixI = 0;
+S764,EigenDecompositionImpl.java,1832,for (int i = 0; i < nM1; ++i) {
+S765,EigenDecompositionImpl.java,1833,final double di   = d[i];
+S766,EigenDecompositionImpl.java,1834,final double li   = l[i];
+S767,EigenDecompositionImpl.java,1835,final double ldi  = li * di;
+S768,EigenDecompositionImpl.java,1836,final double diP1 = di + si;
+S769,EigenDecompositionImpl.java,1837,final double liP1 = ldi / diP1;
+S770,EigenDecompositionImpl.java,1838,work[sixI]        = si;
+S771,EigenDecompositionImpl.java,1839,work[sixI + 1]    = diP1;
+S772,EigenDecompositionImpl.java,1840,work[sixI + 2]    = liP1;
+S773,EigenDecompositionImpl.java,1841,si = li * liP1 * si - lambda;
+S774,EigenDecompositionImpl.java,1842,sixI += 6;
+S775,EigenDecompositionImpl.java,1844,if (Double.isNaN(si)) {
+S776,EigenDecompositionImpl.java,1846,si = -lambda;
+S777,EigenDecompositionImpl.java,1847,sixI = 0;
+S778,EigenDecompositionImpl.java,1848,for (int i = 0; i < nM1; ++i) {
+S779,EigenDecompositionImpl.java,1849,final double di   = d[i];
+S780,EigenDecompositionImpl.java,1850,final double li   = l[i];
+S781,EigenDecompositionImpl.java,1851,final double ldi  = li * di;
+S782,EigenDecompositionImpl.java,1852,double diP1 = di + si;
+S783,EigenDecompositionImpl.java,1853,if (Math.abs(diP1) < minPivot) {
+S784,EigenDecompositionImpl.java,1854,diP1 = -minPivot;
+S785,EigenDecompositionImpl.java,1856,final double liP1 = ldi / diP1;
+S786,EigenDecompositionImpl.java,1857,work[sixI]        = si;
+S787,EigenDecompositionImpl.java,1858,work[sixI + 1]    = diP1;
+S788,EigenDecompositionImpl.java,1859,work[sixI + 2]    = liP1;
+S789,EigenDecompositionImpl.java,1860,si = li * ((liP1 == 0) ? li * di : liP1 * si) - lambda;
+S790,EigenDecompositionImpl.java,1861,sixI += 6;
+S791,EigenDecompositionImpl.java,1864,work[6 * nM1 + 1] = d[nM1] + si;
+S792,EigenDecompositionImpl.java,1865,work[6 * nM1]     = si;
+S793,EigenDecompositionImpl.java,1878,final int nM1 = d.length - 1;
+S794,EigenDecompositionImpl.java,1879,double pi = d[nM1] - lambda;
+S795,EigenDecompositionImpl.java,1880,int sixI = 6 * (nM1 - 1);
+S796,EigenDecompositionImpl.java,1881,for (int i = nM1 - 1; i >= 0; --i) {
+S797,EigenDecompositionImpl.java,1882,final double di   = d[i];
+S798,EigenDecompositionImpl.java,1883,final double li   = l[i];
+S799,EigenDecompositionImpl.java,1884,final double diP1 = di * li * li + pi;
+S800,EigenDecompositionImpl.java,1885,final double t    = di / diP1;
+S801,EigenDecompositionImpl.java,1886,work[sixI +  9]   = pi;
+S802,EigenDecompositionImpl.java,1887,work[sixI + 10]   = diP1;
+S803,EigenDecompositionImpl.java,1888,work[sixI +  5]   = li * t;
+S804,EigenDecompositionImpl.java,1889,pi = pi * t - lambda;
+S805,EigenDecompositionImpl.java,1890,sixI -= 6;
+S806,EigenDecompositionImpl.java,1892,if (Double.isNaN(pi)) {
+S807,EigenDecompositionImpl.java,1894,pi = d[nM1] - lambda;
+S808,EigenDecompositionImpl.java,1895,sixI = 6 * (nM1 - 1);
+S809,EigenDecompositionImpl.java,1896,for (int i = nM1 - 1; i >= 0; --i) {
+S810,EigenDecompositionImpl.java,1897,final double di   = d[i];
+S811,EigenDecompositionImpl.java,1898,final double li   = l[i];
+S812,EigenDecompositionImpl.java,1899,double diP1 = di * li * li + pi;
+S813,EigenDecompositionImpl.java,1900,if (Math.abs(diP1) < minPivot) {
+S814,EigenDecompositionImpl.java,1901,diP1 = -minPivot;
+S815,EigenDecompositionImpl.java,1903,final double t    = di / diP1;
+S816,EigenDecompositionImpl.java,1904,work[sixI +  9]   = pi;
+S817,EigenDecompositionImpl.java,1905,work[sixI + 10]   = diP1;
+S818,EigenDecompositionImpl.java,1906,work[sixI +  5]   = li * t;
+S819,EigenDecompositionImpl.java,1907,pi = ((t == 0) ? di : pi * t) - lambda;
+S820,EigenDecompositionImpl.java,1908,sixI -= 6;
+S821,EigenDecompositionImpl.java,1911,work[3] = pi;
+S822,EigenDecompositionImpl.java,1912,work[4] = pi;
+S823,MathRuntimeException.java,305,return new IllegalArgumentException() {
+S824,MatrixUtils.java,61,return (rows * columns <= 4096) ?
+S825,MatrixUtils.java,106,return (data.length * data[0].length <= 4096) ?
+S826,MatrixUtils.java,142,"final RealMatrix m = createRealMatrix(dimension, dimension);"
+S827,MatrixUtils.java,143,for (int i = 0; i < dimension; ++i) {
+S828,MatrixUtils.java,144,"m.setEntry(i, i, 1.0);"
+S829,MatrixUtils.java,146,return m;
+S830,MatrixUtils.java,202,"final RealMatrix m = createRealMatrix(diagonal.length, diagonal.length);"
+S831,MatrixUtils.java,203,for (int i = 0; i < diagonal.length; ++i) {
+S832,MatrixUtils.java,204,"m.setEntry(i, i, diagonal[i]);"
+S833,MatrixUtils.java,206,return m;
+S834,MatrixUtils.java,530,if (row < 0 || row >= m.getRowDimension()) {
+S835,MatrixUtils.java,544,if (column < 0 || column >= m.getColumnDimension()) {
+S836,MatrixUtils.java,564,"checkRowIndex(m, startRow);"
+S837,MatrixUtils.java,565,"checkRowIndex(m, endRow);"
+S838,MatrixUtils.java,566,if (startRow > endRow) {
+S839,MatrixUtils.java,571,"checkColumnIndex(m, startColumn);"
+S840,MatrixUtils.java,572,"checkColumnIndex(m, endColumn);"
+S841,MatrixUtils.java,573,if (startColumn > endColumn) {
+S842,MatrixUtils.java,633,if ((left.getRowDimension()    != right.getRowDimension()) ||
+S843,MatrixUtils.java,650,if (left.getColumnDimension() != right.getRowDimension()) {
+S844,MatrixUtils.java,651,throw MathRuntimeException.createIllegalArgumentException(
+S845,RealVectorFormat.java,94,"this(DEFAULT_PREFIX, DEFAULT_SUFFIX, DEFAULT_SEPARATOR, format);"
+S846,RealVectorFormat.java,117,"final String separator, final NumberFormat format) {"
+S847,RealVectorFormat.java,118,this.prefix      = prefix;
+S848,RealVectorFormat.java,119,this.suffix      = suffix;
+S849,RealVectorFormat.java,120,this.separator   = separator;
+S850,RealVectorFormat.java,121,trimmedPrefix    = prefix.trim();
+S851,RealVectorFormat.java,122,trimmedSuffix    = suffix.trim();
+S852,RealVectorFormat.java,123,trimmedSeparator = separator.trim();
+S853,RealVectorFormat.java,124,this.format      = format;
+S854,RealVectorFormat.java,173,return getInstance(Locale.getDefault());
+S855,RealVectorFormat.java,182,return new RealVectorFormat(getDefaultNumberFormat(locale));
+S856,SingularValueDecompositionImpl.java,46,public class SingularValueDecompositionImpl implements SingularValueDecomposition {
+S857,SingularValueDecompositionImpl.java,98,"this(matrix, Math.min(matrix.getRowDimension(), matrix.getColumnDimension()));"
+S858,SingularValueDecompositionImpl.java,109,throws InvalidMatrixException {
+S859,SingularValueDecompositionImpl.java,111,m = matrix.getRowDimension();
+S860,SingularValueDecompositionImpl.java,112,n = matrix.getColumnDimension();
+S861,SingularValueDecompositionImpl.java,114,cachedU  = null;
+S862,SingularValueDecompositionImpl.java,115,cachedS  = null;
+S863,SingularValueDecompositionImpl.java,116,cachedV  = null;
+S864,SingularValueDecompositionImpl.java,117,cachedVt = null;
+S865,SingularValueDecompositionImpl.java,120,transformer         = new BiDiagonalTransformer(matrix);
+S866,SingularValueDecompositionImpl.java,121,mainBidiagonal      = transformer.getMainDiagonalRef();
+S867,SingularValueDecompositionImpl.java,122,secondaryBidiagonal = transformer.getSecondaryDiagonalRef();
+S868,SingularValueDecompositionImpl.java,125,mainTridiagonal      = new double[mainBidiagonal.length];
+S869,SingularValueDecompositionImpl.java,126,secondaryTridiagonal = new double[mainBidiagonal.length - 1];
+S870,SingularValueDecompositionImpl.java,127,double a = mainBidiagonal[0];
+S871,SingularValueDecompositionImpl.java,128,mainTridiagonal[0] = a * a;
+S872,SingularValueDecompositionImpl.java,129,for (int i = 1; i < mainBidiagonal.length; ++i) {
+S873,SingularValueDecompositionImpl.java,130,final double b  = secondaryBidiagonal[i - 1];
+S874,SingularValueDecompositionImpl.java,131,secondaryTridiagonal[i - 1] = a * b;
+S875,SingularValueDecompositionImpl.java,132,a = mainBidiagonal[i];
+S876,SingularValueDecompositionImpl.java,133,mainTridiagonal[i] = a * a + b * b;
+S877,SingularValueDecompositionImpl.java,137,eigenDecomposition =
+S878,SingularValueDecompositionImpl.java,140,final double[] eigenValues = eigenDecomposition.getRealEigenvalues();
+S879,SingularValueDecompositionImpl.java,141,"int p = Math.min(max, eigenValues.length);"
+S880,SingularValueDecompositionImpl.java,142,while ((p > 0) && (eigenValues[p - 1] <= 0)) {
+S881,SingularValueDecompositionImpl.java,143,--p;
+S882,SingularValueDecompositionImpl.java,145,singularValues = new double[p];
+S883,SingularValueDecompositionImpl.java,146,for (int i = 0; i < p; ++i) {
+S884,SingularValueDecompositionImpl.java,147,singularValues[i] = Math.sqrt(eigenValues[i]);
+S885,SingularValueDecompositionImpl.java,156,if (cachedU == null) {
+S886,SingularValueDecompositionImpl.java,158,final int p = singularValues.length;
+S887,SingularValueDecompositionImpl.java,159,if (m >= n) {
+S888,SingularValueDecompositionImpl.java,161,final RealMatrix e =
+S889,SingularValueDecompositionImpl.java,163,final double[][] eData = e.getData();
+S890,SingularValueDecompositionImpl.java,164,final double[][] wData = new double[m][p];
+S891,SingularValueDecompositionImpl.java,165,double[] ei1 = eData[0];
+S892,SingularValueDecompositionImpl.java,166,for (int i = 0; i < p - 1; ++i) {
+S893,SingularValueDecompositionImpl.java,168,final double mi = mainBidiagonal[i];
+S894,SingularValueDecompositionImpl.java,169,final double[] ei0 = ei1;
+S895,SingularValueDecompositionImpl.java,170,final double[] wi  = wData[i];
+S896,SingularValueDecompositionImpl.java,171,ei1 = eData[i + 1];
+S897,SingularValueDecompositionImpl.java,172,final double si = secondaryBidiagonal[i];
+S898,SingularValueDecompositionImpl.java,173,for (int j = 0; j < p; ++j) {
+S899,SingularValueDecompositionImpl.java,174,wi[j] = (mi * ei0[j] + si * ei1[j]) / singularValues[j];
+S900,SingularValueDecompositionImpl.java,177,for (int j = 0; j < p; ++j) {
+S901,SingularValueDecompositionImpl.java,178,wData[p - 1][j] = ei1[j] * mainBidiagonal[p - 1] / singularValues[j];
+S902,SingularValueDecompositionImpl.java,181,for (int i = p; i < m; ++i) {
+S903,SingularValueDecompositionImpl.java,182,wData[i] = new double[p];
+S904,SingularValueDecompositionImpl.java,184,cachedU =
+S905,SingularValueDecompositionImpl.java,186,} else {
+S906,SingularValueDecompositionImpl.java,188,final RealMatrix e =
+S907,SingularValueDecompositionImpl.java,190,cachedU = transformer.getU().multiply(e);
+S908,SingularValueDecompositionImpl.java,196,return cachedU;
+S909,SingularValueDecompositionImpl.java,204,if (cachedUt == null) {
+S910,SingularValueDecompositionImpl.java,205,cachedUt = getU().transpose();
+S911,SingularValueDecompositionImpl.java,209,return cachedUt;
+S912,SingularValueDecompositionImpl.java,217,if (cachedS == null) {
+S913,SingularValueDecompositionImpl.java,220,cachedS = MatrixUtils.createRealDiagonalMatrix(singularValues);
+S914,SingularValueDecompositionImpl.java,223,return cachedS;
+S915,SingularValueDecompositionImpl.java,229,return singularValues.clone();
+S916,SingularValueDecompositionImpl.java,236,if (cachedV == null) {
+S917,SingularValueDecompositionImpl.java,238,final int p = singularValues.length;
+S918,SingularValueDecompositionImpl.java,239,if (m >= n) {
+S919,SingularValueDecompositionImpl.java,241,final RealMatrix e =
+S920,SingularValueDecompositionImpl.java,243,cachedV = transformer.getV().multiply(e);
+S921,SingularValueDecompositionImpl.java,244,} else {
+S922,SingularValueDecompositionImpl.java,247,final RealMatrix e =
+S923,SingularValueDecompositionImpl.java,249,final double[][] eData = e.getData();
+S924,SingularValueDecompositionImpl.java,250,final double[][] wData = new double[n][p];
+S925,SingularValueDecompositionImpl.java,251,double[] ei1 = eData[0];
+S926,SingularValueDecompositionImpl.java,252,for (int i = 0; i < p - 1; ++i) {
+S927,SingularValueDecompositionImpl.java,253,final double mi = mainBidiagonal[i];
+S928,SingularValueDecompositionImpl.java,254,final double[] ei0 = ei1;
+S929,SingularValueDecompositionImpl.java,255,final double[] wi  = wData[i];
+S930,SingularValueDecompositionImpl.java,256,ei1 = eData[i + 1];
+S931,SingularValueDecompositionImpl.java,257,final double si = secondaryBidiagonal[i];
+S932,SingularValueDecompositionImpl.java,258,for (int j = 0; j < p; ++j) {
+S933,SingularValueDecompositionImpl.java,259,wi[j] = (mi * ei0[j] + si * ei1[j]) / singularValues[j];
+S934,SingularValueDecompositionImpl.java,262,for (int j = 0; j < p; ++j) {
+S935,SingularValueDecompositionImpl.java,263,wData[p - 1][j] = ei1[j] * mainBidiagonal[p - 1] / singularValues[j];
+S936,SingularValueDecompositionImpl.java,265,for (int i = p; i < n; ++i) {
+S937,SingularValueDecompositionImpl.java,266,wData[i] = new double[p];
+S938,SingularValueDecompositionImpl.java,268,cachedV =
+S939,SingularValueDecompositionImpl.java,275,return cachedV;
+S940,SingularValueDecompositionImpl.java,283,if (cachedVt == null) {
+S941,SingularValueDecompositionImpl.java,284,cachedVt = getV().transpose();
+S942,SingularValueDecompositionImpl.java,288,return cachedVt;
+S943,SingularValueDecompositionImpl.java,296,final int p = singularValues.length;
+S944,SingularValueDecompositionImpl.java,297,int dimension = 0;
+S945,SingularValueDecompositionImpl.java,298,while ((dimension < p) && (singularValues[dimension] >= minSingularValue)) {
+S946,SingularValueDecompositionImpl.java,299,++dimension;
+S947,SingularValueDecompositionImpl.java,302,if (dimension == 0) {
+S948,SingularValueDecompositionImpl.java,308,final double[][] data = new double[dimension][p];
+S949,SingularValueDecompositionImpl.java,309,getVT().walkInOptimizedOrder(new DefaultRealMatrixPreservingVisitor() {
+S950,SingularValueDecompositionImpl.java,313,data[row][column] = value / singularValues[row];
+S951,SingularValueDecompositionImpl.java,317,"RealMatrix jv = new Array2DRowRealMatrix(data, false);"
+S952,SingularValueDecompositionImpl.java,318,return jv.transpose().multiply(jv);
+S953,SingularValueDecompositionImpl.java,331,return singularValues[0] / singularValues[singularValues.length - 1];
+S954,SingularValueDecompositionImpl.java,338,"final double threshold = Math.max(m, n) * Math.ulp(singularValues[0]);"
+S955,SingularValueDecompositionImpl.java,340,for (int i = singularValues.length - 1; i >= 0; --i) {
+S956,SingularValueDecompositionImpl.java,341,if (singularValues[i] > threshold) {
+S957,SingularValueDecompositionImpl.java,342,return i + 1;
+S958,SingularValueDecompositionImpl.java,351,"return new Solver(singularValues, getUT(), getV(),"
+S959,SingularValueDecompositionImpl.java,356,private static class Solver implements DecompositionSolver {
+S960,SingularValueDecompositionImpl.java,372,final boolean nonSingular) {
+S961,SingularValueDecompositionImpl.java,373,double[][] suT      = uT.getData();
+S962,SingularValueDecompositionImpl.java,374,for (int i = 0; i < singularValues.length; ++i) {
+S963,SingularValueDecompositionImpl.java,375,final double a      = 1.0 / singularValues[i];
+S964,SingularValueDecompositionImpl.java,376,final double[] suTi = suT[i];
+S965,SingularValueDecompositionImpl.java,377,for (int j = 0; j < suTi.length; ++j) {
+S966,SingularValueDecompositionImpl.java,378,suTi[j] *= a;
+S967,SingularValueDecompositionImpl.java,381,"pseudoInverse    = v.multiply(new Array2DRowRealMatrix(suT, false));"
+S968,SingularValueDecompositionImpl.java,382,this.nonSingular = nonSingular;
+S969,SingularValueDecompositionImpl.java,394,return pseudoInverse.operate(b);
+S970,SingularValueDecompositionImpl.java,406,return pseudoInverse.operate(b);
+S971,SingularValueDecompositionImpl.java,418,return pseudoInverse.multiply(b);

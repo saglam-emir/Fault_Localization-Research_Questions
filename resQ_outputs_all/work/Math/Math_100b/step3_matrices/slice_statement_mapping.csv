@@ -1,0 +1,209 @@
+statement_id,file,line,code
+S1,AbstractEstimator.java,38,protected AbstractEstimator() {
+S2,AbstractEstimator.java,48,this.maxCostEval = maxCostEval;
+S3,AbstractEstimator.java,57,return costEvaluations;
+S4,AbstractEstimator.java,73,incrementJacobianEvaluationsCounter();
+S5,AbstractEstimator.java,74,"Arrays.fill(jacobian, 0);"
+S6,AbstractEstimator.java,88,++jacobianEvaluations;
+S7,AbstractEstimator.java,99,if (++costEvaluations > maxCostEval) {
+S8,AbstractEstimator.java,104,cost = 0;
+S9,AbstractEstimator.java,107,double residual = wm.getResidual();
+S10,AbstractEstimator.java,109,cost += wm.getWeight() * residual * residual;
+S11,AbstractEstimator.java,111,cost = Math.sqrt(cost);
+S12,AbstractEstimator.java,127,WeightedMeasurement[] wm = problem.getMeasurements();
+S13,AbstractEstimator.java,128,double criterion = 0;
+S14,AbstractEstimator.java,130,double residual = wm[i].getResidual();
+S15,AbstractEstimator.java,131,criterion += wm[i].getWeight() * residual * residual;
+S16,AbstractEstimator.java,133,return Math.sqrt(criterion / wm.length);
+S17,AbstractEstimator.java,226,costEvaluations     = 0;
+S18,AbstractEstimator.java,227,jacobianEvaluations = 0;
+S19,AbstractEstimator.java,230,measurements = problem.getMeasurements();
+S20,AbstractEstimator.java,231,parameters   = problem.getUnboundParameters();
+S21,AbstractEstimator.java,234,rows      = measurements.length;
+S22,AbstractEstimator.java,235,cols      = parameters.length;
+S23,AbstractEstimator.java,236,jacobian  = new double[rows * cols];
+S24,AbstractEstimator.java,237,residuals = new double[rows];
+S25,AbstractEstimator.java,239,cost = Double.POSITIVE_INFINITY;
+S26,EstimatedParameter.java,44,"public EstimatedParameter(String name, double firstEstimate) {"
+S27,EstimatedParameter.java,45,this.name = name;
+S28,EstimatedParameter.java,46,estimate  = firstEstimate;
+S29,EstimatedParameter.java,47,bound     = false;
+S30,EstimatedParameter.java,59,boolean bound) {
+S31,EstimatedParameter.java,60,this.name  = name;
+S32,EstimatedParameter.java,61,estimate   = firstEstimate;
+S33,EstimatedParameter.java,62,this.bound = bound;
+S34,EstimatedParameter.java,79,this.estimate = estimate;
+S35,EstimatedParameter.java,86,return estimate;
+S36,EstimatedParameter.java,107,return bound;
+S37,GaussNewtonEstimator.java,73,double steadyStateThreshold) {
+S38,GaussNewtonEstimator.java,74,setMaxCostEval(maxCostEval);
+S39,GaussNewtonEstimator.java,75,this.steadyStateThreshold = steadyStateThreshold;
+S40,GaussNewtonEstimator.java,76,this.convergence          = convergence;
+S41,GaussNewtonEstimator.java,105,initializeEstimate(problem);
+S42,GaussNewtonEstimator.java,119,incrementJacobianEvaluationsCounter();
+S43,GaussNewtonEstimator.java,120,"RealMatrix b = new RealMatrixImpl(parameters.length, 1);"
+S44,GaussNewtonEstimator.java,123,if (! measurements [i].isIgnored()) {
+S45,GaussNewtonEstimator.java,145,b = b.add(bDecrement);
+S46,GaussNewtonEstimator.java,153,RealMatrix dX = a.solve(b);
+S47,GaussNewtonEstimator.java,156,for (int i = 0; i < parameters.length; ++i) {
+S48,GaussNewtonEstimator.java,157,"parameters[i].setEstimate(parameters[i].getEstimate() + dX.getEntry(i, 0));"
+S49,GaussNewtonEstimator.java,165,previous = cost;
+S50,GaussNewtonEstimator.java,166,updateResidualsAndCost();
+S51,GaussNewtonEstimator.java,168,} while ((getCostEvaluations() < 2) ||
+S52,LevenbergMarquardtEstimator.java,114,public LevenbergMarquardtEstimator() {
+S53,LevenbergMarquardtEstimator.java,117,setMaxCostEval(1000);
+S54,LevenbergMarquardtEstimator.java,120,setInitialStepBoundFactor(100.0);
+S55,LevenbergMarquardtEstimator.java,121,setCostRelativeTolerance(1.0e-10);
+S56,LevenbergMarquardtEstimator.java,122,setParRelativeTolerance(1.0e-10);
+S57,LevenbergMarquardtEstimator.java,123,setOrthoTolerance(1.0e-10);
+S58,LevenbergMarquardtEstimator.java,137,this.initialStepBoundFactor = initialStepBoundFactor;
+S59,LevenbergMarquardtEstimator.java,147,this.costRelativeTolerance = costRelativeTolerance;
+S60,LevenbergMarquardtEstimator.java,158,this.parRelativeTolerance = parRelativeTolerance;
+S61,LevenbergMarquardtEstimator.java,169,this.orthoTolerance = orthoTolerance;
+S62,LevenbergMarquardtEstimator.java,203,initializeEstimate(problem);
+S63,LevenbergMarquardtEstimator.java,206,"solvedCols  = Math.min(rows, cols);"
+S64,LevenbergMarquardtEstimator.java,207,diagR       = new double[cols];
+S65,LevenbergMarquardtEstimator.java,208,jacNorm     = new double[cols];
+S66,LevenbergMarquardtEstimator.java,209,beta        = new double[cols];
+S67,LevenbergMarquardtEstimator.java,210,permutation = new int[cols];
+S68,LevenbergMarquardtEstimator.java,211,lmDir       = new double[cols];
+S69,LevenbergMarquardtEstimator.java,215,double[] diag    = new double[cols];
+S70,LevenbergMarquardtEstimator.java,216,double[] oldX    = new double[cols];
+S71,LevenbergMarquardtEstimator.java,217,double[] oldRes  = new double[rows];
+S72,LevenbergMarquardtEstimator.java,218,double[] work1   = new double[cols];
+S73,LevenbergMarquardtEstimator.java,223,updateResidualsAndCost();
+S74,LevenbergMarquardtEstimator.java,226,lmPar = 0;
+S75,LevenbergMarquardtEstimator.java,227,boolean firstIteration = true;
+S76,LevenbergMarquardtEstimator.java,231,updateJacobian();
+S77,LevenbergMarquardtEstimator.java,232,qrDecomposition();
+S78,LevenbergMarquardtEstimator.java,235,qTy(residuals);
+S79,LevenbergMarquardtEstimator.java,244,if (firstIteration) {
+S80,LevenbergMarquardtEstimator.java,248,xNorm = 0;
+S81,LevenbergMarquardtEstimator.java,249,for (int k = 0; k < cols; ++k) {
+S82,LevenbergMarquardtEstimator.java,250,double dk = jacNorm[k];
+S83,LevenbergMarquardtEstimator.java,254,double xk = dk * parameters[k].getEstimate();
+S84,LevenbergMarquardtEstimator.java,255,xNorm  += xk * xk;
+S85,LevenbergMarquardtEstimator.java,256,diag[k] = dk;
+S86,LevenbergMarquardtEstimator.java,258,xNorm = Math.sqrt(xNorm);
+S87,LevenbergMarquardtEstimator.java,261,delta = (xNorm == 0) ? initialStepBoundFactor : (initialStepBoundFactor * xNorm);
+S88,LevenbergMarquardtEstimator.java,266,double maxCosine = 0;
+S89,LevenbergMarquardtEstimator.java,267,if (cost != 0) {
+S90,LevenbergMarquardtEstimator.java,268,for (int j = 0; j < solvedCols; ++j) {
+S91,LevenbergMarquardtEstimator.java,269,int    pj = permutation[j];
+S92,LevenbergMarquardtEstimator.java,270,double s  = jacNorm[pj];
+S93,LevenbergMarquardtEstimator.java,271,if (s != 0) {
+S94,LevenbergMarquardtEstimator.java,272,double sum = 0;
+S95,LevenbergMarquardtEstimator.java,273,"for (int i = 0, index = pj; i <= j; ++i, index += cols) {"
+S96,LevenbergMarquardtEstimator.java,274,sum += jacobian[index] * residuals[i];
+S97,LevenbergMarquardtEstimator.java,276,"maxCosine = Math.max(maxCosine, Math.abs(sum) / (s * cost));"
+S98,LevenbergMarquardtEstimator.java,280,if (maxCosine <= orthoTolerance) {
+S99,LevenbergMarquardtEstimator.java,285,for (int j = 0; j < cols; ++j) {
+S100,LevenbergMarquardtEstimator.java,286,"diag[j] = Math.max(diag[j], jacNorm[j]);"
+S101,LevenbergMarquardtEstimator.java,290,for (double ratio = 0; ratio < 1.0e-4;) {
+S102,LevenbergMarquardtEstimator.java,293,for (int j = 0; j < solvedCols; ++j) {
+S103,LevenbergMarquardtEstimator.java,295,oldX[pj] = parameters[pj].getEstimate();
+S104,LevenbergMarquardtEstimator.java,297,double previousCost = cost;
+S105,LevenbergMarquardtEstimator.java,298,double[] tmpVec = residuals;
+S106,LevenbergMarquardtEstimator.java,299,residuals = oldRes;
+S107,LevenbergMarquardtEstimator.java,300,oldRes    = tmpVec;
+S108,LevenbergMarquardtEstimator.java,303,"determineLMParameter(oldRes, delta, diag, work1, work2, work3);"
+S109,LevenbergMarquardtEstimator.java,306,double lmNorm = 0;
+S110,LevenbergMarquardtEstimator.java,307,for (int j = 0; j < solvedCols; ++j) {
+S111,LevenbergMarquardtEstimator.java,308,int pj = permutation[j];
+S112,LevenbergMarquardtEstimator.java,310,parameters[pj].setEstimate(oldX[pj] + lmDir[pj]);
+S113,LevenbergMarquardtEstimator.java,311,double s = diag[pj] * lmDir[pj];
+S114,LevenbergMarquardtEstimator.java,312,lmNorm  += s * s;
+S115,LevenbergMarquardtEstimator.java,314,lmNorm = Math.sqrt(lmNorm);
+S116,LevenbergMarquardtEstimator.java,317,if (firstIteration) {
+S117,LevenbergMarquardtEstimator.java,318,"delta = Math.min(delta, lmNorm);"
+S118,LevenbergMarquardtEstimator.java,322,updateResidualsAndCost();
+S119,LevenbergMarquardtEstimator.java,326,if (0.1 * cost < previousCost) {
+S120,LevenbergMarquardtEstimator.java,327,double r = cost / previousCost;
+S121,LevenbergMarquardtEstimator.java,328,actRed = 1.0 - r * r;
+S122,LevenbergMarquardtEstimator.java,333,for (int j = 0; j < solvedCols; ++j) {
+S123,LevenbergMarquardtEstimator.java,334,int pj = permutation[j];
+S124,LevenbergMarquardtEstimator.java,335,double dirJ = lmDir[pj];
+S125,LevenbergMarquardtEstimator.java,336,work1[j] = 0;
+S126,LevenbergMarquardtEstimator.java,337,"for (int i = 0, index = pj; i <= j; ++i, index += cols) {"
+S127,LevenbergMarquardtEstimator.java,338,work1[i] += jacobian[index] * dirJ;
+S128,LevenbergMarquardtEstimator.java,341,double coeff1 = 0;
+S129,LevenbergMarquardtEstimator.java,342,for (int j = 0; j < solvedCols; ++j) {
+S130,LevenbergMarquardtEstimator.java,343,coeff1 += work1[j] * work1[j];
+S131,LevenbergMarquardtEstimator.java,345,double pc2 = previousCost * previousCost;
+S132,LevenbergMarquardtEstimator.java,346,coeff1 = coeff1 / pc2;
+S133,LevenbergMarquardtEstimator.java,347,double coeff2 = lmPar * lmNorm * lmNorm / pc2;
+S134,LevenbergMarquardtEstimator.java,348,double preRed = coeff1 + 2 * coeff2;
+S135,LevenbergMarquardtEstimator.java,352,ratio = (preRed == 0) ? 0 : (actRed / preRed);
+S136,LevenbergMarquardtEstimator.java,355,if (ratio <= 0.25) {
+S137,LevenbergMarquardtEstimator.java,364,delta = 2 * lmNorm;
+S138,LevenbergMarquardtEstimator.java,365,lmPar *= 0.5;
+S139,LevenbergMarquardtEstimator.java,369,if (ratio >= 1.0e-4) {
+S140,LevenbergMarquardtEstimator.java,466,double dxNorm = 0;
+S141,LevenbergMarquardtEstimator.java,467,for (int j = 0; j < solvedCols; ++j) {
+S142,LevenbergMarquardtEstimator.java,468,int pj = permutation[j];
+S143,LevenbergMarquardtEstimator.java,469,double s = diag[pj] * lmDir[pj];
+S144,LevenbergMarquardtEstimator.java,470,work1[pj] = s;
+S145,LevenbergMarquardtEstimator.java,471,dxNorm += s * s;
+S146,LevenbergMarquardtEstimator.java,473,dxNorm = Math.sqrt(dxNorm);
+S147,LevenbergMarquardtEstimator.java,474,double fp = dxNorm - delta;
+S148,LevenbergMarquardtEstimator.java,475,if (fp <= 0.1 * delta) {
+S149,LevenbergMarquardtEstimator.java,476,lmPar = 0;
+S150,LevenbergMarquardtEstimator.java,752,for (int k = 0; k < cols; ++k) {
+S151,LevenbergMarquardtEstimator.java,756,double ak2 = Double.NEGATIVE_INFINITY;
+S152,LevenbergMarquardtEstimator.java,757,for (int i = k; i < cols; ++i) {
+S153,LevenbergMarquardtEstimator.java,758,double norm2 = 0;
+S154,LevenbergMarquardtEstimator.java,759,int iDiag = k * cols + permutation[i];
+S155,LevenbergMarquardtEstimator.java,760,for (int index = iDiag; index < jacobian.length; index += cols) {
+S156,LevenbergMarquardtEstimator.java,761,double aki = jacobian[index];
+S157,LevenbergMarquardtEstimator.java,762,norm2 += aki * aki;
+S158,LevenbergMarquardtEstimator.java,764,if (Double.isInfinite(norm2) || Double.isNaN(norm2)) {
+S159,LevenbergMarquardtEstimator.java,768,if (norm2 > ak2) {
+S160,LevenbergMarquardtEstimator.java,770,ak2        = norm2;
+S161,LevenbergMarquardtEstimator.java,773,if (ak2 == 0) {
+S162,LevenbergMarquardtEstimator.java,774,rank = k;
+S163,LevenbergMarquardtEstimator.java,807,rank = solvedCols;
+S164,RealMatrixImpl.java,58,private double data[][] = null;
+S165,RealMatrixImpl.java,93,data = new double[rowDimension][columnDimension];
+S166,RealMatrixImpl.java,109,this.copyIn(d);
+S167,RealMatrixImpl.java,151,int rowCount = this.getRowDimension();
+S168,RealMatrixImpl.java,152,int columnCount = this.getColumnDimension();
+S169,RealMatrixImpl.java,153,double[][] outData = new double[rowCount][columnCount];
+S170,RealMatrixImpl.java,159,return new RealMatrixImpl(outData);
+S171,RealMatrixImpl.java,394,int nRows = subMatrix.length;
+S172,RealMatrixImpl.java,399,int nCols = subMatrix[0].length;
+S173,RealMatrixImpl.java,404,for (int r = 1; r < nRows; r++) {
+S174,RealMatrixImpl.java,405,if (subMatrix[r].length != nCols) {
+S175,RealMatrixImpl.java,410,if (data == null) {
+S176,RealMatrixImpl.java,413,data = new double[nRows][nCols];
+S177,RealMatrixImpl.java,526,return data[row][column];
+S178,RealMatrixImpl.java,604,return data.length;
+S179,RealMatrixImpl.java,611,return data[0].length;
+S180,RealMatrixImpl.java,721,int nColB = b.getColumnDimension();
+S181,RealMatrixImpl.java,722,int nRowB = b.getRowDimension();
+S182,RealMatrixImpl.java,725,double[][] bp = new double[nRowB][nColB];
+S183,RealMatrixImpl.java,753,RealMatrixImpl outMat = new RealMatrixImpl(bp);
+S184,RealMatrixImpl.java,1020,"setSubMatrix(in,0,0);"
+S185,SimpleEstimationProblem.java,48,public SimpleEstimationProblem() {
+S186,SimpleEstimationProblem.java,49,parameters   = new ArrayList();
+S187,SimpleEstimationProblem.java,50,measurements = new ArrayList();
+S188,SimpleEstimationProblem.java,68,List unbound = new ArrayList(parameters.size());
+S189,SimpleEstimationProblem.java,69,for (Iterator iterator = parameters.iterator(); iterator.hasNext();) {
+S190,SimpleEstimationProblem.java,70,EstimatedParameter p = (EstimatedParameter) iterator.next();
+S191,SimpleEstimationProblem.java,71,if (! p.isBound()) {
+S192,SimpleEstimationProblem.java,72,unbound.add(p);
+S193,SimpleEstimationProblem.java,77,return (EstimatedParameter[]) unbound.toArray(new EstimatedParameter[unbound.size()]);
+S194,SimpleEstimationProblem.java,86,return (WeightedMeasurement[]) measurements.toArray(new WeightedMeasurement[measurements.size()]);
+S195,SimpleEstimationProblem.java,93,parameters.add(p);
+S196,SimpleEstimationProblem.java,101,measurements.add(m);
+S197,WeightedMeasurement.java,65,"public WeightedMeasurement(double weight, double measuredValue) {"
+S198,WeightedMeasurement.java,66,this.weight        = weight;
+S199,WeightedMeasurement.java,67,this.measuredValue = measuredValue;
+S200,WeightedMeasurement.java,68,ignored            = false;
+S201,WeightedMeasurement.java,80,boolean ignored) {
+S202,WeightedMeasurement.java,81,this.weight        = weight;
+S203,WeightedMeasurement.java,82,this.measuredValue = measuredValue;
+S204,WeightedMeasurement.java,83,this.ignored       = ignored;
+S205,WeightedMeasurement.java,92,return weight;
+S206,WeightedMeasurement.java,111,return measuredValue - getTheoreticalValue();
+S207,WeightedMeasurement.java,146,this.ignored = ignored;
+S208,WeightedMeasurement.java,155,return ignored;

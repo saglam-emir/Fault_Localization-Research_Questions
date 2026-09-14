@@ -1,0 +1,189 @@
+statement_id,file,line,code
+S1,Base64.java,91,"static final byte[] CHUNK_SEPARATOR = {'\r', '\n'};"
+S2,Base64.java,100,private static final byte[] STANDARD_ENCODE_TABLE = {
+S3,Base64.java,113,private static final byte[] URL_SAFE_ENCODE_TABLE = {
+S4,Base64.java,137,private static final byte[] DECODE_TABLE = {
+S5,Base64.java,256,"this(MIME_CHUNK_SIZE, CHUNK_SEPARATOR, urlSafe);"
+S6,Base64.java,304,"this(lineLength, lineSeparator, false);"
+S7,Base64.java,332,"public Base64(int lineLength, byte[] lineSeparator, boolean urlSafe) {"
+S8,Base64.java,333,if (lineSeparator == null) {
+S9,Base64.java,337,this.lineLength = lineLength > 0 ? (lineLength / 4) * 4 : 0;
+S10,Base64.java,338,this.lineSeparator = new byte[lineSeparator.length];
+S11,Base64.java,339,"System.arraycopy(lineSeparator, 0, this.lineSeparator, 0, lineSeparator.length);"
+S12,Base64.java,340,if (lineLength > 0) {
+S13,Base64.java,341,this.encodeSize = 4 + lineSeparator.length;
+S14,Base64.java,343,this.encodeSize = 4;
+S15,Base64.java,345,this.decodeSize = this.encodeSize - 1;
+S16,Base64.java,346,if (containsBase64Byte(lineSeparator)) {
+S17,Base64.java,350,this.encodeTable = urlSafe ? URL_SAFE_ENCODE_TABLE : STANDARD_ENCODE_TABLE;
+S18,Base64.java,360,return this.encodeTable == URL_SAFE_ENCODE_TABLE;
+S19,Base64.java,369,return this.buffer != null;
+S20,Base64.java,378,return buffer != null ? pos - readPos : 0;
+S21,Base64.java,383,if (buffer == null) {
+S22,Base64.java,384,buffer = new byte[DEFAULT_BUFFER_SIZE];
+S23,Base64.java,385,pos = 0;
+S24,Base64.java,386,readPos = 0;
+S25,Base64.java,388,byte[] b = new byte[buffer.length * DEFAULT_BUFFER_RESIZE_FACTOR];
+S26,Base64.java,389,"System.arraycopy(buffer, 0, b, 0, buffer.length);"
+S27,Base64.java,390,buffer = b;
+S28,Base64.java,407,if (buffer != null) {
+S29,Base64.java,408,"int len = Math.min(avail(), bAvail);"
+S30,Base64.java,409,if (buffer != b) {
+S31,Base64.java,410,"System.arraycopy(buffer, readPos, b, bPos, len);"
+S32,Base64.java,411,readPos += len;
+S33,Base64.java,412,if (readPos >= pos) {
+S34,Base64.java,413,buffer = null;
+S35,Base64.java,418,buffer = null;
+S36,Base64.java,420,return len;
+S37,Base64.java,422,return eof ? -1 : 0;
+S38,Base64.java,439,if (out != null && out.length == outAvail) {
+S39,Base64.java,440,buffer = out;
+S40,Base64.java,441,pos = outPos;
+S41,Base64.java,442,readPos = outPos;
+S42,Base64.java,465,if (eof) {
+S43,Base64.java,466,return;
+S44,Base64.java,470,if (inAvail < 0) {
+S45,Base64.java,471,eof = true;
+S46,Base64.java,472,if (buffer == null || buffer.length - pos < encodeSize) {
+S47,Base64.java,473,resizeBuffer();
+S48,Base64.java,475,switch (modulus) {
+S49,Base64.java,477,buffer[pos++] = encodeTable[(x >> 2) & MASK_6BITS];
+S50,Base64.java,478,buffer[pos++] = encodeTable[(x << 4) & MASK_6BITS];
+S51,Base64.java,480,if (encodeTable == STANDARD_ENCODE_TABLE) {
+S52,Base64.java,481,buffer[pos++] = PAD;
+S53,Base64.java,482,buffer[pos++] = PAD;
+S54,Base64.java,487,buffer[pos++] = encodeTable[(x >> 10) & MASK_6BITS];
+S55,Base64.java,488,buffer[pos++] = encodeTable[(x >> 4) & MASK_6BITS];
+S56,Base64.java,489,buffer[pos++] = encodeTable[(x << 2) & MASK_6BITS];
+S57,Base64.java,491,if (encodeTable == STANDARD_ENCODE_TABLE) {
+S58,Base64.java,492,buffer[pos++] = PAD;
+S59,Base64.java,496,if (lineLength > 0 && pos > 0) {
+S60,Base64.java,497,"System.arraycopy(lineSeparator, 0, buffer, pos, lineSeparator.length);"
+S61,Base64.java,498,pos += lineSeparator.length;
+S62,Base64.java,501,for (int i = 0; i < inAvail; i++) {
+S63,Base64.java,502,if (buffer == null || buffer.length - pos < encodeSize) {
+S64,Base64.java,503,resizeBuffer();
+S65,Base64.java,505,modulus = (++modulus) % 3;
+S66,Base64.java,506,int b = in[inPos++];
+S67,Base64.java,507,if (b < 0) {
+S68,Base64.java,508,b += 256;
+S69,Base64.java,510,x = (x << 8) + b;
+S70,Base64.java,511,if (0 == modulus) {
+S71,Base64.java,512,buffer[pos++] = encodeTable[(x >> 18) & MASK_6BITS];
+S72,Base64.java,513,buffer[pos++] = encodeTable[(x >> 12) & MASK_6BITS];
+S73,Base64.java,514,buffer[pos++] = encodeTable[(x >> 6) & MASK_6BITS];
+S74,Base64.java,515,buffer[pos++] = encodeTable[x & MASK_6BITS];
+S75,Base64.java,516,currentLinePos += 4;
+S76,Base64.java,517,if (lineLength > 0 && lineLength <= currentLinePos) {
+S77,Base64.java,518,"System.arraycopy(lineSeparator, 0, buffer, pos, lineSeparator.length);"
+S78,Base64.java,519,pos += lineSeparator.length;
+S79,Base64.java,520,currentLinePos = 0;
+S80,Base64.java,551,if (eof) {
+S81,Base64.java,552,return;
+S82,Base64.java,554,if (inAvail < 0) {
+S83,Base64.java,555,eof = true;
+S84,Base64.java,557,for (int i = 0; i < inAvail; i++) {
+S85,Base64.java,558,if (buffer == null || buffer.length - pos < decodeSize) {
+S86,Base64.java,559,resizeBuffer();
+S87,Base64.java,561,byte b = in[inPos++];
+S88,Base64.java,562,if (b == PAD) {
+S89,Base64.java,564,eof = true;
+S90,Base64.java,565,break;
+S91,Base64.java,567,if (b >= 0 && b < DECODE_TABLE.length) {
+S92,Base64.java,568,int result = DECODE_TABLE[b];
+S93,Base64.java,569,if (result >= 0) {
+S94,Base64.java,570,modulus = (++modulus) % 4;
+S95,Base64.java,571,x = (x << 6) + result;
+S96,Base64.java,572,if (modulus == 0) {
+S97,Base64.java,573,buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+S98,Base64.java,574,buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+S99,Base64.java,575,buffer[pos++] = (byte) (x & MASK_8BITS);
+S100,Base64.java,585,if (eof && modulus != 0) {
+S101,Base64.java,586,if (buffer == null || buffer.length - pos < decodeSize) {
+S102,Base64.java,587,resizeBuffer();
+S103,Base64.java,590,x = x << 6;
+S104,Base64.java,591,switch (modulus) {
+S105,Base64.java,593,x = x << 6;
+S106,Base64.java,594,buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+S107,Base64.java,595,break;
+S108,Base64.java,597,buffer[pos++] = (byte) ((x >> 16) & MASK_8BITS);
+S109,Base64.java,598,buffer[pos++] = (byte) ((x >> 8) & MASK_8BITS);
+S110,Base64.java,613,return octet == PAD || (octet >= 0 && octet < DECODE_TABLE.length && DECODE_TABLE[octet] != -1);
+S111,Base64.java,642,for (int i = 0; i < arrayOctet.length; i++) {
+S112,Base64.java,643,if (isBase64(arrayOctet[i])) {
+S113,Base64.java,647,return false;
+S114,Base64.java,658,"return encodeBase64(binaryData, false);"
+S115,Base64.java,783,"return encodeBase64(binaryData, isChunked, false);"
+S116,Base64.java,801,"return encodeBase64(binaryData, isChunked, urlSafe, Integer.MAX_VALUE);"
+S117,Base64.java,821,if (binaryData == null || binaryData.length == 0) {
+S118,Base64.java,822,return binaryData;
+S119,Base64.java,825,"long len = getEncodeLength(binaryData, MIME_CHUNK_SIZE, CHUNK_SEPARATOR);"
+S120,Base64.java,826,if (len > maxResultSize) {
+S121,Base64.java,833,"Base64 b64 = isChunked ? new Base64(urlSafe) : new Base64(0, CHUNK_SEPARATOR, urlSafe);"
+S122,Base64.java,834,return b64.encode(binaryData);
+S123,Base64.java,945,reset();
+S124,Base64.java,946,if (pArray == null || pArray.length == 0) {
+S125,Base64.java,949,"long len = getEncodeLength(pArray, lineLength, lineSeparator);"
+S126,Base64.java,950,byte[] buf = new byte[(int) len];
+S127,Base64.java,951,"setInitialBuffer(buf, 0, buf.length);"
+S128,Base64.java,952,"encode(pArray, 0, pArray.length);"
+S129,Base64.java,953,"encode(pArray, 0, -1); // Notify encoder of EOF."
+S130,Base64.java,955,if (buffer != buf) {
+S131,Base64.java,956,"readResults(buf, 0, buf.length);"
+S132,Base64.java,960,if (isUrlSafe() && pos < buf.length) {
+S133,Base64.java,965,return buf;
+S134,Base64.java,981,chunkSize = (chunkSize / 4) * 4;
+S135,Base64.java,983,long len = (pArray.length * 4) / 3;
+S136,Base64.java,984,long mod = len % 4;
+S137,Base64.java,985,if (mod != 0) {
+S138,Base64.java,986,len += 4 - mod;
+S139,Base64.java,988,if (chunkSize > 0) {
+S140,Base64.java,989,boolean lenChunksPerfectly = len % chunkSize == 0;
+S141,Base64.java,990,len += (len / chunkSize) * chunkSeparator.length;
+S142,Base64.java,991,if (!lenChunksPerfectly) {
+S143,Base64.java,992,len += chunkSeparator.length;
+S144,Base64.java,995,return len;
+S145,Base64.java,1063,buffer = null;
+S146,Base64.java,1064,pos = 0;
+S147,Base64.java,1065,readPos = 0;
+S148,Base64.java,1066,currentLinePos = 0;
+S149,Base64.java,1067,modulus = 0;
+S150,Base64.java,1068,eof = false;
+S151,Base64InputStream.java,52,private final byte[] singleByte = new byte[1];
+S152,Base64InputStream.java,61,"this(in, false);"
+S153,Base64InputStream.java,74,super(in);
+S154,Base64InputStream.java,75,this.doEncode = doEncode;
+S155,Base64InputStream.java,76,this.base64 = new Base64(false);
+S156,Base64InputStream.java,96,super(in);
+S157,Base64InputStream.java,97,this.doEncode = doEncode;
+S158,Base64InputStream.java,98,"this.base64 = new Base64(lineLength, lineSeparator);"
+S159,Base64InputStream.java,109,"int r = read(singleByte, 0, 1);"
+S160,Base64InputStream.java,110,while (r == 0) {
+S161,Base64InputStream.java,111,"r = read(singleByte, 0, 1);"
+S162,Base64InputStream.java,113,if (r > 0) {
+S163,Base64InputStream.java,114,return singleByte[0] < 0 ? 256 + singleByte[0] : singleByte[0];
+S164,Base64InputStream.java,116,return -1;
+S165,Base64InputStream.java,139,if (b == null) {
+S166,Base64InputStream.java,140,throw new NullPointerException();
+S167,Base64InputStream.java,141,} else if (offset < 0 || len < 0) {
+S168,Base64InputStream.java,142,throw new IndexOutOfBoundsException();
+S169,Base64InputStream.java,143,} else if (offset > b.length || offset + len > b.length) {
+S170,Base64InputStream.java,144,throw new IndexOutOfBoundsException();
+S171,Base64InputStream.java,145,} else if (len == 0) {
+S172,Base64InputStream.java,146,return 0;
+S173,Base64InputStream.java,164,if (!base64.hasData()) {
+S174,Base64InputStream.java,165,byte[] buf = new byte[doEncode ? 4096 : 8192];
+S175,Base64InputStream.java,166,int c = in.read(buf);
+S176,Base64InputStream.java,169,if (c > 0 && b.length == len) {
+S177,Base64InputStream.java,170,"base64.setInitialBuffer(b, offset, len);"
+S178,Base64InputStream.java,172,if (doEncode) {
+S179,Base64InputStream.java,173,"base64.encode(buf, 0, c);"
+S180,Base64InputStream.java,175,"base64.decode(buf, 0, c);"
+S181,Base64InputStream.java,178,"return base64.readResults(b, offset, len);"
+S182,Base64InputStream.java,188,return false; // not an easy job to support marks
+S183,StringUtils.java,129,"return StringUtils.getBytesUnchecked(string, CharEncoding.UTF_8);"
+S184,StringUtils.java,152,if (string == null) {
+S185,StringUtils.java,156,return string.getBytes(charsetName);
+S186,StringUtils.java,186,if (bytes == null) {
+S187,StringUtils.java,190,"return new String(bytes, charsetName);"
+S188,StringUtils.java,283,"return StringUtils.newString(bytes, CharEncoding.UTF_8);"

@@ -1,0 +1,120 @@
+statement_id,file,line,code
+S1,CSVFormat.java,56,"private static CSVFormat PRISTINE = new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);"
+S2,CSVFormat.java,67,public static final CSVFormat DEFAULT =
+S3,CSVFormat.java,150,String[] header) {
+S4,CSVFormat.java,151,this.delimiter = delimiter;
+S5,CSVFormat.java,152,this.encapsulator = encapsulator;
+S6,CSVFormat.java,153,this.commentStart = commentStart;
+S7,CSVFormat.java,154,this.escape = escape;
+S8,CSVFormat.java,155,this.surroundingSpacesIgnored = surroundingSpacesIgnored;
+S9,CSVFormat.java,156,this.emptyLinesIgnored = emptyLinesIgnored;
+S10,CSVFormat.java,157,this.lineSeparator = lineSeparator;
+S11,CSVFormat.java,158,this.header = header;
+S12,CSVFormat.java,203,return delimiter;
+S13,CSVFormat.java,218,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S14,CSVFormat.java,227,return encapsulator;
+S15,CSVFormat.java,242,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S16,CSVFormat.java,246,return this.encapsulator != DISABLED;
+S17,CSVFormat.java,255,return commentStart;
+S18,CSVFormat.java,279,return this.commentStart != DISABLED;
+S19,CSVFormat.java,288,return escape;
+S20,CSVFormat.java,307,return this.escape != DISABLED;
+S21,CSVFormat.java,316,return surroundingSpacesIgnored;
+S22,CSVFormat.java,327,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S23,CSVFormat.java,336,return emptyLinesIgnored;
+S24,CSVFormat.java,347,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S25,CSVFormat.java,367,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S26,CSVLexer.java,28,"super(format, in);"
+S27,CSVLexer.java,51,int c = in.read();
+S28,CSVLexer.java,52,boolean eol = isEndOfLine(c);
+S29,CSVLexer.java,53,c = in.readAgain();
+S30,CSVLexer.java,75,if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
+S31,CSVLexer.java,82,while (tkn.type == INVALID) {
+S32,CSVLexer.java,84,if (surroundingSpacesIgnored) {
+S33,CSVLexer.java,85,while (isWhitespace(c) && !eol) {
+S34,CSVLexer.java,86,c = in.read();
+S35,CSVLexer.java,87,eol = isEndOfLine(c);
+S36,CSVLexer.java,92,if (isCommentStart(c)) {
+S37,CSVLexer.java,96,} else if (isDelimiter(c)) {
+S38,CSVLexer.java,99,} else if (eol) {
+S39,CSVLexer.java,102,tkn.type = EORECORD;
+S40,CSVLexer.java,103,} else if (isEncapsulator(c)) {
+S41,CSVLexer.java,105,"encapsulatedTokenLexer(tkn, c);"
+S42,CSVLexer.java,106,} else if (isEndOfFile(c)) {
+S43,CSVLexer.java,114,"simpleTokenLexer(tkn, c);"
+S44,CSVLexer.java,139,if (isEndOfLine(c)) {
+S45,CSVLexer.java,141,tkn.type = EORECORD;
+S46,CSVLexer.java,143,} else if (isEndOfFile(c)) {
+S47,CSVLexer.java,145,tkn.type = EOF;
+S48,CSVLexer.java,146,tkn.isReady = true; // There is data at EOF
+S49,CSVLexer.java,148,} else if (isDelimiter(c)) {
+S50,CSVLexer.java,150,tkn.type = TOKEN;
+S51,CSVLexer.java,152,} else if (isEscape(c)) {
+S52,CSVLexer.java,155,tkn.content.append((char) c);
+S53,CSVLexer.java,158,c = in.read();
+S54,CSVLexer.java,187,c = in.read();
+S55,CSVLexer.java,191,} else if (isEncapsulator(c)) {
+S56,CSVLexer.java,192,if (isEncapsulator(in.lookAhead())) {
+S57,CSVLexer.java,194,c = in.read();
+S58,CSVLexer.java,195,tkn.content.append((char) c);
+S59,CSVLexer.java,199,c = in.read();
+S60,CSVLexer.java,200,if (isDelimiter(c)) {
+S61,CSVLexer.java,201,tkn.type = TOKEN;
+S62,CSVLexer.java,217,} else if (isEndOfFile(c)) {
+S63,CSVLexer.java,222,tkn.content.append((char) c);
+S64,CSVParser.java,71,private final List<String> record = new ArrayList<String>();
+S65,CSVParser.java,72,private final Token reusableToken = new Token();
+S66,CSVParser.java,91,"public CSVParser(Reader input, CSVFormat format) throws IOException {"
+S67,CSVParser.java,92,format.validate();
+S68,CSVParser.java,94,"this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));"
+S69,CSVParser.java,96,this.headerMapping = initializeHeader(format);
+S70,CSVParser.java,107,"this(new StringReader(input), format);"
+S71,CSVParser.java,137,record.clear();
+S72,CSVParser.java,139,reusableToken.reset();
+S73,CSVParser.java,140,lexer.nextToken(reusableToken);
+S74,CSVParser.java,141,switch (reusableToken.type) {
+S75,CSVParser.java,143,record.add(reusableToken.content.toString());
+S76,CSVParser.java,146,record.add(reusableToken.content.toString());
+S77,CSVParser.java,149,if (reusableToken.isReady) {
+S78,CSVParser.java,150,record.add(reusableToken.content.toString());
+S79,CSVParser.java,160,if (!record.isEmpty()) {
+S80,CSVParser.java,161,"result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping);"
+S81,CSVParser.java,170,"Map<String, Integer> hdrMap = null;"
+S82,CSVParser.java,192,return hdrMap;
+S83,ExtendedBufferedReader.java,43,private int lastChar = UNDEFINED;
+S84,ExtendedBufferedReader.java,46,private int lineCounter = 0;
+S85,ExtendedBufferedReader.java,52,super(r);
+S86,ExtendedBufferedReader.java,57,int current = super.read();
+S87,ExtendedBufferedReader.java,61,lastChar = current;
+S88,ExtendedBufferedReader.java,62,return lastChar;
+S89,ExtendedBufferedReader.java,76,return lastChar;
+S90,Lexer.java,45,"Lexer(CSVFormat format, ExtendedBufferedReader in) {"
+S91,Lexer.java,46,this.format = format;
+S92,Lexer.java,47,this.in = in;
+S93,Lexer.java,48,this.isEncapsulating = format.isEncapsulating();
+S94,Lexer.java,49,this.isEscaping = format.isEscaping();
+S95,Lexer.java,50,this.isCommentEnabled = format.isCommentingEnabled();
+S96,Lexer.java,51,this.delimiter = format.getDelimiter();
+S97,Lexer.java,52,this.escape = format.getEscape();
+S98,Lexer.java,53,this.encapsulator = format.getEncapsulator();
+S99,Lexer.java,54,this.commmentStart = format.getCommentStart();
+S100,Lexer.java,55,this.surroundingSpacesIgnored = format.isSurroundingSpacesIgnored();
+S101,Lexer.java,56,this.emptyLinesIgnored = format.isEmptyLinesIgnored();
+S102,Lexer.java,96,return (c != format.getDelimiter()) && Character.isWhitespace((char) c);
+S103,Lexer.java,109,c = in.read();
+S104,Lexer.java,111,return (c == '\n' || c == '\r');
+S105,Lexer.java,118,return c == ExtendedBufferedReader.END_OF_STREAM;
+S106,Lexer.java,124,return c == delimiter;
+S107,Lexer.java,128,return isEscaping && c == escape;
+S108,Lexer.java,132,return isEncapsulating && c == encapsulator;
+S109,Lexer.java,136,return isCommentEnabled && c == commmentStart;
+S110,Token.java,28,class Token {
+S111,Token.java,33,enum Type {
+S112,Token.java,35,"INVALID,"
+S113,Token.java,38,"TOKEN,"
+S114,Token.java,41,"EOF,"
+S115,Token.java,44,EORECORD
+S116,Token.java,48,Token.Type type = INVALID;
+S117,Token.java,51,StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
+S118,Token.java,57,content.setLength(0);
+S119,Token.java,58,type = INVALID;

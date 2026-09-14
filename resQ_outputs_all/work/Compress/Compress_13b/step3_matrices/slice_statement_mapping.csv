@@ -1,0 +1,365 @@
+statement_id,file,line,code
+S1,AbstractUnicodeExtraField.java,74,if (unicodeName == null) {
+S2,AbstractUnicodeExtraField.java,78,data = new byte[5 + unicodeName.length];
+S3,AbstractUnicodeExtraField.java,107,if (unicodeName != null) {
+S4,AbstractUnicodeExtraField.java,108,b = new byte[unicodeName.length];
+S5,AbstractUnicodeExtraField.java,109,"System.arraycopy(unicodeName, 0, b, 0, b.length);"
+S6,AbstractUnicodeExtraField.java,111,return b;
+S7,AbstractUnicodeExtraField.java,130,if (data == null) {
+S8,AbstractUnicodeExtraField.java,131,this.assembleData();
+S9,AbstractUnicodeExtraField.java,134,if (data != null) {
+S10,AbstractUnicodeExtraField.java,135,b = new byte[data.length];
+S11,AbstractUnicodeExtraField.java,136,"System.arraycopy(data, 0, b, 0, b.length);"
+S12,AbstractUnicodeExtraField.java,138,return b;
+S13,AbstractUnicodeExtraField.java,143,if (data == null) {
+S14,AbstractUnicodeExtraField.java,144,assembleData();
+S15,AbstractUnicodeExtraField.java,146,return new ZipShort(data.length);
+S16,AbstractUnicodeExtraField.java,151,return getCentralDirectoryData();
+S17,AbstractUnicodeExtraField.java,156,return getCentralDirectoryLength();
+S18,AbstractUnicodeExtraField.java,174,"nameCRC32 = ZipLong.getValue(buffer, offset + 1);"
+S19,AbstractUnicodeExtraField.java,175,unicodeName = new byte[length - 5];
+S20,AbstractUnicodeExtraField.java,176,"System.arraycopy(buffer, offset + 5, unicodeName, 0, length - 5);"
+S21,AbstractUnicodeExtraField.java,177,data = null;
+S22,AbstractUnicodeExtraField.java,187,"parseFromLocalFileData(buffer, offset, length);"
+S23,AsiExtraField.java,55,private static final ZipShort HEADER_ID = new ZipShort(0x756E);
+S24,AsiExtraField.java,94,return HEADER_ID;
+S25,ExtraFieldUtils.java,41,"implementations = new HashMap<ZipShort, Class<?>>();"
+S26,ExtraFieldUtils.java,42,register(AsiExtraField.class);
+S27,ExtraFieldUtils.java,43,register(JarMarker.class);
+S28,ExtraFieldUtils.java,44,register(UnicodePathExtraField.class);
+S29,ExtraFieldUtils.java,45,register(UnicodeCommentExtraField.class);
+S30,ExtraFieldUtils.java,46,register(Zip64ExtendedInformationExtraField.class);
+S31,ExtraFieldUtils.java,59,"implementations.put(ze.getHeaderId(), c);"
+S32,ExtraFieldUtils.java,79,Class<?> c = implementations.get(headerId);
+S33,ExtraFieldUtils.java,80,if (c != null) {
+S34,ExtraFieldUtils.java,81,return (ZipExtraField) c.newInstance();
+S35,ExtraFieldUtils.java,130,List<ZipExtraField> v = new ArrayList<ZipExtraField>();
+S36,ExtraFieldUtils.java,131,int start = 0;
+S37,ExtraFieldUtils.java,133,while (start <= data.length - WORD) {
+S38,ExtraFieldUtils.java,134,"ZipShort headerId = new ZipShort(data, start);"
+S39,ExtraFieldUtils.java,135,"int length = (new ZipShort(data, start + 2)).getValue();"
+S40,ExtraFieldUtils.java,168,ZipExtraField ze = createExtraField(headerId);
+S41,ExtraFieldUtils.java,169,if (local) {
+S42,ExtraFieldUtils.java,170,"ze.parseFromLocalFileData(data, start + WORD, length);"
+S43,ExtraFieldUtils.java,172,"ze.parseFromCentralDirectoryData(data, start + WORD,"
+S44,ExtraFieldUtils.java,175,v.add(ze);
+S45,ExtraFieldUtils.java,181,start += (length + WORD);
+S46,ExtraFieldUtils.java,184,ZipExtraField[] result = new ZipExtraField[v.size()];
+S47,ExtraFieldUtils.java,185,return v.toArray(result);
+S48,ExtraFieldUtils.java,196,int regularExtraFieldCount =
+S49,ExtraFieldUtils.java,199,int sum = WORD * regularExtraFieldCount;
+S50,ExtraFieldUtils.java,201,sum += data[i].getLocalFileDataLength().getValue();
+S51,ExtraFieldUtils.java,204,byte[] result = new byte[sum];
+S52,ExtraFieldUtils.java,205,int start = 0;
+S53,ExtraFieldUtils.java,207,"System.arraycopy(data[i].getHeaderId().getBytes(),"
+S54,ExtraFieldUtils.java,209,"System.arraycopy(data[i].getLocalFileDataLength().getBytes(),"
+S55,ExtraFieldUtils.java,211,byte[] local = data[i].getLocalFileDataData();
+S56,ExtraFieldUtils.java,212,"System.arraycopy(local, 0, result, start + WORD, local.length);"
+S57,ExtraFieldUtils.java,213,start += (local.length + WORD);
+S58,ExtraFieldUtils.java,219,return result;
+S59,FallbackZipEncoding.java,61,this.charset = charset;
+S60,FallbackZipEncoding.java,89,"if (this.charset == null) { // i.e. use default charset, see no-args constructor"
+S61,FallbackZipEncoding.java,92,"return new String(data,this.charset);"
+S62,GeneralPurposeBit.java,52,private boolean languageEncodingFlag = false;
+S63,GeneralPurposeBit.java,53,private boolean dataDescriptorFlag = false;
+S64,GeneralPurposeBit.java,54,private boolean encryptionFlag = false;
+S65,GeneralPurposeBit.java,55,private boolean strongEncryptionFlag = false;
+S66,GeneralPurposeBit.java,57,public GeneralPurposeBit() {
+S67,GeneralPurposeBit.java,64,return languageEncodingFlag;
+S68,GeneralPurposeBit.java,71,languageEncodingFlag = b;
+S69,GeneralPurposeBit.java,87,dataDescriptorFlag = b;
+S70,GeneralPurposeBit.java,101,encryptionFlag = b;
+S71,GeneralPurposeBit.java,115,strongEncryptionFlag = b;
+S72,GeneralPurposeBit.java,142,"final int generalPurposeFlag = ZipShort.getValue(data, offset);"
+S73,GeneralPurposeBit.java,143,GeneralPurposeBit b = new GeneralPurposeBit();
+S74,GeneralPurposeBit.java,144,b.useDataDescriptor((generalPurposeFlag & DATA_DESCRIPTOR_FLAG) != 0);
+S75,GeneralPurposeBit.java,145,b.useUTF8ForNames((generalPurposeFlag & UFT8_NAMES_FLAG) != 0);
+S76,GeneralPurposeBit.java,146,b.useStrongEncryption((generalPurposeFlag & STRONG_ENCRYPTION_FLAG)
+S77,GeneralPurposeBit.java,148,b.useEncryption((generalPurposeFlag & ENCRYPTION_FLAG) != 0);
+S78,GeneralPurposeBit.java,149,return b;
+S79,JarMarker.java,29,private static final ZipShort ID = new ZipShort(0xCAFE);
+S80,JarMarker.java,52,return ID;
+S81,NioZipEncoding.java,50,public NioZipEncoding(Charset charset) {
+S82,NioZipEncoding.java,51,this.charset = charset;
+S83,NioZipEncoding.java,118,return this.charset.newDecoder()
+S84,UnicodeCommentExtraField.java,40,public static final ZipShort UCOM_ID = new ZipShort(0x6375);
+S85,UnicodeCommentExtraField.java,42,public UnicodeCommentExtraField () {
+S86,UnicodeCommentExtraField.java,73,return UCOM_ID;
+S87,UnicodePathExtraField.java,40,public static final ZipShort UPATH_ID = new ZipShort(0x7075);
+S88,UnicodePathExtraField.java,72,return UPATH_ID;
+S89,Zip64ExtendedInformationExtraField.java,78,static final ZipShort HEADER_ID = new ZipShort(0x0001);
+S90,Zip64ExtendedInformationExtraField.java,138,return HEADER_ID;
+S91,Zip64ExtendedInformationExtraField.java,143,return new ZipShort(size != null ? 2 * DWORD : 0);
+S92,Zip64ExtendedInformationExtraField.java,156,if (size != null || compressedSize != null) {
+S93,Zip64ExtendedInformationExtraField.java,160,byte[] data = new byte[2 * DWORD];
+S94,Zip64ExtendedInformationExtraField.java,161,addSizes(data);
+S95,Zip64ExtendedInformationExtraField.java,162,return data;
+S96,Zip64ExtendedInformationExtraField.java,185,if (length == 0) {
+S97,Zip64ExtendedInformationExtraField.java,195,"size = new ZipEightByteInteger(buffer, offset);"
+S98,Zip64ExtendedInformationExtraField.java,196,offset += DWORD;
+S99,Zip64ExtendedInformationExtraField.java,197,"compressedSize = new ZipEightByteInteger(buffer, offset);"
+S100,Zip64ExtendedInformationExtraField.java,346,if (size != null) {
+S101,Zip64ExtendedInformationExtraField.java,347,"System.arraycopy(size.getBytes(), 0, data, 0, DWORD);"
+S102,Zip64ExtendedInformationExtraField.java,350,if (compressedSize != null) {
+S103,Zip64ExtendedInformationExtraField.java,351,"System.arraycopy(compressedSize.getBytes(), 0, data, off, DWORD);"
+S104,ZipArchiveEntry.java,69,private int method = -1;
+S105,ZipArchiveEntry.java,77,private long size = SIZE_UNKNOWN;
+S106,ZipArchiveEntry.java,79,private int internalAttributes = 0;
+S107,ZipArchiveEntry.java,80,private int platform = PLATFORM_FAT;
+S108,ZipArchiveEntry.java,81,private long externalAttributes = 0;
+S109,ZipArchiveEntry.java,82,"private LinkedHashMap<ZipShort, ZipExtraField> extraFields = null;"
+S110,ZipArchiveEntry.java,83,private UnparseableExtraFieldData unparseableExtra = null;
+S111,ZipArchiveEntry.java,84,private String name = null;
+S112,ZipArchiveEntry.java,85,private byte[] rawName = null;
+S113,ZipArchiveEntry.java,86,private GeneralPurposeBit gpb = new GeneralPurposeBit();
+S114,ZipArchiveEntry.java,97,super(name);
+S115,ZipArchiveEntry.java,98,setName(name);
+S116,ZipArchiveEntry.java,145,"this("""");"
+S117,ZipArchiveEntry.java,207,this.method = method;
+S118,ZipArchiveEntry.java,224,internalAttributes = value;
+S119,ZipArchiveEntry.java,240,externalAttributes = value;
+S120,ZipArchiveEntry.java,284,this.platform = platform;
+S121,ZipArchiveEntry.java,292,"extraFields = new LinkedHashMap<ZipShort, ZipExtraField>();"
+S122,ZipArchiveEntry.java,300,setExtra();
+S123,ZipArchiveEntry.java,321,if (extraFields == null) {
+S124,ZipArchiveEntry.java,326,List<ZipExtraField> result =
+S125,ZipArchiveEntry.java,331,return result.toArray(new ZipExtraField[0]);
+S126,ZipArchiveEntry.java,351,setExtra();
+S127,ZipArchiveEntry.java,409,if (extraFields != null) {
+S128,ZipArchiveEntry.java,410,return extraFields.get(type);
+S129,ZipArchiveEntry.java,437,ZipExtraField[] local =
+S130,ZipArchiveEntry.java,440,"mergeExtraFields(local, true);"
+S131,ZipArchiveEntry.java,455,super.setExtra(ExtraFieldUtils.mergeLocalFileDataData(getExtraFields(true)));
+S132,ZipArchiveEntry.java,463,ZipExtraField[] central =
+S133,ZipArchiveEntry.java,466,"mergeExtraFields(central, false);"
+S134,ZipArchiveEntry.java,495,return name == null ? super.getName() : name;
+S135,ZipArchiveEntry.java,512,this.name = name;
+S136,ZipArchiveEntry.java,535,this.size = size;
+S137,ZipArchiveEntry.java,548,setName(name);
+S138,ZipArchiveEntry.java,549,this.rawName = rawName;
+S139,ZipArchiveEntry.java,597,gpb = b;
+S140,ZipArchiveEntry.java,610,if (extraFields == null) {
+S141,ZipArchiveEntry.java,611,setExtraFields(f);
+S142,ZipArchiveEntry.java,613,for (int i = 0; i < f.length; i++) {
+S143,ZipArchiveEntry.java,615,if (f[i] instanceof UnparseableExtraFieldData) {
+S144,ZipArchiveEntry.java,618,existing = getExtraField(f[i].getHeaderId());
+S145,ZipArchiveEntry.java,620,if (existing == null) {
+S146,ZipArchiveEntry.java,621,addExtraField(f[i]);
+S147,ZipArchiveEntry.java,623,if (local) {
+S148,ZipArchiveEntry.java,624,byte[] b = f[i].getLocalFileDataData();
+S149,ZipArchiveEntry.java,625,"existing.parseFromLocalFileData(b, 0, b.length);"
+S150,ZipArchiveEntry.java,632,setExtra();
+S151,ZipArchiveOutputStream.java,227,private boolean useUTF8Flag = true;
+S152,ZipArchiveOutputStream.java,267,"_raf = new RandomAccessFile(file, ""rw"");"
+S153,ZipArchiveOutputStream.java,308,this.zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+S154,ZipArchiveOutputStream.java,309,if (useUTF8Flag && !ZipEncodingHelper.isUTF8(encoding)) {
+S155,ZipArchiveOutputStream.java,838,static final byte[] CFH_SIG = ZipLong.CFH_SIG.getBytes();
+S156,ZipArchiveOutputStream.java,850,static final byte[] ZIP64_EOCD_LOC_SIG = ZipLong.getBytes(0X07064B50L);
+S157,ZipEightByteInteger.java,97,"public ZipEightByteInteger (byte[] bytes, int offset) {"
+S158,ZipEightByteInteger.java,98,"value = ZipEightByteInteger.getValue(bytes, offset);"
+S159,ZipEightByteInteger.java,106,return ZipEightByteInteger.getBytes(value);
+S160,ZipEightByteInteger.java,140,byte[] result = new byte[8];
+S161,ZipEightByteInteger.java,141,long val = value.longValue();
+S162,ZipEightByteInteger.java,142,result[0] = (byte) ((val & BYTE_MASK));
+S163,ZipEightByteInteger.java,143,result[BYTE_1] = (byte) ((val & BYTE_1_MASK) >> BYTE_1_SHIFT);
+S164,ZipEightByteInteger.java,144,result[BYTE_2] = (byte) ((val & BYTE_2_MASK) >> BYTE_2_SHIFT);
+S165,ZipEightByteInteger.java,145,result[BYTE_3] = (byte) ((val & BYTE_3_MASK) >> BYTE_3_SHIFT);
+S166,ZipEightByteInteger.java,146,result[BYTE_4] = (byte) ((val & BYTE_4_MASK) >> BYTE_4_SHIFT);
+S167,ZipEightByteInteger.java,147,result[BYTE_5] = (byte) ((val & BYTE_5_MASK) >> BYTE_5_SHIFT);
+S168,ZipEightByteInteger.java,148,result[BYTE_6] = (byte) ((val & BYTE_6_MASK) >> BYTE_6_SHIFT);
+S169,ZipEightByteInteger.java,149,result[BYTE_7] = (byte) ((val & BYTE_7_MASK) >> BYTE_7_SHIFT);
+S170,ZipEightByteInteger.java,153,return result;
+S171,ZipEightByteInteger.java,175,long value = ((long) bytes[offset + BYTE_7] << BYTE_7_SHIFT) & BYTE_7_MASK;
+S172,ZipEightByteInteger.java,176,value += ((long) bytes[offset + BYTE_6] << BYTE_6_SHIFT) & BYTE_6_MASK;
+S173,ZipEightByteInteger.java,177,value += ((long) bytes[offset + BYTE_5] << BYTE_5_SHIFT) & BYTE_5_MASK;
+S174,ZipEightByteInteger.java,178,value += ((long) bytes[offset + BYTE_4] << BYTE_4_SHIFT) & BYTE_4_MASK;
+S175,ZipEightByteInteger.java,179,value += ((long) bytes[offset + BYTE_3] << BYTE_3_SHIFT) & BYTE_3_MASK;
+S176,ZipEightByteInteger.java,180,value += ((long) bytes[offset + BYTE_2] << BYTE_2_SHIFT) & BYTE_2_MASK;
+S177,ZipEightByteInteger.java,181,value += ((long) bytes[offset + BYTE_1] << BYTE_1_SHIFT) & BYTE_1_MASK;
+S178,ZipEightByteInteger.java,182,value += ((long) bytes[offset] & BYTE_MASK);
+S179,ZipEightByteInteger.java,183,BigInteger val = BigInteger.valueOf(value);
+S180,ZipEightByteInteger.java,184,return (bytes[offset + BYTE_7] & LEFTMOST_BIT) == LEFTMOST_BIT
+S181,ZipEncodingHelper.java,49,SimpleEncodingHolder(char [] highChars) {
+S182,ZipEncodingHelper.java,50,this.highChars = highChars;
+S183,ZipEncodingHelper.java,68,"simpleEncodings = new HashMap<String, SimpleEncodingHolder>();"
+S184,ZipEncodingHelper.java,70,char[] cp437_high_chars =
+S185,ZipEncodingHelper.java,94,SimpleEncodingHolder cp437 = new SimpleEncodingHolder(cp437_high_chars);
+S186,ZipEncodingHelper.java,96,"simpleEncodings.put(""CP437"",cp437);"
+S187,ZipEncodingHelper.java,97,"simpleEncodings.put(""Cp437"",cp437);"
+S188,ZipEncodingHelper.java,98,"simpleEncodings.put(""cp437"",cp437);"
+S189,ZipEncodingHelper.java,99,"simpleEncodings.put(""IBM437"",cp437);"
+S190,ZipEncodingHelper.java,100,"simpleEncodings.put(""ibm437"",cp437);"
+S191,ZipEncodingHelper.java,102,char[] cp850_high_chars =
+S192,ZipEncodingHelper.java,126,SimpleEncodingHolder cp850 = new SimpleEncodingHolder(cp850_high_chars);
+S193,ZipEncodingHelper.java,128,"simpleEncodings.put(""CP850"",cp850);"
+S194,ZipEncodingHelper.java,129,"simpleEncodings.put(""Cp850"",cp850);"
+S195,ZipEncodingHelper.java,130,"simpleEncodings.put(""cp850"",cp850);"
+S196,ZipEncodingHelper.java,131,"simpleEncodings.put(""IBM850"",cp850);"
+S197,ZipEncodingHelper.java,132,"simpleEncodings.put(""ibm850"",cp850);"
+S198,ZipEncodingHelper.java,201,static final ZipEncoding UTF8_ZIP_ENCODING = new FallbackZipEncoding(UTF8);
+S199,ZipEncodingHelper.java,213,if (isUTF8(name)) {
+S200,ZipEncodingHelper.java,217,if (name == null) {
+S201,ZipEncodingHelper.java,221,SimpleEncodingHolder h = simpleEncodings.get(name);
+S202,ZipEncodingHelper.java,229,Charset cs = Charset.forName(name);
+S203,ZipEncodingHelper.java,230,return new NioZipEncoding(cs);
+S204,ZipEncodingHelper.java,246,return UTF8.equalsIgnoreCase(encoding)
+S205,ZipFile.java,86,"private final Map<ZipArchiveEntry, OffsetEntry> entries ="
+S206,ZipFile.java,92,"private final Map<String, ZipArchiveEntry> nameMap ="
+S207,ZipFile.java,95,private static final class OffsetEntry {
+S208,ZipFile.java,96,private long headerOffset = -1;
+S209,ZipFile.java,97,private long dataOffset = -1;
+S210,ZipFile.java,197,throws IOException {
+S211,ZipFile.java,198,this.archiveName = f.getAbsolutePath();
+S212,ZipFile.java,199,this.encoding = encoding;
+S213,ZipFile.java,200,this.zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+S214,ZipFile.java,201,this.useUnicodeExtraFields = useUnicodeExtraFields;
+S215,ZipFile.java,202,"archive = new RandomAccessFile(f, ""r"");"
+S216,ZipFile.java,205,"Map<ZipArchiveEntry, NameAndComment> entriesWithoutUTF8Flag ="
+S217,ZipFile.java,207,resolveLocalFileHeaderData(entriesWithoutUTF8Flag);
+S218,ZipFile.java,386,private static final long CFH_SIG =
+S219,ZipFile.java,402,"HashMap<ZipArchiveEntry, NameAndComment> noUTF8Flag ="
+S220,ZipFile.java,405,positionAtCentralDirectory();
+S221,ZipFile.java,407,byte[] signatureBytes = new byte[WORD];
+S222,ZipFile.java,408,archive.readFully(signatureBytes);
+S223,ZipFile.java,409,long sig = ZipLong.getValue(signatureBytes);
+S224,ZipFile.java,416,while (sig == CFH_SIG) {
+S225,ZipFile.java,417,readCentralDirectoryEntry(noUTF8Flag);
+S226,ZipFile.java,418,archive.readFully(signatureBytes);
+S227,ZipFile.java,419,sig = ZipLong.getValue(signatureBytes);
+S228,ZipFile.java,421,return noUTF8Flag;
+S229,ZipFile.java,436,byte[] cfh = new byte[CFH_LEN];
+S230,ZipFile.java,438,archive.readFully(cfh);
+S231,ZipFile.java,440,ZipArchiveEntry ze = new ZipArchiveEntry();
+S232,ZipFile.java,442,"int versionMadeBy = ZipShort.getValue(cfh, off);"
+S233,ZipFile.java,444,ze.setPlatform((versionMadeBy >> BYTE_SHIFT) & NIBLET_MASK);
+S234,ZipFile.java,448,"final GeneralPurposeBit gpFlag = GeneralPurposeBit.parse(cfh, off);"
+S235,ZipFile.java,449,final boolean hasUTF8Flag = gpFlag.usesUTF8ForNames();
+S236,ZipFile.java,452,ze.setGeneralPurposeBit(gpFlag);
+S237,ZipFile.java,456,"ze.setMethod(ZipShort.getValue(cfh, off));"
+S238,ZipFile.java,459,"long time = ZipUtil.dosToJavaTime(ZipLong.getValue(cfh, off));"
+S239,ZipFile.java,460,ze.setTime(time);
+S240,ZipFile.java,463,"ze.setCrc(ZipLong.getValue(cfh, off));"
+S241,ZipFile.java,466,"ze.setCompressedSize(ZipLong.getValue(cfh, off));"
+S242,ZipFile.java,469,"ze.setSize(ZipLong.getValue(cfh, off));"
+S243,ZipFile.java,472,"int fileNameLen = ZipShort.getValue(cfh, off);"
+S244,ZipFile.java,475,"int extraLen = ZipShort.getValue(cfh, off);"
+S245,ZipFile.java,478,"int commentLen = ZipShort.getValue(cfh, off);"
+S246,ZipFile.java,484,"ze.setInternalAttributes(ZipShort.getValue(cfh, off));"
+S247,ZipFile.java,487,"ze.setExternalAttributes(ZipLong.getValue(cfh, off));"
+S248,ZipFile.java,490,byte[] fileName = new byte[fileNameLen];
+S249,ZipFile.java,491,archive.readFully(fileName);
+S250,ZipFile.java,492,"ze.setName(entryEncoding.decode(fileName), fileName);"
+S251,ZipFile.java,495,OffsetEntry offset = new OffsetEntry();
+S252,ZipFile.java,496,"offset.headerOffset = ZipLong.getValue(cfh, off);"
+S253,ZipFile.java,498,"entries.put(ze, offset);"
+S254,ZipFile.java,500,"nameMap.put(ze.getName(), ze);"
+S255,ZipFile.java,502,byte[] cdExtraData = new byte[extraLen];
+S256,ZipFile.java,503,archive.readFully(cdExtraData);
+S257,ZipFile.java,504,ze.setCentralDirectoryExtra(cdExtraData);
+S258,ZipFile.java,506,"setSizesAndOffsetFromZip64Extra(ze, offset, diskStart);"
+S259,ZipFile.java,508,byte[] comment = new byte[commentLen];
+S260,ZipFile.java,509,archive.readFully(comment);
+S261,ZipFile.java,510,ze.setComment(entryEncoding.decode(comment));
+S262,ZipFile.java,512,if (!hasUTF8Flag && useUnicodeExtraFields) {
+S263,ZipFile.java,513,"noUTF8Flag.put(ze, new NameAndComment(fileName, comment));"
+S264,ZipFile.java,665,"boolean found = tryToLocateSignature(MIN_EOCD_SIZE + ZIP64_EOCDL_LENGTH,"
+S265,ZipFile.java,669,if (!found) {
+S266,ZipFile.java,671,positionAtCentralDirectory32();
+S267,ZipFile.java,713,"boolean found = tryToLocateSignature(MIN_EOCD_SIZE, MAX_EOCD_SIZE,"
+S268,ZipFile.java,715,if (!found) {
+S269,ZipFile.java,718,skipBytes(CFD_LOCATOR_OFFSET);
+S270,ZipFile.java,719,byte[] cfdOffset = new byte[WORD];
+S271,ZipFile.java,720,archive.readFully(cfdOffset);
+S272,ZipFile.java,721,archive.seek(ZipLong.getValue(cfdOffset));
+S273,ZipFile.java,733,long off = archive.length() - minDistanceFromEnd;
+S274,ZipFile.java,734,final long stopSearching =
+S275,ZipFile.java,736,if (off >= 0) {
+S276,ZipFile.java,737,for (; off >= stopSearching; off--) {
+S277,ZipFile.java,738,archive.seek(off);
+S278,ZipFile.java,739,int curr = archive.read();
+S279,ZipFile.java,740,if (curr == -1) {
+S280,ZipFile.java,743,if (curr == sig[POS_0]) {
+S281,ZipFile.java,750,found = true;
+S282,ZipFile.java,758,if (found) {
+S283,ZipFile.java,759,archive.seek(off);
+S284,ZipFile.java,761,return found;
+S285,ZipFile.java,769,int totalSkipped = 0;
+S286,ZipFile.java,770,while (totalSkipped < count) {
+S287,ZipFile.java,771,int skippedNow = archive.skipBytes(count - totalSkipped);
+S288,ZipFile.java,775,totalSkipped += skippedNow;
+S289,ZipFile.java,808,"Map<ZipArchiveEntry, OffsetEntry> origMap ="
+S290,ZipFile.java,810,entries.clear();
+S291,ZipFile.java,811,for (ZipArchiveEntry ze : origMap.keySet()) {
+S292,ZipFile.java,812,OffsetEntry offsetEntry = origMap.get(ze);
+S293,ZipFile.java,813,long offset = offsetEntry.headerOffset;
+S294,ZipFile.java,814,archive.seek(offset + LFH_OFFSET_FOR_FILENAME_LENGTH);
+S295,ZipFile.java,815,byte[] b = new byte[SHORT];
+S296,ZipFile.java,816,archive.readFully(b);
+S297,ZipFile.java,817,int fileNameLen = ZipShort.getValue(b);
+S298,ZipFile.java,818,archive.readFully(b);
+S299,ZipFile.java,819,int extraFieldLen = ZipShort.getValue(b);
+S300,ZipFile.java,820,int lenToSkip = fileNameLen;
+S301,ZipFile.java,821,while (lenToSkip > 0) {
+S302,ZipFile.java,822,int skipped = archive.skipBytes(lenToSkip);
+S303,ZipFile.java,823,if (skipped <= 0) {
+S304,ZipFile.java,827,lenToSkip -= skipped;
+S305,ZipFile.java,829,byte[] localExtraData = new byte[extraFieldLen];
+S306,ZipFile.java,830,archive.readFully(localExtraData);
+S307,ZipFile.java,831,ze.setExtra(localExtraData);
+S308,ZipFile.java,832,offsetEntry.dataOffset = offset + LFH_OFFSET_FOR_FILENAME_LENGTH
+S309,ZipFile.java,835,if (entriesWithoutUTF8Flag.containsKey(ze)) {
+S310,ZipFile.java,836,String orig = ze.getName();
+S311,ZipFile.java,837,NameAndComment nc = entriesWithoutUTF8Flag.get(ze);
+S312,ZipFile.java,838,"ZipUtil.setNameAndCommentFromExtraFields(ze, nc.name,"
+S313,ZipFile.java,840,if (!orig.equals(ze.getName())) {
+S314,ZipFile.java,841,nameMap.remove(orig);
+S315,ZipFile.java,842,"nameMap.put(ze.getName(), ze);"
+S316,ZipFile.java,845,"entries.put(ze, offsetEntry);"
+S317,ZipFile.java,934,private static final class NameAndComment {
+S318,ZipFile.java,937,"private NameAndComment(byte[] name, byte[] comment) {"
+S319,ZipFile.java,938,this.name = name;
+S320,ZipFile.java,939,this.comment = comment;
+S321,ZipFile.java,951,private final Comparator<ZipArchiveEntry> OFFSET_COMPARATOR =
+S322,ZipFile.java,952,new Comparator<ZipArchiveEntry>() {
+S323,ZipLong.java,47,public static final ZipLong CFH_SIG = new ZipLong(0X02014B50L);
+S324,ZipLong.java,70,this.value = value;
+S325,ZipLong.java,95,return ZipLong.getBytes(value);
+S326,ZipLong.java,112,byte[] result = new byte[WORD];
+S327,ZipLong.java,113,result[0] = (byte) ((value & BYTE_MASK));
+S328,ZipLong.java,114,result[BYTE_1] = (byte) ((value & BYTE_1_MASK) >> BYTE_1_SHIFT);
+S329,ZipLong.java,115,result[BYTE_2] = (byte) ((value & BYTE_2_MASK) >> BYTE_2_SHIFT);
+S330,ZipLong.java,116,result[BYTE_3] = (byte) ((value & BYTE_3_MASK) >> BYTE_3_SHIFT);
+S331,ZipLong.java,117,return result;
+S332,ZipLong.java,127,long value = (bytes[offset + BYTE_3] << BYTE_3_SHIFT) & BYTE_3_MASK;
+S333,ZipLong.java,128,value += (bytes[offset + BYTE_2] << BYTE_2_SHIFT) & BYTE_2_MASK;
+S334,ZipLong.java,129,value += (bytes[offset + BYTE_1] << BYTE_1_SHIFT) & BYTE_1_MASK;
+S335,ZipLong.java,130,value += (bytes[offset] & BYTE_MASK);
+S336,ZipLong.java,131,return value;
+S337,ZipLong.java,140,"return getValue(bytes, 0);"
+S338,ZipShort.java,37,public ZipShort (int value) {
+S339,ZipShort.java,38,this.value = value;
+S340,ZipShort.java,54,"public ZipShort (byte[] bytes, int offset) {"
+S341,ZipShort.java,55,"value = ZipShort.getValue(bytes, offset);"
+S342,ZipShort.java,63,byte[] result = new byte[2];
+S343,ZipShort.java,64,result[0] = (byte) (value & BYTE_MASK);
+S344,ZipShort.java,65,result[1] = (byte) ((value & BYTE_1_MASK) >> BYTE_1_SHIFT);
+S345,ZipShort.java,66,return result;
+S346,ZipShort.java,74,return value;
+S347,ZipShort.java,96,int value = (bytes[offset + 1] << BYTE_1_SHIFT) & BYTE_1_MASK;
+S348,ZipShort.java,97,value += (bytes[offset] & BYTE_MASK);
+S349,ZipShort.java,98,return value;
+S350,ZipShort.java,107,"return getValue(bytes, 0);"
+S351,ZipShort.java,120,return value == ((ZipShort) o).getValue();
+S352,ZipUtil.java,103,Calendar cal = Calendar.getInstance();
+S353,ZipUtil.java,105,"cal.set(Calendar.YEAR, (int) ((dosTime >> 25) & 0x7f) + 1980);"
+S354,ZipUtil.java,106,"cal.set(Calendar.MONTH, (int) ((dosTime >> 21) & 0x0f) - 1);"
+S355,ZipUtil.java,107,"cal.set(Calendar.DATE, (int) (dosTime >> 16) & 0x1f);"
+S356,ZipUtil.java,108,"cal.set(Calendar.HOUR_OF_DAY, (int) (dosTime >> 11) & 0x1f);"
+S357,ZipUtil.java,109,"cal.set(Calendar.MINUTE, (int) (dosTime >> 5) & 0x3f);"
+S358,ZipUtil.java,110,"cal.set(Calendar.SECOND, (int) (dosTime << 1) & 0x3e);"
+S359,ZipUtil.java,112,return cal.getTime().getTime();
+S360,ZipUtil.java,125,String originalName = ze.getName();
+S361,ZipUtil.java,126,"String newName = getUnicodeStringIfOriginalMatches(name,"
+S362,ZipUtil.java,128,if (newName != null && !originalName.equals(newName)) {
+S363,ZipUtil.java,129,ze.setName(newName);
+S364,ZipUtil.java,160,return ZipEncodingHelper

@@ -1,0 +1,360 @@
+statement_id,file,line,code
+S1,CSVFormat.java,56,"private static CSVFormat PRISTINE = new CSVFormat(DISABLED, DISABLED, DISABLED, DISABLED, false, false, null, null);"
+S2,CSVFormat.java,67,public static final CSVFormat DEFAULT =
+S3,CSVFormat.java,83,public static final CSVFormat RFC4180 =
+S4,CSVFormat.java,100,public static final CSVFormat EXCEL =
+S5,CSVFormat.java,107,public static final CSVFormat TDF =
+S6,CSVFormat.java,123,public static final CSVFormat MYSQL =
+S7,CSVFormat.java,150,String[] header) {
+S8,CSVFormat.java,151,this.delimiter = delimiter;
+S9,CSVFormat.java,152,this.encapsulator = encapsulator;
+S10,CSVFormat.java,153,this.commentStart = commentStart;
+S11,CSVFormat.java,154,this.escape = escape;
+S12,CSVFormat.java,155,this.surroundingSpacesIgnored = surroundingSpacesIgnored;
+S13,CSVFormat.java,156,this.emptyLinesIgnored = emptyLinesIgnored;
+S14,CSVFormat.java,157,this.lineSeparator = lineSeparator;
+S15,CSVFormat.java,158,this.header = header;
+S16,CSVFormat.java,169,return c == '\n' || c == '\r';
+S17,CSVFormat.java,176,if (delimiter == encapsulator) {
+S18,CSVFormat.java,180,if (delimiter == escape) {
+S19,CSVFormat.java,184,if (delimiter == commentStart) {
+S20,CSVFormat.java,188,if (encapsulator != DISABLED && encapsulator == commentStart) {
+S21,CSVFormat.java,192,if (escape != DISABLED && escape == commentStart) {
+S22,CSVFormat.java,203,return delimiter;
+S23,CSVFormat.java,214,if (isLineBreak(delimiter)) {
+S24,CSVFormat.java,218,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S25,CSVFormat.java,227,return encapsulator;
+S26,CSVFormat.java,238,if (isLineBreak(encapsulator)) {
+S27,CSVFormat.java,242,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S28,CSVFormat.java,246,return this.encapsulator != DISABLED;
+S29,CSVFormat.java,255,return commentStart;
+S30,CSVFormat.java,266,if (isLineBreak(commentStart)) {
+S31,CSVFormat.java,270,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S32,CSVFormat.java,279,return this.commentStart != DISABLED;
+S33,CSVFormat.java,288,return escape;
+S34,CSVFormat.java,299,if (isLineBreak(escape)) {
+S35,CSVFormat.java,303,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S36,CSVFormat.java,307,return this.escape != DISABLED;
+S37,CSVFormat.java,316,return surroundingSpacesIgnored;
+S38,CSVFormat.java,327,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S39,CSVFormat.java,336,return emptyLinesIgnored;
+S40,CSVFormat.java,347,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S41,CSVFormat.java,356,return lineSeparator;
+S42,CSVFormat.java,367,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S43,CSVFormat.java,371,return header;
+S44,CSVFormat.java,389,"return new CSVFormat(delimiter, encapsulator, commentStart, escape, surroundingSpacesIgnored, emptyLinesIgnored, lineSeparator, header);"
+S45,CSVFormat.java,398,"return new CSVParser(in, this);"
+S46,CSVLexer.java,28,"super(format, in);"
+S47,CSVLexer.java,44,int lastChar = in.readAgain();
+S48,CSVLexer.java,51,int c = in.read();
+S49,CSVLexer.java,52,boolean eol = isEndOfLine(c);
+S50,CSVLexer.java,53,c = in.readAgain();
+S51,CSVLexer.java,56,if (emptyLinesIgnored) {
+S52,CSVLexer.java,59,&& !isEndOfFile(lastChar)) {
+S53,CSVLexer.java,61,lastChar = c;
+S54,CSVLexer.java,62,c = in.read();
+S55,CSVLexer.java,63,eol = isEndOfLine(c);
+S56,CSVLexer.java,64,c = in.readAgain();
+S57,CSVLexer.java,66,if (isEndOfFile(c)) {
+S58,CSVLexer.java,67,tkn.type = EOF;
+S59,CSVLexer.java,69,return tkn;
+S60,CSVLexer.java,75,if (isEndOfFile(lastChar) || (!isDelimiter(lastChar) && isEndOfFile(c))) {
+S61,CSVLexer.java,76,tkn.type = EOF;
+S62,CSVLexer.java,78,return tkn;
+S63,CSVLexer.java,82,while (tkn.type == INVALID) {
+S64,CSVLexer.java,84,if (surroundingSpacesIgnored) {
+S65,CSVLexer.java,85,while (isWhitespace(c) && !eol) {
+S66,CSVLexer.java,86,c = in.read();
+S67,CSVLexer.java,87,eol = isEndOfLine(c);
+S68,CSVLexer.java,92,if (isCommentStart(c)) {
+S69,CSVLexer.java,94,in.readLine();
+S70,CSVLexer.java,95,tkn = nextToken(tkn.reset());
+S71,CSVLexer.java,96,} else if (isDelimiter(c)) {
+S72,CSVLexer.java,98,tkn.type = TOKEN;
+S73,CSVLexer.java,99,} else if (eol) {
+S74,CSVLexer.java,102,tkn.type = EORECORD;
+S75,CSVLexer.java,103,} else if (isEncapsulator(c)) {
+S76,CSVLexer.java,105,"encapsulatedTokenLexer(tkn, c);"
+S77,CSVLexer.java,106,} else if (isEndOfFile(c)) {
+S78,CSVLexer.java,109,tkn.type = EOF;
+S79,CSVLexer.java,110,tkn.isReady = true; // there is data at EOF
+S80,CSVLexer.java,114,"simpleTokenLexer(tkn, c);"
+S81,CSVLexer.java,117,return tkn;
+S82,CSVLexer.java,139,if (isEndOfLine(c)) {
+S83,CSVLexer.java,141,tkn.type = EORECORD;
+S84,CSVLexer.java,142,break;
+S85,CSVLexer.java,143,} else if (isEndOfFile(c)) {
+S86,CSVLexer.java,145,tkn.type = EOF;
+S87,CSVLexer.java,146,tkn.isReady = true; // There is data at EOF
+S88,CSVLexer.java,147,break;
+S89,CSVLexer.java,148,} else if (isDelimiter(c)) {
+S90,CSVLexer.java,150,tkn.type = TOKEN;
+S91,CSVLexer.java,151,break;
+S92,CSVLexer.java,152,} else if (isEscape(c)) {
+S93,CSVLexer.java,153,tkn.content.append((char) readEscape(c));
+S94,CSVLexer.java,155,tkn.content.append((char) c);
+S95,CSVLexer.java,158,c = in.read();
+S96,CSVLexer.java,161,if (surroundingSpacesIgnored) {
+S97,CSVLexer.java,162,trimTrailingSpaces(tkn.content);
+S98,CSVLexer.java,165,return tkn;
+S99,CSVLexer.java,183,int startLineNumber = getLineNumber();
+S100,CSVLexer.java,187,c = in.read();
+S101,CSVLexer.java,189,if (isEscape(c)) {
+S102,CSVLexer.java,190,tkn.content.append((char) readEscape(c));
+S103,CSVLexer.java,191,} else if (isEncapsulator(c)) {
+S104,CSVLexer.java,192,if (isEncapsulator(in.lookAhead())) {
+S105,CSVLexer.java,194,c = in.read();
+S106,CSVLexer.java,195,tkn.content.append((char) c);
+S107,CSVLexer.java,199,c = in.read();
+S108,CSVLexer.java,200,if (isDelimiter(c)) {
+S109,CSVLexer.java,201,tkn.type = TOKEN;
+S110,CSVLexer.java,202,return tkn;
+S111,CSVLexer.java,203,} else if (isEndOfFile(c)) {
+S112,CSVLexer.java,204,tkn.type = EOF;
+S113,CSVLexer.java,205,tkn.isReady = true; // There is data at EOF
+S114,CSVLexer.java,206,return tkn;
+S115,CSVLexer.java,207,} else if (isEndOfLine(c)) {
+S116,CSVLexer.java,209,tkn.type = EORECORD;
+S117,CSVLexer.java,210,return tkn;
+S118,CSVLexer.java,211,} else if (!isWhitespace(c)) {
+S119,CSVLexer.java,217,} else if (isEndOfFile(c)) {
+S120,CSVLexer.java,222,tkn.content.append((char) c);
+S121,CSVParser.java,71,private final List<String> record = new ArrayList<String>();
+S122,CSVParser.java,72,private final Token reusableToken = new Token();
+S123,CSVParser.java,81,"this(input, CSVFormat.DEFAULT);"
+S124,CSVParser.java,91,"public CSVParser(Reader input, CSVFormat format) throws IOException {"
+S125,CSVParser.java,92,format.validate();
+S126,CSVParser.java,94,"this.lexer = new CSVLexer(format, new ExtendedBufferedReader(input));"
+S127,CSVParser.java,96,this.headerMapping = initializeHeader(format);
+S128,CSVParser.java,107,"this(new StringReader(input), format);"
+S129,CSVParser.java,121,List<CSVRecord> records = new ArrayList<CSVRecord>();
+S130,CSVParser.java,123,while ((rec = getRecord()) != null) {
+S131,CSVParser.java,124,records.add(rec);
+S132,CSVParser.java,126,return records;
+S133,CSVParser.java,136,"CSVRecord result = new CSVRecord(null, headerMapping);"
+S134,CSVParser.java,137,record.clear();
+S135,CSVParser.java,139,reusableToken.reset();
+S136,CSVParser.java,140,lexer.nextToken(reusableToken);
+S137,CSVParser.java,141,switch (reusableToken.type) {
+S138,CSVParser.java,143,record.add(reusableToken.content.toString());
+S139,CSVParser.java,144,break;
+S140,CSVParser.java,146,record.add(reusableToken.content.toString());
+S141,CSVParser.java,147,break;
+S142,CSVParser.java,149,if (reusableToken.isReady) {
+S143,CSVParser.java,150,record.add(reusableToken.content.toString());
+S144,CSVParser.java,152,result = null;
+S145,CSVParser.java,154,break;
+S146,CSVParser.java,158,} while (reusableToken.type == TOKEN);
+S147,CSVParser.java,160,if (!record.isEmpty()) {
+S148,CSVParser.java,161,"result = new CSVRecord(record.toArray(new String[record.size()]), headerMapping);"
+S149,CSVParser.java,163,return result;
+S150,CSVParser.java,170,"Map<String, Integer> hdrMap = null;"
+S151,CSVParser.java,171,if (format.getHeader() != null) {
+S152,CSVParser.java,172,"hdrMap = new HashMap<String, Integer>();"
+S153,CSVParser.java,174,String[] header = null;
+S154,CSVParser.java,175,if (format.getHeader().length == 0) {
+S155,CSVParser.java,177,CSVRecord rec = getRecord();
+S156,CSVParser.java,178,if (rec != null) {
+S157,CSVParser.java,179,header = rec.values();
+S158,CSVParser.java,181,} else {
+S159,CSVParser.java,182,header = format.getHeader();
+S160,CSVParser.java,186,if (header != null) {
+S161,CSVParser.java,187,for (int i = 0; i < header.length; i++) {
+S162,CSVParser.java,188,"hdrMap.put(header[i], Integer.valueOf(i));"
+S163,CSVParser.java,192,return hdrMap;
+S164,CSVParser.java,200,return new Iterator<CSVRecord>() {
+S165,CSVParser.java,204,if (current == null) {
+S166,CSVParser.java,205,current = getNextRecord();
+S167,CSVParser.java,208,return current != null;
+S168,CSVParser.java,212,CSVRecord next = current;
+S169,CSVParser.java,213,current = null;
+S170,CSVParser.java,215,if (next == null) {
+S171,CSVParser.java,217,next = getNextRecord();
+S172,CSVParser.java,218,if (next == null) {
+S173,CSVParser.java,219,"throw new NoSuchElementException(""No more CSV records available"");"
+S174,CSVParser.java,223,return next;
+S175,CSVParser.java,228,return getRecord();
+S176,CSVParser.java,235,throw new UnsupportedOperationException();
+S177,CSVParser.java,249,return lexer.getLineNumber();
+S178,CSVPrinter.java,33,private boolean newLine = true;
+S179,CSVPrinter.java,45,"public CSVPrinter(Appendable out, CSVFormat format) {"
+S180,CSVPrinter.java,46,this.out = out;
+S181,CSVPrinter.java,47,this.format = format == null ? CSVFormat.DEFAULT : format;
+S182,CSVPrinter.java,49,this.format.validate();
+S183,CSVPrinter.java,60,out.append(format.getLineSeparator());
+S184,CSVPrinter.java,61,newLine = true;
+S185,CSVPrinter.java,70,if (out instanceof Flushable) {
+S186,CSVPrinter.java,71,((Flushable) out).flush();
+S187,CSVPrinter.java,83,for (String value : values) {
+S188,CSVPrinter.java,84,print(value);
+S189,CSVPrinter.java,86,println();
+S190,CSVPrinter.java,101,if (!format.isCommentingEnabled()) {
+S191,CSVPrinter.java,102,return;
+S192,CSVPrinter.java,104,if (!newLine) {
+S193,CSVPrinter.java,107,out.append(format.getCommentStart());
+S194,CSVPrinter.java,108,out.append(' ');
+S195,CSVPrinter.java,109,for (int i = 0; i < comment.length(); i++) {
+S196,CSVPrinter.java,110,char c = comment.charAt(i);
+S197,CSVPrinter.java,111,switch (c) {
+S198,CSVPrinter.java,118,println();
+S199,CSVPrinter.java,119,out.append(format.getCommentStart());
+S200,CSVPrinter.java,120,out.append(' ');
+S201,CSVPrinter.java,121,break;
+S202,CSVPrinter.java,123,out.append(c);
+S203,CSVPrinter.java,127,println();
+S204,CSVPrinter.java,132,if (format.isEncapsulating()) {
+S205,CSVPrinter.java,133,"printAndEncapsulate(value, offset, len);"
+S206,CSVPrinter.java,134,} else if (format.isEscaping()) {
+S207,CSVPrinter.java,135,"printAndEscape(value, offset, len);"
+S208,CSVPrinter.java,143,if (newLine) {
+S209,CSVPrinter.java,144,newLine = false;
+S210,CSVPrinter.java,146,out.append(format.getDelimiter());
+S211,CSVPrinter.java,151,int start = offset;
+S212,CSVPrinter.java,152,int pos = offset;
+S213,CSVPrinter.java,153,int end = offset + len;
+S214,CSVPrinter.java,155,printSep();
+S215,CSVPrinter.java,157,char delim = format.getDelimiter();
+S216,CSVPrinter.java,158,char escape = format.getEscape();
+S217,CSVPrinter.java,160,while (pos < end) {
+S218,CSVPrinter.java,161,char c = value.charAt(pos);
+S219,CSVPrinter.java,162,if (c == '\r' || c == '\n' || c == delim || c == escape) {
+S220,CSVPrinter.java,164,if (pos > start) {
+S221,CSVPrinter.java,165,"out.append(value, start, pos);"
+S222,CSVPrinter.java,167,if (c == '\n') {
+S223,CSVPrinter.java,168,c = 'n';
+S224,CSVPrinter.java,169,} else if (c == '\r') {
+S225,CSVPrinter.java,170,c = 'r';
+S226,CSVPrinter.java,173,out.append(escape);
+S227,CSVPrinter.java,174,out.append(c);
+S228,CSVPrinter.java,176,start = pos + 1; // start on the current char after this one
+S229,CSVPrinter.java,179,pos++;
+S230,CSVPrinter.java,183,if (pos > start) {
+S231,CSVPrinter.java,184,"out.append(value, start, pos);"
+S232,CSVPrinter.java,189,boolean first = newLine;  // is this the first value on this line?
+S233,CSVPrinter.java,190,boolean quote = false;
+S234,CSVPrinter.java,191,int start = offset;
+S235,CSVPrinter.java,192,int pos = offset;
+S236,CSVPrinter.java,193,int end = offset + len;
+S237,CSVPrinter.java,195,printSep();
+S238,CSVPrinter.java,197,char delim = format.getDelimiter();
+S239,CSVPrinter.java,198,char encapsulator = format.getEncapsulator();
+S240,CSVPrinter.java,200,if (len <= 0) {
+S241,CSVPrinter.java,205,if (first) {
+S242,CSVPrinter.java,206,quote = true;
+S243,CSVPrinter.java,209,char c = value.charAt(pos);
+S244,CSVPrinter.java,212,if (first
+S245,CSVPrinter.java,217,quote = true;
+S246,CSVPrinter.java,219,} else if (c <= '#') {
+S247,CSVPrinter.java,223,quote = true;
+S248,CSVPrinter.java,225,while (pos < end) {
+S249,CSVPrinter.java,226,c = value.charAt(pos);
+S250,CSVPrinter.java,227,if (c == '\n' || c == '\r' || c == encapsulator || c == delim) {
+S251,CSVPrinter.java,228,quote = true;
+S252,CSVPrinter.java,229,break;
+S253,CSVPrinter.java,231,pos++;
+S254,CSVPrinter.java,234,if (!quote) {
+S255,CSVPrinter.java,235,pos = end - 1;
+S256,CSVPrinter.java,236,c = value.charAt(pos);
+S257,CSVPrinter.java,240,if (c <= ' ') {
+S258,CSVPrinter.java,241,quote = true;
+S259,CSVPrinter.java,247,if (!quote) {
+S260,CSVPrinter.java,249,"out.append(value, start, end);"
+S261,CSVPrinter.java,250,return;
+S262,CSVPrinter.java,254,out.append(encapsulator);
+S263,CSVPrinter.java,258,while (pos < end) {
+S264,CSVPrinter.java,259,char c = value.charAt(pos);
+S265,CSVPrinter.java,260,if (c == encapsulator) {
+S266,CSVPrinter.java,264,"out.append(value, start, pos + 1);"
+S267,CSVPrinter.java,267,start = pos;
+S268,CSVPrinter.java,269,pos++;
+S269,CSVPrinter.java,273,"out.append(value, start, pos);"
+S270,CSVPrinter.java,274,out.append(encapsulator);
+S271,CSVPrinter.java,284,if (value == null) {
+S272,CSVPrinter.java,286,"value = """";"
+S273,CSVPrinter.java,289,if (!checkForEscape) {
+S274,CSVPrinter.java,294,"print(value, 0, value.length());"
+S275,CSVPrinter.java,305,"print(value, true);"
+S276,CSVRecord.java,30,private static final String[] EMPTY_STRING_ARRAY = new String[0];
+S277,CSVRecord.java,38,"CSVRecord(String[] values, Map<String, Integer> mapping) {"
+S278,CSVRecord.java,39,this.values = values != null ? values : EMPTY_STRING_ARRAY;
+S279,CSVRecord.java,40,this.mapping = mapping;
+S280,CSVRecord.java,49,return values[i];
+S281,CSVRecord.java,60,if (mapping == null) {
+S282,CSVRecord.java,64,Integer index = mapping.get(name);
+S283,CSVRecord.java,66,return index != null ? values[index.intValue()] : null;
+S284,CSVRecord.java,74,return values;
+S285,ExtendedBufferedReader.java,43,private int lastChar = UNDEFINED;
+S286,ExtendedBufferedReader.java,46,private int lineCounter = 0;
+S287,ExtendedBufferedReader.java,52,super(r);
+S288,ExtendedBufferedReader.java,57,int current = super.read();
+S289,ExtendedBufferedReader.java,58,if (current == '\n') {
+S290,ExtendedBufferedReader.java,59,lineCounter++;
+S291,ExtendedBufferedReader.java,61,lastChar = current;
+S292,ExtendedBufferedReader.java,62,return lastChar;
+S293,ExtendedBufferedReader.java,76,return lastChar;
+S294,ExtendedBufferedReader.java,81,if (length == 0) {
+S295,ExtendedBufferedReader.java,82,return 0;
+S296,ExtendedBufferedReader.java,85,"int len = super.read(buf, offset, length);"
+S297,ExtendedBufferedReader.java,87,if (len > 0) {
+S298,ExtendedBufferedReader.java,89,for (int i = offset; i < offset + len; i++) {
+S299,ExtendedBufferedReader.java,90,char ch = buf[i];
+S300,ExtendedBufferedReader.java,91,if (ch == '\n') {
+S301,ExtendedBufferedReader.java,95,} else if (ch == '\r') {
+S302,ExtendedBufferedReader.java,100,lastChar = buf[offset + len - 1];
+S303,ExtendedBufferedReader.java,106,return len;
+S304,ExtendedBufferedReader.java,123,String line = super.readLine();
+S305,ExtendedBufferedReader.java,125,if (line != null) {
+S306,ExtendedBufferedReader.java,126,if (line.length() > 0) {
+S307,ExtendedBufferedReader.java,127,lastChar = line.charAt(line.length() - 1);
+S308,ExtendedBufferedReader.java,129,lineCounter++;
+S309,ExtendedBufferedReader.java,131,lastChar = END_OF_STREAM;
+S310,ExtendedBufferedReader.java,134,return line;
+S311,ExtendedBufferedReader.java,146,super.mark(1);
+S312,ExtendedBufferedReader.java,147,int c = super.read();
+S313,ExtendedBufferedReader.java,148,super.reset();
+S314,ExtendedBufferedReader.java,150,return c;
+S315,ExtendedBufferedReader.java,159,return lineCounter;
+S316,Lexer.java,45,"Lexer(CSVFormat format, ExtendedBufferedReader in) {"
+S317,Lexer.java,46,this.format = format;
+S318,Lexer.java,47,this.in = in;
+S319,Lexer.java,48,this.isEncapsulating = format.isEncapsulating();
+S320,Lexer.java,49,this.isEscaping = format.isEscaping();
+S321,Lexer.java,50,this.isCommentEnabled = format.isCommentingEnabled();
+S322,Lexer.java,51,this.delimiter = format.getDelimiter();
+S323,Lexer.java,52,this.escape = format.getEscape();
+S324,Lexer.java,53,this.encapsulator = format.getEncapsulator();
+S325,Lexer.java,54,this.commmentStart = format.getCommentStart();
+S326,Lexer.java,55,this.surroundingSpacesIgnored = format.isSurroundingSpacesIgnored();
+S327,Lexer.java,56,this.emptyLinesIgnored = format.isEmptyLinesIgnored();
+S328,Lexer.java,60,return in.getLineNumber();
+S329,Lexer.java,65,c = in.read();
+S330,Lexer.java,66,switch (c) {
+S331,Lexer.java,68,return '\r';
+S332,Lexer.java,70,return '\n';
+S333,Lexer.java,78,return c;
+S334,Lexer.java,83,int length = buffer.length();
+S335,Lexer.java,84,while (length > 0 && Character.isWhitespace(buffer.charAt(length - 1))) {
+S336,Lexer.java,85,length = length - 1;
+S337,Lexer.java,87,if (length != buffer.length()) {
+S338,Lexer.java,88,buffer.setLength(length);
+S339,Lexer.java,96,return (c != format.getDelimiter()) && Character.isWhitespace((char) c);
+S340,Lexer.java,107,if (c == '\r' && in.lookAhead() == '\n') {
+S341,Lexer.java,109,c = in.read();
+S342,Lexer.java,111,return (c == '\n' || c == '\r');
+S343,Lexer.java,118,return c == ExtendedBufferedReader.END_OF_STREAM;
+S344,Lexer.java,124,return c == delimiter;
+S345,Lexer.java,128,return isEscaping && c == escape;
+S346,Lexer.java,132,return isEncapsulating && c == encapsulator;
+S347,Lexer.java,136,return isCommentEnabled && c == commmentStart;
+S348,Token.java,28,class Token {
+S349,Token.java,33,enum Type {
+S350,Token.java,35,"INVALID,"
+S351,Token.java,38,"TOKEN,"
+S352,Token.java,41,"EOF,"
+S353,Token.java,44,EORECORD
+S354,Token.java,48,Token.Type type = INVALID;
+S355,Token.java,51,StringBuilder content = new StringBuilder(INITIAL_TOKEN_LENGTH);
+S356,Token.java,57,content.setLength(0);
+S357,Token.java,58,type = INVALID;
+S358,Token.java,59,isReady = false;
+S359,Token.java,60,return this;

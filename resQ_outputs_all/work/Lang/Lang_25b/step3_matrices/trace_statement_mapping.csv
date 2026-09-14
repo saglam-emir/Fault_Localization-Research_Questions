@@ -1,0 +1,621 @@
+statement_id,file,line,code
+S1,AggregateTranslator.java,41,public AggregateTranslator(CharSequenceTranslator... translators) {
+S2,AggregateTranslator.java,42,this.translators = ArrayUtils.clone(translators);
+S3,AggregateTranslator.java,52,for (CharSequenceTranslator translator : translators) {
+S4,AggregateTranslator.java,53,"int consumed = translator.translate(input, index, out);"
+S5,AggregateTranslator.java,54,if(consumed != 0) {
+S6,AggregateTranslator.java,55,return consumed;
+S7,AggregateTranslator.java,58,return 0;
+S8,ArrayUtils.java,56,public static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
+S9,ArrayUtils.java,60,public static final Class<?>[] EMPTY_CLASS_ARRAY = new Class[0];
+S10,ArrayUtils.java,64,public static final String[] EMPTY_STRING_ARRAY = new String[0];
+S11,ArrayUtils.java,68,public static final long[] EMPTY_LONG_ARRAY = new long[0];
+S12,ArrayUtils.java,72,public static final Long[] EMPTY_LONG_OBJECT_ARRAY = new Long[0];
+S13,ArrayUtils.java,76,public static final int[] EMPTY_INT_ARRAY = new int[0];
+S14,ArrayUtils.java,80,public static final Integer[] EMPTY_INTEGER_OBJECT_ARRAY = new Integer[0];
+S15,ArrayUtils.java,84,public static final short[] EMPTY_SHORT_ARRAY = new short[0];
+S16,ArrayUtils.java,88,public static final Short[] EMPTY_SHORT_OBJECT_ARRAY = new Short[0];
+S17,ArrayUtils.java,92,public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+S18,ArrayUtils.java,96,public static final Byte[] EMPTY_BYTE_OBJECT_ARRAY = new Byte[0];
+S19,ArrayUtils.java,100,public static final double[] EMPTY_DOUBLE_ARRAY = new double[0];
+S20,ArrayUtils.java,104,public static final Double[] EMPTY_DOUBLE_OBJECT_ARRAY = new Double[0];
+S21,ArrayUtils.java,108,public static final float[] EMPTY_FLOAT_ARRAY = new float[0];
+S22,ArrayUtils.java,112,public static final Float[] EMPTY_FLOAT_OBJECT_ARRAY = new Float[0];
+S23,ArrayUtils.java,116,public static final boolean[] EMPTY_BOOLEAN_ARRAY = new boolean[0];
+S24,ArrayUtils.java,120,public static final Boolean[] EMPTY_BOOLEAN_OBJECT_ARRAY = new Boolean[0];
+S25,ArrayUtils.java,124,public static final char[] EMPTY_CHAR_ARRAY = new char[0];
+S26,ArrayUtils.java,128,public static final Character[] EMPTY_CHARACTER_OBJECT_ARRAY = new Character[0];
+S27,ArrayUtils.java,312,if (array == null) {
+S28,ArrayUtils.java,315,return array.clone();
+S29,ArrayUtils.java,3267,return array == null || array.length == 0;
+S30,CharSequenceTranslator.java,33,public abstract class CharSequenceTranslator {
+S31,CharSequenceTranslator.java,55,if (input == null) {
+S32,CharSequenceTranslator.java,56,return null;
+S33,CharSequenceTranslator.java,59,StringWriter writer = new StringWriter(input.length() * 2);  // TODO: Make the 2 part of the API???
+S34,CharSequenceTranslator.java,60,"translate(input, writer);"
+S35,CharSequenceTranslator.java,61,return writer.toString();
+S36,CharSequenceTranslator.java,78,if (out == null) {
+S37,CharSequenceTranslator.java,79,"throw new IllegalArgumentException(""The Writer must not be null"");"
+S38,CharSequenceTranslator.java,81,if (input == null) {
+S39,CharSequenceTranslator.java,82,return;
+S40,CharSequenceTranslator.java,84,"int sz = Character.codePointCount(input, 0, input.length());"
+S41,CharSequenceTranslator.java,85,for (int i = 0; i < sz; i++) {
+S42,CharSequenceTranslator.java,88,"int consumed = translate(input, i, out);"
+S43,CharSequenceTranslator.java,90,if(consumed == 0) {
+S44,CharSequenceTranslator.java,91,"out.write( Character.toChars( Character.codePointAt(input, i) ) );"
+S45,CharSequenceTranslator.java,94,for(int j=0; j<consumed; j++) {
+S46,CharSequenceTranslator.java,95,if(i < sz - 2) {
+S47,CharSequenceTranslator.java,96,"i += Character.charCount( Character.codePointAt(input, i) );"
+S48,CharSequenceTranslator.java,99,i++;
+S49,CharSequenceTranslator.java,103,i--;
+S50,CharSequenceTranslator.java,116,CharSequenceTranslator[] newArray = new CharSequenceTranslator[translators.length + 1];
+S51,CharSequenceTranslator.java,117,newArray[0] = this;
+S52,CharSequenceTranslator.java,118,"System.arraycopy(translators, 0, newArray, 1, translators.length);"
+S53,CharSequenceTranslator.java,119,return new AggregateTranslator(newArray);
+S54,CharSequenceTranslator.java,130,return Integer.toHexString(codepoint).toUpperCase(Locale.ENGLISH);
+S55,ClassUtils.java,58,public static final String PACKAGE_SEPARATOR = String.valueOf(PACKAGE_SEPARATOR_CHAR);
+S56,ClassUtils.java,68,public static final String INNER_CLASS_SEPARATOR = String.valueOf(INNER_CLASS_SEPARATOR_CHAR);
+S57,ClassUtils.java,73,"private static final Map<Class<?>, Class<?>> primitiveWrapperMap = new HashMap<Class<?>, Class<?>>();"
+S58,ClassUtils.java,75,"primitiveWrapperMap.put(Boolean.TYPE, Boolean.class);"
+S59,ClassUtils.java,76,"primitiveWrapperMap.put(Byte.TYPE, Byte.class);"
+S60,ClassUtils.java,77,"primitiveWrapperMap.put(Character.TYPE, Character.class);"
+S61,ClassUtils.java,78,"primitiveWrapperMap.put(Short.TYPE, Short.class);"
+S62,ClassUtils.java,79,"primitiveWrapperMap.put(Integer.TYPE, Integer.class);"
+S63,ClassUtils.java,80,"primitiveWrapperMap.put(Long.TYPE, Long.class);"
+S64,ClassUtils.java,81,"primitiveWrapperMap.put(Double.TYPE, Double.class);"
+S65,ClassUtils.java,82,"primitiveWrapperMap.put(Float.TYPE, Float.class);"
+S66,ClassUtils.java,83,"primitiveWrapperMap.put(Void.TYPE, Void.TYPE);"
+S67,ClassUtils.java,89,"private static final Map<Class<?>, Class<?>> wrapperPrimitiveMap = new HashMap<Class<?>, Class<?>>();"
+S68,ClassUtils.java,91,for (Class<?> primitiveClass : primitiveWrapperMap.keySet()) {
+S69,ClassUtils.java,92,Class<?> wrapperClass = primitiveWrapperMap.get(primitiveClass);
+S70,ClassUtils.java,93,if (!primitiveClass.equals(wrapperClass)) {
+S71,ClassUtils.java,94,"wrapperPrimitiveMap.put(wrapperClass, primitiveClass);"
+S72,ClassUtils.java,102,"private static final Map<String, String> abbreviationMap = new HashMap<String, String>();"
+S73,ClassUtils.java,107,"private static final Map<String, String> reverseAbbreviationMap = new HashMap<String, String>();"
+S74,ClassUtils.java,116,"abbreviationMap.put(primitive, abbreviation);"
+S75,ClassUtils.java,117,"reverseAbbreviationMap.put(abbreviation, primitive);"
+S76,ClassUtils.java,124,"addAbbreviation(""int"", ""I"");"
+S77,ClassUtils.java,125,"addAbbreviation(""boolean"", ""Z"");"
+S78,ClassUtils.java,126,"addAbbreviation(""float"", ""F"");"
+S79,ClassUtils.java,127,"addAbbreviation(""long"", ""J"");"
+S80,ClassUtils.java,128,"addAbbreviation(""short"", ""S"");"
+S81,ClassUtils.java,129,"addAbbreviation(""byte"", ""B"");"
+S82,ClassUtils.java,130,"addAbbreviation(""double"", ""D"");"
+S83,ClassUtils.java,131,"addAbbreviation(""char"", ""C"");"
+S84,ClassUtils.java,524,"return isAssignable(cls, toClass, SystemUtils.isJavaVersionAtLeast(1.5f));"
+S85,ClassUtils.java,555,if (toClass == null) {
+S86,ClassUtils.java,559,if (cls == null) {
+S87,ClassUtils.java,563,if (autoboxing) {
+S88,ClassUtils.java,564,if (cls.isPrimitive() && !toClass.isPrimitive()) {
+S89,ClassUtils.java,565,cls = primitiveToWrapper(cls);
+S90,ClassUtils.java,566,if (cls == null) {
+S91,ClassUtils.java,570,if (toClass.isPrimitive() && !cls.isPrimitive()) {
+S92,ClassUtils.java,571,cls = wrapperToPrimitive(cls);
+S93,ClassUtils.java,572,if (cls == null) {
+S94,ClassUtils.java,577,if (cls.equals(toClass)) {
+S95,ClassUtils.java,578,return true;
+S96,ClassUtils.java,580,if (cls.isPrimitive()) {
+S97,ClassUtils.java,581,if (toClass.isPrimitive() == false) {
+S98,ClassUtils.java,584,if (Integer.TYPE.equals(cls)) {
+S99,ClassUtils.java,585,return Long.TYPE.equals(toClass)
+S100,ClassUtils.java,589,if (Long.TYPE.equals(cls)) {
+S101,ClassUtils.java,590,return Float.TYPE.equals(toClass)
+S102,ClassUtils.java,593,if (Boolean.TYPE.equals(cls)) {
+S103,ClassUtils.java,596,if (Double.TYPE.equals(cls)) {
+S104,ClassUtils.java,599,if (Float.TYPE.equals(cls)) {
+S105,ClassUtils.java,600,return Double.TYPE.equals(toClass);
+S106,ClassUtils.java,602,if (Character.TYPE.equals(cls)) {
+S107,ClassUtils.java,603,return Integer.TYPE.equals(toClass)
+S108,ClassUtils.java,608,if (Short.TYPE.equals(cls)) {
+S109,ClassUtils.java,609,return Integer.TYPE.equals(toClass)
+S110,ClassUtils.java,614,if (Byte.TYPE.equals(cls)) {
+S111,ClassUtils.java,615,return Short.TYPE.equals(toClass)
+S112,ClassUtils.java,624,return toClass.isAssignableFrom(cls);
+S113,ClassUtils.java,640,Class<?> convertedClass = cls;
+S114,ClassUtils.java,641,if (cls != null && cls.isPrimitive()) {
+S115,ClassUtils.java,642,convertedClass = primitiveWrapperMap.get(cls);
+S116,ClassUtils.java,644,return convertedClass;
+S117,ClassUtils.java,690,return wrapperPrimitiveMap.get(cls);
+S118,CodePointTranslator.java,30,public abstract class CodePointTranslator extends CharSequenceTranslator {
+S119,CodePointTranslator.java,38,"int codepoint = Character.codePointAt(input, index);"
+S120,CodePointTranslator.java,39,"boolean consumed = translate(codepoint, out);"
+S121,CodePointTranslator.java,40,if(consumed) {
+S122,CodePointTranslator.java,41,return 1;
+S123,CodePointTranslator.java,43,return 0;
+S124,EntityArrays.java,28,public class EntityArrays {
+S125,EntityArrays.java,30,public static String[][] ISO8859_1_ESCAPE() { return ISO8859_1_ESCAPE.clone(); }
+S126,EntityArrays.java,31,private static final String[][] ISO8859_1_ESCAPE = {
+S127,EntityArrays.java,130,public static String[][] ISO8859_1_UNESCAPE() { return ISO8859_1_UNESCAPE.clone(); }
+S128,EntityArrays.java,131,private static final String[][] ISO8859_1_UNESCAPE = invert(ISO8859_1_ESCAPE);
+S129,EntityArrays.java,134,public static String[][] HTML40_EXTENDED_ESCAPE() { return HTML40_EXTENDED_ESCAPE.clone(); }
+S130,EntityArrays.java,135,private static final String[][] HTML40_EXTENDED_ESCAPE = {
+S131,EntityArrays.java,332,public static String[][] HTML40_EXTENDED_UNESCAPE() { return HTML40_EXTENDED_UNESCAPE.clone(); }
+S132,EntityArrays.java,333,private static final String[][] HTML40_EXTENDED_UNESCAPE = invert(HTML40_EXTENDED_ESCAPE);
+S133,EntityArrays.java,335,public static String[][] BASIC_ESCAPE() { return BASIC_ESCAPE.clone(); }
+S134,EntityArrays.java,336,private static final String[][] BASIC_ESCAPE = {
+S135,EntityArrays.java,343,public static String[][] BASIC_UNESCAPE() { return BASIC_UNESCAPE.clone(); }
+S136,EntityArrays.java,344,private static final String[][] BASIC_UNESCAPE = invert(BASIC_ESCAPE);
+S137,EntityArrays.java,346,public static String[][] APOS_ESCAPE() { return APOS_ESCAPE.clone(); }
+S138,EntityArrays.java,347,private static final String[][] APOS_ESCAPE = {
+S139,EntityArrays.java,351,public static String[][] APOS_UNESCAPE() { return APOS_UNESCAPE.clone(); }
+S140,EntityArrays.java,352,private static final String[][] APOS_UNESCAPE = invert(APOS_ESCAPE);
+S141,EntityArrays.java,354,public static String[][] JAVA_CTRL_CHARS_ESCAPE() { return JAVA_CTRL_CHARS_ESCAPE.clone(); }
+S142,EntityArrays.java,355,private static final String[][] JAVA_CTRL_CHARS_ESCAPE = {
+S143,EntityArrays.java,363,public static String[][] JAVA_CTRL_CHARS_UNESCAPE() { return JAVA_CTRL_CHARS_UNESCAPE.clone(); }
+S144,EntityArrays.java,364,private static final String[][] JAVA_CTRL_CHARS_UNESCAPE = invert(JAVA_CTRL_CHARS_ESCAPE);
+S145,EntityArrays.java,372,String[][] newarray = new String[array.length][2];
+S146,EntityArrays.java,373,for(int i = 0; i<array.length; i++) {
+S147,EntityArrays.java,374,newarray[i][0] = array[i][1];
+S148,EntityArrays.java,375,newarray[i][1] = array[i][0];
+S149,EntityArrays.java,377,return newarray;
+S150,LookupTranslator.java,42,public LookupTranslator(CharSequence[][] lookup) {
+S151,LookupTranslator.java,43,"lookupMap = new HashMap<CharSequence, CharSequence>();"
+S152,LookupTranslator.java,44,int _shortest = Integer.MAX_VALUE;
+S153,LookupTranslator.java,45,int _longest = 0;
+S154,LookupTranslator.java,46,for(CharSequence[] seq : lookup) {
+S155,LookupTranslator.java,47,"this.lookupMap.put(seq[0], seq[1]);"
+S156,LookupTranslator.java,48,int sz = seq[0].length();
+S157,LookupTranslator.java,49,if(sz < _shortest) {
+S158,LookupTranslator.java,50,_shortest = sz;
+S159,LookupTranslator.java,52,if(sz > _longest) {
+S160,LookupTranslator.java,53,_longest = sz;
+S161,LookupTranslator.java,56,shortest = _shortest;
+S162,LookupTranslator.java,57,longest = _longest;
+S163,LookupTranslator.java,65,int max = longest;
+S164,LookupTranslator.java,66,if(index + longest > input.length()) {
+S165,LookupTranslator.java,67,max = input.length() - index;
+S166,LookupTranslator.java,70,for(int i=max; i >= shortest; i--) {
+S167,LookupTranslator.java,71,"CharSequence subSeq = input.subSequence(index, index + i);"
+S168,LookupTranslator.java,72,CharSequence result = lookupMap.get(subSeq);
+S169,LookupTranslator.java,73,if(result != null) {
+S170,LookupTranslator.java,74,out.write(result.toString());
+S171,LookupTranslator.java,75,return i;
+S172,LookupTranslator.java,78,return 0;
+S173,NumericEntityUnescaper.java,30,public class NumericEntityUnescaper extends CharSequenceTranslator {
+S174,NumericEntityUnescaper.java,38,if(input.charAt(index) == '&' && input.charAt(index + 1) == '#') {
+S175,NumericEntityUnescaper.java,39,int start = index + 2;
+S176,NumericEntityUnescaper.java,40,boolean isHex = false;
+S177,NumericEntityUnescaper.java,42,char firstChar = input.charAt(start);
+S178,NumericEntityUnescaper.java,43,if(firstChar == 'x' || firstChar == 'X') {
+S179,NumericEntityUnescaper.java,44,start++;
+S180,NumericEntityUnescaper.java,45,isHex = true;
+S181,NumericEntityUnescaper.java,48,int end = start;
+S182,NumericEntityUnescaper.java,49,while(input.charAt(end) != ';') {
+S183,NumericEntityUnescaper.java,50,end++;
+S184,NumericEntityUnescaper.java,55,if(isHex) {
+S185,NumericEntityUnescaper.java,56,"entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 16);"
+S186,NumericEntityUnescaper.java,58,"entityValue = Integer.parseInt(input.subSequence(start, end).toString(), 10);"
+S187,NumericEntityUnescaper.java,60,} catch(NumberFormatException nfe) {
+S188,NumericEntityUnescaper.java,61,return 0;
+S189,NumericEntityUnescaper.java,64,if(entityValue > 0xFFFF) {
+S190,NumericEntityUnescaper.java,69,out.write(entityValue);
+S191,NumericEntityUnescaper.java,71,return 2 + (end - start) + (isHex ? 1 : 0) + 1;
+S192,NumericEntityUnescaper.java,73,return 0;
+S193,StringEscapeUtils.java,52,public static final CharSequenceTranslator ESCAPE_JAVA =
+S194,StringEscapeUtils.java,63,public static final CharSequenceTranslator ESCAPE_ECMASCRIPT =
+S195,StringEscapeUtils.java,76,public static final CharSequenceTranslator ESCAPE_XML =
+S196,StringEscapeUtils.java,82,public static final CharSequenceTranslator ESCAPE_HTML3 =
+S197,StringEscapeUtils.java,88,public static final CharSequenceTranslator ESCAPE_HTML4 =
+S198,StringEscapeUtils.java,95,public static final CharSequenceTranslator ESCAPE_CSV = new CsvEscaper();
+S199,StringEscapeUtils.java,100,static class CsvEscaper extends CharSequenceTranslator {
+S200,StringEscapeUtils.java,104,private static final String CSV_QUOTE_STR = String.valueOf(CSV_QUOTE);
+S201,StringEscapeUtils.java,105,"private static final char[] CSV_SEARCH_CHARS = new char[] {CSV_DELIMITER, CSV_QUOTE, CharUtils.CR, CharUtils.LF};"
+S202,StringEscapeUtils.java,111,if(index != 0) {
+S203,StringEscapeUtils.java,115,"if (StringUtils.containsNone(input.toString(), CSV_SEARCH_CHARS)) {"
+S204,StringEscapeUtils.java,116,out.write(input.toString());
+S205,StringEscapeUtils.java,118,out.write(CSV_QUOTE);
+S206,StringEscapeUtils.java,119,"out.write(StringUtils.replace(input.toString(), CSV_QUOTE_STR, CSV_QUOTE_STR + CSV_QUOTE_STR));"
+S207,StringEscapeUtils.java,120,out.write(CSV_QUOTE);
+S208,StringEscapeUtils.java,122,return input.length();
+S209,StringEscapeUtils.java,129,public static final CharSequenceTranslator UNESCAPE_JAVA =
+S210,StringEscapeUtils.java,142,public static final CharSequenceTranslator UNESCAPE_ECMASCRIPT = UNESCAPE_JAVA;
+S211,StringEscapeUtils.java,144,public static final CharSequenceTranslator UNESCAPE_HTML3 =
+S212,StringEscapeUtils.java,151,public static final CharSequenceTranslator UNESCAPE_HTML4 =
+S213,StringEscapeUtils.java,159,public static final CharSequenceTranslator UNESCAPE_XML =
+S214,StringEscapeUtils.java,166,public static final CharSequenceTranslator UNESCAPE_CSV = new CsvUnescaper();
+S215,StringEscapeUtils.java,168,static class CsvUnescaper extends CharSequenceTranslator {
+S216,StringEscapeUtils.java,172,private static final String CSV_QUOTE_STR = String.valueOf(CSV_QUOTE);
+S217,StringEscapeUtils.java,173,"private static final char[] CSV_SEARCH_CHARS = new char[] {CSV_DELIMITER, CSV_QUOTE, CharUtils.CR, CharUtils.LF};"
+S218,StringEscapeUtils.java,179,if(index != 0) {
+S219,StringEscapeUtils.java,183,if ( input.charAt(0) != CSV_QUOTE || input.charAt(input.length() - 1) != CSV_QUOTE ) {
+S220,StringEscapeUtils.java,184,out.write(input.toString());
+S221,StringEscapeUtils.java,185,return input.length();
+S222,StringEscapeUtils.java,189,"String quoteless = input.subSequence(1, input.length() - 1).toString();"
+S223,StringEscapeUtils.java,191,"if ( StringUtils.containsAny(quoteless, CSV_SEARCH_CHARS) ) {"
+S224,StringEscapeUtils.java,193,"out.write(StringUtils.replace(quoteless, CSV_QUOTE_STR + CSV_QUOTE_STR, CSV_QUOTE_STR));"
+S225,StringEscapeUtils.java,195,out.write(input.toString());
+S226,StringEscapeUtils.java,197,return input.length();
+S227,StringEscapeUtils.java,214,super();
+S228,StringEscapeUtils.java,241,return ESCAPE_JAVA.translate(input);
+S229,StringEscapeUtils.java,268,return ESCAPE_ECMASCRIPT.translate(input);
+S230,StringEscapeUtils.java,281,return UNESCAPE_JAVA.translate(input);
+S231,StringEscapeUtils.java,327,return ESCAPE_HTML4.translate(input);
+S232,StringEscapeUtils.java,351,return UNESCAPE_HTML4.translate(input);
+S233,StringEscapeUtils.java,377,return ESCAPE_XML.translate(input);
+S234,StringEscapeUtils.java,398,return UNESCAPE_XML.translate(input);
+S235,StringEscapeUtils.java,427,return ESCAPE_CSV.translate(input);
+S236,StringEscapeUtils.java,453,return UNESCAPE_CSV.translate(input);
+S237,StringUtils.java,163,"private static final Pattern WHITESPACE_BLOCK = Pattern.compile(""\\s+"");"
+S238,StringUtils.java,199,return cs == null || cs.length() == 0;
+S239,StringUtils.java,1485,if (isEmpty(cs) || ArrayUtils.isEmpty(searchChars)) {
+S240,StringUtils.java,1488,int csLength = cs.length();
+S241,StringUtils.java,1489,int searchLength = searchChars.length;
+S242,StringUtils.java,1490,int csLast = csLength - 1;
+S243,StringUtils.java,1491,int searchLast = searchLength - 1;
+S244,StringUtils.java,1492,for (int i = 0; i < csLength; i++) {
+S245,StringUtils.java,1493,char ch = cs.charAt(i);
+S246,StringUtils.java,1494,for (int j = 0; j < searchLength; j++) {
+S247,StringUtils.java,1495,if (searchChars[j] == ch) {
+S248,StringUtils.java,1496,if (Character.isHighSurrogate(ch)) {
+S249,StringUtils.java,1506,return true;
+S250,StringUtils.java,1511,return false;
+S251,StringUtils.java,1739,if (cs == null || searchChars == null) {
+S252,StringUtils.java,1742,int csLen = cs.length();
+S253,StringUtils.java,1743,int csLast = csLen - 1;
+S254,StringUtils.java,1744,int searchLen = searchChars.length;
+S255,StringUtils.java,1745,int searchLast = searchLen - 1;
+S256,StringUtils.java,1746,for (int i = 0; i < csLen; i++) {
+S257,StringUtils.java,1747,char ch = cs.charAt(i);
+S258,StringUtils.java,1748,for (int j = 0; j < searchLen; j++) {
+S259,StringUtils.java,1749,if (searchChars[j] == ch) {
+S260,StringUtils.java,1750,if (Character.isHighSurrogate(ch)) {
+S261,StringUtils.java,1760,return false;
+S262,StringUtils.java,1765,return true;
+S263,StringUtils.java,3775,"return replace(text, searchString, replacement, -1);"
+S264,StringUtils.java,3807,if (isEmpty(text) || isEmpty(searchString) || replacement == null || max == 0) {
+S265,StringUtils.java,3810,int start = 0;
+S266,StringUtils.java,3811,"int end = text.indexOf(searchString, start);"
+S267,StringUtils.java,3812,if (end == INDEX_NOT_FOUND) {
+S268,StringUtils.java,3813,return text;
+S269,StringUtils.java,3815,int replLength = searchString.length();
+S270,StringUtils.java,3816,int increase = replacement.length() - replLength;
+S271,StringUtils.java,3817,increase = (increase < 0 ? 0 : increase);
+S272,StringUtils.java,3818,increase *= (max < 0 ? 16 : (max > 64 ? 64 : max));
+S273,StringUtils.java,3819,StringBuilder buf = new StringBuilder(text.length() + increase);
+S274,StringUtils.java,3820,while (end != INDEX_NOT_FOUND) {
+S275,StringUtils.java,3821,"buf.append(text.substring(start, end)).append(replacement);"
+S276,StringUtils.java,3822,start = end + replLength;
+S277,StringUtils.java,3823,if (--max == 0) {
+S278,StringUtils.java,3826,"end = text.indexOf(searchString, start);"
+S279,StringUtils.java,3828,buf.append(text.substring(start));
+S280,StringUtils.java,3829,return buf.toString();
+S281,SystemUtils.java,104,"public static final String AWT_TOOLKIT = getSystemProperty(""awt.toolkit"");"
+S282,SystemUtils.java,127,"public static final String FILE_ENCODING = getSystemProperty(""file.encoding"");"
+S283,SystemUtils.java,146,"public static final String FILE_SEPARATOR = getSystemProperty(""file.separator"");"
+S284,SystemUtils.java,165,"public static final String JAVA_AWT_FONTS = getSystemProperty(""java.awt.fonts"");"
+S285,SystemUtils.java,184,"public static final String JAVA_AWT_GRAPHICSENV = getSystemProperty(""java.awt.graphicsenv"");"
+S286,SystemUtils.java,206,"public static final String JAVA_AWT_HEADLESS = getSystemProperty(""java.awt.headless"");"
+S287,SystemUtils.java,225,"public static final String JAVA_AWT_PRINTERJOB = getSystemProperty(""java.awt.printerjob"");"
+S288,SystemUtils.java,244,"public static final String JAVA_CLASS_PATH = getSystemProperty(""java.class.path"");"
+S289,SystemUtils.java,263,"public static final String JAVA_CLASS_VERSION = getSystemProperty(""java.class.version"");"
+S290,SystemUtils.java,283,"public static final String JAVA_COMPILER = getSystemProperty(""java.compiler"");"
+S291,SystemUtils.java,302,"public static final String JAVA_ENDORSED_DIRS = getSystemProperty(""java.endorsed.dirs"");"
+S292,SystemUtils.java,321,"public static final String JAVA_EXT_DIRS = getSystemProperty(""java.ext.dirs"");"
+S293,SystemUtils.java,340,public static final String JAVA_HOME = getSystemProperty(JAVA_HOME_KEY);
+S294,SystemUtils.java,359,public static final String JAVA_IO_TMPDIR = getSystemProperty(JAVA_IO_TMPDIR_KEY);
+S295,SystemUtils.java,378,"public static final String JAVA_LIBRARY_PATH = getSystemProperty(""java.library.path"");"
+S296,SystemUtils.java,398,"public static final String JAVA_RUNTIME_NAME = getSystemProperty(""java.runtime.name"");"
+S297,SystemUtils.java,418,"public static final String JAVA_RUNTIME_VERSION = getSystemProperty(""java.runtime.version"");"
+S298,SystemUtils.java,437,"public static final String JAVA_SPECIFICATION_NAME = getSystemProperty(""java.specification.name"");"
+S299,SystemUtils.java,456,"public static final String JAVA_SPECIFICATION_VENDOR = getSystemProperty(""java.specification.vendor"");"
+S300,SystemUtils.java,475,"public static final String JAVA_SPECIFICATION_VERSION = getSystemProperty(""java.specification.version"");"
+S301,SystemUtils.java,495,"public static final String JAVA_UTIL_PREFS_PREFERENCES_FACTORY = getSystemProperty(""java.util.prefs.PreferencesFactory"");"
+S302,SystemUtils.java,514,"public static final String JAVA_VENDOR = getSystemProperty(""java.vendor"");"
+S303,SystemUtils.java,533,"public static final String JAVA_VENDOR_URL = getSystemProperty(""java.vendor.url"");"
+S304,SystemUtils.java,552,"public static final String JAVA_VERSION = getSystemProperty(""java.version"");"
+S305,SystemUtils.java,572,"public static final String JAVA_VM_INFO = getSystemProperty(""java.vm.info"");"
+S306,SystemUtils.java,591,"public static final String JAVA_VM_NAME = getSystemProperty(""java.vm.name"");"
+S307,SystemUtils.java,610,"public static final String JAVA_VM_SPECIFICATION_NAME = getSystemProperty(""java.vm.specification.name"");"
+S308,SystemUtils.java,629,"public static final String JAVA_VM_SPECIFICATION_VENDOR = getSystemProperty(""java.vm.specification.vendor"");"
+S309,SystemUtils.java,648,"public static final String JAVA_VM_SPECIFICATION_VERSION = getSystemProperty(""java.vm.specification.version"");"
+S310,SystemUtils.java,667,"public static final String JAVA_VM_VENDOR = getSystemProperty(""java.vm.vendor"");"
+S311,SystemUtils.java,686,"public static final String JAVA_VM_VERSION = getSystemProperty(""java.vm.version"");"
+S312,SystemUtils.java,705,"public static final String LINE_SEPARATOR = getSystemProperty(""line.separator"");"
+S313,SystemUtils.java,724,"public static final String OS_ARCH = getSystemProperty(""os.arch"");"
+S314,SystemUtils.java,743,"public static final String OS_NAME = getSystemProperty(""os.name"");"
+S315,SystemUtils.java,762,"public static final String OS_VERSION = getSystemProperty(""os.version"");"
+S316,SystemUtils.java,781,"public static final String PATH_SEPARATOR = getSystemProperty(""path.separator"");"
+S317,SystemUtils.java,802,"public static final String USER_COUNTRY = getSystemProperty(""user.country"") == null ? getSystemProperty(""user.region"")"
+S318,SystemUtils.java,822,public static final String USER_DIR = getSystemProperty(USER_DIR_KEY);
+S319,SystemUtils.java,841,public static final String USER_HOME = getSystemProperty(USER_HOME_KEY);
+S320,SystemUtils.java,861,"public static final String USER_LANGUAGE = getSystemProperty(""user.language"");"
+S321,SystemUtils.java,880,"public static final String USER_NAME = getSystemProperty(""user.name"");"
+S322,SystemUtils.java,899,"public static final String USER_TIMEZONE = getSystemProperty(""user.timezone"");"
+S323,SystemUtils.java,917,public static final String JAVA_VERSION_TRIMMED = getJavaVersionTrimmed();
+S324,SystemUtils.java,943,public static final float JAVA_VERSION_FLOAT = getJavaVersionAsFloat();
+S325,SystemUtils.java,964,public static final int JAVA_VERSION_INT = getJavaVersionAsInt();
+S326,SystemUtils.java,980,"public static final boolean IS_JAVA_1_1 = getJavaVersionMatches(""1.1"");"
+S327,SystemUtils.java,991,"public static final boolean IS_JAVA_1_2 = getJavaVersionMatches(""1.2"");"
+S328,SystemUtils.java,1002,"public static final boolean IS_JAVA_1_3 = getJavaVersionMatches(""1.3"");"
+S329,SystemUtils.java,1013,"public static final boolean IS_JAVA_1_4 = getJavaVersionMatches(""1.4"");"
+S330,SystemUtils.java,1024,"public static final boolean IS_JAVA_1_5 = getJavaVersionMatches(""1.5"");"
+S331,SystemUtils.java,1035,"public static final boolean IS_JAVA_1_6 = getJavaVersionMatches(""1.6"");"
+S332,SystemUtils.java,1048,"public static final boolean IS_JAVA_1_7 = getJavaVersionMatches(""1.7"");"
+S333,SystemUtils.java,1069,"public static final boolean IS_OS_AIX = getOSMatchesName(""AIX"");"
+S334,SystemUtils.java,1082,"public static final boolean IS_OS_HP_UX = getOSMatchesName(""HP-UX"");"
+S335,SystemUtils.java,1095,"public static final boolean IS_OS_IRIX = getOSMatchesName(""Irix"");"
+S336,SystemUtils.java,1108,"public static final boolean IS_OS_LINUX = getOSMatchesName(""Linux"") || getOSMatchesName(""LINUX"");"
+S337,SystemUtils.java,1121,"public static final boolean IS_OS_MAC = getOSMatchesName(""Mac"");"
+S338,SystemUtils.java,1134,"public static final boolean IS_OS_MAC_OSX = getOSMatchesName(""Mac OS X"");"
+S339,SystemUtils.java,1147,"public static final boolean IS_OS_OS2 = getOSMatchesName(""OS/2"");"
+S340,SystemUtils.java,1160,"public static final boolean IS_OS_SOLARIS = getOSMatchesName(""Solaris"");"
+S341,SystemUtils.java,1173,"public static final boolean IS_OS_SUN_OS = getOSMatchesName(""SunOS"");"
+S342,SystemUtils.java,1186,public static final boolean IS_OS_UNIX = IS_OS_AIX || IS_OS_HP_UX || IS_OS_IRIX || IS_OS_LINUX || IS_OS_MAC_OSX || IS_OS_SOLARIS
+S343,SystemUtils.java,1200,public static final boolean IS_OS_WINDOWS = getOSMatchesName(OS_NAME_WINDOWS_PREFIX);
+S344,SystemUtils.java,1213,"public static final boolean IS_OS_WINDOWS_2000 = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""5.0"");"
+S345,SystemUtils.java,1226,"public static final boolean IS_OS_WINDOWS_95 = getOSMatches(OS_NAME_WINDOWS_PREFIX + "" 9"", ""4.0"");"
+S346,SystemUtils.java,1240,"public static final boolean IS_OS_WINDOWS_98 = getOSMatches(OS_NAME_WINDOWS_PREFIX + "" 9"", ""4.1"");"
+S347,SystemUtils.java,1254,"public static final boolean IS_OS_WINDOWS_ME = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""4.9"");"
+S348,SystemUtils.java,1268,"public static final boolean IS_OS_WINDOWS_NT = getOSMatchesName(OS_NAME_WINDOWS_PREFIX + "" NT"");"
+S349,SystemUtils.java,1282,"public static final boolean IS_OS_WINDOWS_XP = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""5.1"");"
+S350,SystemUtils.java,1296,"public static final boolean IS_OS_WINDOWS_VISTA = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""6.0"");"
+S351,SystemUtils.java,1309,"public static final boolean IS_OS_WINDOWS_7 = getOSMatches(OS_NAME_WINDOWS_PREFIX, ""6.1"");"
+S352,SystemUtils.java,1364,"return toVersionFloat(toJavaVersionIntArray(SystemUtils.JAVA_VERSION, JAVA_VERSION_TRIM_SIZE));"
+S353,SystemUtils.java,1388,"return toVersionInt(toJavaVersionIntArray(SystemUtils.JAVA_VERSION, JAVA_VERSION_TRIM_SIZE));"
+S354,SystemUtils.java,1401,"return isJavaVersionMatch(JAVA_VERSION_TRIMMED, versionPrefix);"
+S355,SystemUtils.java,1410,if (JAVA_VERSION != null) {
+S356,SystemUtils.java,1411,for (int i = 0; i < JAVA_VERSION.length(); i++) {
+S357,SystemUtils.java,1412,char ch = JAVA_VERSION.charAt(i);
+S358,SystemUtils.java,1413,if (ch >= '0' && ch <= '9') {
+S359,SystemUtils.java,1414,return JAVA_VERSION.substring(i);
+S360,SystemUtils.java,1431,"return isOSMatch(OS_NAME, OS_VERSION, osNamePrefix, osVersionPrefix);"
+S361,SystemUtils.java,1442,"return isOSNameMatch(OS_NAME, osNamePrefix);"
+S362,SystemUtils.java,1462,return System.getProperty(property);
+S363,SystemUtils.java,1534,return JAVA_VERSION_FLOAT >= requiredVersion;
+S364,SystemUtils.java,1574,if (version == null) {
+S365,SystemUtils.java,1577,return version.startsWith(versionPrefix);
+S366,SystemUtils.java,1597,if (osName == null || osVersion == null) {
+S367,SystemUtils.java,1600,return osName.startsWith(osNamePrefix) && osVersion.startsWith(osVersionPrefix);
+S368,SystemUtils.java,1616,if (osName == null) {
+S369,SystemUtils.java,1619,return osName.startsWith(osNamePrefix);
+S370,SystemUtils.java,1716,if (version == null) {
+S371,SystemUtils.java,1719,"String[] strings = Pattern.compile(""[^\\d]"").split(version);"
+S372,SystemUtils.java,1720,"int[] ints = new int[Math.min(limit, strings.length)];"
+S373,SystemUtils.java,1721,int j = 0;
+S374,SystemUtils.java,1722,for (int i = 0; i < strings.length && j < limit; i++) {
+S375,SystemUtils.java,1723,String s = strings[i];
+S376,SystemUtils.java,1724,if (s.length() > 0) {
+S377,SystemUtils.java,1725,ints[j++] = Integer.parseInt(s);
+S378,SystemUtils.java,1728,return ints;
+S379,SystemUtils.java,1752,if (javaVersions == null || javaVersions.length == 0) {
+S380,SystemUtils.java,1755,if (javaVersions.length == 1) {
+S381,SystemUtils.java,1758,StringBuilder builder = new StringBuilder();
+S382,SystemUtils.java,1759,builder.append(javaVersions[0]);
+S383,SystemUtils.java,1760,builder.append('.');
+S384,SystemUtils.java,1761,for (int i = 1; i < javaVersions.length; i++) {
+S385,SystemUtils.java,1762,builder.append(javaVersions[i]);
+S386,SystemUtils.java,1765,return Float.parseFloat(builder.toString());
+S387,SystemUtils.java,1792,if (javaVersions == null) {
+S388,SystemUtils.java,1795,int intVersion = 0;
+S389,SystemUtils.java,1796,int len = javaVersions.length;
+S390,SystemUtils.java,1797,if (len >= 1) {
+S391,SystemUtils.java,1798,intVersion = javaVersions[0] * 100;
+S392,SystemUtils.java,1800,if (len >= 2) {
+S393,SystemUtils.java,1801,intVersion += javaVersions[1] * 10;
+S394,SystemUtils.java,1803,if (len >= 3) {
+S395,SystemUtils.java,1804,intVersion += javaVersions[2];
+S396,SystemUtils.java,1806,return intVersion;
+S397,TypeUtils.java,68,"return isAssignable(type, toType, null);"
+S398,TypeUtils.java,82,if (toType == null || toType instanceof Class<?>) {
+S399,TypeUtils.java,83,"return isAssignable(type, (Class<?>) toType);"
+S400,TypeUtils.java,86,if (toType instanceof ParameterizedType) {
+S401,TypeUtils.java,87,"return isAssignable(type, (ParameterizedType) toType, typeVarAssigns);"
+S402,TypeUtils.java,90,if (toType instanceof GenericArrayType) {
+S403,TypeUtils.java,91,"return isAssignable(type, (GenericArrayType) toType, typeVarAssigns);"
+S404,TypeUtils.java,94,if (toType instanceof WildcardType) {
+S405,TypeUtils.java,95,"return isAssignable(type, (WildcardType) toType, typeVarAssigns);"
+S406,TypeUtils.java,116,if (type == null) {
+S407,TypeUtils.java,118,return toClass == null || !toClass.isPrimitive();
+S408,TypeUtils.java,123,if (toClass == null) {
+S409,TypeUtils.java,124,return false;
+S410,TypeUtils.java,128,if (toClass.equals(type)) {
+S411,TypeUtils.java,129,return true;
+S412,TypeUtils.java,132,if (type instanceof Class<?>) {
+S413,TypeUtils.java,134,"return ClassUtils.isAssignable((Class<?>) type, toClass);"
+S414,TypeUtils.java,137,if (type instanceof ParameterizedType) {
+S415,TypeUtils.java,139,"return isAssignable(getRawType((ParameterizedType) type), toClass);"
+S416,TypeUtils.java,143,if (type instanceof TypeVariable<?>) {
+S417,TypeUtils.java,157,if (type instanceof GenericArrayType) {
+S418,TypeUtils.java,158,return toClass.equals(Object.class)
+S419,TypeUtils.java,183,if (type == null) {
+S420,TypeUtils.java,189,if (toParameterizedType == null) {
+S421,TypeUtils.java,194,if (toParameterizedType.equals(type)) {
+S422,TypeUtils.java,195,return true;
+S423,TypeUtils.java,199,Class<?> toClass = getRawType(toParameterizedType);
+S424,TypeUtils.java,202,"Map<TypeVariable<?>, Type> fromTypeVarAssigns = getTypeArguments(type, toClass, null);"
+S425,TypeUtils.java,205,if (fromTypeVarAssigns == null) {
+S426,TypeUtils.java,212,if (fromTypeVarAssigns.isEmpty()) {
+S427,TypeUtils.java,213,return true;
+S428,TypeUtils.java,217,"Map<TypeVariable<?>, Type> toTypeVarAssigns = getTypeArguments(toParameterizedType,"
+S429,TypeUtils.java,221,"for (Map.Entry<TypeVariable<?>, Type> entry : toTypeVarAssigns.entrySet()) {"
+S430,TypeUtils.java,222,Type toTypeArg = entry.getValue();
+S431,TypeUtils.java,223,Type fromTypeArg = fromTypeVarAssigns.get(entry.getKey());
+S432,TypeUtils.java,228,if (fromTypeArg != null
+S433,TypeUtils.java,232,return false;
+S434,TypeUtils.java,236,return true;
+S435,TypeUtils.java,250,if (type == null) {
+S436,TypeUtils.java,256,if (toGenericArrayType == null) {
+S437,TypeUtils.java,261,if (toGenericArrayType.equals(type)) {
+S438,TypeUtils.java,262,return true;
+S439,TypeUtils.java,265,Type toComponentType = toGenericArrayType.getGenericComponentType();
+S440,TypeUtils.java,267,if (type instanceof Class<?>) {
+S441,TypeUtils.java,268,Class<?> cls = (Class<?>) type;
+S442,TypeUtils.java,271,return cls.isArray()
+S443,TypeUtils.java,275,if (type instanceof GenericArrayType) {
+S444,TypeUtils.java,277,"return isAssignable(((GenericArrayType) type).getGenericComponentType(),"
+S445,TypeUtils.java,325,if (type == null) {
+S446,TypeUtils.java,331,if (toWildcardType == null) {
+S447,TypeUtils.java,336,if (toWildcardType.equals(type)) {
+S448,TypeUtils.java,340,Type[] toUpperBounds = getImplicitUpperBounds(toWildcardType);
+S449,TypeUtils.java,341,Type[] toLowerBounds = getImplicitLowerBounds(toWildcardType);
+S450,TypeUtils.java,343,if (type instanceof WildcardType) {
+S451,TypeUtils.java,344,WildcardType wildcardType = (WildcardType) type;
+S452,TypeUtils.java,345,Type[] upperBounds = getImplicitUpperBounds(wildcardType);
+S453,TypeUtils.java,346,Type[] lowerBounds = getImplicitLowerBounds(wildcardType);
+S454,TypeUtils.java,348,for (Type toBound : toUpperBounds) {
+S455,TypeUtils.java,351,"toBound = substituteTypeVariables(toBound, typeVarAssigns);"
+S456,TypeUtils.java,356,for (Type bound : upperBounds) {
+S457,TypeUtils.java,357,"if (!isAssignable(bound, toBound, typeVarAssigns)) {"
+S458,TypeUtils.java,358,return false;
+S459,TypeUtils.java,363,for (Type toBound : toLowerBounds) {
+S460,TypeUtils.java,366,"toBound = substituteTypeVariables(toBound, typeVarAssigns);"
+S461,TypeUtils.java,371,for (Type bound : lowerBounds) {
+S462,TypeUtils.java,372,"if (!isAssignable(toBound, bound, typeVarAssigns)) {"
+S463,TypeUtils.java,373,return false;
+S464,TypeUtils.java,378,return true;
+S465,TypeUtils.java,381,for (Type toBound : toUpperBounds) {
+S466,TypeUtils.java,384,"if (!isAssignable(type, substituteTypeVariables(toBound, typeVarAssigns),"
+S467,TypeUtils.java,386,return false;
+S468,TypeUtils.java,390,for (Type toBound : toLowerBounds) {
+S469,TypeUtils.java,393,"if (!isAssignable(substituteTypeVariables(toBound, typeVarAssigns), type,"
+S470,TypeUtils.java,395,return false;
+S471,TypeUtils.java,399,return true;
+S472,TypeUtils.java,457,if (type instanceof TypeVariable<?> && typeVarAssigns != null) {
+S473,TypeUtils.java,458,Type replacementType = typeVarAssigns.get(type);
+S474,TypeUtils.java,460,if (replacementType == null) {
+S475,TypeUtils.java,465,return replacementType;
+S476,TypeUtils.java,468,return type;
+S477,TypeUtils.java,519,"return getTypeArguments(type, toClass, null);"
+S478,TypeUtils.java,532,if (type instanceof Class<?>) {
+S479,TypeUtils.java,533,"return getTypeArguments((Class<?>) type, toClass, subtypeVarAssigns);"
+S480,TypeUtils.java,536,if (type instanceof ParameterizedType) {
+S481,TypeUtils.java,537,"return getTypeArguments((ParameterizedType) type, toClass, subtypeVarAssigns);"
+S482,TypeUtils.java,585,Class<?> cls = getRawType(parameterizedType);
+S483,TypeUtils.java,588,"if (!isAssignable(cls, toClass)) {"
+S484,TypeUtils.java,592,Type ownerType = parameterizedType.getOwnerType();
+S485,TypeUtils.java,595,if (ownerType instanceof ParameterizedType) {
+S486,TypeUtils.java,597,ParameterizedType parameterizedOwnerType = (ParameterizedType) ownerType;
+S487,TypeUtils.java,598,"typeVarAssigns = getTypeArguments(parameterizedOwnerType,"
+S488,TypeUtils.java,600,} else {
+S489,TypeUtils.java,602,"typeVarAssigns = subtypeVarAssigns == null ? new HashMap<TypeVariable<?>, Type>()"
+S490,TypeUtils.java,607,Type[] typeArgs = parameterizedType.getActualTypeArguments();
+S491,TypeUtils.java,609,TypeVariable<?>[] typeParams = cls.getTypeParameters();
+S492,TypeUtils.java,612,for (int i = 0; i < typeParams.length; i++) {
+S493,TypeUtils.java,613,Type typeArg = typeArgs[i];
+S494,TypeUtils.java,614,"typeVarAssigns.put(typeParams[i], typeVarAssigns.containsKey(typeArg) ? typeVarAssigns"
+S495,TypeUtils.java,618,if (toClass.equals(cls)) {
+S496,TypeUtils.java,620,return typeVarAssigns;
+S497,TypeUtils.java,624,"return getTypeArguments(getClosestParentType(cls, toClass), toClass, typeVarAssigns);"
+S498,TypeUtils.java,638,"if (!isAssignable(cls, toClass)) {"
+S499,TypeUtils.java,643,if (cls.isPrimitive()) {
+S500,TypeUtils.java,645,if (toClass.isPrimitive()) {
+S501,TypeUtils.java,652,cls = ClassUtils.primitiveToWrapper(cls);
+S502,TypeUtils.java,656,"HashMap<TypeVariable<?>, Type> typeVarAssigns = subtypeVarAssigns == null ? new HashMap<TypeVariable<?>, Type>()"
+S503,TypeUtils.java,660,if (cls.getTypeParameters().length > 0 || toClass.equals(cls)) {
+S504,TypeUtils.java,661,return typeVarAssigns;
+S505,TypeUtils.java,665,"return getTypeArguments(getClosestParentType(cls, toClass), toClass, typeVarAssigns);"
+S506,TypeUtils.java,697,Class<?> superClass = getRawType(superType);
+S507,TypeUtils.java,700,"if (!isAssignable(cls, superClass)) {"
+S508,TypeUtils.java,704,if (cls.equals(superClass)) {
+S509,TypeUtils.java,705,"return getTypeArguments(superType, superClass, null);"
+S510,TypeUtils.java,709,"Type midType = getClosestParentType(cls, superClass);"
+S511,TypeUtils.java,712,if (midType instanceof Class<?>) {
+S512,TypeUtils.java,716,ParameterizedType midParameterizedType = (ParameterizedType) midType;
+S513,TypeUtils.java,717,Class<?> midClass = getRawType(midParameterizedType);
+S514,TypeUtils.java,720,"Map<TypeVariable<?>, Type> typeVarAssigns = determineTypeArguments(midClass, superType);"
+S515,TypeUtils.java,722,"mapTypeVariablesToArguments(cls, midParameterizedType, typeVarAssigns);"
+S516,TypeUtils.java,724,return typeVarAssigns;
+S517,TypeUtils.java,737,Type ownerType = parameterizedType.getOwnerType();
+S518,TypeUtils.java,739,if (ownerType instanceof ParameterizedType) {
+S519,TypeUtils.java,748,Type[] typeArgs = parameterizedType.getActualTypeArguments();
+S520,TypeUtils.java,752,TypeVariable<?>[] typeVars = getRawType(parameterizedType).getTypeParameters();
+S521,TypeUtils.java,755,List<TypeVariable<Class<T>>> typeVarList = Arrays.asList(cls
+S522,TypeUtils.java,758,for (int i = 0; i < typeArgs.length; i++) {
+S523,TypeUtils.java,759,TypeVariable<?> typeVar = typeVars[i];
+S524,TypeUtils.java,760,Type typeArg = typeArgs[i];
+S525,TypeUtils.java,763,if (typeVarList.contains(typeArg)
+S526,TypeUtils.java,768,"typeVarAssigns.put((TypeVariable<?>) typeArg, typeVarAssigns.get(typeVar));"
+S527,TypeUtils.java,783,if (superClass.isInterface()) {
+S528,TypeUtils.java,785,Type[] interfaceTypes = cls.getGenericInterfaces();
+S529,TypeUtils.java,787,Type genericInterface = null;
+S530,TypeUtils.java,790,for (int i = 0; i < interfaceTypes.length; i++) {
+S531,TypeUtils.java,791,Type midType = interfaceTypes[i];
+S532,TypeUtils.java,792,Class<?> midClass = null;
+S533,TypeUtils.java,794,if (midType instanceof ParameterizedType) {
+S534,TypeUtils.java,795,midClass = getRawType((ParameterizedType) midType);
+S535,TypeUtils.java,796,} else if (midType instanceof Class<?>) {
+S536,TypeUtils.java,797,midClass = (Class<?>) midType;
+S537,TypeUtils.java,805,"if (isAssignable(midClass, superClass)"
+S538,TypeUtils.java,807,genericInterface = midType;
+S539,TypeUtils.java,812,if (genericInterface != null) {
+S540,TypeUtils.java,813,return genericInterface;
+S541,TypeUtils.java,819,return cls.getGenericSuperclass();
+S542,TypeUtils.java,831,if (type == null) {
+S543,TypeUtils.java,835,return value == null ? !(type instanceof Class<?>) || !((Class<?>) type).isPrimitive()
+S544,TypeUtils.java,862,if (bounds.length < 2) {
+S545,TypeUtils.java,863,return bounds;
+S546,TypeUtils.java,896,Type[] bounds = typeVariable.getBounds();
+S547,TypeUtils.java,898,return bounds.length == 0 ? new Type[] { Object.class } : normalizeUpperBounds(bounds);
+S548,TypeUtils.java,912,Type[] bounds = wildcardType.getUpperBounds();
+S549,TypeUtils.java,914,return bounds.length == 0 ? new Type[] { Object.class } : normalizeUpperBounds(bounds);
+S550,TypeUtils.java,927,Type[] bounds = wildcardType.getLowerBounds();
+S551,TypeUtils.java,929,return bounds.length == 0 ? new Type[] { null } : bounds;
+S552,TypeUtils.java,948,"for (Map.Entry<TypeVariable<?>, Type> entry : typeVarAssigns.entrySet()) {"
+S553,TypeUtils.java,949,TypeVariable<?> typeVar = entry.getKey();
+S554,TypeUtils.java,950,Type type = entry.getValue();
+S555,TypeUtils.java,952,for (Type bound : getImplicitBounds(typeVar)) {
+S556,TypeUtils.java,953,"if (!isAssignable(type, substituteTypeVariables(bound, typeVarAssigns),"
+S557,TypeUtils.java,960,return true;
+S558,TypeUtils.java,970,Type rawType = parameterizedType.getRawType();
+S559,TypeUtils.java,977,if (!(rawType instanceof Class<?>)) {
+S560,TypeUtils.java,981,return (Class<?>) rawType;
+S561,TypeUtils.java,997,if (type instanceof Class<?>) {
+S562,TypeUtils.java,999,return (Class<?>) type;
+S563,TypeUtils.java,1002,if (type instanceof ParameterizedType) {
+S564,TypeUtils.java,1004,return getRawType((ParameterizedType) type);
+S565,TypeUtils.java,1007,if (type instanceof TypeVariable<?>) {
+S566,TypeUtils.java,1008,if (assigningType == null) {
+S567,TypeUtils.java,1013,Object genericDeclaration = ((TypeVariable<?>) type).getGenericDeclaration();
+S568,TypeUtils.java,1017,if (!(genericDeclaration instanceof Class<?>)) {
+S569,TypeUtils.java,1023,"Map<TypeVariable<?>, Type> typeVarAssigns = getTypeArguments(assigningType,"
+S570,TypeUtils.java,1028,if (typeVarAssigns == null) {
+S571,TypeUtils.java,1033,Type typeArgument = typeVarAssigns.get(type);
+S572,TypeUtils.java,1035,if (typeArgument == null) {
+S573,TypeUtils.java,1036,return null;
+S574,TypeUtils.java,1040,"return getRawType(typeArgument, assigningType);"
+S575,TypeUtils.java,1043,if (type instanceof GenericArrayType) {
+S576,TypeUtils.java,1045,Class<?> rawComponentType = getRawType(((GenericArrayType) type)
+S577,TypeUtils.java,1049,"return Array.newInstance(rawComponentType, 0).getClass();"
+S578,TypeUtils.java,1066,return type instanceof GenericArrayType || type instanceof Class<?> && ((Class<?>) type).isArray();
+S579,TypeUtils.java,1075,if (type instanceof Class<?>) {
+S580,TypeUtils.java,1076,Class<?> clazz = (Class<?>) type;
+S581,TypeUtils.java,1077,return clazz.isArray() ? clazz.getComponentType() : null;
+S582,TypeUtils.java,1079,if (type instanceof GenericArrayType) {
+S583,TypeUtils.java,1080,return ((GenericArrayType) type).getGenericComponentType();
+S584,TypeUtils.java,1082,return null;
+S585,UnicodeEscaper.java,39,"private UnicodeEscaper(int below, int above, boolean between) {"
+S586,UnicodeEscaper.java,40,this.below = below;
+S587,UnicodeEscaper.java,41,this.above = above;
+S588,UnicodeEscaper.java,42,this.between = between;
+S589,UnicodeEscaper.java,54,"UnicodeEscaper escaper = new UnicodeEscaper(codepointLow, codepointHigh, false);"
+S590,UnicodeEscaper.java,55,return escaper;
+S591,UnicodeEscaper.java,68,if(between) {
+S592,UnicodeEscaper.java,73,if (codepoint >= below && codepoint <= above) {
+S593,UnicodeEscaper.java,74,return false;
+S594,UnicodeEscaper.java,79,if (codepoint > 0xffff) {
+S595,UnicodeEscaper.java,83,} else if (codepoint > 0xfff) {
+S596,UnicodeEscaper.java,84,"out.write(""\\u"" + hex(codepoint));"
+S597,UnicodeEscaper.java,85,} else if (codepoint > 0xff) {
+S598,UnicodeEscaper.java,86,"out.write(""\\u0"" + hex(codepoint));"
+S599,UnicodeEscaper.java,87,} else if (codepoint > 0xf) {
+S600,UnicodeEscaper.java,88,"out.write(""\\u00"" + hex(codepoint));"
+S601,UnicodeEscaper.java,90,"out.write(""\\u000"" + hex(codepoint));"
+S602,UnicodeEscaper.java,92,return true;
+S603,UnicodeUnescaper.java,34,public static enum OPTION { escapePlus }
+S604,UnicodeUnescaper.java,39,public UnicodeUnescaper(OPTION... options) {
+S605,UnicodeUnescaper.java,40,if(options.length > 0) {
+S606,UnicodeUnescaper.java,43,this.options = null;
+S607,UnicodeUnescaper.java,48,return (options == null) ? false : options.contains(opt);
+S608,UnicodeUnescaper.java,56,if(input.charAt(index) == '\\') {
+S609,UnicodeUnescaper.java,57,if( (index + 1 < input.length()) && input.charAt(index + 1) == 'u') {
+S610,UnicodeUnescaper.java,59,int i=2;
+S611,UnicodeUnescaper.java,60,while( (index + i < input.length()) && input.charAt(index + i) == 'u') {
+S612,UnicodeUnescaper.java,65,if(isSet(OPTION.escapePlus)) {
+S613,UnicodeUnescaper.java,71,if( (index + i + 4 <= input.length()) ) {
+S614,UnicodeUnescaper.java,73,"CharSequence unicode = input.subSequence(index + i, index + i + 4);"
+S615,UnicodeUnescaper.java,76,"int value = Integer.parseInt(unicode.toString(), 16);"
+S616,UnicodeUnescaper.java,77,out.write((char) value);
+S617,UnicodeUnescaper.java,78,} catch (NumberFormatException nfe) {
+S618,UnicodeUnescaper.java,79,"throw new IllegalArgumentException(""Unable to parse unicode value: "" + unicode, nfe);"
+S619,UnicodeUnescaper.java,81,return i + 4;
+S620,UnicodeUnescaper.java,89,return 0;

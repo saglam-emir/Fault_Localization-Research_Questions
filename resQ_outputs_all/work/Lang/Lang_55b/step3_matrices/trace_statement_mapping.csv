@@ -1,0 +1,155 @@
+statement_id,file,line,code
+S1,DurationFormatUtils.java,81,"return formatDuration(durationMillis, ""H:mm:ss.SSS"");"
+S2,DurationFormatUtils.java,111,"return formatDuration(durationMillis, format, true);"
+S3,DurationFormatUtils.java,129,Token[] tokens = lexx(format);
+S4,DurationFormatUtils.java,131,int days         = 0;
+S5,DurationFormatUtils.java,132,int hours        = 0;
+S6,DurationFormatUtils.java,133,int minutes      = 0;
+S7,DurationFormatUtils.java,134,int seconds      = 0;
+S8,DurationFormatUtils.java,135,int milliseconds = 0;
+S9,DurationFormatUtils.java,137,"if (Token.containsTokenWithValue(tokens, d) ) {"
+S10,DurationFormatUtils.java,141,"if (Token.containsTokenWithValue(tokens, H) ) {"
+S11,DurationFormatUtils.java,142,hours = (int) (durationMillis / DateUtils.MILLIS_PER_HOUR);
+S12,DurationFormatUtils.java,143,durationMillis = durationMillis - (hours * DateUtils.MILLIS_PER_HOUR);
+S13,DurationFormatUtils.java,145,"if (Token.containsTokenWithValue(tokens, m) ) {"
+S14,DurationFormatUtils.java,146,minutes = (int) (durationMillis / DateUtils.MILLIS_PER_MINUTE);
+S15,DurationFormatUtils.java,147,durationMillis = durationMillis - (minutes * DateUtils.MILLIS_PER_MINUTE);
+S16,DurationFormatUtils.java,149,"if (Token.containsTokenWithValue(tokens, s) ) {"
+S17,DurationFormatUtils.java,150,seconds = (int) (durationMillis / DateUtils.MILLIS_PER_SECOND);
+S18,DurationFormatUtils.java,151,durationMillis = durationMillis - (seconds * DateUtils.MILLIS_PER_SECOND);
+S19,DurationFormatUtils.java,153,"if (Token.containsTokenWithValue(tokens, S) ) {"
+S20,DurationFormatUtils.java,154,milliseconds = (int) durationMillis;
+S21,DurationFormatUtils.java,157,"return format(tokens, 0, 0, days, hours, minutes, seconds, milliseconds, padWithZeros);"
+S22,DurationFormatUtils.java,423,StringBuffer buffer = new StringBuffer();
+S23,DurationFormatUtils.java,424,boolean lastOutputSeconds = false;
+S24,DurationFormatUtils.java,425,int sz = tokens.length;
+S25,DurationFormatUtils.java,426,for (int i = 0; i < sz; i++) {
+S26,DurationFormatUtils.java,427,Token token = tokens[i];
+S27,DurationFormatUtils.java,428,Object value = token.getValue();
+S28,DurationFormatUtils.java,429,int count = token.getCount();
+S29,DurationFormatUtils.java,430,if (value instanceof StringBuffer) {
+S30,DurationFormatUtils.java,431,buffer.append(value.toString());
+S31,DurationFormatUtils.java,433,if (value == y) {
+S32,DurationFormatUtils.java,437,} else if (value == M) {
+S33,DurationFormatUtils.java,441,} else if (value == d) {
+S34,DurationFormatUtils.java,445,} else if (value == H) {
+S35,DurationFormatUtils.java,446,"buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(hours), count, '0') : Integer"
+S36,DurationFormatUtils.java,448,lastOutputSeconds = false;
+S37,DurationFormatUtils.java,449,} else if (value == m) {
+S38,DurationFormatUtils.java,450,"buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(minutes), count, '0') : Integer"
+S39,DurationFormatUtils.java,452,lastOutputSeconds = false;
+S40,DurationFormatUtils.java,453,} else if (value == s) {
+S41,DurationFormatUtils.java,454,"buffer.append(padWithZeros ? StringUtils.leftPad(Integer.toString(seconds), count, '0') : Integer"
+S42,DurationFormatUtils.java,456,lastOutputSeconds = true;
+S43,DurationFormatUtils.java,457,} else if (value == S) {
+S44,DurationFormatUtils.java,458,if (lastOutputSeconds) {
+S45,DurationFormatUtils.java,459,milliseconds += 1000;
+S46,DurationFormatUtils.java,460,String str = padWithZeros
+S47,DurationFormatUtils.java,463,buffer.append(str.substring(1));
+S48,DurationFormatUtils.java,464,} else {
+S49,DurationFormatUtils.java,469,lastOutputSeconds = false;
+S50,DurationFormatUtils.java,473,return buffer.toString();
+S51,DurationFormatUtils.java,476,"static final Object y = ""y"";"
+S52,DurationFormatUtils.java,477,"static final Object M = ""M"";"
+S53,DurationFormatUtils.java,478,"static final Object d = ""d"";"
+S54,DurationFormatUtils.java,479,"static final Object H = ""H"";"
+S55,DurationFormatUtils.java,480,"static final Object m = ""m"";"
+S56,DurationFormatUtils.java,481,"static final Object s = ""s"";"
+S57,DurationFormatUtils.java,482,"static final Object S = ""S"";"
+S58,DurationFormatUtils.java,491,char[] array = format.toCharArray();
+S59,DurationFormatUtils.java,492,ArrayList list = new ArrayList(array.length);
+S60,DurationFormatUtils.java,494,boolean inLiteral = false;
+S61,DurationFormatUtils.java,495,StringBuffer buffer = null;
+S62,DurationFormatUtils.java,496,Token previous = null;
+S63,DurationFormatUtils.java,497,int sz = array.length;
+S64,DurationFormatUtils.java,498,for(int i=0; i<sz; i++) {
+S65,DurationFormatUtils.java,499,char ch = array[i];
+S66,DurationFormatUtils.java,500,if(inLiteral && ch != '\'') {
+S67,DurationFormatUtils.java,504,Object value = null;
+S68,DurationFormatUtils.java,505,switch(ch) {
+S69,DurationFormatUtils.java,520,case 'H'  : value = H; break;
+S70,DurationFormatUtils.java,521,case 'm'  : value = m; break;
+S71,DurationFormatUtils.java,522,case 's'  : value = s; break;
+S72,DurationFormatUtils.java,523,case 'S'  : value = S; break;
+S73,DurationFormatUtils.java,525,if(buffer == null) {
+S74,DurationFormatUtils.java,526,buffer = new StringBuffer();
+S75,DurationFormatUtils.java,527,list.add(new Token(buffer));
+S76,DurationFormatUtils.java,529,buffer.append(ch);
+S77,DurationFormatUtils.java,532,if(value != null) {
+S78,DurationFormatUtils.java,533,if(previous != null && previous.getValue() == value) {
+S79,DurationFormatUtils.java,534,previous.increment();
+S80,DurationFormatUtils.java,536,Token token = new Token(value);
+S81,DurationFormatUtils.java,537,list.add(token);
+S82,DurationFormatUtils.java,538,previous = token;
+S83,DurationFormatUtils.java,540,buffer = null;
+S84,DurationFormatUtils.java,543,return (Token[]) list.toArray( new Token[list.size()] );
+S85,DurationFormatUtils.java,559,int sz = tokens.length;
+S86,DurationFormatUtils.java,560,for (int i = 0; i < sz; i++) {
+S87,DurationFormatUtils.java,561,if (tokens[i].getValue() == value) {
+S88,DurationFormatUtils.java,562,return true;
+S89,DurationFormatUtils.java,565,return false;
+S90,DurationFormatUtils.java,576,Token(Object value) {
+S91,DurationFormatUtils.java,577,this.value = value;
+S92,DurationFormatUtils.java,578,this.count = 1;
+S93,DurationFormatUtils.java,597,count++;
+S94,DurationFormatUtils.java,606,return count;
+S95,DurationFormatUtils.java,615,return value;
+S96,StopWatch.java,65,private int runningState = STATE_UNSTARTED;
+S97,StopWatch.java,70,private int splitState   = STATE_UNSPLIT;
+S98,StopWatch.java,75,private long startTime = -1;
+S99,StopWatch.java,79,private long stopTime = -1;
+S100,StopWatch.java,85,super();
+S101,StopWatch.java,96,if(this.runningState == STATE_STOPPED) {
+S102,StopWatch.java,97,"throw new IllegalStateException(""Stopwatch must be reset before being restarted. "");"
+S103,StopWatch.java,99,if(this.runningState != STATE_UNSTARTED) {
+S104,StopWatch.java,100,"throw new IllegalStateException(""Stopwatch already started. "");"
+S105,StopWatch.java,102,stopTime = -1;
+S106,StopWatch.java,103,startTime = System.currentTimeMillis();
+S107,StopWatch.java,104,this.runningState = STATE_RUNNING;
+S108,StopWatch.java,115,if(this.runningState != STATE_RUNNING && this.runningState != STATE_SUSPENDED) {
+S109,StopWatch.java,116,"throw new IllegalStateException(""Stopwatch is not running. "");"
+S110,StopWatch.java,118,stopTime = System.currentTimeMillis();
+S111,StopWatch.java,119,this.runningState = STATE_STOPPED;
+S112,StopWatch.java,128,this.runningState = STATE_UNSTARTED;
+S113,StopWatch.java,129,this.splitState   = STATE_UNSPLIT;
+S114,StopWatch.java,130,startTime = -1;
+S115,StopWatch.java,131,stopTime = -1;
+S116,StopWatch.java,144,if(this.runningState != STATE_RUNNING) {
+S117,StopWatch.java,145,"throw new IllegalStateException(""Stopwatch is not running. "");"
+S118,StopWatch.java,147,stopTime = System.currentTimeMillis();
+S119,StopWatch.java,148,this.splitState = STATE_SPLIT;
+S120,StopWatch.java,160,if(this.splitState != STATE_SPLIT) {
+S121,StopWatch.java,161,"throw new IllegalStateException(""Stopwatch has not been split. "");"
+S122,StopWatch.java,163,stopTime = -1;
+S123,StopWatch.java,164,this.splitState = STATE_UNSPLIT;
+S124,StopWatch.java,176,if(this.runningState != STATE_RUNNING) {
+S125,StopWatch.java,177,"throw new IllegalStateException(""Stopwatch must be running to suspend. "");"
+S126,StopWatch.java,179,stopTime = System.currentTimeMillis();
+S127,StopWatch.java,180,this.runningState = STATE_SUSPENDED;
+S128,StopWatch.java,192,if(this.runningState != STATE_SUSPENDED) {
+S129,StopWatch.java,193,"throw new IllegalStateException(""Stopwatch must be suspended to resume. "");"
+S130,StopWatch.java,195,startTime += (System.currentTimeMillis() - stopTime);
+S131,StopWatch.java,196,stopTime = -1;
+S132,StopWatch.java,197,this.runningState = STATE_RUNNING;
+S133,StopWatch.java,209,if(this.runningState == STATE_STOPPED || this.runningState == STATE_SUSPENDED) {
+S134,StopWatch.java,210,return this.stopTime - this.startTime;
+S135,StopWatch.java,212,if(this.runningState == STATE_UNSTARTED) {
+S136,StopWatch.java,213,return 0;
+S137,StopWatch.java,215,if(this.runningState == STATE_RUNNING) {
+S138,StopWatch.java,216,return System.currentTimeMillis() - this.startTime;
+S139,StopWatch.java,232,if(this.splitState != STATE_SPLIT) {
+S140,StopWatch.java,233,"throw new IllegalStateException(""Stopwatch must be split to get the split time. "");"
+S141,StopWatch.java,235,return this.stopTime - this.startTime;
+S142,StopWatch.java,247,return DurationFormatUtils.formatDurationHMS(getTime());
+S143,StopWatch.java,260,return DurationFormatUtils.formatDurationHMS(getSplitTime());
+S144,StringUtils.java,3752,if (repeat < 0) {
+S145,StringUtils.java,3755,final char[] buf = new char[repeat];
+S146,StringUtils.java,3756,for (int i = 0; i < buf.length; i++) {
+S147,StringUtils.java,3757,buf[i] = padChar;
+S148,StringUtils.java,3759,return new String(buf);
+S149,StringUtils.java,3919,if (str == null) {
+S150,StringUtils.java,3922,int pads = size - str.length();
+S151,StringUtils.java,3923,if (pads <= 0) {
+S152,StringUtils.java,3924,return str; // returns original String when possible
+S153,StringUtils.java,3926,if (pads > PAD_LIMIT) {
+S154,StringUtils.java,3929,"return padding(pads, padChar).concat(str);"
