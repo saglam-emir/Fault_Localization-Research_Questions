@@ -1,0 +1,611 @@
+statement_id,file,line,code
+S1,AbstractContinuousDistribution.java,46,super();
+S2,AbstractContinuousDistribution.java,62,if (p < 0.0 || p > 1.0) {
+S3,AbstractContinuousDistribution.java,69,UnivariateRealFunction rootFindingFunction =
+S4,AbstractContinuousDistribution.java,70,new UnivariateRealFunction() {
+S5,AbstractContinuousDistribution.java,73,return cumulativeProbability(x) - p;
+S6,AbstractContinuousDistribution.java,81,double lowerBound = getDomainLowerBound(p);
+S7,AbstractContinuousDistribution.java,82,double upperBound = getDomainUpperBound(p);
+S8,AbstractContinuousDistribution.java,83,double[] bracket = null;
+S9,AbstractContinuousDistribution.java,85,bracket = UnivariateRealSolverUtils.bracket(
+S10,AbstractContinuousDistribution.java,88,}  catch (ConvergenceException ex) {
+S11,AbstractContinuousDistribution.java,97,if (Math.abs(rootFindingFunction.value(lowerBound)) < 1E-6) {
+S12,AbstractContinuousDistribution.java,100,if (Math.abs(rootFindingFunction.value(upperBound)) < 1E-6) {
+S13,AbstractContinuousDistribution.java,104,throw new MathException(ex);
+S14,AbstractContinuousDistribution.java,108,"double root = UnivariateRealSolverUtils.solve(rootFindingFunction,"
+S15,AbstractContinuousDistribution.java,110,return root;
+S16,AbstractDistribution.java,39,super();
+S17,Beta.java,54,"return regularizedBeta(x, a, b, DEFAULT_EPSILON, Integer.MAX_VALUE);"
+S18,Beta.java,121,if (Double.isNaN(x) || Double.isNaN(a) || Double.isNaN(b) || (x < 0) ||
+S19,Beta.java,125,} else if (x > (a + 1.0) / (a + b + 2.0)) {
+S20,Beta.java,126,"ret = 1.0 - regularizedBeta(1.0 - x, b, a, epsilon, maxIterations);"
+S21,Beta.java,128,ContinuedFraction fraction = new ContinuedFraction() {
+S22,Beta.java,134,if (n % 2 == 0) { // even
+S23,Beta.java,135,m = n / 2.0;
+S24,Beta.java,136,ret = (m * (b - m) * x) /
+S25,Beta.java,139,m = (n - 1.0) / 2.0;
+S26,Beta.java,140,ret = -((a + m) * (a + b + m) * x) /
+S27,Beta.java,143,return ret;
+S28,Beta.java,148,return 1.0;
+S29,Beta.java,151,ret = Math.exp((a * Math.log(x)) + (b * Math.log(1.0 - x)) -
+S30,Beta.java,156,return ret;
+S31,Beta.java,192,if (Double.isNaN(a) || Double.isNaN(b) || (a <= 0.0) || (b <= 0.0)) {
+S32,Beta.java,195,ret = Gamma.logGamma(a) + Gamma.logGamma(b) -
+S33,Beta.java,199,return ret;
+S34,BetaDistributionImpl.java,57,"public BetaDistributionImpl(double alpha, double beta) {"
+S35,BetaDistributionImpl.java,58,this.alpha = alpha;
+S36,BetaDistributionImpl.java,59,this.beta = beta;
+S37,BetaDistributionImpl.java,60,z = Double.NaN;
+S38,BetaDistributionImpl.java,89,if (Double.isNaN(z)) {
+S39,BetaDistributionImpl.java,90,z = Gamma.logGamma(alpha) + Gamma.logGamma(beta) - Gamma.logGamma(alpha + beta);
+S40,BetaDistributionImpl.java,96,recomputeZ();
+S41,BetaDistributionImpl.java,97,if (x < 0 || x > 1) {
+S42,BetaDistributionImpl.java,99,} else if (x == 0) {
+S43,BetaDistributionImpl.java,104,} else if (x == 1) {
+S44,BetaDistributionImpl.java,110,double logX = Math.log(x);
+S45,BetaDistributionImpl.java,111,double log1mX = Math.log1p(-x);
+S46,BetaDistributionImpl.java,112,return Math.exp((alpha - 1) * logX + (beta - 1) * log1mX - z);
+S47,BetaDistributionImpl.java,119,if (p == 0) {
+S48,BetaDistributionImpl.java,120,return 0;
+S49,BetaDistributionImpl.java,121,} else if (p == 1) {
+S50,BetaDistributionImpl.java,122,return 1;
+S51,BetaDistributionImpl.java,124,return super.inverseCumulativeProbability(p);
+S52,BetaDistributionImpl.java,131,return p;
+S53,BetaDistributionImpl.java,137,return 0;
+S54,BetaDistributionImpl.java,143,return 1;
+S55,BetaDistributionImpl.java,148,if (x <= 0) {
+S56,BetaDistributionImpl.java,149,return 0;
+S57,BetaDistributionImpl.java,150,} else if (x >= 1) {
+S58,BetaDistributionImpl.java,151,return 1;
+S59,BetaDistributionImpl.java,153,"return Beta.regularizedBeta(x, alpha, beta);"
+S60,BisectionSolver.java,44,"super(f, 100, 1E-6);"
+S61,BisectionSolver.java,52,"super(100, 1E-6);"
+S62,BisectionSolver.java,66,"return solve(f, min, max);"
+S63,BisectionSolver.java,79,clearResult();
+S64,BisectionSolver.java,80,"verifyInterval(min,max);"
+S65,BisectionSolver.java,85,int i = 0;
+S66,BisectionSolver.java,86,while (i < maximalIterationCount) {
+S67,BisectionSolver.java,87,"m = UnivariateRealSolverUtils.midpoint(min, max);"
+S68,BisectionSolver.java,88,fmin = f.value(min);
+S69,BisectionSolver.java,89,fm = f.value(m);
+S70,BisectionSolver.java,91,if (fm * fmin > 0.0) {
+S71,BisectionSolver.java,93,min = m;
+S72,BisectionSolver.java,96,max = m;
+S73,BisectionSolver.java,99,if (Math.abs(max - min) <= absoluteAccuracy) {
+S74,BisectionSolver.java,100,"m = UnivariateRealSolverUtils.midpoint(min, max);"
+S75,BisectionSolver.java,101,"setResult(m, i);"
+S76,BisectionSolver.java,102,return m;
+S77,BisectionSolver.java,104,++i;
+S78,BrentSolver.java,49,"super(f, 100, 1E-6);"
+S79,BrentSolver.java,56,"super(100, 1E-6);"
+S80,BrentSolver.java,63,"return solve(f, min, max);"
+S81,BrentSolver.java,97,clearResult();
+S82,BrentSolver.java,98,"verifySequence(min, initial, max);"
+S83,BrentSolver.java,101,double yInitial = f.value(initial);
+S84,BrentSolver.java,102,if (Math.abs(yInitial) <= functionValueAccuracy) {
+S85,BrentSolver.java,103,"setResult(initial, 0);"
+S86,BrentSolver.java,104,return result;
+S87,BrentSolver.java,108,double yMin = f.value(min);
+S88,BrentSolver.java,109,if (Math.abs(yMin) <= functionValueAccuracy) {
+S89,BrentSolver.java,115,if (yInitial * yMin < 0) {
+S90,BrentSolver.java,120,double yMax = f.value(max);
+S91,BrentSolver.java,121,if (Math.abs(yMax) <= functionValueAccuracy) {
+S92,BrentSolver.java,127,if (yInitial * yMax < 0) {
+S93,BrentSolver.java,128,"return solve(f, initial, yInitial, max, yMax, initial, yInitial);"
+S94,BrentSolver.java,158,clearResult();
+S95,BrentSolver.java,159,"verifyInterval(min, max);"
+S96,BrentSolver.java,161,double ret = Double.NaN;
+S97,BrentSolver.java,163,double yMin = f.value(min);
+S98,BrentSolver.java,164,double yMax = f.value(max);
+S99,BrentSolver.java,167,double sign = yMin * yMax;
+S100,BrentSolver.java,168,if (sign > 0) {
+S101,BrentSolver.java,170,if (Math.abs(yMin) <= functionValueAccuracy) {
+S102,BrentSolver.java,173,} else if (Math.abs(yMax) <= functionValueAccuracy) {
+S103,BrentSolver.java,174,"setResult(max, 0);"
+S104,BrentSolver.java,175,ret = max;
+S105,BrentSolver.java,178,throw MathRuntimeException.createIllegalArgumentException(
+S106,BrentSolver.java,183,} else if (sign < 0){
+S107,BrentSolver.java,185,"ret = solve(f, min, yMin, max, yMax, min, yMin);"
+S108,BrentSolver.java,188,if (yMin == 0.0) {
+S109,BrentSolver.java,189,ret = min;
+S110,BrentSolver.java,195,return ret;
+S111,BrentSolver.java,221,double delta = x1 - x0;
+S112,BrentSolver.java,222,double oldDelta = delta;
+S113,BrentSolver.java,224,int i = 0;
+S114,BrentSolver.java,225,while (i < maximalIterationCount) {
+S115,BrentSolver.java,226,if (Math.abs(y2) < Math.abs(y1)) {
+S116,BrentSolver.java,228,x0 = x1;
+S117,BrentSolver.java,229,x1 = x2;
+S118,BrentSolver.java,230,x2 = x0;
+S119,BrentSolver.java,231,y0 = y1;
+S120,BrentSolver.java,232,y1 = y2;
+S121,BrentSolver.java,233,y2 = y0;
+S122,BrentSolver.java,235,if (Math.abs(y1) <= functionValueAccuracy) {
+S123,BrentSolver.java,239,"setResult(x1, i);"
+S124,BrentSolver.java,240,return result;
+S125,BrentSolver.java,242,double dx = (x2 - x1);
+S126,BrentSolver.java,243,double tolerance =
+S127,BrentSolver.java,245,if (Math.abs(dx) <= tolerance) {
+S128,BrentSolver.java,246,"setResult(x1, i);"
+S129,BrentSolver.java,247,return result;
+S130,BrentSolver.java,249,if ((Math.abs(oldDelta) < tolerance) ||
+S131,BrentSolver.java,252,delta = 0.5 * dx;
+S132,BrentSolver.java,253,oldDelta = delta;
+S133,BrentSolver.java,255,double r3 = y1 / y0;
+S134,BrentSolver.java,261,if (x0 == x2) {
+S135,BrentSolver.java,263,p = dx * r3;
+S136,BrentSolver.java,264,p1 = 1.0 - r3;
+S137,BrentSolver.java,267,double r1 = y0 / y2;
+S138,BrentSolver.java,268,double r2 = y1 / y2;
+S139,BrentSolver.java,269,p = r3 * (dx * r1 * (r1 - r2) - (x1 - x0) * (r2 - 1.0));
+S140,BrentSolver.java,270,p1 = (r1 - 1.0) * (r2 - 1.0) * (r3 - 1.0);
+S141,BrentSolver.java,272,if (p > 0.0) {
+S142,BrentSolver.java,273,p1 = -p1;
+S143,BrentSolver.java,275,p = -p;
+S144,BrentSolver.java,277,if (2.0 * p >= 1.5 * dx * p1 - Math.abs(tolerance * p1) ||
+S145,BrentSolver.java,282,delta = 0.5 * dx;
+S146,BrentSolver.java,283,oldDelta = delta;
+S147,BrentSolver.java,285,oldDelta = delta;
+S148,BrentSolver.java,286,delta = p / p1;
+S149,BrentSolver.java,290,x0 = x1;
+S150,BrentSolver.java,291,y0 = y1;
+S151,BrentSolver.java,293,if (Math.abs(delta) > tolerance) {
+S152,BrentSolver.java,294,x1 = x1 + delta;
+S153,BrentSolver.java,295,} else if (dx > 0.0) {
+S154,BrentSolver.java,296,x1 = x1 + 0.5 * tolerance;
+S155,BrentSolver.java,297,} else if (dx <= 0.0) {
+S156,BrentSolver.java,298,x1 = x1 - 0.5 * tolerance;
+S157,BrentSolver.java,300,y1 = f.value(x1);
+S158,BrentSolver.java,301,if ((y1 > 0) == (y2 > 0)) {
+S159,BrentSolver.java,302,x2 = x0;
+S160,BrentSolver.java,303,y2 = y0;
+S161,BrentSolver.java,304,delta = x1 - x0;
+S162,BrentSolver.java,305,oldDelta = delta;
+S163,BrentSolver.java,307,i++;
+S164,ChiSquaredDistributionImpl.java,43,"this(df, new GammaDistributionImpl(df / 2.0, 2.0));"
+S165,ChiSquaredDistributionImpl.java,53,super();
+S166,ChiSquaredDistributionImpl.java,54,setGamma(g);
+S167,ChiSquaredDistributionImpl.java,55,setDegreesOfFreedom(df);
+S168,ChiSquaredDistributionImpl.java,63,getGamma().setAlpha(degreesOfFreedom / 2.0);
+S169,ChiSquaredDistributionImpl.java,71,return getGamma().getAlpha() * 2.0;
+S170,ChiSquaredDistributionImpl.java,81,return gamma.density(x);
+S171,ChiSquaredDistributionImpl.java,92,return getGamma().cumulativeProbability(x);
+S172,ChiSquaredDistributionImpl.java,111,if (p == 0) {
+S173,ChiSquaredDistributionImpl.java,114,if (p == 1) {
+S174,ChiSquaredDistributionImpl.java,117,return super.inverseCumulativeProbability(p);
+S175,ChiSquaredDistributionImpl.java,131,return Double.MIN_VALUE * getGamma().getBeta();
+S176,ChiSquaredDistributionImpl.java,150,if (p < .5) {
+S177,ChiSquaredDistributionImpl.java,152,ret = getDegreesOfFreedom();
+S178,ChiSquaredDistributionImpl.java,155,ret = Double.MAX_VALUE;
+S179,ChiSquaredDistributionImpl.java,158,return ret;
+S180,ChiSquaredDistributionImpl.java,176,if (p < .5) {
+S181,ChiSquaredDistributionImpl.java,178,ret = getDegreesOfFreedom() * .5;
+S182,ChiSquaredDistributionImpl.java,181,ret = getDegreesOfFreedom();
+S183,ChiSquaredDistributionImpl.java,184,return ret;
+S184,ChiSquaredDistributionImpl.java,194,this.gamma = g;
+S185,ChiSquaredDistributionImpl.java,203,return gamma;
+S186,ContinuedFraction.java,46,super();
+S187,ContinuedFraction.java,128,double p0 = 1.0;
+S188,ContinuedFraction.java,129,"double p1 = getA(0, x);"
+S189,ContinuedFraction.java,130,double q0 = 0.0;
+S190,ContinuedFraction.java,131,double q1 = 1.0;
+S191,ContinuedFraction.java,132,double c = p1 / q1;
+S192,ContinuedFraction.java,133,int n = 0;
+S193,ContinuedFraction.java,134,double relativeError = Double.MAX_VALUE;
+S194,ContinuedFraction.java,135,while (n < maxIterations && relativeError > epsilon) {
+S195,ContinuedFraction.java,136,++n;
+S196,ContinuedFraction.java,137,"double a = getA(n, x);"
+S197,ContinuedFraction.java,138,"double b = getB(n, x);"
+S198,ContinuedFraction.java,139,double p2 = a * p1 + b * p0;
+S199,ContinuedFraction.java,140,double q2 = a * q1 + b * q0;
+S200,ContinuedFraction.java,141,if (Double.isInfinite(p2) || Double.isInfinite(q2)) {
+S201,ContinuedFraction.java,156,double r = p2 / q2;
+S202,ContinuedFraction.java,157,relativeError = Math.abs(r / c - 1.0);
+S203,ContinuedFraction.java,160,c = p2 / q2;
+S204,ContinuedFraction.java,161,p0 = p1;
+S205,ContinuedFraction.java,162,p1 = p2;
+S206,ContinuedFraction.java,163,q0 = q1;
+S207,ContinuedFraction.java,164,q1 = q2;
+S208,ContinuedFraction.java,167,if (n >= maxIterations) {
+S209,ContinuedFraction.java,173,return c;
+S210,ConvergenceException.java,45,"super(pattern, arguments);"
+S211,ConvergingAlgorithmImpl.java,61,final double defaultAbsoluteAccuracy) {
+S212,ConvergingAlgorithmImpl.java,62,this.defaultAbsoluteAccuracy = defaultAbsoluteAccuracy;
+S213,ConvergingAlgorithmImpl.java,63,this.defaultRelativeAccuracy = 1.0e-14;
+S214,ConvergingAlgorithmImpl.java,64,this.absoluteAccuracy = defaultAbsoluteAccuracy;
+S215,ConvergingAlgorithmImpl.java,65,this.relativeAccuracy = defaultRelativeAccuracy;
+S216,ConvergingAlgorithmImpl.java,66,this.defaultMaximalIterationCount = defaultMaximalIterationCount;
+S217,ConvergingAlgorithmImpl.java,67,this.maximalIterationCount = defaultMaximalIterationCount;
+S218,ConvergingAlgorithmImpl.java,68,this.iterationCount = 0;
+S219,ConvergingAlgorithmImpl.java,73,return iterationCount;
+S220,ConvergingAlgorithmImpl.java,78,absoluteAccuracy = accuracy;
+S221,ConvergingAlgorithmImpl.java,83,return absoluteAccuracy;
+S222,ConvergingAlgorithmImpl.java,88,absoluteAccuracy = defaultAbsoluteAccuracy;
+S223,ConvergingAlgorithmImpl.java,93,maximalIterationCount = count;
+S224,ConvergingAlgorithmImpl.java,98,return maximalIterationCount;
+S225,ConvergingAlgorithmImpl.java,103,maximalIterationCount = defaultMaximalIterationCount;
+S226,ConvergingAlgorithmImpl.java,108,relativeAccuracy = accuracy;
+S227,ConvergingAlgorithmImpl.java,113,return relativeAccuracy;
+S228,ConvergingAlgorithmImpl.java,118,relativeAccuracy = defaultRelativeAccuracy;
+S229,Erf.java,51,"double ret = Gamma.regularizedGammaP(0.5, x * x, 1.0e-15, 10000);"
+S230,Erf.java,52,if (x < 0) {
+S231,Erf.java,53,ret = -ret;
+S232,Erf.java,55,return ret;
+S233,FDistributionImpl.java,51,super();
+S234,FDistributionImpl.java,52,setNumeratorDegreesOfFreedom(numeratorDegreesOfFreedom);
+S235,FDistributionImpl.java,53,setDenominatorDegreesOfFreedom(denominatorDegreesOfFreedom);
+S236,FDistributionImpl.java,73,if (x <= 0.0) {
+S237,FDistributionImpl.java,74,ret = 0.0;
+S238,FDistributionImpl.java,76,double n = getNumeratorDegreesOfFreedom();
+S239,FDistributionImpl.java,77,double m = getDenominatorDegreesOfFreedom();
+S240,FDistributionImpl.java,79,"ret = Beta.regularizedBeta((n * x) / (m + n * x),"
+S241,FDistributionImpl.java,83,return ret;
+S242,FDistributionImpl.java,102,if (p == 0) {
+S243,FDistributionImpl.java,103,return 0d;
+S244,FDistributionImpl.java,105,if (p == 1) {
+S245,FDistributionImpl.java,106,return Double.POSITIVE_INFINITY;
+S246,FDistributionImpl.java,108,return super.inverseCumulativeProbability(p);
+S247,FDistributionImpl.java,122,return 0.0;
+S248,FDistributionImpl.java,136,return Double.MAX_VALUE;
+S249,FDistributionImpl.java,149,double ret = 1.0;
+S250,FDistributionImpl.java,150,double d = getDenominatorDegreesOfFreedom();
+S251,FDistributionImpl.java,151,if (d > 2.0) {
+S252,FDistributionImpl.java,153,ret = d / (d - 2.0);
+S253,FDistributionImpl.java,155,return ret;
+S254,FDistributionImpl.java,165,if (degreesOfFreedom <= 0.0) {
+S255,FDistributionImpl.java,166,throw MathRuntimeException.createIllegalArgumentException(
+S256,FDistributionImpl.java,170,this.numeratorDegreesOfFreedom = degreesOfFreedom;
+S257,FDistributionImpl.java,178,return numeratorDegreesOfFreedom;
+S258,FDistributionImpl.java,188,if (degreesOfFreedom <= 0.0) {
+S259,FDistributionImpl.java,189,throw MathRuntimeException.createIllegalArgumentException(
+S260,FDistributionImpl.java,193,this.denominatorDegreesOfFreedom = degreesOfFreedom;
+S261,FDistributionImpl.java,201,return denominatorDegreesOfFreedom;
+S262,Gamma.java,41,private static final double[] lanczos =
+S263,Gamma.java,61,private static final double HALF_LOG_2_PI = 0.5 * Math.log(2.0 * Math.PI);
+S264,Gamma.java,91,if (Double.isNaN(x) || (x <= 0.0)) {
+S265,Gamma.java,94,double g = 607.0 / 128.0;
+S266,Gamma.java,96,double sum = 0.0;
+S267,Gamma.java,97,for (int i = lanczos.length - 1; i > 0; --i) {
+S268,Gamma.java,98,sum = sum + (lanczos[i] / (x + i));
+S269,Gamma.java,100,sum = sum + lanczos[0];
+S270,Gamma.java,102,double tmp = x + g + .5;
+S271,Gamma.java,103,ret = ((x + .5) * Math.log(tmp)) - tmp +
+S272,Gamma.java,107,return ret;
+S273,Gamma.java,121,"return regularizedGammaP(a, x, DEFAULT_EPSILON, Integer.MAX_VALUE);"
+S274,Gamma.java,159,if (Double.isNaN(a) || Double.isNaN(x) || (a <= 0.0) || (x < 0.0)) {
+S275,Gamma.java,161,} else if (x == 0.0) {
+S276,Gamma.java,162,ret = 0.0;
+S277,Gamma.java,163,} else if (a >= 1.0 && x > a) {
+S278,Gamma.java,166,"ret = 1.0 - regularizedGammaQ(a, x, epsilon, maxIterations);"
+S279,Gamma.java,169,double n = 0.0; // current element index
+S280,Gamma.java,170,double an = 1.0 / a; // n-th element in the series
+S281,Gamma.java,171,double sum = an; // partial sum
+S282,Gamma.java,172,while (Math.abs(an) > epsilon && n < maxIterations) {
+S283,Gamma.java,174,n = n + 1.0;
+S284,Gamma.java,175,an = an * (x / (a + n));
+S285,Gamma.java,178,sum = sum + an;
+S286,Gamma.java,180,if (n >= maxIterations) {
+S287,Gamma.java,181,throw new MaxIterationsExceededException(maxIterations);
+S288,Gamma.java,183,ret = Math.exp(-x + (a * Math.log(x)) - logGamma(a)) * sum;
+S289,Gamma.java,187,return ret;
+S290,Gamma.java,234,if (Double.isNaN(a) || Double.isNaN(x) || (a <= 0.0) || (x < 0.0)) {
+S291,Gamma.java,236,} else if (x == 0.0) {
+S292,Gamma.java,238,} else if (x < a || a < 1.0) {
+S293,Gamma.java,244,ContinuedFraction cf = new ContinuedFraction() {
+S294,Gamma.java,248,return ((2.0 * n) + 1.0) - a + x;
+S295,Gamma.java,253,return n * (a - n);
+S296,Gamma.java,257,"ret = 1.0 / cf.evaluate(x, epsilon, maxIterations);"
+S297,Gamma.java,258,ret = Math.exp(-x + (a * Math.log(x)) - logGamma(a)) * ret;
+S298,Gamma.java,261,return ret;
+S299,GammaDistributionImpl.java,48,super();
+S300,GammaDistributionImpl.java,49,setAlpha(alpha);
+S301,GammaDistributionImpl.java,50,setBeta(beta);
+S302,GammaDistributionImpl.java,73,if (x <= 0.0) {
+S303,GammaDistributionImpl.java,74,ret = 0.0;
+S304,GammaDistributionImpl.java,76,"ret = Gamma.regularizedGammaP(getAlpha(), x / getBeta());"
+S305,GammaDistributionImpl.java,79,return ret;
+S306,GammaDistributionImpl.java,98,if (p == 0) {
+S307,GammaDistributionImpl.java,99,return 0d;
+S308,GammaDistributionImpl.java,101,if (p == 1) {
+S309,GammaDistributionImpl.java,102,return Double.POSITIVE_INFINITY;
+S310,GammaDistributionImpl.java,104,return super.inverseCumulativeProbability(p);
+S311,GammaDistributionImpl.java,113,if (alpha <= 0.0) {
+S312,GammaDistributionImpl.java,114,throw MathRuntimeException.createIllegalArgumentException(
+S313,GammaDistributionImpl.java,118,this.alpha = alpha;
+S314,GammaDistributionImpl.java,126,return alpha;
+S315,GammaDistributionImpl.java,135,if (beta <= 0.0) {
+S316,GammaDistributionImpl.java,136,throw MathRuntimeException.createIllegalArgumentException(
+S317,GammaDistributionImpl.java,140,this.beta = beta;
+S318,GammaDistributionImpl.java,148,return beta;
+S319,GammaDistributionImpl.java,158,if (x < 0) return 0;
+S320,GammaDistributionImpl.java,159,"return Math.pow(x / getBeta(), getAlpha() - 1) / getBeta() * Math.exp(-x / getBeta()) / Math.exp(Gamma.logGamma(getAlpha()));"
+S321,GammaDistributionImpl.java,174,return Double.MIN_VALUE;
+S322,GammaDistributionImpl.java,194,if (p < .5) {
+S323,GammaDistributionImpl.java,196,ret = getAlpha() * getBeta();
+S324,GammaDistributionImpl.java,199,ret = Double.MAX_VALUE;
+S325,GammaDistributionImpl.java,202,return ret;
+S326,GammaDistributionImpl.java,220,if (p < .5) {
+S327,GammaDistributionImpl.java,222,ret = getAlpha() * getBeta() * .5;
+S328,GammaDistributionImpl.java,225,ret = getAlpha() * getBeta();
+S329,GammaDistributionImpl.java,228,return ret;
+S330,MathException.java,60,ResourceBundle bundle =
+S331,MathException.java,67,} catch (MissingResourceException mre) {
+S332,MathException.java,73,return s;
+S333,MathException.java,85,"return (pattern == null) ? """" : new MessageFormat(translate(pattern, locale), locale).format(arguments);"
+S334,MathException.java,106,"super(buildMessage(Locale.US, pattern, arguments));"
+S335,MathException.java,107,this.pattern   = pattern;
+S336,MathException.java,108,this.arguments = (arguments == null) ? new Object[0] : arguments.clone();
+S337,MathException.java,119,super(rootCause);
+S338,MathException.java,120,this.pattern   = getMessage();
+S339,MathException.java,121,this.arguments = new Object[0];
+S340,MathException.java,166,"return buildMessage(locale, pattern, arguments);"
+S341,MathException.java,172,return getMessage(Locale.getDefault());
+S342,MathException.java,190,synchronized (out) {
+S343,MathException.java,191,"PrintWriter pw = new PrintWriter(out, false);"
+S344,MathException.java,192,printStackTrace(pw);
+S345,MathException.java,194,pw.flush();
+S346,MathRuntimeException.java,61,ResourceBundle bundle =
+S347,MathRuntimeException.java,68,} catch (MissingResourceException mre) {
+S348,MathRuntimeException.java,74,return s;
+S349,MathRuntimeException.java,87,"return (pattern == null) ? """" : new MessageFormat(translate(pattern, locale), locale).format(arguments);"
+S350,MathRuntimeException.java,282,"return new IllegalArgumentException(buildMessage(Locale.US, pattern, arguments)) {"
+S351,MaxIterationsExceededException.java,43,"super(""Maximal number of iterations ({0}) exceeded"", maxIterations);"
+S352,MaxIterationsExceededException.java,44,this.maxIterations = maxIterations;
+S353,NewtonSolver.java,46,"super(f, 100, 1E-6);"
+S354,NewtonSolver.java,53,"super(100, 1E-6);"
+S355,NewtonSolver.java,61,"return solve(f, min, max);"
+S356,NewtonSolver.java,86,"return solve(f, min, max, UnivariateRealSolverUtils.midpoint(min, max));"
+S357,NewtonSolver.java,109,final UnivariateRealFunction derivative =
+S358,NewtonSolver.java,111,clearResult();
+S359,NewtonSolver.java,112,"verifySequence(min, startValue, max);"
+S360,NewtonSolver.java,114,double x0 = startValue;
+S361,NewtonSolver.java,117,int i = 0;
+S362,NewtonSolver.java,118,while (i < maximalIterationCount) {
+S363,NewtonSolver.java,120,x1 = x0 - (f.value(x0) / derivative.value(x0));
+S364,NewtonSolver.java,121,if (Math.abs(x1 - x0) <= absoluteAccuracy) {
+S365,NewtonSolver.java,122,"setResult(x1, i);"
+S366,NewtonSolver.java,123,return x1;
+S367,NewtonSolver.java,126,x0 = x1;
+S368,NewtonSolver.java,127,++i;
+S369,NormalDistributionImpl.java,40,private static final double SQRT2PI = Math.sqrt(2 * Math.PI);
+S370,NormalDistributionImpl.java,43,private double mean = 0;
+S371,NormalDistributionImpl.java,46,private double standardDeviation = 1;
+S372,NormalDistributionImpl.java,54,super();
+S373,NormalDistributionImpl.java,55,setMean(mean);
+S374,NormalDistributionImpl.java,56,setStandardDeviation(sd);
+S375,NormalDistributionImpl.java,72,return mean;
+S376,NormalDistributionImpl.java,80,this.mean = mean;
+S377,NormalDistributionImpl.java,88,return standardDeviation;
+S378,NormalDistributionImpl.java,97,if (sd <= 0.0) {
+S379,NormalDistributionImpl.java,98,throw MathRuntimeException.createIllegalArgumentException(
+S380,NormalDistributionImpl.java,102,standardDeviation = sd;
+S381,NormalDistributionImpl.java,112,double x0 = x - getMean();
+S382,NormalDistributionImpl.java,113,return Math.exp(-x0 * x0 / (2 * getStandardDeviation() * getStandardDeviation())) / (getStandardDeviation() * SQRT2PI);
+S383,NormalDistributionImpl.java,126,return 0.5 * (1.0 + Erf.erf((x - mean) /
+S384,NormalDistributionImpl.java,128,} catch (MaxIterationsExceededException ex) {
+S385,NormalDistributionImpl.java,129,if (x < (mean - 20 * standardDeviation)) { // JDK 1.5 blows at 38
+S386,NormalDistributionImpl.java,130,return 0.0d;
+S387,NormalDistributionImpl.java,131,} else if (x > (mean + 20 * standardDeviation)) {
+S388,NormalDistributionImpl.java,132,return 1.0d;
+S389,NormalDistributionImpl.java,156,if (p == 0) {
+S390,NormalDistributionImpl.java,157,return Double.NEGATIVE_INFINITY;
+S391,NormalDistributionImpl.java,159,if (p == 1) {
+S392,NormalDistributionImpl.java,160,return Double.POSITIVE_INFINITY;
+S393,NormalDistributionImpl.java,162,return super.inverseCumulativeProbability(p);
+S394,NormalDistributionImpl.java,178,if (p < .5) {
+S395,NormalDistributionImpl.java,181,ret = getMean();
+S396,NormalDistributionImpl.java,184,return ret;
+S397,NormalDistributionImpl.java,200,if (p < .5) {
+S398,NormalDistributionImpl.java,203,ret = Double.MAX_VALUE;
+S399,NormalDistributionImpl.java,206,return ret;
+S400,NormalDistributionImpl.java,221,if (p < .5) {
+S401,NormalDistributionImpl.java,223,} else if (p > .5) {
+S402,NormalDistributionImpl.java,224,ret = getMean() + getStandardDeviation();
+S403,NormalDistributionImpl.java,229,return ret;
+S404,SecantSolver.java,54,"super(f, 100, 1E-6);"
+S405,SecantSolver.java,61,"super(100, 1E-6);"
+S406,SecantSolver.java,68,"return solve(f, min, max);"
+S407,SecantSolver.java,114,clearResult();
+S408,SecantSolver.java,115,"verifyInterval(min, max);"
+S409,SecantSolver.java,122,double x0 = min;
+S410,SecantSolver.java,123,double x1 = max;
+S411,SecantSolver.java,124,double y0 = f.value(x0);
+S412,SecantSolver.java,125,double y1 = f.value(x1);
+S413,SecantSolver.java,128,if (y0 * y1 >= 0) {
+S414,SecantSolver.java,135,double x2 = x0;
+S415,SecantSolver.java,136,double y2 = y0;
+S416,SecantSolver.java,137,double oldDelta = x2 - x1;
+S417,SecantSolver.java,138,int i = 0;
+S418,SecantSolver.java,139,while (i < maximalIterationCount) {
+S419,SecantSolver.java,140,if (Math.abs(y2) < Math.abs(y1)) {
+S420,SecantSolver.java,141,x0 = x1;
+S421,SecantSolver.java,142,x1 = x2;
+S422,SecantSolver.java,143,x2 = x0;
+S423,SecantSolver.java,144,y0 = y1;
+S424,SecantSolver.java,145,y1 = y2;
+S425,SecantSolver.java,146,y2 = y0;
+S426,SecantSolver.java,148,if (Math.abs(y1) <= functionValueAccuracy) {
+S427,SecantSolver.java,149,"setResult(x1, i);"
+S428,SecantSolver.java,150,return result;
+S429,SecantSolver.java,152,if (Math.abs(oldDelta) <
+S430,SecantSolver.java,154,"setResult(x1, i);"
+S431,SecantSolver.java,155,return result;
+S432,SecantSolver.java,158,if (Math.abs(y1) > Math.abs(y0)) {
+S433,SecantSolver.java,160,delta = 0.5 * oldDelta;
+S434,SecantSolver.java,162,delta = (x0 - x1) / (1 - y0 / y1);
+S435,SecantSolver.java,163,if (delta / oldDelta > 1) {
+S436,SecantSolver.java,166,delta = 0.5 * oldDelta;
+S437,SecantSolver.java,169,x0 = x1;
+S438,SecantSolver.java,170,y0 = y1;
+S439,SecantSolver.java,171,x1 = x1 + delta;
+S440,SecantSolver.java,172,y1 = f.value(x1);
+S441,SecantSolver.java,173,if ((y1 > 0) == (y2 > 0)) {
+S442,SecantSolver.java,175,x2 = x0;
+S443,SecantSolver.java,176,y2 = y0;
+S444,SecantSolver.java,178,oldDelta = x2 - x1;
+S445,SecantSolver.java,179,i++;
+S446,SimpleRegression.java,65,private double sumX = 0d;
+S447,SimpleRegression.java,68,private double sumXX = 0d;
+S448,SimpleRegression.java,71,private double sumY = 0d;
+S449,SimpleRegression.java,74,private double sumYY = 0d;
+S450,SimpleRegression.java,77,private double sumXY = 0d;
+S451,SimpleRegression.java,80,private long n = 0;
+S452,SimpleRegression.java,83,private double xbar = 0;
+S453,SimpleRegression.java,86,private double ybar = 0;
+S454,SimpleRegression.java,94,this(new TDistributionImpl(1.0));
+S455,SimpleRegression.java,104,super();
+S456,SimpleRegression.java,105,setDistribution(t);
+S457,SimpleRegression.java,122,if (n == 0) {
+S458,SimpleRegression.java,123,xbar = x;
+S459,SimpleRegression.java,124,ybar = y;
+S460,SimpleRegression.java,126,double dx = x - xbar;
+S461,SimpleRegression.java,127,double dy = y - ybar;
+S462,SimpleRegression.java,128,sumXX += dx * dx * (double) n / (n + 1d);
+S463,SimpleRegression.java,129,sumYY += dy * dy * (double) n / (n + 1d);
+S464,SimpleRegression.java,130,sumXY += dx * dy * (double) n / (n + 1d);
+S465,SimpleRegression.java,131,xbar += dx / (n + 1.0);
+S466,SimpleRegression.java,132,ybar += dy / (n + 1.0);
+S467,SimpleRegression.java,134,sumX += x;
+S468,SimpleRegression.java,135,sumY += y;
+S469,SimpleRegression.java,136,n++;
+S470,SimpleRegression.java,138,if (n > 2) {
+S471,SimpleRegression.java,139,distribution.setDegreesOfFreedom(n - 2);
+S472,SimpleRegression.java,158,if (n > 0) {
+S473,SimpleRegression.java,159,double dx = x - xbar;
+S474,SimpleRegression.java,160,double dy = y - ybar;
+S475,SimpleRegression.java,161,sumXX -= dx * dx * (double) n / (n - 1d);
+S476,SimpleRegression.java,162,sumYY -= dy * dy * (double) n / (n - 1d);
+S477,SimpleRegression.java,163,sumXY -= dx * dy * (double) n / (n - 1d);
+S478,SimpleRegression.java,164,xbar -= dx / (n - 1.0);
+S479,SimpleRegression.java,165,ybar -= dy / (n - 1.0);
+S480,SimpleRegression.java,166,sumX -= x;
+S481,SimpleRegression.java,167,sumY -= y;
+S482,SimpleRegression.java,168,n--;
+S483,SimpleRegression.java,170,if (n > 2) {
+S484,SimpleRegression.java,171,distribution.setDegreesOfFreedom(n - 2);
+S485,SimpleRegression.java,193,for (int i = 0; i < data.length; i++) {
+S486,SimpleRegression.java,194,"addData(data[i][0], data[i][1]);"
+S487,SimpleRegression.java,213,for (int i = 0; i < data.length && n > 0; i++) {
+S488,SimpleRegression.java,214,"removeData(data[i][0], data[i][1]);"
+S489,SimpleRegression.java,222,sumX = 0d;
+S490,SimpleRegression.java,223,sumXX = 0d;
+S491,SimpleRegression.java,224,sumY = 0d;
+S492,SimpleRegression.java,225,sumYY = 0d;
+S493,SimpleRegression.java,226,sumXY = 0d;
+S494,SimpleRegression.java,227,n = 0;
+S495,SimpleRegression.java,236,return n;
+S496,SimpleRegression.java,257,double b1 = getSlope();
+S497,SimpleRegression.java,258,return getIntercept(b1) + b1 * x;
+S498,SimpleRegression.java,278,return getIntercept(getSlope());
+S499,SimpleRegression.java,298,if (n < 2) {
+S500,SimpleRegression.java,299,return Double.NaN; //not enough data
+S501,SimpleRegression.java,301,if (Math.abs(sumXX) < 10 * Double.MIN_VALUE) {
+S502,SimpleRegression.java,302,return Double.NaN; //not enough variation in x
+S503,SimpleRegression.java,304,return sumXY / sumXX;
+S504,SimpleRegression.java,337,"return Math.max(0d, sumYY - sumXY * sumXY / sumXX);"
+S505,SimpleRegression.java,351,if (n < 2) {
+S506,SimpleRegression.java,352,return Double.NaN;
+S507,SimpleRegression.java,354,return sumYY;
+S508,SimpleRegression.java,397,return getRegressionSumSquares(getSlope());
+S509,SimpleRegression.java,411,if (n < 3) {
+S510,SimpleRegression.java,412,return Double.NaN;
+S511,SimpleRegression.java,414,return getSumSquaredErrors() / (n - 2);
+S512,SimpleRegression.java,432,double b1 = getSlope();
+S513,SimpleRegression.java,433,double result = Math.sqrt(getRSquare());
+S514,SimpleRegression.java,434,if (b1 < 0) {
+S515,SimpleRegression.java,435,result = -result;
+S516,SimpleRegression.java,437,return result;
+S517,SimpleRegression.java,455,double ssto = getTotalSumSquares();
+S518,SimpleRegression.java,456,return (ssto - getSumSquaredErrors()) / ssto;
+S519,SimpleRegression.java,471,return Math.sqrt(
+S520,SimpleRegression.java,487,return Math.sqrt(getMeanSquareError() / sumXX);
+S521,SimpleRegression.java,513,return getSlopeConfidenceInterval(0.05d);
+S522,SimpleRegression.java,549,if (alpha >= 1 || alpha <= 0) {
+S523,SimpleRegression.java,550,throw MathRuntimeException.createIllegalArgumentException(
+S524,SimpleRegression.java,554,return getSlopeStdErr() *
+S525,SimpleRegression.java,580,return 2d * (1.0 - distribution.cumulativeProbability(
+S526,SimpleRegression.java,595,return (sumY - slope * sumX) / n;
+S527,SimpleRegression.java,605,return slope * slope * sumXX;
+S528,SimpleRegression.java,614,distribution = value;
+S529,SimpleRegression.java,617,if (n > 2) {
+S530,TDistributionImpl.java,46,super();
+S531,TDistributionImpl.java,47,setDegreesOfFreedom(degreesOfFreedom);
+S532,TDistributionImpl.java,55,if (degreesOfFreedom <= 0.0) {
+S533,TDistributionImpl.java,56,throw MathRuntimeException.createIllegalArgumentException(
+S534,TDistributionImpl.java,60,this.degreesOfFreedom = degreesOfFreedom;
+S535,TDistributionImpl.java,68,return degreesOfFreedom;
+S536,TDistributionImpl.java,80,if (x == 0.0) {
+S537,TDistributionImpl.java,81,ret = 0.5;
+S538,TDistributionImpl.java,83,double t =
+S539,TDistributionImpl.java,88,if (x < 0.0) {
+S540,TDistributionImpl.java,89,ret = 0.5 * t;
+S541,TDistributionImpl.java,91,ret = 1.0 - 0.5 * t;
+S542,TDistributionImpl.java,95,return ret;
+S543,TDistributionImpl.java,115,if (p == 0) {
+S544,TDistributionImpl.java,116,return Double.NEGATIVE_INFINITY;
+S545,TDistributionImpl.java,118,if (p == 1) {
+S546,TDistributionImpl.java,119,return Double.POSITIVE_INFINITY;
+S547,TDistributionImpl.java,121,return super.inverseCumulativeProbability(p);
+S548,TDistributionImpl.java,135,return -Double.MAX_VALUE;
+S549,TDistributionImpl.java,149,return Double.MAX_VALUE;
+S550,TDistributionImpl.java,162,return 0.0;
+S551,UnivariateRealSolverFactory.java,44,protected UnivariateRealSolverFactory() {
+S552,UnivariateRealSolverFactory.java,52,return new UnivariateRealSolverFactoryImpl();
+S553,UnivariateRealSolverFactoryImpl.java,32,public UnivariateRealSolverFactoryImpl() {
+S554,UnivariateRealSolverFactoryImpl.java,38,return newBrentSolver();
+S555,UnivariateRealSolverFactoryImpl.java,50,return new BrentSolver();
+S556,UnivariateRealSolverImpl.java,41,protected boolean resultComputed = false;
+S557,UnivariateRealSolverImpl.java,74,"super(defaultMaximalIterationCount, defaultAbsoluteAccuracy);"
+S558,UnivariateRealSolverImpl.java,75,if (f == null) {
+S559,UnivariateRealSolverImpl.java,78,this.f = f;
+S560,UnivariateRealSolverImpl.java,79,this.defaultFunctionValueAccuracy = 1.0e-15;
+S561,UnivariateRealSolverImpl.java,80,this.functionValueAccuracy = defaultFunctionValueAccuracy;
+S562,UnivariateRealSolverImpl.java,93,"super(defaultMaximalIterationCount, defaultAbsoluteAccuracy);"
+S563,UnivariateRealSolverImpl.java,94,this.defaultFunctionValueAccuracy = 1.0e-15;
+S564,UnivariateRealSolverImpl.java,95,this.functionValueAccuracy = defaultFunctionValueAccuracy;
+S565,UnivariateRealSolverImpl.java,102,if (!resultComputed) {
+S566,UnivariateRealSolverImpl.java,109,checkResultComputed();
+S567,UnivariateRealSolverImpl.java,110,return result;
+S568,UnivariateRealSolverImpl.java,121,functionValueAccuracy = accuracy;
+S569,UnivariateRealSolverImpl.java,126,return functionValueAccuracy;
+S570,UnivariateRealSolverImpl.java,131,functionValueAccuracy = defaultFunctionValueAccuracy;
+S571,UnivariateRealSolverImpl.java,141,this.result         = result;
+S572,UnivariateRealSolverImpl.java,142,this.iterationCount = iterationCount;
+S573,UnivariateRealSolverImpl.java,143,this.resultComputed = true;
+S574,UnivariateRealSolverImpl.java,165,this.iterationCount = 0;
+S575,UnivariateRealSolverImpl.java,166,this.resultComputed = false;
+S576,UnivariateRealSolverImpl.java,196,return (start < mid) && (mid < end);
+S577,UnivariateRealSolverImpl.java,208,if (lower >= upper) {
+S578,UnivariateRealSolverImpl.java,209,throw MathRuntimeException.createIllegalArgumentException(
+S579,UnivariateRealSolverImpl.java,225,"if (!isSequence(lower, initial, upper)) {"
+S580,UnivariateRealSolverImpl.java,226,throw MathRuntimeException.createIllegalArgumentException(
+S581,UnivariateRealSolverUtils.java,53,setup(f);
+S582,UnivariateRealSolverUtils.java,54,"return LazyHolder.FACTORY.newDefaultSolver().solve(f, x0, x1);"
+S583,UnivariateRealSolverUtils.java,77,setup(f);
+S584,UnivariateRealSolverUtils.java,78,UnivariateRealSolver solver = LazyHolder.FACTORY.newDefaultSolver();
+S585,UnivariateRealSolverUtils.java,79,solver.setAbsoluteAccuracy(absoluteAccuracy);
+S586,UnivariateRealSolverUtils.java,80,"return solver.solve(f, x0, x1);"
+S587,UnivariateRealSolverUtils.java,127,"return bracket( function, initial, lowerBound, upperBound,"
+S588,UnivariateRealSolverUtils.java,170,if (function == null) {
+S589,UnivariateRealSolverUtils.java,171,"throw MathRuntimeException.createIllegalArgumentException(""function is null"");"
+S590,UnivariateRealSolverUtils.java,173,if (maximumIterations <= 0)  {
+S591,UnivariateRealSolverUtils.java,174,throw MathRuntimeException.createIllegalArgumentException(
+S592,UnivariateRealSolverUtils.java,177,if (initial < lowerBound || initial > upperBound || lowerBound >= upperBound) {
+S593,UnivariateRealSolverUtils.java,178,throw MathRuntimeException.createIllegalArgumentException(
+S594,UnivariateRealSolverUtils.java,182,double a = initial;
+S595,UnivariateRealSolverUtils.java,183,double b = initial;
+S596,UnivariateRealSolverUtils.java,186,int numIterations = 0 ;
+S597,UnivariateRealSolverUtils.java,189,"a = Math.max(a - 1.0, lowerBound);"
+S598,UnivariateRealSolverUtils.java,190,"b = Math.min(b + 1.0, upperBound);"
+S599,UnivariateRealSolverUtils.java,191,fa = function.value(a);
+S600,UnivariateRealSolverUtils.java,193,fb = function.value(b);
+S601,UnivariateRealSolverUtils.java,194,numIterations++ ;
+S602,UnivariateRealSolverUtils.java,195,} while ((fa * fb > 0.0) && (numIterations < maximumIterations) &&
+S603,UnivariateRealSolverUtils.java,198,if (fa * fb >= 0.0 ) {
+S604,UnivariateRealSolverUtils.java,199,throw new ConvergenceException(
+S605,UnivariateRealSolverUtils.java,207,"return new double[]{a, b};"
+S606,UnivariateRealSolverUtils.java,218,return (a + b) * .5;
+S607,UnivariateRealSolverUtils.java,227,if (f == null) {
+S608,UnivariateRealSolverUtils.java,228,"throw MathRuntimeException.createIllegalArgumentException(""function is null"");"
+S609,UnivariateRealSolverUtils.java,235,private static class LazyHolder {
+S610,UnivariateRealSolverUtils.java,237,private static final UnivariateRealSolverFactory FACTORY =

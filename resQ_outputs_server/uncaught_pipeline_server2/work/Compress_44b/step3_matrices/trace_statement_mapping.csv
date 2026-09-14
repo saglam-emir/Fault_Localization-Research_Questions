@@ -1,0 +1,1258 @@
+statement_id,file,line,code
+S1,AbstractLZ77CompressorInputStream.java,106,private int size = 0;
+S2,AbstractLZ77CompressorInputStream.java,109,private final byte[] oneByte = new byte[1];
+S3,AbstractLZ77CompressorInputStream.java,114,protected final ByteUtils.ByteSupplier supplier = new ByteUtils.ByteSupplier() {
+S4,AbstractLZ77CompressorInputStream.java,117,return readOneByte();
+S5,AbstractLZ77CompressorInputStream.java,131,"public AbstractLZ77CompressorInputStream(final InputStream is, int windowSize) throws IOException {"
+S6,AbstractLZ77CompressorInputStream.java,132,this.in = is;
+S7,AbstractLZ77CompressorInputStream.java,133,this.windowSize = windowSize;
+S8,AbstractLZ77CompressorInputStream.java,134,buf = new byte[3 * windowSize];
+S9,AbstractLZ77CompressorInputStream.java,135,writeIndex = readIndex = 0;
+S10,AbstractLZ77CompressorInputStream.java,136,bytesRemaining = 0;
+S11,AbstractLZ77CompressorInputStream.java,148,in.close();
+S12,AbstractLZ77CompressorInputStream.java,154,return writeIndex - readIndex;
+S13,AbstractLZ77CompressorInputStream.java,178,if (writeIndex != 0) {
+S14,AbstractLZ77CompressorInputStream.java,182,"int len = Math.min(windowSize, data.length);"
+S15,AbstractLZ77CompressorInputStream.java,184,"System.arraycopy(data, data.length - len, buf, 0, len);"
+S16,AbstractLZ77CompressorInputStream.java,185,writeIndex += len;
+S17,AbstractLZ77CompressorInputStream.java,186,readIndex += len;
+S18,AbstractLZ77CompressorInputStream.java,195,bytesRemaining = length;
+S19,AbstractLZ77CompressorInputStream.java,203,return bytesRemaining > 0;
+S20,AbstractLZ77CompressorInputStream.java,218,final int avail = available();
+S21,AbstractLZ77CompressorInputStream.java,219,if (len > avail) {
+S22,AbstractLZ77CompressorInputStream.java,220,tryToReadLiteral(len - avail);
+S23,AbstractLZ77CompressorInputStream.java,222,"return readFromBuffer(b, off, len);"
+S24,AbstractLZ77CompressorInputStream.java,227,"final int reallyTryToRead = Math.min((int) Math.min(bytesToRead, bytesRemaining),"
+S25,AbstractLZ77CompressorInputStream.java,229,final int bytesRead = reallyTryToRead > 0
+S26,AbstractLZ77CompressorInputStream.java,232,count(bytesRead);
+S27,AbstractLZ77CompressorInputStream.java,233,if (reallyTryToRead != bytesRead) {
+S28,AbstractLZ77CompressorInputStream.java,236,writeIndex += reallyTryToRead;
+S29,AbstractLZ77CompressorInputStream.java,237,bytesRemaining -= reallyTryToRead;
+S30,AbstractLZ77CompressorInputStream.java,241,"final int readable = Math.min(len, available());"
+S31,AbstractLZ77CompressorInputStream.java,242,if (readable > 0) {
+S32,AbstractLZ77CompressorInputStream.java,243,"System.arraycopy(buf, readIndex, b, off, readable);"
+S33,AbstractLZ77CompressorInputStream.java,244,readIndex += readable;
+S34,AbstractLZ77CompressorInputStream.java,245,if (readIndex > 2 * windowSize) {
+S35,AbstractLZ77CompressorInputStream.java,249,size += readable;
+S36,AbstractLZ77CompressorInputStream.java,250,return readable;
+S37,AbstractLZ77CompressorInputStream.java,265,backReferenceOffset = offset;
+S38,AbstractLZ77CompressorInputStream.java,266,bytesRemaining = length;
+S39,AbstractLZ77CompressorInputStream.java,278,final int avail = available();
+S40,AbstractLZ77CompressorInputStream.java,279,if (len > avail) {
+S41,AbstractLZ77CompressorInputStream.java,280,tryToCopy(len - avail);
+S42,AbstractLZ77CompressorInputStream.java,282,"return readFromBuffer(b, off, len);"
+S43,AbstractLZ77CompressorInputStream.java,288,"int copy = Math.min((int) Math.min(bytesToCopy, bytesRemaining),"
+S44,AbstractLZ77CompressorInputStream.java,290,if (copy == 0) {
+S45,AbstractLZ77CompressorInputStream.java,292,} else if (backReferenceOffset == 1) { // pretty common special case
+S46,AbstractLZ77CompressorInputStream.java,293,final byte last = buf[writeIndex - 1];
+S47,AbstractLZ77CompressorInputStream.java,294,"Arrays.fill(buf, writeIndex, writeIndex + copy, last);"
+S48,AbstractLZ77CompressorInputStream.java,295,writeIndex += copy;
+S49,AbstractLZ77CompressorInputStream.java,296,} else if (copy < backReferenceOffset) {
+S50,AbstractLZ77CompressorInputStream.java,297,"System.arraycopy(buf, writeIndex - backReferenceOffset, buf, writeIndex, copy);"
+S51,AbstractLZ77CompressorInputStream.java,298,writeIndex += copy;
+S52,AbstractLZ77CompressorInputStream.java,303,final int fullRots = copy / backReferenceOffset;
+S53,AbstractLZ77CompressorInputStream.java,304,for (int i = 0; i < fullRots; i++) {
+S54,AbstractLZ77CompressorInputStream.java,305,"System.arraycopy(buf, writeIndex - backReferenceOffset, buf, writeIndex, backReferenceOffset);"
+S55,AbstractLZ77CompressorInputStream.java,306,writeIndex += backReferenceOffset;
+S56,AbstractLZ77CompressorInputStream.java,309,final int pad = copy - (backReferenceOffset * fullRots);
+S57,AbstractLZ77CompressorInputStream.java,310,if (pad > 0) {
+S58,AbstractLZ77CompressorInputStream.java,311,"System.arraycopy(buf, writeIndex - backReferenceOffset, buf, writeIndex, pad);"
+S59,AbstractLZ77CompressorInputStream.java,312,writeIndex += pad;
+S60,AbstractLZ77CompressorInputStream.java,315,bytesRemaining -= copy;
+S61,AbstractLZ77CompressorInputStream.java,325,final int b = in.read();
+S62,AbstractLZ77CompressorInputStream.java,326,if (b != -1) {
+S63,AbstractLZ77CompressorInputStream.java,327,count(1);
+S64,AbstractLZ77CompressorInputStream.java,328,return b & 0xFF;
+S65,AbstractLZ77CompressorInputStream.java,330,return -1;
+S66,ArchiveStreamFactory.java,97,private static final ArchiveStreamFactory SINGLETON = new ArchiveStreamFactory();
+S67,ArchiveStreamFactory.java,268,this(null);
+S68,ArchiveStreamFactory.java,279,super();
+S69,ArchiveStreamFactory.java,280,this.encoding = encoding;
+S70,ArchiveStreamFactory.java,282,this.entryEncoding = encoding;
+S71,BZip2CompressorInputStream.java,62,private final CRC crc = new CRC();
+S72,BZip2CompressorInputStream.java,78,private int currentState = START_BLOCK_STATE;
+S73,BZip2CompressorInputStream.java,129,"public BZip2CompressorInputStream(final InputStream in, final boolean decompressConcatenated) throws IOException {"
+S74,BZip2CompressorInputStream.java,130,"this.bin = new BitInputStream(in == System.in ? new CloseShieldFilterInputStream(in) : in,"
+S75,BZip2CompressorInputStream.java,843,final boolean[] inUse = new boolean[256]; // 256 byte
+S76,BZip2CompressorInputStream.java,845,final byte[] seqToUnseq = new byte[256]; // 256 byte
+S77,BZip2CompressorInputStream.java,846,final byte[] selector = new byte[MAX_SELECTORS]; // 18002 byte
+S78,BZip2CompressorInputStream.java,847,final byte[] selectorMtf = new byte[MAX_SELECTORS]; // 18002 byte
+S79,BZip2CompressorInputStream.java,853,final int[] unzftab = new int[256]; // 1024 byte
+S80,BZip2CompressorInputStream.java,855,final int[][] limit = new int[N_GROUPS][MAX_ALPHA_SIZE]; // 6192 byte
+S81,BZip2CompressorInputStream.java,856,final int[][] base = new int[N_GROUPS][MAX_ALPHA_SIZE]; // 6192 byte
+S82,BZip2CompressorInputStream.java,857,final int[][] perm = new int[N_GROUPS][MAX_ALPHA_SIZE]; // 6192 byte
+S83,BZip2CompressorInputStream.java,858,final int[] minLens = new int[N_GROUPS]; // 24 byte
+S84,BZip2CompressorInputStream.java,860,final int[] cftab = new int[257]; // 1028 byte
+S85,BZip2CompressorInputStream.java,861,final char[] getAndMoveToFrontDecode_yy = new char[256]; // 512 byte
+S86,BZip2CompressorInputStream.java,862,final char[][] temp_charArray2d = new char[N_GROUPS][MAX_ALPHA_SIZE]; // 3096
+S87,BZip2CompressorInputStream.java,864,final byte[] recvDecodingTables_pos = new byte[N_GROUPS]; // 6 byte
+S88,BZip2CompressorInputStream.java,875,Data(final int blockSize100k) {
+S89,BZip2CompressorInputStream.java,876,this.ll8 = new byte[blockSize100k * BZip2Constants.BASEBLOCKSIZE];
+S90,BZip2CompressorInputStream.java,887,int[] ttShadow = this.tt;
+S91,BZip2CompressorInputStream.java,893,if ((ttShadow == null) || (ttShadow.length < length)) {
+S92,BZip2CompressorInputStream.java,894,this.tt = ttShadow = new int[length];
+S93,BZip2CompressorInputStream.java,897,return ttShadow;
+S94,BitInputStream.java,33,private static final long[] MASKS = new long[MAXIMUM_CACHE_SIZE + 1];
+S95,BitInputStream.java,36,for (int i = 1; i <= MAXIMUM_CACHE_SIZE; i++) {
+S96,BitInputStream.java,37,MASKS[i] = (MASKS[i - 1] << 1) + 1;
+S97,BitInputStream.java,43,private long bitsCached = 0;
+S98,BitInputStream.java,44,private int bitsCachedSize = 0;
+S99,BitInputStream.java,52,"public BitInputStream(final InputStream in, final ByteOrder byteOrder) {"
+S100,BitInputStream.java,53,this.in = in;
+S101,BitInputStream.java,54,this.byteOrder = byteOrder;
+S102,BitInputStream.java,67,bitsCached = 0;
+S103,BitInputStream.java,68,bitsCachedSize = 0;
+S104,BitInputStream.java,82,if (count < 0 || count > MAXIMUM_CACHE_SIZE) {
+S105,BitInputStream.java,85,if (ensureCache(count)) {
+S106,BitInputStream.java,86,return -1;
+S107,BitInputStream.java,89,if (bitsCachedSize < count) {
+S108,BitInputStream.java,93,if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+S109,BitInputStream.java,94,bitsOut = (bitsCached & MASKS[count]);
+S110,BitInputStream.java,95,bitsCached >>>= count;
+S111,BitInputStream.java,97,bitsOut = (bitsCached >> (bitsCachedSize - count)) & MASKS[count];
+S112,BitInputStream.java,99,bitsCachedSize -= count;
+S113,BitInputStream.java,100,return bitsOut;
+S114,BitInputStream.java,138,while (bitsCachedSize < count && bitsCachedSize < 57) {
+S115,BitInputStream.java,139,final long nextByte = in.read();
+S116,BitInputStream.java,140,if (nextByte < 0) {
+S117,BitInputStream.java,141,return true;
+S118,BitInputStream.java,143,if (byteOrder == ByteOrder.LITTLE_ENDIAN) {
+S119,BitInputStream.java,144,bitsCached |= (nextByte << bitsCachedSize);
+S120,BitInputStream.java,146,bitsCached <<= 8;
+S121,BitInputStream.java,147,bitsCached |= nextByte;
+S122,BitInputStream.java,149,bitsCachedSize += 8;
+S123,BitInputStream.java,151,return false;
+S124,BlockLZ4CompressorInputStream.java,45,private State state = State.NO_BLOCK;
+S125,BlockLZ4CompressorInputStream.java,56,"super(is, WINDOW_SIZE);"
+S126,BlockLZ4CompressorInputStream.java,64,switch (state) {
+S127,BlockLZ4CompressorInputStream.java,68,readSizes();
+S128,BlockLZ4CompressorInputStream.java,71,"int litLen = readLiteral(b, off, len);"
+S129,BlockLZ4CompressorInputStream.java,72,if (!hasMoreDataInBlock()) {
+S130,BlockLZ4CompressorInputStream.java,73,state = State.LOOKING_FOR_BACK_REFERENCE;
+S131,BlockLZ4CompressorInputStream.java,75,"return litLen > 0 ? litLen : read(b, off, len);"
+S132,BlockLZ4CompressorInputStream.java,77,if (!initializeBackReference()) {
+S133,BlockLZ4CompressorInputStream.java,78,state = State.EOF;
+S134,BlockLZ4CompressorInputStream.java,79,return -1;
+S135,BlockLZ4CompressorInputStream.java,83,"int backReferenceLen = readBackReference(b, off, len);"
+S136,BlockLZ4CompressorInputStream.java,84,if (!hasMoreDataInBlock()) {
+S137,BlockLZ4CompressorInputStream.java,85,state = State.NO_BLOCK;
+S138,BlockLZ4CompressorInputStream.java,87,"return backReferenceLen > 0 ? backReferenceLen : read(b, off, len);"
+S139,BlockLZ4CompressorInputStream.java,94,int nextBlock = readOneByte();
+S140,BlockLZ4CompressorInputStream.java,95,if (nextBlock == -1) {
+S141,BlockLZ4CompressorInputStream.java,98,nextBackReferenceSize = nextBlock & BACK_REFERENCE_SIZE_MASK;
+S142,BlockLZ4CompressorInputStream.java,99,long literalSizePart = (nextBlock & LITERAL_SIZE_MASK) >> SIZE_BITS;
+S143,BlockLZ4CompressorInputStream.java,100,if (literalSizePart == BACK_REFERENCE_SIZE_MASK) {
+S144,BlockLZ4CompressorInputStream.java,101,literalSizePart += readSizeBytes();
+S145,BlockLZ4CompressorInputStream.java,103,startLiteral(literalSizePart);
+S146,BlockLZ4CompressorInputStream.java,104,state = State.IN_LITERAL;
+S147,BlockLZ4CompressorInputStream.java,108,long accum = 0;
+S148,BlockLZ4CompressorInputStream.java,111,nextByte = readOneByte();
+S149,BlockLZ4CompressorInputStream.java,112,if (nextByte == -1) {
+S150,BlockLZ4CompressorInputStream.java,115,accum += nextByte;
+S151,BlockLZ4CompressorInputStream.java,116,} while (nextByte == 255);
+S152,BlockLZ4CompressorInputStream.java,117,return accum;
+S153,BlockLZ4CompressorInputStream.java,125,int backReferenceOffset = 0;
+S154,BlockLZ4CompressorInputStream.java,127,"backReferenceOffset = (int) ByteUtils.fromLittleEndian(supplier, 2);"
+S155,BlockLZ4CompressorInputStream.java,128,} catch (IOException ex) {
+S156,BlockLZ4CompressorInputStream.java,129,if (nextBackReferenceSize == 0) { // the last block has no back-reference
+S157,BlockLZ4CompressorInputStream.java,130,return false;
+S158,BlockLZ4CompressorInputStream.java,134,long backReferenceSize = nextBackReferenceSize;
+S159,BlockLZ4CompressorInputStream.java,135,if (nextBackReferenceSize == BACK_REFERENCE_SIZE_MASK) {
+S160,BlockLZ4CompressorInputStream.java,136,backReferenceSize += readSizeBytes();
+S161,BlockLZ4CompressorInputStream.java,139,"startBackReference(backReferenceOffset, backReferenceSize + 4);"
+S162,BlockLZ4CompressorInputStream.java,140,state = State.IN_BACK_REFERENCE;
+S163,BlockLZ4CompressorInputStream.java,141,return true;
+S164,BlockLZ4CompressorInputStream.java,144,private enum State {
+S165,BlockLZ4CompressorInputStream.java,145,"NO_BLOCK, IN_LITERAL, LOOKING_FOR_BACK_REFERENCE, IN_BACK_REFERENCE, EOF"
+S166,BlockLZ4CompressorOutputStream.java,40,public class BlockLZ4CompressorOutputStream extends CompressorOutputStream {
+S167,BlockLZ4CompressorOutputStream.java,82,private final byte[] oneByte = new byte[1];
+S168,BlockLZ4CompressorOutputStream.java,84,private boolean finished = false;
+S169,BlockLZ4CompressorOutputStream.java,86,private Deque<Pair> pairs = new LinkedList<>();
+S170,BlockLZ4CompressorOutputStream.java,89,private Deque<byte[]> expandedBlocks = new LinkedList<>();
+S171,BlockLZ4CompressorOutputStream.java,100,"this(os, createParameterBuilder().build());"
+S172,BlockLZ4CompressorOutputStream.java,113,"public BlockLZ4CompressorOutputStream(final OutputStream os, Parameters params) throws IOException {"
+S173,BlockLZ4CompressorOutputStream.java,114,this.os = os;
+S174,BlockLZ4CompressorOutputStream.java,115,"compressor = new LZ77Compressor(params,"
+S175,BlockLZ4CompressorOutputStream.java,116,new LZ77Compressor.Callback() {
+S176,BlockLZ4CompressorOutputStream.java,120,if (block instanceof LZ77Compressor.LiteralBlock) {
+S177,BlockLZ4CompressorOutputStream.java,121,addLiteralBlock((LZ77Compressor.LiteralBlock) block);
+S178,BlockLZ4CompressorOutputStream.java,122,} else if (block instanceof LZ77Compressor.BackReference) {
+S179,BlockLZ4CompressorOutputStream.java,123,addBackReference((LZ77Compressor.BackReference) block);
+S180,BlockLZ4CompressorOutputStream.java,124,} else if (block instanceof LZ77Compressor.EOD) {
+S181,BlockLZ4CompressorOutputStream.java,125,writeFinalLiteralBlock();
+S182,BlockLZ4CompressorOutputStream.java,139,"compressor.compress(data, off, len);"
+S183,BlockLZ4CompressorOutputStream.java,144,finish();
+S184,BlockLZ4CompressorOutputStream.java,145,os.close();
+S185,BlockLZ4CompressorOutputStream.java,154,if (!finished) {
+S186,BlockLZ4CompressorOutputStream.java,155,compressor.finish();
+S187,BlockLZ4CompressorOutputStream.java,156,finished = true;
+S188,BlockLZ4CompressorOutputStream.java,178,Pair last = writeBlocksAndReturnUnfinishedPair(block.getLength());
+S189,BlockLZ4CompressorOutputStream.java,179,recordLiteral(last.addLiteral(block));
+S190,BlockLZ4CompressorOutputStream.java,180,clearUnusedBlocksAndPairs();
+S191,BlockLZ4CompressorOutputStream.java,184,Pair last = writeBlocksAndReturnUnfinishedPair(block.getLength());
+S192,BlockLZ4CompressorOutputStream.java,185,last.setBackReference(block);
+S193,BlockLZ4CompressorOutputStream.java,186,recordBackReference(block);
+S194,BlockLZ4CompressorOutputStream.java,187,clearUnusedBlocksAndPairs();
+S195,BlockLZ4CompressorOutputStream.java,191,writeWritablePairs(length);
+S196,BlockLZ4CompressorOutputStream.java,192,Pair last = pairs.peekLast();
+S197,BlockLZ4CompressorOutputStream.java,193,if (last == null || last.hasBackReference()) {
+S198,BlockLZ4CompressorOutputStream.java,194,last = new Pair();
+S199,BlockLZ4CompressorOutputStream.java,195,pairs.addLast(last);
+S200,BlockLZ4CompressorOutputStream.java,197,return last;
+S201,BlockLZ4CompressorOutputStream.java,201,expandedBlocks.addFirst(b);
+S202,BlockLZ4CompressorOutputStream.java,205,clearUnusedBlocks();
+S203,BlockLZ4CompressorOutputStream.java,206,clearUnusedPairs();
+S204,BlockLZ4CompressorOutputStream.java,210,int blockLengths = 0;
+S205,BlockLZ4CompressorOutputStream.java,211,int blocksToKeep = 0;
+S206,BlockLZ4CompressorOutputStream.java,212,for (byte[] b : expandedBlocks) {
+S207,BlockLZ4CompressorOutputStream.java,213,blocksToKeep++;
+S208,BlockLZ4CompressorOutputStream.java,214,blockLengths += b.length;
+S209,BlockLZ4CompressorOutputStream.java,215,if (blockLengths >= BlockLZ4CompressorInputStream.WINDOW_SIZE) {
+S210,BlockLZ4CompressorOutputStream.java,219,final int size = expandedBlocks.size();
+S211,BlockLZ4CompressorOutputStream.java,220,for (int i = blocksToKeep; i < size; i++) {
+S212,BlockLZ4CompressorOutputStream.java,226,"expandedBlocks.addFirst(expand(block.getOffset(), block.getLength()));"
+S213,BlockLZ4CompressorOutputStream.java,230,byte[] expanded = new byte[length];
+S214,BlockLZ4CompressorOutputStream.java,231,if (offset == 1) { // surprisingly common special case
+S215,BlockLZ4CompressorOutputStream.java,232,byte[] block = expandedBlocks.peekFirst();
+S216,BlockLZ4CompressorOutputStream.java,233,byte b = block[block.length - 1];
+S217,BlockLZ4CompressorOutputStream.java,234,if (b != 0) { // the fresh array contains 0s anyway
+S218,BlockLZ4CompressorOutputStream.java,235,"Arrays.fill(expanded, b);"
+S219,BlockLZ4CompressorOutputStream.java,237,} else {
+S220,BlockLZ4CompressorOutputStream.java,238,"expandFromList(expanded, offset, length);"
+S221,BlockLZ4CompressorOutputStream.java,240,return expanded;
+S222,BlockLZ4CompressorOutputStream.java,244,int offsetRemaining = offset;
+S223,BlockLZ4CompressorOutputStream.java,245,int lengthRemaining = length;
+S224,BlockLZ4CompressorOutputStream.java,246,int writeOffset = 0;
+S225,BlockLZ4CompressorOutputStream.java,247,while (lengthRemaining > 0) {
+S226,BlockLZ4CompressorOutputStream.java,249,byte[] block = null;
+S227,BlockLZ4CompressorOutputStream.java,251,if (offsetRemaining > 0) {
+S228,BlockLZ4CompressorOutputStream.java,252,int blockOffset = 0;
+S229,BlockLZ4CompressorOutputStream.java,253,for (byte[] b : expandedBlocks) {
+S230,BlockLZ4CompressorOutputStream.java,254,if (b.length + blockOffset >= offsetRemaining) {
+S231,BlockLZ4CompressorOutputStream.java,255,block = b;
+S232,BlockLZ4CompressorOutputStream.java,256,break;
+S233,BlockLZ4CompressorOutputStream.java,258,blockOffset += b.length;
+S234,BlockLZ4CompressorOutputStream.java,260,if (block == null) {
+S235,BlockLZ4CompressorOutputStream.java,264,copyOffset = blockOffset + block.length - offsetRemaining;
+S236,BlockLZ4CompressorOutputStream.java,265,"copyLen = Math.min(lengthRemaining, block.length - copyOffset);"
+S237,BlockLZ4CompressorOutputStream.java,266,} else {
+S238,BlockLZ4CompressorOutputStream.java,268,block = expanded;
+S239,BlockLZ4CompressorOutputStream.java,269,copyOffset = -offsetRemaining;
+S240,BlockLZ4CompressorOutputStream.java,270,"copyLen = Math.min(lengthRemaining, writeOffset + offsetRemaining);"
+S241,BlockLZ4CompressorOutputStream.java,272,"System.arraycopy(block, copyOffset, expanded, writeOffset, copyLen);"
+S242,BlockLZ4CompressorOutputStream.java,273,offsetRemaining -= copyLen;
+S243,BlockLZ4CompressorOutputStream.java,274,lengthRemaining -= copyLen;
+S244,BlockLZ4CompressorOutputStream.java,275,writeOffset += copyLen;
+S245,BlockLZ4CompressorOutputStream.java,280,int pairLengths = 0;
+S246,BlockLZ4CompressorOutputStream.java,281,int pairsToKeep = 0;
+S247,BlockLZ4CompressorOutputStream.java,282,for (Iterator<Pair> it = pairs.descendingIterator(); it.hasNext(); ) {
+S248,BlockLZ4CompressorOutputStream.java,283,Pair p = it.next();
+S249,BlockLZ4CompressorOutputStream.java,284,pairsToKeep++;
+S250,BlockLZ4CompressorOutputStream.java,285,pairLengths += p.length();
+S251,BlockLZ4CompressorOutputStream.java,286,if (pairLengths >= BlockLZ4CompressorInputStream.WINDOW_SIZE) {
+S252,BlockLZ4CompressorOutputStream.java,290,final int size = pairs.size();
+S253,BlockLZ4CompressorOutputStream.java,291,for (int i = pairsToKeep; i < size; i++) {
+S254,BlockLZ4CompressorOutputStream.java,302,rewriteLastPairs();
+S255,BlockLZ4CompressorOutputStream.java,303,for (Pair p : pairs) {
+S256,BlockLZ4CompressorOutputStream.java,304,if (!p.hasBeenWritten()) {
+S257,BlockLZ4CompressorOutputStream.java,305,p.writeTo(os);
+S258,BlockLZ4CompressorOutputStream.java,308,pairs.clear();
+S259,BlockLZ4CompressorOutputStream.java,312,int unwrittenLength = lengthOfBlocksAfterLastPair;
+S260,BlockLZ4CompressorOutputStream.java,313,for (Iterator<Pair> it = pairs.descendingIterator(); it.hasNext(); ) {
+S261,BlockLZ4CompressorOutputStream.java,314,Pair p = it.next();
+S262,BlockLZ4CompressorOutputStream.java,315,if (p.hasBeenWritten()) {
+S263,BlockLZ4CompressorOutputStream.java,316,break;
+S264,BlockLZ4CompressorOutputStream.java,318,unwrittenLength += p.length();
+S265,BlockLZ4CompressorOutputStream.java,320,for (Pair p : pairs) {
+S266,BlockLZ4CompressorOutputStream.java,321,if (p.hasBeenWritten()) {
+S267,BlockLZ4CompressorOutputStream.java,322,continue;
+S268,BlockLZ4CompressorOutputStream.java,324,unwrittenLength -= p.length();
+S269,BlockLZ4CompressorOutputStream.java,325,if (p.canBeWritten(unwrittenLength)) {
+S270,BlockLZ4CompressorOutputStream.java,326,p.writeTo(os);
+S271,BlockLZ4CompressorOutputStream.java,334,LinkedList<Pair> lastPairs = new LinkedList<>();
+S272,BlockLZ4CompressorOutputStream.java,335,LinkedList<Integer> pairLength = new LinkedList<>();
+S273,BlockLZ4CompressorOutputStream.java,336,int offset = 0;
+S274,BlockLZ4CompressorOutputStream.java,337,for (Iterator<Pair> it = pairs.descendingIterator(); it.hasNext(); ) {
+S275,BlockLZ4CompressorOutputStream.java,338,Pair p = it.next();
+S276,BlockLZ4CompressorOutputStream.java,339,if (p.hasBeenWritten()) {
+S277,BlockLZ4CompressorOutputStream.java,342,int len = p.length();
+S278,BlockLZ4CompressorOutputStream.java,343,pairLength.addFirst(len);
+S279,BlockLZ4CompressorOutputStream.java,344,lastPairs.addFirst(p);
+S280,BlockLZ4CompressorOutputStream.java,345,offset += len;
+S281,BlockLZ4CompressorOutputStream.java,346,if (offset >= MIN_OFFSET_OF_LAST_BACK_REFERENCE) {
+S282,BlockLZ4CompressorOutputStream.java,347,break;
+S283,BlockLZ4CompressorOutputStream.java,350,for (Pair p : lastPairs) {
+S284,BlockLZ4CompressorOutputStream.java,351,pairs.remove(p);
+S285,BlockLZ4CompressorOutputStream.java,377,final int lastPairsSize = lastPairs.size();
+S286,BlockLZ4CompressorOutputStream.java,378,int toExpand = 0;
+S287,BlockLZ4CompressorOutputStream.java,379,for (int i = 1; i < lastPairsSize; i++) {
+S288,BlockLZ4CompressorOutputStream.java,382,Pair replacement = new Pair();
+S289,BlockLZ4CompressorOutputStream.java,383,if (toExpand > 0) {
+S290,BlockLZ4CompressorOutputStream.java,386,Pair splitCandidate = lastPairs.get(0);
+S291,BlockLZ4CompressorOutputStream.java,387,int stillNeeded = MIN_OFFSET_OF_LAST_BACK_REFERENCE - toExpand;
+S292,BlockLZ4CompressorOutputStream.java,388,int brLen = splitCandidate.hasBackReference() ? splitCandidate.backReferenceLength() : 0;
+S293,BlockLZ4CompressorOutputStream.java,389,if (splitCandidate.hasBackReference() && brLen >= MIN_BACK_REFERENCE_LENGTH + stillNeeded) {
+S294,BlockLZ4CompressorOutputStream.java,390,"replacement.prependLiteral(expand(toExpand + stillNeeded, stillNeeded));"
+S295,BlockLZ4CompressorOutputStream.java,391,pairs.add(splitCandidate.splitWithNewBackReferenceLengthOf(brLen - stillNeeded));
+S296,BlockLZ4CompressorOutputStream.java,398,pairs.add(replacement);
+S297,BlockLZ4CompressorOutputStream.java,406,int maxLen = BlockLZ4CompressorInputStream.WINDOW_SIZE - 1;
+S298,BlockLZ4CompressorOutputStream.java,407,return Parameters.builder(BlockLZ4CompressorInputStream.WINDOW_SIZE)
+S299,BlockLZ4CompressorOutputStream.java,414,final static class Pair {
+S300,BlockLZ4CompressorOutputStream.java,415,private final Deque<byte[]> literals = new LinkedList<>();
+S301,BlockLZ4CompressorOutputStream.java,420,literals.addFirst(data);
+S302,BlockLZ4CompressorOutputStream.java,423,"byte[] copy = Arrays.copyOfRange(block.getData(), block.getOffset(),"
+S303,BlockLZ4CompressorOutputStream.java,425,literals.add(copy);
+S304,BlockLZ4CompressorOutputStream.java,426,return copy;
+S305,BlockLZ4CompressorOutputStream.java,429,if (hasBackReference()) {
+S306,BlockLZ4CompressorOutputStream.java,432,brOffset = block.getOffset();
+S307,BlockLZ4CompressorOutputStream.java,433,brLength = block.getLength();
+S308,BlockLZ4CompressorOutputStream.java,436,return brOffset > 0;
+S309,BlockLZ4CompressorOutputStream.java,439,return hasBackReference()
+S310,BlockLZ4CompressorOutputStream.java,443,return literalLength() + brLength;
+S311,BlockLZ4CompressorOutputStream.java,446,return written;
+S312,BlockLZ4CompressorOutputStream.java,449,int litLength = literalLength();
+S313,BlockLZ4CompressorOutputStream.java,450,"out.write(lengths(litLength, brLength));"
+S314,BlockLZ4CompressorOutputStream.java,451,if (litLength >= BlockLZ4CompressorInputStream.BACK_REFERENCE_SIZE_MASK) {
+S315,BlockLZ4CompressorOutputStream.java,452,"writeLength(litLength - BlockLZ4CompressorInputStream.BACK_REFERENCE_SIZE_MASK, out);"
+S316,BlockLZ4CompressorOutputStream.java,454,for (byte[] b : literals) {
+S317,BlockLZ4CompressorOutputStream.java,455,out.write(b);
+S318,BlockLZ4CompressorOutputStream.java,457,if (hasBackReference()) {
+S319,BlockLZ4CompressorOutputStream.java,458,"ByteUtils.toLittleEndian(out, brOffset, 2);"
+S320,BlockLZ4CompressorOutputStream.java,459,if (brLength - MIN_BACK_REFERENCE_LENGTH >= BlockLZ4CompressorInputStream.BACK_REFERENCE_SIZE_MASK) {
+S321,BlockLZ4CompressorOutputStream.java,460,writeLength(brLength - MIN_BACK_REFERENCE_LENGTH
+S322,BlockLZ4CompressorOutputStream.java,464,written = true;
+S323,BlockLZ4CompressorOutputStream.java,467,int length = 0;
+S324,BlockLZ4CompressorOutputStream.java,468,for (byte[] b : literals) {
+S325,BlockLZ4CompressorOutputStream.java,469,length += b.length;
+S326,BlockLZ4CompressorOutputStream.java,471,return length;
+S327,BlockLZ4CompressorOutputStream.java,474,int l = litLength < 15 ? litLength : 15;
+S328,BlockLZ4CompressorOutputStream.java,475,int br = brLength < 4 ? 0 : (brLength < 19 ? brLength - 4 : 15);
+S329,BlockLZ4CompressorOutputStream.java,476,return (l << BlockLZ4CompressorInputStream.SIZE_BITS) | br;
+S330,BlockLZ4CompressorOutputStream.java,479,while (length >= 255) {
+S331,BlockLZ4CompressorOutputStream.java,480,out.write(255);
+S332,BlockLZ4CompressorOutputStream.java,481,length -= 255;
+S333,BlockLZ4CompressorOutputStream.java,483,out.write(length);
+S334,BlockLZ4CompressorOutputStream.java,486,return brLength;
+S335,BlockLZ4CompressorOutputStream.java,495,Pair p = new Pair();
+S336,BlockLZ4CompressorOutputStream.java,496,p.literals.addAll(literals);
+S337,BlockLZ4CompressorOutputStream.java,497,p.brOffset = brOffset;
+S338,BlockLZ4CompressorOutputStream.java,498,p.brLength = newBackReferenceLength;
+S339,BlockLZ4CompressorOutputStream.java,499,return p;
+S340,BoundedInputStream.java,38,"public BoundedInputStream(final InputStream in, final long size) {"
+S341,BoundedInputStream.java,39,this.in = in;
+S342,BoundedInputStream.java,40,bytesRemaining = size;
+S343,BoundedInputStream.java,45,if (bytesRemaining > 0) {
+S344,BoundedInputStream.java,46,--bytesRemaining;
+S345,BoundedInputStream.java,47,return in.read();
+S346,BoundedInputStream.java,49,return -1;
+S347,BoundedInputStream.java,54,if (bytesRemaining == 0) {
+S348,BoundedInputStream.java,55,return -1;
+S349,BoundedInputStream.java,57,int bytesToRead = len;
+S350,BoundedInputStream.java,58,if (bytesToRead > bytesRemaining) {
+S351,BoundedInputStream.java,59,bytesToRead = (int) bytesRemaining;
+S352,BoundedInputStream.java,61,"final int bytesRead = in.read(b, off, bytesToRead);"
+S353,BoundedInputStream.java,62,if (bytesRead >= 0) {
+S354,BoundedInputStream.java,63,bytesRemaining -= bytesRead;
+S355,BoundedInputStream.java,65,return bytesRead;
+S356,ByteUtils.java,68,"return fromLittleEndian(bytes, 0, bytes.length);"
+S357,ByteUtils.java,80,checkReadLength(length);
+S358,ByteUtils.java,81,long l = 0;
+S359,ByteUtils.java,82,for (int i = 0; i < length; i++) {
+S360,ByteUtils.java,83,l |= (bytes[off + i] & 0xffl) << (8 * i);
+S361,ByteUtils.java,85,return l;
+S362,ByteUtils.java,125,checkReadLength(length);
+S363,ByteUtils.java,126,long l = 0;
+S364,ByteUtils.java,127,for (int i = 0; i < length; i++) {
+S365,ByteUtils.java,128,long b = supplier.getAsByte();
+S366,ByteUtils.java,129,if (b == -1) {
+S367,ByteUtils.java,130,"throw new IOException(""premature end of data"");"
+S368,ByteUtils.java,132,l |= (b << (i * 8));
+S369,ByteUtils.java,134,return l;
+S370,ByteUtils.java,148,checkReadLength(length);
+S371,ByteUtils.java,149,long l = 0;
+S372,ByteUtils.java,150,for (int i = 0; i < length; i++) {
+S373,ByteUtils.java,151,long b = in.readUnsignedByte();
+S374,ByteUtils.java,152,l |= (b << (i * 8));
+S375,ByteUtils.java,154,return l;
+S376,ByteUtils.java,184,long num = value;
+S377,ByteUtils.java,185,for (int i = 0; i < length; i++) {
+S378,ByteUtils.java,186,out.write((int) (num & 0xff));
+S379,ByteUtils.java,187,num >>= 8;
+S380,ByteUtils.java,257,if (length > 8) {
+S381,CRC.java,27,private static final int crc32Table[] = {
+S382,CRC.java,94,CRC() {
+S383,CRC.java,95,initialiseCRC();
+S384,CRC.java,99,globalCrc = 0xffffffff;
+S385,CRC.java,103,return ~globalCrc;
+S386,CRC.java,115,int temp = (globalCrc >> 24) ^ inCh;
+S387,CRC.java,116,if (temp < 0) {
+S388,CRC.java,117,temp = 256 + temp;
+S389,CRC.java,119,globalCrc = (globalCrc << 8) ^ CRC.crc32Table[temp];
+S390,ChecksumCalculatingInputStream.java,33,"public ChecksumCalculatingInputStream(final Checksum checksum, final InputStream in) {"
+S391,ChecksumCalculatingInputStream.java,37,this.checksum = checksum;
+S392,ChecksumCalculatingInputStream.java,38,this.in = in;
+S393,ChecksumCalculatingInputStream.java,49,final int ret = in.read();
+S394,ChecksumCalculatingInputStream.java,50,if (ret >= 0) {
+S395,ChecksumCalculatingInputStream.java,51,checksum.update(ret);
+S396,ChecksumCalculatingInputStream.java,53,return ret;
+S397,ChecksumCalculatingInputStream.java,64,"return read(b, 0, b.length);"
+S398,ChecksumCalculatingInputStream.java,75,"final int ret = in.read(b, off, len);"
+S399,ChecksumCalculatingInputStream.java,76,if (ret >= 0) {
+S400,ChecksumCalculatingInputStream.java,77,"checksum.update(b, off, ret);"
+S401,ChecksumCalculatingInputStream.java,79,return ret;
+S402,ChecksumCalculatingInputStream.java,85,if (read() >= 0) {
+S403,ChecksumCalculatingInputStream.java,86,return 1;
+S404,ChecksumCalculatingInputStream.java,88,return 0;
+S405,ChecksumCalculatingInputStream.java,96,return checksum.getValue();
+S406,CompressorException.java,37,super(message);
+S407,CompressorException.java,49,"super(message, cause);"
+S408,CompressorInputStream.java,23,public abstract class CompressorInputStream extends InputStream {
+S409,CompressorInputStream.java,24,private long bytesRead = 0;
+S410,CompressorInputStream.java,35,count((long) read);
+S411,CompressorInputStream.java,45,if (read != -1) {
+S412,CompressorInputStream.java,46,bytesRead = bytesRead + read;
+S413,CompressorInputStream.java,78,return bytesRead;
+S414,CompressorOutputStream.java,23,public abstract class CompressorOutputStream extends OutputStream {
+S415,CompressorStreamFactory.java,96,private static final CompressorStreamFactory SINGLETON = new CompressorStreamFactory();
+S416,CompressorStreamFactory.java,324,return LZ4_FRAMED;
+S417,CompressorStreamFactory.java,328,return LZ4_BLOCK;
+S418,CompressorStreamFactory.java,366,private volatile boolean decompressConcatenated = false;
+S419,CompressorStreamFactory.java,372,public CompressorStreamFactory() {
+S420,CompressorStreamFactory.java,373,this.decompressUntilEOF = null;
+S421,CompressorStreamFactory.java,374,this.memoryLimitInKb = -1;
+S422,CompressorStreamFactory.java,393,"public CompressorStreamFactory(final boolean decompressUntilEOF, final int memoryLimitInKb) {"
+S423,CompressorStreamFactory.java,394,this.decompressUntilEOF = Boolean.valueOf(decompressUntilEOF);
+S424,CompressorStreamFactory.java,397,this.decompressConcatenated = decompressUntilEOF;
+S425,CompressorStreamFactory.java,398,this.memoryLimitInKb = memoryLimitInKb;
+S426,CompressorStreamFactory.java,413,"this(decompressUntilEOF, -1);"
+S427,CompressorStreamFactory.java,428,if (in == null) {
+S428,CompressorStreamFactory.java,429,"throw new IllegalArgumentException(""Stream must not be null."");"
+S429,CompressorStreamFactory.java,432,if (!in.markSupported()) {
+S430,CompressorStreamFactory.java,436,final byte[] signature = new byte[12];
+S431,CompressorStreamFactory.java,437,in.mark(signature.length);
+S432,CompressorStreamFactory.java,438,int signatureLength = -1;
+S433,CompressorStreamFactory.java,440,"signatureLength = IOUtils.readFully(in, signature);"
+S434,CompressorStreamFactory.java,441,in.reset();
+S435,CompressorStreamFactory.java,442,} catch (IOException e) {
+S436,CompressorStreamFactory.java,443,"throw new CompressorException(""IOException while reading signature."", e);"
+S437,CompressorStreamFactory.java,446,"if (BZip2CompressorInputStream.matches(signature, signatureLength)) {"
+S438,CompressorStreamFactory.java,447,return BZIP2;
+S439,CompressorStreamFactory.java,450,"if (GzipCompressorInputStream.matches(signature, signatureLength)) {"
+S440,CompressorStreamFactory.java,451,return GZIP;
+S441,CompressorStreamFactory.java,454,"if (Pack200CompressorInputStream.matches(signature, signatureLength)) {"
+S442,CompressorStreamFactory.java,455,return PACK200;
+S443,CompressorStreamFactory.java,458,"if (FramedSnappyCompressorInputStream.matches(signature, signatureLength)) {"
+S444,CompressorStreamFactory.java,459,return SNAPPY_FRAMED;
+S445,CompressorStreamFactory.java,462,"if (ZCompressorInputStream.matches(signature, signatureLength)) {"
+S446,CompressorStreamFactory.java,463,return Z;
+S447,CompressorStreamFactory.java,466,"if (DeflateCompressorInputStream.matches(signature, signatureLength)) {"
+S448,CompressorStreamFactory.java,467,return DEFLATE;
+S449,CompressorStreamFactory.java,470,"if (XZUtils.matches(signature, signatureLength)) {"
+S450,CompressorStreamFactory.java,471,return XZ;
+S451,CompressorStreamFactory.java,474,"if (LZMAUtils.matches(signature, signatureLength)) {"
+S452,CompressorStreamFactory.java,475,return LZMA;
+S453,CompressorStreamFactory.java,478,"if (FramedLZ4CompressorInputStream.matches(signature, signatureLength)) {"
+S454,CompressorStreamFactory.java,479,return LZ4_FRAMED;
+S455,CompressorStreamFactory.java,482,"throw new CompressorException(""No Compressor found for the stream signature."");"
+S456,CompressorStreamFactory.java,499,"return createCompressorInputStream(detect(in), in);"
+S457,CompressorStreamFactory.java,524,"return createCompressorInputStream(name, in, decompressConcatenated);"
+S458,CompressorStreamFactory.java,530,if (name == null || in == null) {
+S459,CompressorStreamFactory.java,536,if (GZIP.equalsIgnoreCase(name)) {
+S460,CompressorStreamFactory.java,537,"return new GzipCompressorInputStream(in, actualDecompressConcatenated);"
+S461,CompressorStreamFactory.java,540,if (BZIP2.equalsIgnoreCase(name)) {
+S462,CompressorStreamFactory.java,541,"return new BZip2CompressorInputStream(in, actualDecompressConcatenated);"
+S463,CompressorStreamFactory.java,544,if (BROTLI.equalsIgnoreCase(name)) {
+S464,CompressorStreamFactory.java,551,if (XZ.equalsIgnoreCase(name)) {
+S465,CompressorStreamFactory.java,552,if (!XZUtils.isXZCompressionAvailable()) {
+S466,CompressorStreamFactory.java,555,"return new XZCompressorInputStream(in, actualDecompressConcatenated, memoryLimitInKb);"
+S467,CompressorStreamFactory.java,558,if (LZMA.equalsIgnoreCase(name)) {
+S468,CompressorStreamFactory.java,559,if (!LZMAUtils.isLZMACompressionAvailable()) {
+S469,CompressorStreamFactory.java,562,"return new LZMACompressorInputStream(in, memoryLimitInKb);"
+S470,CompressorStreamFactory.java,565,if (PACK200.equalsIgnoreCase(name)) {
+S471,CompressorStreamFactory.java,566,return new Pack200CompressorInputStream(in);
+S472,CompressorStreamFactory.java,569,if (SNAPPY_RAW.equalsIgnoreCase(name)) {
+S473,CompressorStreamFactory.java,573,if (SNAPPY_FRAMED.equalsIgnoreCase(name)) {
+S474,CompressorStreamFactory.java,577,if (Z.equalsIgnoreCase(name)) {
+S475,CompressorStreamFactory.java,578,"return new ZCompressorInputStream(in, memoryLimitInKb);"
+S476,CompressorStreamFactory.java,581,if (DEFLATE.equalsIgnoreCase(name)) {
+S477,CompressorStreamFactory.java,582,return new DeflateCompressorInputStream(in);
+S478,CompressorStreamFactory.java,585,if (LZ4_BLOCK.equalsIgnoreCase(name)) {
+S479,CompressorStreamFactory.java,586,return new BlockLZ4CompressorInputStream(in);
+S480,CompressorStreamFactory.java,589,if (LZ4_FRAMED.equalsIgnoreCase(name)) {
+S481,CompressorStreamFactory.java,590,"return new FramedLZ4CompressorInputStream(in, actualDecompressConcatenated);"
+S482,CompressorStreamFactory.java,593,} catch (final IOException e) {
+S483,CompressorStreamFactory.java,594,"throw new CompressorException(""Could not create CompressorInputStream."", e);"
+S484,CompressorStreamFactory.java,624,if (name == null || out == null) {
+S485,CompressorStreamFactory.java,630,if (GZIP.equalsIgnoreCase(name)) {
+S486,CompressorStreamFactory.java,634,if (BZIP2.equalsIgnoreCase(name)) {
+S487,CompressorStreamFactory.java,638,if (XZ.equalsIgnoreCase(name)) {
+S488,CompressorStreamFactory.java,642,if (PACK200.equalsIgnoreCase(name)) {
+S489,CompressorStreamFactory.java,646,if (LZMA.equalsIgnoreCase(name)) {
+S490,CompressorStreamFactory.java,650,if (DEFLATE.equalsIgnoreCase(name)) {
+S491,CompressorStreamFactory.java,654,if (SNAPPY_FRAMED.equalsIgnoreCase(name)) {
+S492,CompressorStreamFactory.java,658,if (LZ4_BLOCK.equalsIgnoreCase(name)) {
+S493,CompressorStreamFactory.java,659,return new BlockLZ4CompressorOutputStream(out);
+S494,CompressorStreamFactory.java,662,if (LZ4_FRAMED.equalsIgnoreCase(name)) {
+S495,CompressorStreamFactory.java,663,return new FramedLZ4CompressorOutputStream(out);
+S496,CompressorStreamFactory.java,694,return decompressConcatenated;
+S497,CompressorStreamFactory.java,733,if (this.decompressUntilEOF != null) {
+S498,CompressorStreamFactory.java,734,"throw new IllegalStateException(""Cannot override the setting defined by the constructor"");"
+S499,CompressorStreamFactory.java,736,this.decompressConcatenated = decompressConcatenated;
+S500,DeflateCompressorInputStream.java,50,"this(inputStream, new DeflateParameters());"
+S501,DeflateCompressorInputStream.java,61,final DeflateParameters parameters) {
+S502,DeflateCompressorInputStream.java,62,inflater = new Inflater(!parameters.withZlibHeader());
+S503,DeflateParameters.java,28,public class DeflateParameters {
+S504,DeflateParameters.java,30,private boolean zlibHeader = true;
+S505,DeflateParameters.java,31,private int compressionLevel = Deflater.DEFAULT_COMPRESSION;
+S506,DeflateParameters.java,39,return zlibHeader;
+S507,FileNameUtil.java,37,"private final Map<String, String> compressSuffix ="
+S508,FileNameUtil.java,92,final String defaultExtension) {
+S509,FileNameUtil.java,93,this.uncompressSuffix = Collections.unmodifiableMap(uncompressSuffix);
+S510,FileNameUtil.java,94,"int lc = Integer.MIN_VALUE, sc = Integer.MAX_VALUE;"
+S511,FileNameUtil.java,95,"int lu = Integer.MIN_VALUE, su = Integer.MAX_VALUE;"
+S512,FileNameUtil.java,96,"for (final Map.Entry<String, String> ent : uncompressSuffix.entrySet()) {"
+S513,FileNameUtil.java,97,final int cl = ent.getKey().length();
+S514,FileNameUtil.java,98,if (cl > lc) {
+S515,FileNameUtil.java,99,lc = cl;
+S516,FileNameUtil.java,101,if (cl < sc) {
+S517,FileNameUtil.java,102,sc = cl;
+S518,FileNameUtil.java,105,final String u = ent.getValue();
+S519,FileNameUtil.java,106,final int ul = u.length();
+S520,FileNameUtil.java,107,if (ul > 0) {
+S521,FileNameUtil.java,108,if (!compressSuffix.containsKey(u)) {
+S522,FileNameUtil.java,109,"compressSuffix.put(u, ent.getKey());"
+S523,FileNameUtil.java,111,if (ul > lu) {
+S524,FileNameUtil.java,112,lu = ul;
+S525,FileNameUtil.java,114,if (ul < su) {
+S526,FileNameUtil.java,115,su = ul;
+S527,FileNameUtil.java,119,longestCompressedSuffix = lc;
+S528,FileNameUtil.java,120,longestUncompressedSuffix = lu;
+S529,FileNameUtil.java,121,shortestCompressedSuffix = sc;
+S530,FileNameUtil.java,122,shortestUncompressedSuffix = su;
+S531,FileNameUtil.java,123,this.defaultExtension = defaultExtension;
+S532,FramedLZ4CompressorInputStream.java,40,public class FramedLZ4CompressorInputStream extends CompressorInputStream {
+S533,FramedLZ4CompressorInputStream.java,43,static final byte[] LZ4_SIGNATURE = new byte[] { //NOSONAR
+S534,FramedLZ4CompressorInputStream.java,46,private static final byte[] SKIPPABLE_FRAME_TRAILER = new byte[] {
+S535,FramedLZ4CompressorInputStream.java,61,private final byte[] oneByte = new byte[1];
+S536,FramedLZ4CompressorInputStream.java,63,private final ByteUtils.ByteSupplier supplier = new ByteUtils.ByteSupplier() {
+S537,FramedLZ4CompressorInputStream.java,66,return readOneByte();
+S538,FramedLZ4CompressorInputStream.java,82,private final XXHash32 contentHash = new XXHash32();
+S539,FramedLZ4CompressorInputStream.java,85,private final XXHash32 blockHash = new XXHash32();
+S540,FramedLZ4CompressorInputStream.java,98,"this(in, false);"
+S541,FramedLZ4CompressorInputStream.java,111,"public FramedLZ4CompressorInputStream(InputStream in, boolean decompressConcatenated) throws IOException {"
+S542,FramedLZ4CompressorInputStream.java,112,this.in = in;
+S543,FramedLZ4CompressorInputStream.java,113,this.decompressConcatenated = decompressConcatenated;
+S544,FramedLZ4CompressorInputStream.java,114,init(true);
+S545,FramedLZ4CompressorInputStream.java,120,"return read(oneByte, 0, 1) == -1 ? -1 : oneByte[0] & 0xFF;"
+S546,FramedLZ4CompressorInputStream.java,126,if (currentBlock != null) {
+S547,FramedLZ4CompressorInputStream.java,127,currentBlock.close();
+S548,FramedLZ4CompressorInputStream.java,128,currentBlock = null;
+S549,FramedLZ4CompressorInputStream.java,130,in.close();
+S550,FramedLZ4CompressorInputStream.java,136,if (endReached) {
+S551,FramedLZ4CompressorInputStream.java,139,"int r = readOnce(b, off, len);"
+S552,FramedLZ4CompressorInputStream.java,140,if (r == -1) {
+S553,FramedLZ4CompressorInputStream.java,141,nextBlock();
+S554,FramedLZ4CompressorInputStream.java,142,if (!endReached) {
+S555,FramedLZ4CompressorInputStream.java,143,"r = readOnce(b, off, len);"
+S556,FramedLZ4CompressorInputStream.java,146,if (r != -1) {
+S557,FramedLZ4CompressorInputStream.java,147,if (expectBlockDependency) {
+S558,FramedLZ4CompressorInputStream.java,148,"appendToBlockDependencyBuffer(b, off, r);"
+S559,FramedLZ4CompressorInputStream.java,150,if (expectContentChecksum) {
+S560,FramedLZ4CompressorInputStream.java,151,"contentHash.update(b, off, r);"
+S561,FramedLZ4CompressorInputStream.java,154,return r;
+S562,FramedLZ4CompressorInputStream.java,158,if (readSignature(firstFrame)) {
+S563,FramedLZ4CompressorInputStream.java,159,readFrameDescriptor();
+S564,FramedLZ4CompressorInputStream.java,160,nextBlock();
+S565,FramedLZ4CompressorInputStream.java,165,"String garbageMessage = firstFrame ? ""Not a LZ4 frame stream"" : ""LZ4 frame stream followed by garbage"";"
+S566,FramedLZ4CompressorInputStream.java,166,final byte[] b = new byte[4];
+S567,FramedLZ4CompressorInputStream.java,167,"int read = IOUtils.readFully(in, b);"
+S568,FramedLZ4CompressorInputStream.java,168,count(read);
+S569,FramedLZ4CompressorInputStream.java,169,if (0 == read && !firstFrame) {
+S570,FramedLZ4CompressorInputStream.java,171,endReached = true;
+S571,FramedLZ4CompressorInputStream.java,172,return false;
+S572,FramedLZ4CompressorInputStream.java,174,if (4 != read) {
+S573,FramedLZ4CompressorInputStream.java,175,throw new IOException(garbageMessage);
+S574,FramedLZ4CompressorInputStream.java,178,read = skipSkippableFrame(b);
+S575,FramedLZ4CompressorInputStream.java,179,if (0 == read && !firstFrame) {
+S576,FramedLZ4CompressorInputStream.java,181,endReached = true;
+S577,FramedLZ4CompressorInputStream.java,182,return false;
+S578,FramedLZ4CompressorInputStream.java,184,"if (4 != read || !matches(b, 4)) {"
+S579,FramedLZ4CompressorInputStream.java,185,throw new IOException(garbageMessage);
+S580,FramedLZ4CompressorInputStream.java,187,return true;
+S581,FramedLZ4CompressorInputStream.java,191,int flags = readOneByte();
+S582,FramedLZ4CompressorInputStream.java,192,if (flags == -1) {
+S583,FramedLZ4CompressorInputStream.java,193,"throw new IOException(""Premature end of stream while reading frame flags"");"
+S584,FramedLZ4CompressorInputStream.java,195,contentHash.update(flags);
+S585,FramedLZ4CompressorInputStream.java,196,if ((flags & VERSION_MASK) != SUPPORTED_VERSION) {
+S586,FramedLZ4CompressorInputStream.java,197,"throw new IOException(""Unsupported version "" + (flags >> 6));"
+S587,FramedLZ4CompressorInputStream.java,199,expectBlockDependency = (flags & BLOCK_INDEPENDENCE_MASK) == 0;
+S588,FramedLZ4CompressorInputStream.java,200,if (expectBlockDependency) {
+S589,FramedLZ4CompressorInputStream.java,201,if (blockDependencyBuffer == null) {
+S590,FramedLZ4CompressorInputStream.java,202,blockDependencyBuffer = new byte[BlockLZ4CompressorInputStream.WINDOW_SIZE];
+S591,FramedLZ4CompressorInputStream.java,205,blockDependencyBuffer = null;
+S592,FramedLZ4CompressorInputStream.java,207,expectBlockChecksum = (flags & BLOCK_CHECKSUM_MASK) != 0;
+S593,FramedLZ4CompressorInputStream.java,208,expectContentSize = (flags & CONTENT_SIZE_MASK) != 0;
+S594,FramedLZ4CompressorInputStream.java,209,expectContentChecksum = (flags & CONTENT_CHECKSUM_MASK) != 0;
+S595,FramedLZ4CompressorInputStream.java,210,int bdByte = readOneByte();
+S596,FramedLZ4CompressorInputStream.java,211,if (bdByte == -1) { // max size is irrelevant for this implementation
+S597,FramedLZ4CompressorInputStream.java,212,"throw new IOException(""Premature end of stream while reading frame BD byte"");"
+S598,FramedLZ4CompressorInputStream.java,214,contentHash.update(bdByte);
+S599,FramedLZ4CompressorInputStream.java,215,"if (expectContentSize) { // for now we don't care, contains the uncompressed size"
+S600,FramedLZ4CompressorInputStream.java,216,byte[] contentSize = new byte[8];
+S601,FramedLZ4CompressorInputStream.java,217,"int skipped = IOUtils.readFully(in, contentSize);"
+S602,FramedLZ4CompressorInputStream.java,218,count(skipped);
+S603,FramedLZ4CompressorInputStream.java,219,if (8 != skipped) {
+S604,FramedLZ4CompressorInputStream.java,220,"throw new IOException(""Premature end of stream while reading content size"");"
+S605,FramedLZ4CompressorInputStream.java,224,int headerHash = readOneByte();
+S606,FramedLZ4CompressorInputStream.java,225,if (headerHash == -1) { // partial hash of header.
+S607,FramedLZ4CompressorInputStream.java,226,"throw new IOException(""Premature end of stream while reading frame header checksum"");"
+S608,FramedLZ4CompressorInputStream.java,228,int expectedHash = (int) ((contentHash.getValue() >> 8) & 0xff);
+S609,FramedLZ4CompressorInputStream.java,229,contentHash.reset();
+S610,FramedLZ4CompressorInputStream.java,230,if (headerHash != expectedHash) {
+S611,FramedLZ4CompressorInputStream.java,231,"throw new IOException(""frame header checksum mismatch."");"
+S612,FramedLZ4CompressorInputStream.java,236,maybeFinishCurrentBlock();
+S613,FramedLZ4CompressorInputStream.java,237,"long len = ByteUtils.fromLittleEndian(supplier, 4);"
+S614,FramedLZ4CompressorInputStream.java,238,boolean uncompressed = (len & UNCOMPRESSED_FLAG_MASK) != 0;
+S615,FramedLZ4CompressorInputStream.java,239,int realLen = (int) (len & (~UNCOMPRESSED_FLAG_MASK));
+S616,FramedLZ4CompressorInputStream.java,240,if (realLen == 0) {
+S617,FramedLZ4CompressorInputStream.java,241,verifyContentChecksum();
+S618,FramedLZ4CompressorInputStream.java,242,if (!decompressConcatenated) {
+S619,FramedLZ4CompressorInputStream.java,243,endReached = true;
+S620,FramedLZ4CompressorInputStream.java,245,init(false);
+S621,FramedLZ4CompressorInputStream.java,247,return;
+S622,FramedLZ4CompressorInputStream.java,249,"InputStream capped = new BoundedInputStream(in, realLen);"
+S623,FramedLZ4CompressorInputStream.java,250,if (expectBlockChecksum) {
+S624,FramedLZ4CompressorInputStream.java,251,"capped = new ChecksumCalculatingInputStream(blockHash, capped);"
+S625,FramedLZ4CompressorInputStream.java,253,if (uncompressed) {
+S626,FramedLZ4CompressorInputStream.java,254,inUncompressed = true;
+S627,FramedLZ4CompressorInputStream.java,255,currentBlock = capped;
+S628,FramedLZ4CompressorInputStream.java,257,inUncompressed = false;
+S629,FramedLZ4CompressorInputStream.java,258,BlockLZ4CompressorInputStream s = new BlockLZ4CompressorInputStream(capped);
+S630,FramedLZ4CompressorInputStream.java,259,if (expectBlockDependency) {
+S631,FramedLZ4CompressorInputStream.java,260,s.prefill(blockDependencyBuffer);
+S632,FramedLZ4CompressorInputStream.java,262,currentBlock = s;
+S633,FramedLZ4CompressorInputStream.java,267,if (currentBlock != null) {
+S634,FramedLZ4CompressorInputStream.java,268,currentBlock.close();
+S635,FramedLZ4CompressorInputStream.java,269,currentBlock = null;
+S636,FramedLZ4CompressorInputStream.java,270,if (expectBlockChecksum) {
+S637,FramedLZ4CompressorInputStream.java,271,"verifyChecksum(blockHash, ""block"");"
+S638,FramedLZ4CompressorInputStream.java,278,if (expectContentChecksum) {
+S639,FramedLZ4CompressorInputStream.java,279,"verifyChecksum(contentHash, ""content"");"
+S640,FramedLZ4CompressorInputStream.java,281,contentHash.reset();
+S641,FramedLZ4CompressorInputStream.java,285,byte[] checksum = new byte[4];
+S642,FramedLZ4CompressorInputStream.java,286,"int read = IOUtils.readFully(in, checksum);"
+S643,FramedLZ4CompressorInputStream.java,287,count(read);
+S644,FramedLZ4CompressorInputStream.java,288,if (4 != read) {
+S645,FramedLZ4CompressorInputStream.java,289,"throw new IOException(""Premature end of stream while reading "" + kind + "" checksum"");"
+S646,FramedLZ4CompressorInputStream.java,291,long expectedHash = hash.getValue();
+S647,FramedLZ4CompressorInputStream.java,292,if (expectedHash != ByteUtils.fromLittleEndian(checksum)) {
+S648,FramedLZ4CompressorInputStream.java,293,"throw new IOException(kind + "" checksum mismatch."");"
+S649,FramedLZ4CompressorInputStream.java,298,final int b = in.read();
+S650,FramedLZ4CompressorInputStream.java,299,if (b != -1) {
+S651,FramedLZ4CompressorInputStream.java,300,count(1);
+S652,FramedLZ4CompressorInputStream.java,301,return b & 0xFF;
+S653,FramedLZ4CompressorInputStream.java,303,return -1;
+S654,FramedLZ4CompressorInputStream.java,307,if (inUncompressed) {
+S655,FramedLZ4CompressorInputStream.java,308,"int cnt = currentBlock.read(b, off, len);"
+S656,FramedLZ4CompressorInputStream.java,309,count(cnt);
+S657,FramedLZ4CompressorInputStream.java,310,return cnt;
+S658,FramedLZ4CompressorInputStream.java,312,BlockLZ4CompressorInputStream l = (BlockLZ4CompressorInputStream) currentBlock;
+S659,FramedLZ4CompressorInputStream.java,313,long before = l.getBytesRead();
+S660,FramedLZ4CompressorInputStream.java,314,"int cnt = currentBlock.read(b, off, len);"
+S661,FramedLZ4CompressorInputStream.java,315,count(l.getBytesRead() - before);
+S662,FramedLZ4CompressorInputStream.java,316,return cnt;
+S663,FramedLZ4CompressorInputStream.java,320,if ((b[0] & SKIPPABLE_FRAME_PREFIX_BYTE_MASK) != SKIPPABLE_FRAME_PREFIX_BYTE_MASK) {
+S664,FramedLZ4CompressorInputStream.java,321,return false;
+S665,FramedLZ4CompressorInputStream.java,323,for (int i = 1; i < 4; i++) {
+S666,FramedLZ4CompressorInputStream.java,324,if (b[i] != SKIPPABLE_FRAME_TRAILER[i - 1]) {
+S667,FramedLZ4CompressorInputStream.java,325,return false;
+S668,FramedLZ4CompressorInputStream.java,328,return true;
+S669,FramedLZ4CompressorInputStream.java,340,int read = 4;
+S670,FramedLZ4CompressorInputStream.java,341,while (read == 4 && isSkippableFrameSignature(b)) {
+S671,FramedLZ4CompressorInputStream.java,342,"long len = ByteUtils.fromLittleEndian(supplier, 4);"
+S672,FramedLZ4CompressorInputStream.java,343,"long skipped = IOUtils.skip(in, len);"
+S673,FramedLZ4CompressorInputStream.java,344,count(skipped);
+S674,FramedLZ4CompressorInputStream.java,345,if (len != skipped) {
+S675,FramedLZ4CompressorInputStream.java,346,"throw new IOException(""Premature end of stream while skipping frame"");"
+S676,FramedLZ4CompressorInputStream.java,348,"read = IOUtils.readFully(in, b);"
+S677,FramedLZ4CompressorInputStream.java,349,count(read);
+S678,FramedLZ4CompressorInputStream.java,351,return read;
+S679,FramedLZ4CompressorInputStream.java,355,"len = Math.min(len, blockDependencyBuffer.length);"
+S680,FramedLZ4CompressorInputStream.java,356,if (len > 0) {
+S681,FramedLZ4CompressorInputStream.java,357,int keep = blockDependencyBuffer.length - len;
+S682,FramedLZ4CompressorInputStream.java,358,if (keep > 0) {
+S683,FramedLZ4CompressorInputStream.java,360,"System.arraycopy(blockDependencyBuffer, len, blockDependencyBuffer, 0, keep);"
+S684,FramedLZ4CompressorInputStream.java,363,"System.arraycopy(b, off, blockDependencyBuffer, keep, len);"
+S685,FramedLZ4CompressorInputStream.java,378,if (length < LZ4_SIGNATURE.length) {
+S686,FramedLZ4CompressorInputStream.java,379,return false;
+S687,FramedLZ4CompressorInputStream.java,382,byte[] shortenedSig = signature;
+S688,FramedLZ4CompressorInputStream.java,383,if (signature.length > LZ4_SIGNATURE.length) {
+S689,FramedLZ4CompressorInputStream.java,384,shortenedSig = new byte[LZ4_SIGNATURE.length];
+S690,FramedLZ4CompressorInputStream.java,385,"System.arraycopy(signature, 0, shortenedSig, 0, LZ4_SIGNATURE.length);"
+S691,FramedLZ4CompressorInputStream.java,388,"return Arrays.equals(shortenedSig, LZ4_SIGNATURE);"
+S692,FramedLZ4CompressorOutputStream.java,39,private static final byte[] END_MARK = new byte[4];
+S693,FramedLZ4CompressorOutputStream.java,42,private final byte[] oneByte = new byte[1];
+S694,FramedLZ4CompressorOutputStream.java,47,private boolean finished = false;
+S695,FramedLZ4CompressorOutputStream.java,48,private int currentIndex = 0;
+S696,FramedLZ4CompressorOutputStream.java,51,private final XXHash32 contentHash = new XXHash32();
+S697,FramedLZ4CompressorOutputStream.java,62,public enum BlockSize {
+S698,FramedLZ4CompressorOutputStream.java,64,"K64(64 * 1024, 4),"
+S699,FramedLZ4CompressorOutputStream.java,66,"K256(256 * 1024, 5),"
+S700,FramedLZ4CompressorOutputStream.java,68,"M1(1024 * 1024, 6),"
+S701,FramedLZ4CompressorOutputStream.java,70,"M4(4096 * 1024, 7);"
+S702,FramedLZ4CompressorOutputStream.java,73,"private BlockSize(int size, int index) {"
+S703,FramedLZ4CompressorOutputStream.java,74,this.size = size;
+S704,FramedLZ4CompressorOutputStream.java,75,this.index = index;
+S705,FramedLZ4CompressorOutputStream.java,78,return size;
+S706,FramedLZ4CompressorOutputStream.java,81,return index;
+S707,FramedLZ4CompressorOutputStream.java,88,public static class Parameters {
+S708,FramedLZ4CompressorOutputStream.java,99,"public static final Parameters DEFAULT = new Parameters(BlockSize.M4, true, false, false);"
+S709,FramedLZ4CompressorOutputStream.java,108,"this(blockSize, true, false, false);"
+S710,FramedLZ4CompressorOutputStream.java,137,"this(blockSize, withContentChecksum, withBlockChecksum, withBlockDependency,"
+S711,FramedLZ4CompressorOutputStream.java,158,org.apache.commons.compress.compressors.lz77support.Parameters lz77params) {
+S712,FramedLZ4CompressorOutputStream.java,159,this.blockSize = blockSize;
+S713,FramedLZ4CompressorOutputStream.java,160,this.withContentChecksum = withContentChecksum;
+S714,FramedLZ4CompressorOutputStream.java,161,this.withBlockChecksum = withBlockChecksum;
+S715,FramedLZ4CompressorOutputStream.java,162,this.withBlockDependency = withBlockDependency;
+S716,FramedLZ4CompressorOutputStream.java,163,this.lz77params = lz77params;
+S717,FramedLZ4CompressorOutputStream.java,168,"return ""LZ4 Parameters with BlockSize "" + blockSize + "", withContentChecksum "" + withContentChecksum"
+S718,FramedLZ4CompressorOutputStream.java,180,"this(out, Parameters.DEFAULT);"
+S719,FramedLZ4CompressorOutputStream.java,190,"public FramedLZ4CompressorOutputStream(OutputStream out, Parameters params) throws IOException {"
+S720,FramedLZ4CompressorOutputStream.java,191,this.params = params;
+S721,FramedLZ4CompressorOutputStream.java,192,blockData = new byte[params.blockSize.getSize()];
+S722,FramedLZ4CompressorOutputStream.java,193,this.out = out;
+S723,FramedLZ4CompressorOutputStream.java,194,blockHash = params.withBlockChecksum ? new XXHash32() : null;
+S724,FramedLZ4CompressorOutputStream.java,195,out.write(FramedLZ4CompressorInputStream.LZ4_SIGNATURE);
+S725,FramedLZ4CompressorOutputStream.java,196,writeFrameDescriptor();
+S726,FramedLZ4CompressorOutputStream.java,197,blockDependencyBuffer = params.withBlockDependency
+S727,FramedLZ4CompressorOutputStream.java,210,if (params.withContentChecksum) {
+S728,FramedLZ4CompressorOutputStream.java,211,"contentHash.update(data, off, len);"
+S729,FramedLZ4CompressorOutputStream.java,213,if (currentIndex + len > blockData.length) {
+S730,FramedLZ4CompressorOutputStream.java,223,"System.arraycopy(data, off, blockData, currentIndex, len);"
+S731,FramedLZ4CompressorOutputStream.java,224,currentIndex += len;
+S732,FramedLZ4CompressorOutputStream.java,229,finish();
+S733,FramedLZ4CompressorOutputStream.java,230,out.close();
+S734,FramedLZ4CompressorOutputStream.java,239,if (!finished) {
+S735,FramedLZ4CompressorOutputStream.java,240,if (currentIndex > 0) {
+S736,FramedLZ4CompressorOutputStream.java,241,flushBlock();
+S737,FramedLZ4CompressorOutputStream.java,243,writeTrailer();
+S738,FramedLZ4CompressorOutputStream.java,244,finished = true;
+S739,FramedLZ4CompressorOutputStream.java,249,int flags = FramedLZ4CompressorInputStream.SUPPORTED_VERSION;
+S740,FramedLZ4CompressorOutputStream.java,250,if (!params.withBlockDependency) {
+S741,FramedLZ4CompressorOutputStream.java,251,flags |= FramedLZ4CompressorInputStream.BLOCK_INDEPENDENCE_MASK;
+S742,FramedLZ4CompressorOutputStream.java,253,if (params.withContentChecksum) {
+S743,FramedLZ4CompressorOutputStream.java,254,flags |= FramedLZ4CompressorInputStream.CONTENT_CHECKSUM_MASK;
+S744,FramedLZ4CompressorOutputStream.java,256,if (params.withBlockChecksum) {
+S745,FramedLZ4CompressorOutputStream.java,259,out.write(flags);
+S746,FramedLZ4CompressorOutputStream.java,260,contentHash.update(flags);
+S747,FramedLZ4CompressorOutputStream.java,261,int bd = (params.blockSize.getIndex() << 4) & FramedLZ4CompressorInputStream.BLOCK_MAX_SIZE_MASK;
+S748,FramedLZ4CompressorOutputStream.java,262,out.write(bd);
+S749,FramedLZ4CompressorOutputStream.java,263,contentHash.update(bd);
+S750,FramedLZ4CompressorOutputStream.java,264,out.write((int) ((contentHash.getValue() >> 8) & 0xff));
+S751,FramedLZ4CompressorOutputStream.java,265,contentHash.reset();
+S752,FramedLZ4CompressorOutputStream.java,269,final boolean withBlockDependency = params.withBlockDependency;
+S753,FramedLZ4CompressorOutputStream.java,270,ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S754,FramedLZ4CompressorOutputStream.java,271,"try (BlockLZ4CompressorOutputStream o = new BlockLZ4CompressorOutputStream(baos, params.lz77params)) {"
+S755,FramedLZ4CompressorOutputStream.java,272,if (withBlockDependency) {
+S756,FramedLZ4CompressorOutputStream.java,276,"o.write(blockData, 0, currentIndex);"
+S757,FramedLZ4CompressorOutputStream.java,278,if (withBlockDependency) {
+S758,FramedLZ4CompressorOutputStream.java,281,byte[] b = baos.toByteArray();
+S759,FramedLZ4CompressorOutputStream.java,282,"if (b.length > currentIndex) { // compression increased size, maybe beyond blocksize"
+S760,FramedLZ4CompressorOutputStream.java,290,"ByteUtils.toLittleEndian(out, b.length, 4);"
+S761,FramedLZ4CompressorOutputStream.java,291,out.write(b);
+S762,FramedLZ4CompressorOutputStream.java,292,if (params.withBlockChecksum) {
+S763,FramedLZ4CompressorOutputStream.java,296,if (params.withBlockChecksum) {
+S764,FramedLZ4CompressorOutputStream.java,300,currentIndex = 0;
+S765,FramedLZ4CompressorOutputStream.java,304,out.write(END_MARK);
+S766,FramedLZ4CompressorOutputStream.java,305,if (params.withContentChecksum) {
+S767,FramedLZ4CompressorOutputStream.java,306,"ByteUtils.toLittleEndian(out, contentHash.getValue(), 4);"
+S768,FramedSnappyCompressorInputStream.java,55,static final byte[] SZ_SIGNATURE = new byte[] { //NOSONAR
+S769,FramedSnappyCompressorInputStream.java,318,if (length < SZ_SIGNATURE.length) {
+S770,FramedSnappyCompressorInputStream.java,319,return false;
+S771,FramedSnappyCompressorInputStream.java,322,byte[] shortenedSig = signature;
+S772,FramedSnappyCompressorInputStream.java,323,if (signature.length > SZ_SIGNATURE.length) {
+S773,FramedSnappyCompressorInputStream.java,324,shortenedSig = new byte[SZ_SIGNATURE.length];
+S774,FramedSnappyCompressorInputStream.java,325,"System.arraycopy(signature, 0, shortenedSig, 0, SZ_SIGNATURE.length);"
+S775,FramedSnappyCompressorInputStream.java,328,"return Arrays.equals(shortenedSig, SZ_SIGNATURE);"
+S776,GzipCompressorInputStream.java,52,public class GzipCompressorInputStream extends CompressorInputStream {
+S777,GzipCompressorInputStream.java,68,private final byte[] buf = new byte[8192];
+S778,GzipCompressorInputStream.java,74,private Inflater inf = new Inflater(true);
+S779,GzipCompressorInputStream.java,77,private final CRC32 crc = new CRC32();
+S780,GzipCompressorInputStream.java,80,private boolean endReached = false;
+S781,GzipCompressorInputStream.java,83,private final byte[] oneByte = new byte[1];
+S782,GzipCompressorInputStream.java,85,private final GzipParameters parameters = new GzipParameters();
+S783,GzipCompressorInputStream.java,127,throws IOException {
+S784,GzipCompressorInputStream.java,130,if (inputStream.markSupported()) {
+S785,GzipCompressorInputStream.java,131,in = inputStream;
+S786,GzipCompressorInputStream.java,136,this.decompressConcatenated = decompressConcatenated;
+S787,GzipCompressorInputStream.java,137,init(true);
+S788,GzipCompressorInputStream.java,151,assert isFirstMember || decompressConcatenated;
+S789,GzipCompressorInputStream.java,154,final int magic0 = in.read();
+S790,GzipCompressorInputStream.java,155,final int magic1 = in.read();
+S791,GzipCompressorInputStream.java,159,if (magic0 == -1 && !isFirstMember) {
+S792,GzipCompressorInputStream.java,160,return false;
+S793,GzipCompressorInputStream.java,163,if (magic0 != 31 || magic1 != 139) {
+S794,GzipCompressorInputStream.java,170,final DataInput inData = new DataInputStream(in);
+S795,GzipCompressorInputStream.java,171,final int method = inData.readUnsignedByte();
+S796,GzipCompressorInputStream.java,172,if (method != Deflater.DEFLATED) {
+S797,GzipCompressorInputStream.java,177,final int flg = inData.readUnsignedByte();
+S798,GzipCompressorInputStream.java,178,if ((flg & FRESERVED) != 0) {
+S799,GzipCompressorInputStream.java,183,"parameters.setModificationTime(ByteUtils.fromLittleEndian(inData, 4) * 1000);"
+S800,GzipCompressorInputStream.java,184,switch (inData.readUnsignedByte()) { // extra flags
+S801,GzipCompressorInputStream.java,195,parameters.setOperatingSystem(inData.readUnsignedByte());
+S802,GzipCompressorInputStream.java,198,if ((flg & FEXTRA) != 0) {
+S803,GzipCompressorInputStream.java,211,if ((flg & FNAME) != 0) {
+S804,GzipCompressorInputStream.java,212,"parameters.setFilename(new String(readToNull(inData),"
+S805,GzipCompressorInputStream.java,217,if ((flg & FCOMMENT) != 0) {
+S806,GzipCompressorInputStream.java,227,if ((flg & FHCRC) != 0) {
+S807,GzipCompressorInputStream.java,232,inf.reset();
+S808,GzipCompressorInputStream.java,233,crc.reset();
+S809,GzipCompressorInputStream.java,235,return true;
+S810,GzipCompressorInputStream.java,239,final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+S811,GzipCompressorInputStream.java,240,int b = 0;
+S812,GzipCompressorInputStream.java,241,while ((b = inData.readUnsignedByte()) != 0x00) { // NOPMD
+S813,GzipCompressorInputStream.java,242,bos.write(b);
+S814,GzipCompressorInputStream.java,244,return bos.toByteArray();
+S815,GzipCompressorInputStream.java,249,"return read(oneByte, 0, 1) == -1 ? -1 : oneByte[0] & 0xFF;"
+S816,GzipCompressorInputStream.java,259,if (endReached) {
+S817,GzipCompressorInputStream.java,260,return -1;
+S818,GzipCompressorInputStream.java,263,int size = 0;
+S819,GzipCompressorInputStream.java,265,while (len > 0) {
+S820,GzipCompressorInputStream.java,266,if (inf.needsInput()) {
+S821,GzipCompressorInputStream.java,269,in.mark(buf.length);
+S822,GzipCompressorInputStream.java,271,bufUsed = in.read(buf);
+S823,GzipCompressorInputStream.java,272,if (bufUsed == -1) {
+S824,GzipCompressorInputStream.java,276,"inf.setInput(buf, 0, bufUsed);"
+S825,GzipCompressorInputStream.java,281,"ret = inf.inflate(b, off, len);"
+S826,GzipCompressorInputStream.java,286,"crc.update(b, off, ret);"
+S827,GzipCompressorInputStream.java,287,off += ret;
+S828,GzipCompressorInputStream.java,288,len -= ret;
+S829,GzipCompressorInputStream.java,289,size += ret;
+S830,GzipCompressorInputStream.java,290,count(ret);
+S831,GzipCompressorInputStream.java,292,if (inf.finished()) {
+S832,GzipCompressorInputStream.java,298,in.reset();
+S833,GzipCompressorInputStream.java,300,final int skipAmount = bufUsed - inf.getRemaining();
+S834,GzipCompressorInputStream.java,301,if (in.skip(skipAmount) != skipAmount) {
+S835,GzipCompressorInputStream.java,305,bufUsed = 0;
+S836,GzipCompressorInputStream.java,307,final DataInput inData = new DataInputStream(in);
+S837,GzipCompressorInputStream.java,310,"final long crcStored = ByteUtils.fromLittleEndian(inData, 4);"
+S838,GzipCompressorInputStream.java,312,if (crcStored != crc.getValue()) {
+S839,GzipCompressorInputStream.java,318,"final long isize = ByteUtils.fromLittleEndian(inData, 4);"
+S840,GzipCompressorInputStream.java,320,if (isize != (inf.getBytesWritten() & 0xffffffffl)) {
+S841,GzipCompressorInputStream.java,326,if (!decompressConcatenated || !init(false)) {
+S842,GzipCompressorInputStream.java,327,inf.end();
+S843,GzipCompressorInputStream.java,328,inf = null;
+S844,GzipCompressorInputStream.java,329,endReached = true;
+S845,GzipCompressorInputStream.java,330,return size == 0 ? -1 : size;
+S846,GzipCompressorInputStream.java,335,return size;
+S847,GzipCompressorInputStream.java,349,if (length < 2) {
+S848,GzipCompressorInputStream.java,350,return false;
+S849,GzipCompressorInputStream.java,353,if (signature[0] != 31) {
+S850,GzipCompressorInputStream.java,354,return false;
+S851,GzipCompressorInputStream.java,357,if (signature[1] != -117) {
+S852,GzipCompressorInputStream.java,358,return false;
+S853,GzipCompressorInputStream.java,361,return true;
+S854,GzipParameters.java,29,public class GzipParameters {
+S855,GzipParameters.java,31,private int compressionLevel = Deflater.DEFAULT_COMPRESSION;
+S856,GzipParameters.java,35,private int operatingSystem = 255; // Unknown OS by default
+S857,GzipParameters.java,67,this.modificationTime = modificationTime;
+S858,GzipParameters.java,80,this.filename = filename;
+S859,GzipParameters.java,119,this.operatingSystem = operatingSystem;
+S860,IOUtils.java,41,private static final byte[] SKIP_BUF = new byte[SKIP_BUF_SIZE];
+S861,IOUtils.java,60,"return copy(input, output, COPY_BUF_SIZE);"
+S862,IOUtils.java,77,final byte[] buffer = new byte[buffersize];
+S863,IOUtils.java,78,int n = 0;
+S864,IOUtils.java,79,long count=0;
+S865,IOUtils.java,80,while (-1 != (n = input.read(buffer))) {
+S866,IOUtils.java,81,"output.write(buffer, 0, n);"
+S867,IOUtils.java,82,count += n;
+S868,IOUtils.java,84,return count;
+S869,IOUtils.java,104,final long available = numToSkip;
+S870,IOUtils.java,105,while (numToSkip > 0) {
+S871,IOUtils.java,106,final long skipped = input.skip(numToSkip);
+S872,IOUtils.java,107,if (skipped == 0) {
+S873,IOUtils.java,108,break;
+S874,IOUtils.java,110,numToSkip -= skipped;
+S875,IOUtils.java,113,while (numToSkip > 0) {
+S876,IOUtils.java,114,"final int read = readFully(input, SKIP_BUF, 0,"
+S877,IOUtils.java,116,if (read < 1) {
+S878,IOUtils.java,117,break;
+S879,IOUtils.java,121,return available - numToSkip;
+S880,IOUtils.java,137,"return readFully(input, b, 0, b.length);"
+S881,IOUtils.java,158,if (len < 0 || offset < 0 || len + offset > b.length) {
+S882,IOUtils.java,161,"int count = 0, x = 0;"
+S883,IOUtils.java,162,while (count != len) {
+S884,IOUtils.java,163,"x = input.read(b, offset + count, len - count);"
+S885,IOUtils.java,164,if (x == -1) {
+S886,IOUtils.java,165,break;
+S887,IOUtils.java,167,count += x;
+S888,IOUtils.java,169,return count;
+S889,IOUtils.java,220,final ByteArrayOutputStream output = new ByteArrayOutputStream();
+S890,IOUtils.java,221,"copy(input, output);"
+S891,IOUtils.java,222,return output.toByteArray();
+S892,InMemoryCachingStreamBridge.java,34,super(new ByteArrayOutputStream());
+S893,LZ77Compressor.java,90,public static abstract class Block { }
+S894,LZ77Compressor.java,102,"public LiteralBlock(byte[] data, int offset, int length) {"
+S895,LZ77Compressor.java,103,this.data = data;
+S896,LZ77Compressor.java,104,this.offset = offset;
+S897,LZ77Compressor.java,105,this.length = length;
+S898,LZ77Compressor.java,115,return data;
+S899,LZ77Compressor.java,122,return offset;
+S900,LZ77Compressor.java,129,return length;
+S901,LZ77Compressor.java,142,"public BackReference(int offset, int length) {"
+S902,LZ77Compressor.java,143,this.offset = offset;
+S903,LZ77Compressor.java,144,this.length = length;
+S904,LZ77Compressor.java,151,return offset;
+S905,LZ77Compressor.java,158,return length;
+S906,LZ77Compressor.java,169,public static final class EOD extends Block { }
+S907,LZ77Compressor.java,171,private static final EOD THE_EOD = new EOD();
+S908,LZ77Compressor.java,210,private boolean initialized = false;
+S909,LZ77Compressor.java,215,private int lookahead = 0;
+S910,LZ77Compressor.java,217,private int insertHash = 0;
+S911,LZ77Compressor.java,220,private int blockStart = 0;
+S912,LZ77Compressor.java,222,private int matchStart = NO_MATCH;
+S913,LZ77Compressor.java,226,private int missedInserts = 0;
+S914,LZ77Compressor.java,234,"public LZ77Compressor(Parameters params, Callback callback) {"
+S915,LZ77Compressor.java,235,if (params == null) {
+S916,LZ77Compressor.java,238,if (callback == null) {
+S917,LZ77Compressor.java,241,this.params = params;
+S918,LZ77Compressor.java,242,this.callback = callback;
+S919,LZ77Compressor.java,244,final int wSize = params.getWindowSize();
+S920,LZ77Compressor.java,245,window = new byte[wSize * 2];
+S921,LZ77Compressor.java,246,wMask = wSize - 1;
+S922,LZ77Compressor.java,247,head = new int[HASH_SIZE];
+S923,LZ77Compressor.java,248,"Arrays.fill(head, NO_MATCH);"
+S924,LZ77Compressor.java,249,prev = new int[wSize];
+S925,LZ77Compressor.java,273,final int wSize = params.getWindowSize();
+S926,LZ77Compressor.java,274,while (len > wSize) { // chop into windowSize sized chunks
+S927,LZ77Compressor.java,279,if (len > 0) {
+S928,LZ77Compressor.java,280,"doCompress(data, off, len);"
+S929,LZ77Compressor.java,294,if (blockStart != currentPosition || lookahead > 0) {
+S930,LZ77Compressor.java,298,callback.accept(THE_EOD);
+S931,LZ77Compressor.java,348,final int nextVal = nextByte & 0xFF;
+S932,LZ77Compressor.java,349,return ((oldHash << H_SHIFT) ^ nextVal) & HASH_MASK;
+S933,LZ77Compressor.java,354,int spaceLeft = window.length - currentPosition - lookahead;
+S934,LZ77Compressor.java,355,if (len > spaceLeft) {
+S935,LZ77Compressor.java,358,"System.arraycopy(data, off, window, currentPosition + lookahead, len);"
+S936,LZ77Compressor.java,359,lookahead += len;
+S937,LZ77Compressor.java,360,if (!initialized && lookahead >= params.getMinBackReferenceLength()) {
+S938,LZ77Compressor.java,361,initialize();
+S939,LZ77Compressor.java,363,if (initialized) {
+S940,LZ77Compressor.java,364,compress();
+S941,LZ77Compressor.java,389,for (int i = 0; i < NUMBER_OF_BYTES_IN_HASH - 1; i++) {
+S942,LZ77Compressor.java,390,"insertHash = nextHash(insertHash, window[i]);"
+S943,LZ77Compressor.java,392,initialized = true;
+S944,LZ77Compressor.java,396,final int minMatch = params.getMinBackReferenceLength();
+S945,LZ77Compressor.java,397,final boolean lazy = params.getLazyMatching();
+S946,LZ77Compressor.java,398,final int lazyThreshold = params.getLazyMatchingThreshold();
+S947,LZ77Compressor.java,400,while (lookahead >= minMatch) {
+S948,LZ77Compressor.java,401,catchUpMissedInserts();
+S949,LZ77Compressor.java,402,int matchLength = 0;
+S950,LZ77Compressor.java,403,int hashHead = insertString(currentPosition);
+S951,LZ77Compressor.java,404,if (hashHead != NO_MATCH && hashHead - currentPosition <= params.getMaxOffset()) {
+S952,LZ77Compressor.java,406,matchLength = longestMatch(hashHead);
+S953,LZ77Compressor.java,408,if (lazy && matchLength <= lazyThreshold && lookahead > minMatch) {
+S954,LZ77Compressor.java,410,matchLength = longestMatchForNextPosition(matchLength);
+S955,LZ77Compressor.java,413,if (matchLength >= minMatch) {
+S956,LZ77Compressor.java,414,if (blockStart != currentPosition) {
+S957,LZ77Compressor.java,416,flushLiteralBlock();
+S958,LZ77Compressor.java,417,blockStart = NO_MATCH;
+S959,LZ77Compressor.java,419,flushBackReference(matchLength);
+S960,LZ77Compressor.java,420,insertStringsInMatch(matchLength);
+S961,LZ77Compressor.java,421,lookahead -= matchLength;
+S962,LZ77Compressor.java,422,currentPosition += matchLength;
+S963,LZ77Compressor.java,423,blockStart = currentPosition;
+S964,LZ77Compressor.java,426,lookahead--;
+S965,LZ77Compressor.java,427,currentPosition++;
+S966,LZ77Compressor.java,428,if (currentPosition - blockStart >= params.getMaxLiteralLength()) {
+S967,LZ77Compressor.java,444,"insertHash = nextHash(insertHash, window[pos - 1 + NUMBER_OF_BYTES_IN_HASH]);"
+S968,LZ77Compressor.java,445,int hashHead = head[insertHash];
+S969,LZ77Compressor.java,446,prev[pos & wMask] = hashHead;
+S970,LZ77Compressor.java,447,head[insertHash] = pos;
+S971,LZ77Compressor.java,448,return hashHead;
+S972,LZ77Compressor.java,453,final int prevMatchStart = matchStart;
+S973,LZ77Compressor.java,454,final int prevInsertHash = insertHash;
+S974,LZ77Compressor.java,456,lookahead--;
+S975,LZ77Compressor.java,457,currentPosition++;
+S976,LZ77Compressor.java,458,int hashHead = insertString(currentPosition);
+S977,LZ77Compressor.java,459,final int prevHashHead = prev[currentPosition & wMask];
+S978,LZ77Compressor.java,460,int matchLength = longestMatch(hashHead);
+S979,LZ77Compressor.java,462,if (matchLength <= prevMatchLength) {
+S980,LZ77Compressor.java,464,matchLength = prevMatchLength;
+S981,LZ77Compressor.java,465,matchStart = prevMatchStart;
+S982,LZ77Compressor.java,468,head[insertHash] = prevHashHead;
+S983,LZ77Compressor.java,469,insertHash = prevInsertHash;
+S984,LZ77Compressor.java,470,currentPosition--;
+S985,LZ77Compressor.java,471,lookahead++;
+S986,LZ77Compressor.java,473,return matchLength;
+S987,LZ77Compressor.java,479,"final int stop = Math.min(matchLength - 1, lookahead - NUMBER_OF_BYTES_IN_HASH);"
+S988,LZ77Compressor.java,481,for (int i = 1; i <= stop; i++) {
+S989,LZ77Compressor.java,482,insertString(currentPosition + i);
+S990,LZ77Compressor.java,484,missedInserts = matchLength - stop - 1;
+S991,LZ77Compressor.java,488,while (missedInserts > 0) {
+S992,LZ77Compressor.java,489,insertString(currentPosition - missedInserts--);
+S993,LZ77Compressor.java,494,"callback.accept(new BackReference(currentPosition - matchStart, matchLength));"
+S994,LZ77Compressor.java,498,"callback.accept(new LiteralBlock(window, blockStart, currentPosition - blockStart));"
+S995,LZ77Compressor.java,510,final int minLength = params.getMinBackReferenceLength();
+S996,LZ77Compressor.java,511,int longestMatchLength = minLength - 1;
+S997,LZ77Compressor.java,512,"final int maxPossibleLength = Math.min(params.getMaxBackReferenceLength(), lookahead);"
+S998,LZ77Compressor.java,513,"final int minIndex = Math.max(0, currentPosition - params.getMaxOffset());"
+S999,LZ77Compressor.java,514,"final int niceBackReferenceLength = Math.min(maxPossibleLength, params.getNiceBackReferenceLength());"
+S1000,LZ77Compressor.java,515,final int maxCandidates = params.getMaxCandidates();
+S1001,LZ77Compressor.java,516,for (int candidates = 0; candidates < maxCandidates && matchHead >= minIndex; candidates++) {
+S1002,LZ77Compressor.java,517,int currentLength = 0;
+S1003,LZ77Compressor.java,518,for (int i = 0; i < maxPossibleLength; i++) {
+S1004,LZ77Compressor.java,519,if (window[matchHead + i] != window[currentPosition + i]) {
+S1005,LZ77Compressor.java,520,break;
+S1006,LZ77Compressor.java,522,currentLength++;
+S1007,LZ77Compressor.java,524,if (currentLength > longestMatchLength) {
+S1008,LZ77Compressor.java,525,longestMatchLength = currentLength;
+S1009,LZ77Compressor.java,526,matchStart = matchHead;
+S1010,LZ77Compressor.java,527,if (currentLength >= niceBackReferenceLength) {
+S1011,LZ77Compressor.java,529,break;
+S1012,LZ77Compressor.java,532,matchHead = prev[matchHead & wMask];
+S1013,LZ77Compressor.java,534,"return longestMatchLength; // < minLength if no matches have been found, will be ignored in compress()"
+S1014,LZMACompressorInputStream.java,71,throws IOException {
+S1015,LZMACompressorInputStream.java,73,"in = new LZMAInputStream(inputStream, memoryLimitInKb);"
+S1016,LZMACompressorInputStream.java,74,} catch (org.tukaani.xz.MemoryLimitException e) {
+S1017,LZMACompressorInputStream.java,76,"throw new MemoryLimitException(e.getMemoryNeeded(), e.getMemoryLimit(), e);"
+S1018,LZMACompressorInputStream.java,127,if (signature == null || length < 3) {
+S1019,LZMACompressorInputStream.java,128,return false;
+S1020,LZMAUtils.java,37,private static final byte[] HEADER_MAGIC = {
+S1021,LZMAUtils.java,41,static enum CachedAvailability {
+S1022,LZMAUtils.java,42,"DONT_CACHE, CACHED_AVAILABLE, CACHED_UNAVAILABLE"
+S1023,LZMAUtils.java,48,"final Map<String, String> uncompressSuffix = new HashMap<>();"
+S1024,LZMAUtils.java,49,"uncompressSuffix.put("".lzma"", """");"
+S1025,LZMAUtils.java,50,"uncompressSuffix.put(""-lzma"", """");"
+S1026,LZMAUtils.java,51,"fileNameUtil = new FileNameUtil(uncompressSuffix, "".lzma"");"
+S1027,LZMAUtils.java,52,cachedLZMAAvailability = CachedAvailability.DONT_CACHE;
+S1028,LZMAUtils.java,54,"Class.forName(""org.osgi.framework.BundleEvent"");"
+S1029,LZMAUtils.java,55,} catch (final Exception ex) {
+S1030,LZMAUtils.java,56,setCacheLZMAAvailablity(true);
+S1031,LZMAUtils.java,72,if (length < HEADER_MAGIC.length) {
+S1032,LZMAUtils.java,73,return false;
+S1033,LZMAUtils.java,76,for (int i = 0; i < HEADER_MAGIC.length; ++i) {
+S1034,LZMAUtils.java,77,if (signature[i] != HEADER_MAGIC[i]) {
+S1035,LZMAUtils.java,78,return false;
+S1036,LZMAUtils.java,82,return true;
+S1037,LZMAUtils.java,91,final CachedAvailability cachedResult = cachedLZMAAvailability;
+S1038,LZMAUtils.java,92,if (cachedResult != CachedAvailability.DONT_CACHE) {
+S1039,LZMAUtils.java,93,return cachedResult == CachedAvailability.CACHED_AVAILABLE;
+S1040,LZMAUtils.java,100,"LZMACompressorInputStream.matches(null, 0);"
+S1041,LZMAUtils.java,101,return true;
+S1042,LZMAUtils.java,150,if (!doCache) {
+S1043,LZMAUtils.java,152,} else if (cachedLZMAAvailability == CachedAvailability.DONT_CACHE) {
+S1044,LZMAUtils.java,153,final boolean hasLzma = internalIsLZMACompressionAvailable();
+S1045,LZMAUtils.java,154,cachedLZMAAvailability = hasLzma ? CachedAvailability.CACHED_AVAILABLE
+S1046,LZWInputStream.java,41,private final byte[] oneByte = new byte[1];
+S1047,LZWInputStream.java,44,private int clearCode = -1;
+S1048,LZWInputStream.java,45,private int codeSize = DEFAULT_CODE_SIZE;
+S1049,LZWInputStream.java,47,private int previousCode = UNUSED_PREFIX;
+S1050,LZWInputStream.java,54,"protected LZWInputStream(final InputStream inputStream, final ByteOrder byteOrder) {"
+S1051,LZWInputStream.java,55,"this.in = new BitInputStream(inputStream, byteOrder);"
+S1052,LZWInputStream.java,126,if (memoryLimitInKb > -1) {
+S1053,LZWInputStream.java,127,final int maxTableSize = 1 << maxCodeSize;
+S1054,LZWInputStream.java,129,long memoryUsageInBytes = (long) maxTableSize * 6;//(4 (prefixes) + 1 (characters) +1 (outputStack))
+S1055,LZWInputStream.java,130,long memoryUsageInKb = memoryUsageInBytes >> 10;
+S1056,LZWInputStream.java,132,if (memoryUsageInKb > memoryLimitInKb) {
+S1057,LZWInputStream.java,133,"throw new MemoryLimitException(memoryUsageInKb, memoryLimitInKb);"
+S1058,MemoryLimitException.java,40,"super(buildMessage(memoryNeededInKb, memoryLimitInKb));"
+S1059,MemoryLimitException.java,41,this.memoryNeededInKb = memoryNeededInKb;
+S1060,MemoryLimitException.java,42,this.memoryLimitInKb = memoryLimitInKb;
+S1061,MemoryLimitException.java,46,"super(buildMessage(memoryNeededInKb, memoryLimitInKb), e);"
+S1062,MemoryLimitException.java,47,this.memoryNeededInKb = memoryNeededInKb;
+S1063,MemoryLimitException.java,48,this.memoryLimitInKb = memoryLimitInKb;
+S1064,MemoryLimitException.java,60,"return memoryNeededInKb + "" kb of memory would be needed; limit was """
+S1065,Pack200CompressorInputStream.java,59,"this(in, Pack200Strategy.IN_MEMORY);"
+S1066,Pack200CompressorInputStream.java,76,"this(in, null, mode, null);"
+S1067,Pack200CompressorInputStream.java,171,throws IOException {
+S1068,Pack200CompressorInputStream.java,172,originalInput = in;
+S1069,Pack200CompressorInputStream.java,173,streamBridge = mode.newStreamBridge();
+S1070,Pack200CompressorInputStream.java,174,try (final JarOutputStream jarOut = new JarOutputStream(streamBridge)) {
+S1071,Pack200CompressorInputStream.java,175,final Pack200.Unpacker u = Pack200.newUnpacker();
+S1072,Pack200CompressorInputStream.java,176,if (props != null) {
+S1073,Pack200CompressorInputStream.java,179,if (f == null) {
+S1074,Pack200CompressorInputStream.java,180,u.unpack(new FilterInputStream(in) {
+S1075,Pack200CompressorInputStream.java,252,private static final byte[] CAFE_DOOD = new byte[] {
+S1076,Pack200CompressorInputStream.java,255,private static final int SIG_LENGTH = CAFE_DOOD.length;
+S1077,Pack200CompressorInputStream.java,269,if (length < SIG_LENGTH) {
+S1078,Pack200CompressorInputStream.java,270,return false;
+S1079,Pack200CompressorInputStream.java,273,for (int i = 0; i < SIG_LENGTH; i++) {
+S1080,Pack200CompressorInputStream.java,274,if (signature[i] != CAFE_DOOD[i]) {
+S1081,Pack200CompressorInputStream.java,275,return false;
+S1082,Pack200CompressorInputStream.java,279,return true;
+S1083,Pack200Strategy.java,29,public enum Pack200Strategy {
+S1084,Pack200Strategy.java,31,IN_MEMORY() {
+S1085,Pack200Strategy.java,34,return new InMemoryCachingStreamBridge();
+S1086,Pack200Strategy.java,38,TEMP_FILE() {
+S1087,Parameters.java,24,public final class Parameters {
+S1088,Parameters.java,47,return new Builder(windowSize);
+S1089,Parameters.java,53,public static class Builder {
+S1090,Parameters.java,59,private Builder(int windowSize) {
+S1091,Parameters.java,60,if (windowSize < 2 || !isPowerOfTwo(windowSize)) {
+S1092,Parameters.java,63,this.windowSize = windowSize;
+S1093,Parameters.java,64,minBackReferenceLength = TRUE_MIN_BACK_REFERENCE_LENGTH;
+S1094,Parameters.java,65,maxBackReferenceLength = windowSize - 1;
+S1095,Parameters.java,66,maxOffset = windowSize - 1;
+S1096,Parameters.java,67,maxLiteralLength = windowSize;
+S1097,Parameters.java,89,"this.minBackReferenceLength = Math.max(TRUE_MIN_BACK_REFERENCE_LENGTH, minBackReferenceLength);"
+S1098,Parameters.java,90,if (windowSize < this.minBackReferenceLength) {
+S1099,Parameters.java,93,if (maxBackReferenceLength < this.minBackReferenceLength) {
+S1100,Parameters.java,96,return this;
+S1101,Parameters.java,115,this.maxBackReferenceLength = maxBackReferenceLength < minBackReferenceLength ? minBackReferenceLength
+S1102,Parameters.java,117,return this;
+S1103,Parameters.java,135,"this.maxOffset = maxOffset < 1 ? windowSize - 1 : Math.min(maxOffset, windowSize - 1);"
+S1104,Parameters.java,136,return this;
+S1105,Parameters.java,154,this.maxLiteralLength = maxLiteralLength < 1 ? windowSize
+S1106,Parameters.java,156,return this;
+S1107,Parameters.java,221,"niceBackReferenceLength = Math.max(minBackReferenceLength, maxBackReferenceLength / 8);"
+S1108,Parameters.java,222,"maxCandidates = Math.max(32, windowSize / 1024);"
+S1109,Parameters.java,223,lazyMatches = false;
+S1110,Parameters.java,224,lazyThreshold = minBackReferenceLength;
+S1111,Parameters.java,225,return this;
+S1112,Parameters.java,248,int niceLen = niceBackReferenceLength != null ? niceBackReferenceLength
+S1113,Parameters.java,250,"int candidates = maxCandidates != null ? maxCandidates : Math.max(256, windowSize / 128);"
+S1114,Parameters.java,251,boolean lazy = lazyMatches == null || lazyMatches;
+S1115,Parameters.java,252,int threshold = lazy ? (lazyThreshold != null ? lazyThreshold : niceLen) : minBackReferenceLength;
+S1116,Parameters.java,254,"return new Parameters(windowSize, minBackReferenceLength, maxBackReferenceLength,"
+S1117,Parameters.java,265,int lazyThreshold) {
+S1118,Parameters.java,266,this.windowSize = windowSize;
+S1119,Parameters.java,267,this.minBackReferenceLength = minBackReferenceLength;
+S1120,Parameters.java,268,this.maxBackReferenceLength = maxBackReferenceLength;
+S1121,Parameters.java,269,this.maxOffset = maxOffset;
+S1122,Parameters.java,270,this.maxLiteralLength = maxLiteralLength;
+S1123,Parameters.java,271,this.niceBackReferenceLength = niceBackReferenceLength;
+S1124,Parameters.java,272,this.maxCandidates = maxCandidates;
+S1125,Parameters.java,273,this.lazyMatching = lazyMatching;
+S1126,Parameters.java,274,this.lazyThreshold = lazyThreshold;
+S1127,Parameters.java,283,return windowSize;
+S1128,Parameters.java,290,return minBackReferenceLength;
+S1129,Parameters.java,297,return maxBackReferenceLength;
+S1130,Parameters.java,304,return maxOffset;
+S1131,Parameters.java,311,return maxLiteralLength;
+S1132,Parameters.java,319,return niceBackReferenceLength;
+S1133,Parameters.java,327,return maxCandidates;
+S1134,Parameters.java,335,return lazyMatching;
+S1135,Parameters.java,343,return lazyThreshold;
+S1136,Parameters.java,348,return (x & (x - 1)) == 0;
+S1137,StreamBridge.java,36,private final Object inputLock = new Object();
+S1138,StreamBridge.java,39,super(out);
+S1139,XXHash32.java,45,private final byte[] oneByte = new byte[1];
+S1140,XXHash32.java,46,private final int[] state = new int[4];
+S1141,XXHash32.java,49,private final byte[] buffer = new byte[BUF_SIZE];
+S1142,XXHash32.java,59,this(0);
+S1143,XXHash32.java,66,public XXHash32(int seed) {
+S1144,XXHash32.java,67,this.seed = seed;
+S1145,XXHash32.java,68,initializeState();
+S1146,XXHash32.java,73,initializeState();
+S1147,XXHash32.java,74,totalLen = 0;
+S1148,XXHash32.java,75,pos = 0;
+S1149,XXHash32.java,80,oneByte[0] = (byte) (b & 0xff);
+S1150,XXHash32.java,81,"update(oneByte, 0, 1);"
+S1151,XXHash32.java,86,if (len <= 0) {
+S1152,XXHash32.java,89,totalLen += len;
+S1153,XXHash32.java,91,final int end = off + len;
+S1154,XXHash32.java,93,if (pos + len < BUF_SIZE) {
+S1155,XXHash32.java,94,"System.arraycopy(b, off, buffer, pos, len);"
+S1156,XXHash32.java,95,pos += len;
+S1157,XXHash32.java,96,return;
+S1158,XXHash32.java,99,if (pos > 0) {
+S1159,XXHash32.java,100,final int size = BUF_SIZE - pos;
+S1160,XXHash32.java,101,"System.arraycopy(b, off, buffer, pos, size);"
+S1161,XXHash32.java,102,"process(buffer, 0);"
+S1162,XXHash32.java,103,off += size;
+S1163,XXHash32.java,106,final int limit = end - BUF_SIZE;
+S1164,XXHash32.java,107,while (off <= limit) {
+S1165,XXHash32.java,108,"process(b, off);"
+S1166,XXHash32.java,109,off += BUF_SIZE;
+S1167,XXHash32.java,112,if (off < end) {
+S1168,XXHash32.java,113,pos = end - off;
+S1169,XXHash32.java,114,"System.arraycopy(b, off, buffer, 0, pos);"
+S1170,XXHash32.java,121,if (totalLen > BUF_SIZE) {
+S1171,XXHash32.java,122,hash =
+S1172,XXHash32.java,128,hash = state[2] + PRIME5;
+S1173,XXHash32.java,130,hash += totalLen;
+S1174,XXHash32.java,132,int idx = 0;
+S1175,XXHash32.java,133,final int limit = pos - 4;
+S1176,XXHash32.java,134,for (; idx <= limit; idx += 4) {
+S1177,XXHash32.java,135,"hash = rotateLeft(hash + getInt(buffer, idx) * PRIME3, 17) * PRIME4;"
+S1178,XXHash32.java,137,while (idx < pos) {
+S1179,XXHash32.java,138,"hash = rotateLeft(hash + (buffer[idx++] & 0xff) * PRIME5, 11) * PRIME1;"
+S1180,XXHash32.java,141,hash ^= hash >>> 15;
+S1181,XXHash32.java,142,hash *= PRIME2;
+S1182,XXHash32.java,143,hash ^= hash >>> 13;
+S1183,XXHash32.java,144,hash *= PRIME3;
+S1184,XXHash32.java,145,hash ^= hash >>> 16;
+S1185,XXHash32.java,146,return hash & 0xffffffffl;
+S1186,XXHash32.java,150,"return (int) (fromLittleEndian(buffer, idx, 4) & 0xffffffffl);"
+S1187,XXHash32.java,154,state[0] = seed + PRIME1 + PRIME2;
+S1188,XXHash32.java,155,state[1] = seed + PRIME2;
+S1189,XXHash32.java,156,state[2] = seed;
+S1190,XXHash32.java,157,state[3] = seed - PRIME1;
+S1191,XXHash32.java,162,int s0 = state[0];
+S1192,XXHash32.java,163,int s1 = state[1];
+S1193,XXHash32.java,164,int s2 = state[2];
+S1194,XXHash32.java,165,int s3 = state[3];
+S1195,XXHash32.java,167,"s0 = rotateLeft(s0 + getInt(b, offset) * PRIME2, ROTATE_BITS) * PRIME1;"
+S1196,XXHash32.java,168,"s1 = rotateLeft(s1 + getInt(b, offset + 4) * PRIME2, ROTATE_BITS) * PRIME1;"
+S1197,XXHash32.java,169,"s2 = rotateLeft(s2 + getInt(b, offset + 8) * PRIME2, ROTATE_BITS) * PRIME1;"
+S1198,XXHash32.java,170,"s3 = rotateLeft(s3 + getInt(b, offset + 12) * PRIME2, ROTATE_BITS) * PRIME1;"
+S1199,XXHash32.java,172,state[0] = s0;
+S1200,XXHash32.java,173,state[1] = s1;
+S1201,XXHash32.java,174,state[2] = s2;
+S1202,XXHash32.java,175,state[3] = s3;
+S1203,XXHash32.java,177,pos = 0;
+S1204,XZCompressorInputStream.java,46,if (length < XZ.HEADER_MAGIC.length) {
+S1205,XZCompressorInputStream.java,47,return false;
+S1206,XZCompressorInputStream.java,124,throws IOException {
+S1207,XZCompressorInputStream.java,125,if (decompressConcatenated) {
+S1208,XZCompressorInputStream.java,126,"in = new XZInputStream(inputStream, memoryLimitInKb);"
+S1209,XZCompressorInputStream.java,128,"in = new SingleXZInputStream(inputStream, memoryLimitInKb);"
+S1210,XZCompressorInputStream.java,135,final int ret = in.read();
+S1211,XZCompressorInputStream.java,136,count(ret == -1 ? -1 : 1);
+S1212,XZCompressorInputStream.java,137,return ret;
+S1213,XZCompressorInputStream.java,138,} catch (org.tukaani.xz.MemoryLimitException e) {
+S1214,XZCompressorInputStream.java,139,"throw new MemoryLimitException(e.getMemoryNeeded(), e.getMemoryLimit(), e);"
+S1215,XZCompressorInputStream.java,158,return in.skip(n);
+S1216,XZCompressorInputStream.java,159,} catch (org.tukaani.xz.MemoryLimitException e) {
+S1217,XZCompressorInputStream.java,161,"throw new MemoryLimitException(e.getMemoryNeeded(), e.getMemoryLimit(), e);"
+S1218,XZCompressorInputStream.java,167,return in.available();
+S1219,XZCompressorInputStream.java,172,in.close();
+S1220,XZUtils.java,40,private static final byte[] HEADER_MAGIC = {
+S1221,XZUtils.java,44,static enum CachedAvailability {
+S1222,XZUtils.java,45,"DONT_CACHE, CACHED_AVAILABLE, CACHED_UNAVAILABLE"
+S1223,XZUtils.java,51,"final Map<String, String> uncompressSuffix = new HashMap<>();"
+S1224,XZUtils.java,52,"uncompressSuffix.put("".txz"", "".tar"");"
+S1225,XZUtils.java,53,"uncompressSuffix.put("".xz"", """");"
+S1226,XZUtils.java,54,"uncompressSuffix.put(""-xz"", """");"
+S1227,XZUtils.java,55,"fileNameUtil = new FileNameUtil(uncompressSuffix, "".xz"");"
+S1228,XZUtils.java,56,cachedXZAvailability = CachedAvailability.DONT_CACHE;
+S1229,XZUtils.java,58,"Class.forName(""org.osgi.framework.BundleEvent"");"
+S1230,XZUtils.java,59,} catch (final Exception ex) {
+S1231,XZUtils.java,60,setCacheXZAvailablity(true);
+S1232,XZUtils.java,81,if (length < HEADER_MAGIC.length) {
+S1233,XZUtils.java,82,return false;
+S1234,XZUtils.java,85,for (int i = 0; i < HEADER_MAGIC.length; ++i) {
+S1235,XZUtils.java,86,if (signature[i] != HEADER_MAGIC[i]) {
+S1236,XZUtils.java,87,return false;
+S1237,XZUtils.java,91,return true;
+S1238,XZUtils.java,100,final CachedAvailability cachedResult = cachedXZAvailability;
+S1239,XZUtils.java,101,if (cachedResult != CachedAvailability.DONT_CACHE) {
+S1240,XZUtils.java,102,return cachedResult == CachedAvailability.CACHED_AVAILABLE;
+S1241,XZUtils.java,109,"XZCompressorInputStream.matches(null, 0);"
+S1242,XZUtils.java,110,return true;
+S1243,XZUtils.java,167,if (!doCache) {
+S1244,XZUtils.java,169,} else if (cachedXZAvailability == CachedAvailability.DONT_CACHE) {
+S1245,XZUtils.java,170,final boolean hasXz = internalIsXZCompressionAvailable();
+S1246,XZUtils.java,171,cachedXZAvailability = hasXz ? CachedAvailability.CACHED_AVAILABLE
+S1247,ZCompressorInputStream.java,39,private long totalCodesRead = 0;
+S1248,ZCompressorInputStream.java,43,"super(inputStream, ByteOrder.LITTLE_ENDIAN);"
+S1249,ZCompressorInputStream.java,44,final int firstByte = (int) in.readBits(8);
+S1250,ZCompressorInputStream.java,45,final int secondByte = (int) in.readBits(8);
+S1251,ZCompressorInputStream.java,46,final int thirdByte = (int) in.readBits(8);
+S1252,ZCompressorInputStream.java,47,if (firstByte != MAGIC_1 || secondByte != MAGIC_2 || thirdByte < 0) {
+S1253,ZCompressorInputStream.java,50,blockMode = (thirdByte & BLOCK_MODE_MASK) != 0;
+S1254,ZCompressorInputStream.java,51,maxCodeSize = thirdByte & MAX_CODE_SIZE_MASK;
+S1255,ZCompressorInputStream.java,52,if (blockMode) {
+S1256,ZCompressorInputStream.java,55,"initializeTables(maxCodeSize, memoryLimitInKb);"
+S1257,ZCompressorInputStream.java,168,return length > 3 && signature[0] == MAGIC_1 && signature[1] == (byte) MAGIC_2;

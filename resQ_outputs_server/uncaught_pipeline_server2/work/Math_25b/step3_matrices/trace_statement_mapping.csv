@@ -1,0 +1,1125 @@
+statement_id,file,line,code
+S1,AbstractLeastSquaresOptimizer.java,51,public abstract class AbstractLeastSquaresOptimizer
+S2,AbstractLeastSquaresOptimizer.java,94,super(checker);
+S3,AbstractLeastSquaresOptimizer.java,111,++jacobianEvaluations;
+S4,AbstractLeastSquaresOptimizer.java,112,weightedResidualJacobian = jF.value(point);
+S5,AbstractLeastSquaresOptimizer.java,113,if (weightedResidualJacobian.length != rows) {
+S6,AbstractLeastSquaresOptimizer.java,117,final double[] residualsWeights = getWeightRef();
+S7,AbstractLeastSquaresOptimizer.java,119,for (int i = 0; i < rows; i++) {
+S8,AbstractLeastSquaresOptimizer.java,120,final double[] ji = weightedResidualJacobian[i];
+S9,AbstractLeastSquaresOptimizer.java,121,double wi = FastMath.sqrt(residualsWeights[i]);
+S10,AbstractLeastSquaresOptimizer.java,122,for (int j = 0; j < cols; ++j) {
+S11,AbstractLeastSquaresOptimizer.java,124,weightedResidualJacobian[i][j] = -ji[j]*wi;
+S12,AbstractLeastSquaresOptimizer.java,137,objective = computeObjectiveValue(point);
+S13,AbstractLeastSquaresOptimizer.java,138,if (objective.length != rows) {
+S14,AbstractLeastSquaresOptimizer.java,142,final double[] targetValues = getTargetRef();
+S15,AbstractLeastSquaresOptimizer.java,143,final double[] residualsWeights = getWeightRef();
+S16,AbstractLeastSquaresOptimizer.java,145,cost = 0;
+S17,AbstractLeastSquaresOptimizer.java,146,for (int i = 0; i < rows; i++) {
+S18,AbstractLeastSquaresOptimizer.java,147,final double residual = targetValues[i] - objective[i];
+S19,AbstractLeastSquaresOptimizer.java,148,weightedResiduals[i]= residual*FastMath.sqrt(residualsWeights[i]);
+S20,AbstractLeastSquaresOptimizer.java,149,cost += residualsWeights[i] * residual * residual;
+S21,AbstractLeastSquaresOptimizer.java,151,cost = FastMath.sqrt(cost);
+S22,AbstractLeastSquaresOptimizer.java,302,jacobianEvaluations = 0;
+S23,AbstractLeastSquaresOptimizer.java,305,jF = f.jacobian();
+S24,AbstractLeastSquaresOptimizer.java,308,point = startPoint.clone();
+S25,AbstractLeastSquaresOptimizer.java,309,rows = target.length;
+S26,AbstractLeastSquaresOptimizer.java,310,cols = point.length;
+S27,AbstractLeastSquaresOptimizer.java,312,weightedResidualJacobian = new double[rows][cols];
+S28,AbstractLeastSquaresOptimizer.java,313,this.weightedResiduals = new double[rows];
+S29,AbstractLeastSquaresOptimizer.java,315,cost = Double.POSITIVE_INFINITY;
+S30,AbstractLeastSquaresOptimizer.java,317,"return super.optimize(maxEval, f, target, weights, startPoint);"
+S31,ArgUtils.java,42,final List<Object> list = new ArrayList<Object>();
+S32,ArgUtils.java,43,if (array != null) {
+S33,ArgUtils.java,44,for (Object o : array) {
+S34,ArgUtils.java,45,if (o instanceof Object[]) {
+S35,ArgUtils.java,46,for (Object oR : flatten((Object[]) o)) {
+S36,ArgUtils.java,47,list.add(oR);
+S37,ArgUtils.java,50,list.add(o);
+S38,ArgUtils.java,54,return list.toArray();
+S39,BaseAbstractMultivariateVectorOptimizer.java,44,protected final Incrementor evaluations = new Incrementor();
+S40,BaseAbstractMultivariateVectorOptimizer.java,68,protected BaseAbstractMultivariateVectorOptimizer(ConvergenceChecker<PointVectorValuePair> checker) {
+S41,BaseAbstractMultivariateVectorOptimizer.java,69,this.checker = checker;
+S42,BaseAbstractMultivariateVectorOptimizer.java,84,return checker;
+S43,BaseAbstractMultivariateVectorOptimizer.java,97,evaluations.incrementCount();
+S44,BaseAbstractMultivariateVectorOptimizer.java,101,return function.value(point);
+S45,BaseAbstractMultivariateVectorOptimizer.java,108,if (f == null) {
+S46,BaseAbstractMultivariateVectorOptimizer.java,111,if (t == null) {
+S47,BaseAbstractMultivariateVectorOptimizer.java,114,if (w == null) {
+S48,BaseAbstractMultivariateVectorOptimizer.java,117,if (startPoint == null) {
+S49,BaseAbstractMultivariateVectorOptimizer.java,120,if (t.length != w.length) {
+S50,BaseAbstractMultivariateVectorOptimizer.java,125,evaluations.setMaximalCount(maxEval);
+S51,BaseAbstractMultivariateVectorOptimizer.java,126,evaluations.resetCount();
+S52,BaseAbstractMultivariateVectorOptimizer.java,129,function = f;
+S53,BaseAbstractMultivariateVectorOptimizer.java,130,target = t.clone();
+S54,BaseAbstractMultivariateVectorOptimizer.java,131,weight = w.clone();
+S55,BaseAbstractMultivariateVectorOptimizer.java,132,start = startPoint.clone();
+S56,BaseAbstractMultivariateVectorOptimizer.java,135,return doOptimize();
+S57,BaseAbstractMultivariateVectorOptimizer.java,157,return target;
+S58,BaseAbstractMultivariateVectorOptimizer.java,163,return weight;
+S59,CurveFitter.java,46,public class CurveFitter<T extends ParametricUnivariateFunction> {
+S60,CurveFitter.java,55,public CurveFitter(final DifferentiableMultivariateVectorOptimizer optimizer) {
+S61,CurveFitter.java,56,this.optimizer = optimizer;
+S62,CurveFitter.java,57,observations = new ArrayList<WeightedObservedPoint>();
+S63,CurveFitter.java,84,"observations.add(new WeightedObservedPoint(weight, x, y));"
+S64,CurveFitter.java,104,return observations.toArray(new WeightedObservedPoint[observations.size()]);
+S65,CurveFitter.java,128,"return fit(Integer.MAX_VALUE, f, initialGuess);"
+S66,CurveFitter.java,151,double[] target  = new double[observations.size()];
+S67,CurveFitter.java,152,double[] weights = new double[observations.size()];
+S68,CurveFitter.java,153,int i = 0;
+S69,CurveFitter.java,154,for (WeightedObservedPoint point : observations) {
+S70,CurveFitter.java,155,target[i]  = point.getY();
+S71,CurveFitter.java,156,weights[i] = point.getWeight();
+S72,CurveFitter.java,157,++i;
+S73,CurveFitter.java,161,PointVectorValuePair optimum =
+S74,CurveFitter.java,166,return optimum.getPointRef();
+S75,CurveFitter.java,170,private class TheoreticalValuesFunction
+S76,CurveFitter.java,178,public TheoreticalValuesFunction(final ParametricUnivariateFunction f) {
+S77,CurveFitter.java,179,this.f = f;
+S78,CurveFitter.java,184,return new MultivariateMatrixFunction() {
+S79,CurveFitter.java,186,final double[][] jacobian = new double[observations.size()][];
+S80,CurveFitter.java,188,int i = 0;
+S81,CurveFitter.java,189,for (WeightedObservedPoint observed : observations) {
+S82,CurveFitter.java,190,"jacobian[i++] = f.gradient(observed.getX(), point);"
+S83,CurveFitter.java,193,return jacobian;
+S84,CurveFitter.java,201,final double[] values = new double[observations.size()];
+S85,CurveFitter.java,202,int i = 0;
+S86,CurveFitter.java,203,for (WeightedObservedPoint observed : observations) {
+S87,CurveFitter.java,204,"values[i++] = f.value(observed.getX(), point);"
+S88,CurveFitter.java,207,return values;
+S89,ExceptionContext.java,64,public ExceptionContext(final Throwable throwable) {
+S90,ExceptionContext.java,65,this.throwable = throwable;
+S91,ExceptionContext.java,66,msgPatterns    = new ArrayList<Localizable>();
+S92,ExceptionContext.java,67,msgArguments   = new ArrayList<Object[]>();
+S93,ExceptionContext.java,68,"context        = new HashMap<String, Object>();"
+S94,ExceptionContext.java,87,msgPatterns.add(pattern);
+S95,ExceptionContext.java,88,msgArguments.add(ArgUtils.flatten(arguments));
+S96,FastMath.java,113,private static final double LN_QUICK_COEF[][] = {
+S97,FastMath.java,126,private static final double LN_HI_PREC_COEF[][] = {
+S98,FastMath.java,139,private static final double SINE_TABLE_A[] =
+S99,FastMath.java,158,private static final double SINE_TABLE_B[] =
+S100,FastMath.java,177,private static final double COSINE_TABLE_A[] =
+S101,FastMath.java,196,private static final double COSINE_TABLE_B[] =
+S102,FastMath.java,216,private static final double TANGENT_TABLE_A[] =
+S103,FastMath.java,235,private static final double TANGENT_TABLE_B[] =
+S104,FastMath.java,254,private static final long RECIP_2PI[] = new long[] {
+S105,FastMath.java,275,private static final long PI_O_4_BITS[] = new long[] {
+S106,FastMath.java,283,"private static final double EIGHTHS[] = {0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.125, 1.25, 1.375, 1.5, 1.625};"
+S107,FastMath.java,286,"private static final double CBRTTWO[] = { 0.6299605249474366,"
+S108,FastMath.java,361,if (d > -Precision.SAFE_MIN && d < Precision.SAFE_MIN){
+S109,FastMath.java,364,long xl = Double.doubleToLongBits(d);
+S110,FastMath.java,365,xl = xl & MASK_30BITS; // Drop low order bits
+S111,FastMath.java,366,return Double.longBitsToDouble(xl);
+S112,FastMath.java,375,return Math.sqrt(a);
+S113,FastMath.java,1653,double x2 = x*x;
+S114,FastMath.java,1655,double p = 2.7553817452272217E-6;
+S115,FastMath.java,1656,p = p * x2 + -1.9841269659586505E-4;
+S116,FastMath.java,1657,p = p * x2 + 0.008333333333329196;
+S117,FastMath.java,1658,p = p * x2 + -0.16666666666666666;
+S118,FastMath.java,1661,p = p * x2 * x;
+S119,FastMath.java,1663,return p;
+S120,FastMath.java,1673,double x2 = x*x;
+S121,FastMath.java,1675,double p = 2.479773539153719E-5;
+S122,FastMath.java,1676,p = p * x2 + -0.0013888888689039883;
+S123,FastMath.java,1677,p = p * x2 + 0.041666666666621166;
+S124,FastMath.java,1678,p = p * x2 + -0.49999999999999994;
+S125,FastMath.java,1679,p *= x2;
+S126,FastMath.java,1681,return p;
+S127,FastMath.java,1692,int idx = (int) ((xa * 8.0) + 0.5);
+S128,FastMath.java,1693,final double epsilon = xa - EIGHTHS[idx]; //idx*0.125;
+S129,FastMath.java,1696,final double sintA = SINE_TABLE_A[idx];
+S130,FastMath.java,1697,final double sintB = SINE_TABLE_B[idx];
+S131,FastMath.java,1698,final double costA = COSINE_TABLE_A[idx];
+S132,FastMath.java,1699,final double costB = COSINE_TABLE_B[idx];
+S133,FastMath.java,1702,double sinEpsA = epsilon;
+S134,FastMath.java,1703,double sinEpsB = polySine(epsilon);
+S135,FastMath.java,1704,final double cosEpsA = 1.0;
+S136,FastMath.java,1705,final double cosEpsB = polyCosine(epsilon);
+S137,FastMath.java,1708,final double temp = sinEpsA * HEX_40000000;
+S138,FastMath.java,1709,double temp2 = (sinEpsA + temp) - temp;
+S139,FastMath.java,1710,sinEpsB +=  sinEpsA - temp2;
+S140,FastMath.java,1711,sinEpsA = temp2;
+S141,FastMath.java,1737,double a = 0;
+S142,FastMath.java,1738,double b = 0;
+S143,FastMath.java,1740,double t = sintA;
+S144,FastMath.java,1741,double c = a + t;
+S145,FastMath.java,1742,double d = -(c - a - t);
+S146,FastMath.java,1743,a = c;
+S147,FastMath.java,1744,b = b + d;
+S148,FastMath.java,1746,t = costA * sinEpsA;
+S149,FastMath.java,1747,c = a + t;
+S150,FastMath.java,1748,d = -(c - a - t);
+S151,FastMath.java,1749,a = c;
+S152,FastMath.java,1750,b = b + d;
+S153,FastMath.java,1752,b = b + sintA * cosEpsB + costA * sinEpsB;
+S154,FastMath.java,1767,b = b + sintB + costB * sinEpsA + sintB * cosEpsB + costB * sinEpsB;
+S155,FastMath.java,1794,if (xb != 0.0) {
+S156,FastMath.java,1795,t = ((costA + costB) * (cosEpsA + cosEpsB) -
+S157,FastMath.java,1797,c = a + t;
+S158,FastMath.java,1798,d = -(c - a - t);
+S159,FastMath.java,1799,a = c;
+S160,FastMath.java,1800,b = b + d;
+S161,FastMath.java,1803,result = a + b;
+S162,FastMath.java,1805,return result;
+S163,FastMath.java,1816,final double pi2a = 1.5707963267948966;
+S164,FastMath.java,1817,final double pi2b = 6.123233995736766E-17;
+S165,FastMath.java,1819,final double a = pi2a - xa;
+S166,FastMath.java,1820,double b = -(a - pi2a + xa);
+S167,FastMath.java,1821,b += pi2b - xb;
+S168,FastMath.java,1823,"return sinQ(a, b);"
+S169,FastMath.java,2201,boolean negative = false;
+S170,FastMath.java,2202,int quadrant = 0;
+S171,FastMath.java,2204,double xb = 0.0;
+S172,FastMath.java,2207,xa = x;
+S173,FastMath.java,2208,if (x < 0) {
+S174,FastMath.java,2209,negative = true;
+S175,FastMath.java,2210,xa = -xa;
+S176,FastMath.java,2214,if (xa == 0.0) {
+S177,FastMath.java,2215,long bits = Double.doubleToLongBits(x);
+S178,FastMath.java,2216,if (bits < 0) {
+S179,FastMath.java,2219,return 0.0;
+S180,FastMath.java,2222,if (xa != xa || xa == Double.POSITIVE_INFINITY) {
+S181,FastMath.java,2227,if (xa > 3294198.0) {
+S182,FastMath.java,2237,"final CodyWaite cw = new CodyWaite(xa, xb);"
+S183,FastMath.java,2238,quadrant = cw.getK() & 3;
+S184,FastMath.java,2239,xa = cw.getRemA();
+S185,FastMath.java,2240,xb = cw.getRemB();
+S186,FastMath.java,2243,if (negative) {
+S187,FastMath.java,2244,quadrant ^= 2;  // Flip bit 1
+S188,FastMath.java,2247,switch (quadrant) {
+S189,FastMath.java,2249,"return sinQ(xa, xb);"
+S190,FastMath.java,2251,"return cosQ(xa, xb);"
+S191,FastMath.java,2253,"return -sinQ(xa, xb);"
+S192,FastMath.java,2255,"return -cosQ(xa, xb);"
+S193,FastMath.java,2268,int quadrant = 0;
+S194,FastMath.java,2271,double xa = x;
+S195,FastMath.java,2272,if (x < 0) {
+S196,FastMath.java,2273,xa = -xa;
+S197,FastMath.java,2276,if (xa != xa || xa == Double.POSITIVE_INFINITY) {
+S198,FastMath.java,2281,double xb = 0;
+S199,FastMath.java,2282,if (xa > 3294198.0) {
+S200,FastMath.java,2292,"final CodyWaite cw = new CodyWaite(xa, xb);"
+S201,FastMath.java,2293,quadrant = cw.getK() & 3;
+S202,FastMath.java,2294,xa = cw.getRemA();
+S203,FastMath.java,2295,xb = cw.getRemB();
+S204,FastMath.java,2301,switch (quadrant) {
+S205,FastMath.java,2303,"return cosQ(xa, xb);"
+S206,FastMath.java,2305,"return -sinQ(xa, xb);"
+S207,FastMath.java,2307,"return -cosQ(xa, xb);"
+S208,FastMath.java,2309,"return sinQ(xa, xb);"
+S209,FastMath.java,2408,boolean negate = false;
+S210,FastMath.java,2411,if (xa == 0.0) { // Matches +/- 0.0; return correct sign
+S211,FastMath.java,2415,if (xa < 0) {
+S212,FastMath.java,2417,xa = -xa;
+S213,FastMath.java,2418,xb = -xb;
+S214,FastMath.java,2419,negate = true;
+S215,FastMath.java,2422,if (xa > 1.633123935319537E16) { // Very large input
+S216,FastMath.java,2427,if (xa < 1) {
+S217,FastMath.java,2428,idx = (int) (((-1.7168146928204136 * xa * xa + 8.0) * xa) + 0.5);
+S218,FastMath.java,2430,final double oneOverXa = 1 / xa;
+S219,FastMath.java,2431,idx = (int) (-((-1.7168146928204136 * oneOverXa * oneOverXa + 8.0) * oneOverXa) + 13.07);
+S220,FastMath.java,2433,double epsA = xa - TANGENT_TABLE_A[idx];
+S221,FastMath.java,2434,double epsB = -(epsA - xa + TANGENT_TABLE_A[idx]);
+S222,FastMath.java,2435,epsB += xb - TANGENT_TABLE_B[idx];
+S223,FastMath.java,2437,double temp = epsA + epsB;
+S224,FastMath.java,2438,epsB = -(temp - epsA - epsB);
+S225,FastMath.java,2439,epsA = temp;
+S226,FastMath.java,2442,temp = xa * HEX_40000000;
+S227,FastMath.java,2443,double ya = xa + temp - temp;
+S228,FastMath.java,2444,double yb = xb + xa - ya;
+S229,FastMath.java,2445,xa = ya;
+S230,FastMath.java,2446,xb += yb;
+S231,FastMath.java,2449,if (idx == 0) {
+S232,FastMath.java,2457,double temp2 = xa * TANGENT_TABLE_A[idx];
+S233,FastMath.java,2458,double za = 1d + temp2;
+S234,FastMath.java,2459,double zb = -(za - 1d - temp2);
+S235,FastMath.java,2460,temp2 = xb * TANGENT_TABLE_A[idx] + xa * TANGENT_TABLE_B[idx];
+S236,FastMath.java,2461,temp = za + temp2;
+S237,FastMath.java,2462,zb += -(temp - za - temp2);
+S238,FastMath.java,2463,za = temp;
+S239,FastMath.java,2465,zb += xb * TANGENT_TABLE_B[idx];
+S240,FastMath.java,2466,ya = epsA / za;
+S241,FastMath.java,2468,temp = ya * HEX_40000000;
+S242,FastMath.java,2469,final double yaa = (ya + temp) - temp;
+S243,FastMath.java,2470,final double yab = ya - yaa;
+S244,FastMath.java,2472,temp = za * HEX_40000000;
+S245,FastMath.java,2473,final double zaa = (za + temp) - temp;
+S246,FastMath.java,2474,final double zab = za - zaa;
+S247,FastMath.java,2477,yb = (epsA - yaa * zaa - yaa * zab - yab * zaa - yab * zab) / za;
+S248,FastMath.java,2479,yb += -epsA * zb / za / za;
+S249,FastMath.java,2480,yb += epsB / za;
+S250,FastMath.java,2484,epsA = ya;
+S251,FastMath.java,2485,epsB = yb;
+S252,FastMath.java,2488,final double epsA2 = epsA * epsA;
+S253,FastMath.java,2499,yb = 0.07490822288864472;
+S254,FastMath.java,2500,yb = yb * epsA2 + -0.09088450866185192;
+S255,FastMath.java,2501,yb = yb * epsA2 + 0.11111095942313305;
+S256,FastMath.java,2502,yb = yb * epsA2 + -0.1428571423679182;
+S257,FastMath.java,2503,yb = yb * epsA2 + 0.19999999999923582;
+S258,FastMath.java,2504,yb = yb * epsA2 + -0.33333333333333287;
+S259,FastMath.java,2505,yb = yb * epsA2 * epsA;
+S260,FastMath.java,2508,ya = epsA;
+S261,FastMath.java,2510,temp = ya + yb;
+S262,FastMath.java,2511,yb = -(temp - ya - yb);
+S263,FastMath.java,2512,ya = temp;
+S264,FastMath.java,2515,yb += epsB / (1d + epsA * epsA);
+S265,FastMath.java,2518,double za = EIGHTHS[idx] + ya;
+S266,FastMath.java,2519,double zb = -(za - EIGHTHS[idx] - ya);
+S267,FastMath.java,2520,temp = za + yb;
+S268,FastMath.java,2521,zb += -(temp - za - yb);
+S269,FastMath.java,2522,za = temp;
+S270,FastMath.java,2524,double result = za + zb;
+S271,FastMath.java,2525,double resultb = -(result - za - zb);
+S272,FastMath.java,2527,if (leftPlane) {
+S273,FastMath.java,2529,final double pia = 1.5707963267948966 * 2;
+S274,FastMath.java,2530,final double pib = 6.123233995736766E-17 * 2;
+S275,FastMath.java,2532,za = pia - result;
+S276,FastMath.java,2533,zb = -(za - pia + result);
+S277,FastMath.java,2534,zb += pib - resultb;
+S278,FastMath.java,2536,result = za + zb;
+S279,FastMath.java,2537,resultb = -(result - za - zb);
+S280,FastMath.java,2541,if (negate ^ leftPlane) {
+S281,FastMath.java,2542,result = -result;
+S282,FastMath.java,2545,return result;
+S283,FastMath.java,2555,if (x != x || y != y) {
+S284,FastMath.java,2559,if (y == 0) {
+S285,FastMath.java,2560,final double result = x * y;
+S286,FastMath.java,2561,final double invx = 1d / x;
+S287,FastMath.java,2562,final double invy = 1d / y;
+S288,FastMath.java,2564,if (invx == 0) { // X is infinite
+S289,FastMath.java,2572,if (x < 0 || invx < 0) {
+S290,FastMath.java,2579,return result;
+S291,FastMath.java,2585,if (y == Double.POSITIVE_INFINITY) {
+S292,FastMath.java,2597,if (y == Double.NEGATIVE_INFINITY) {
+S293,FastMath.java,2609,if (x == Double.POSITIVE_INFINITY) {
+S294,FastMath.java,2619,if (x == Double.NEGATIVE_INFINITY)
+S295,FastMath.java,2632,if (x == 0) {
+S296,FastMath.java,2643,final double r = y / x;
+S297,FastMath.java,2644,if (Double.isInfinite(r)) { // bypass calculations that can create NaN
+S298,FastMath.java,2648,double ra = doubleHighPart(r);
+S299,FastMath.java,2649,double rb = r - ra;
+S300,FastMath.java,2652,final double xa = doubleHighPart(x);
+S301,FastMath.java,2653,final double xb = x - xa;
+S302,FastMath.java,2655,rb += (y - ra * xa - ra * xb - rb * xa - rb * xb) / x;
+S303,FastMath.java,2657,final double temp = ra + rb;
+S304,FastMath.java,2658,rb = -(temp - ra - rb);
+S305,FastMath.java,2659,ra = temp;
+S306,FastMath.java,2661,if (ra == 0) { // Fix up the sign so atan works correctly
+S307,FastMath.java,2666,"final double result = atan(ra, rb, x < 0);"
+S308,FastMath.java,2668,return result;
+S309,FastMath.java,2992,return (x < 0.0) ? -x : (x == 0.0) ? 0.0 : x; // -0.0 => +0.0
+S310,FastMath.java,3306,if (x != x) { // NaN
+S311,FastMath.java,3310,if (x >= TWO_POWER_52 || x <= -TWO_POWER_52) {
+S312,FastMath.java,3314,y = (long) x;
+S313,FastMath.java,3315,if (x < 0 && y != x) {
+S314,FastMath.java,3316,y--;
+S315,FastMath.java,3319,if (y == 0) {
+S316,FastMath.java,3320,return x*y;
+S317,FastMath.java,3323,return y;
+S318,FastMath.java,3396,return (a <= b) ? a : b;
+S319,FastMath.java,3439,if (a > b) {
+S320,FastMath.java,3440,return b;
+S321,FastMath.java,3442,if (a < b) {
+S322,FastMath.java,3443,return a;
+S323,FastMath.java,3507,if (a > b) {
+S324,FastMath.java,3508,return a;
+S325,FastMath.java,3510,if (a < b) {
+S326,FastMath.java,3511,return b;
+S327,FastMath.java,3514,if (a != b) {
+S328,FastMath.java,3519,long bits = Double.doubleToRawLongBits(a);
+S329,FastMath.java,3520,if (bits == 0x8000000000000000L) {
+S330,FastMath.java,3523,return a;
+S331,FastMath.java,3785,double xb) {
+S332,FastMath.java,3788,int k = (int)(xa * 0.6366197723675814);
+S333,FastMath.java,3794,double a = -k * 1.570796251296997;
+S334,FastMath.java,3795,remA = xa + a;
+S335,FastMath.java,3796,remB = -(remA - xa - a);
+S336,FastMath.java,3798,a = -k * 7.549789948768648E-8;
+S337,FastMath.java,3799,double b = remA;
+S338,FastMath.java,3800,remA = a + b;
+S339,FastMath.java,3801,remB += -(remA - b - a);
+S340,FastMath.java,3803,a = -k * 6.123233995736766E-17;
+S341,FastMath.java,3804,b = remA;
+S342,FastMath.java,3805,remA = a + b;
+S343,FastMath.java,3806,remB += -(remA - b - a);
+S344,FastMath.java,3808,if (remA > 0) {
+S345,FastMath.java,3809,break;
+S346,FastMath.java,3815,--k;
+S347,FastMath.java,3818,this.finalK = k;
+S348,FastMath.java,3819,this.finalRemA = remA;
+S349,FastMath.java,3820,this.finalRemB = remB;
+S350,FastMath.java,3827,return finalK;
+S351,FastMath.java,3833,return finalRemA;
+S352,FastMath.java,3839,return finalRemB;
+S353,HarmonicFitter.java,46,super(optimizer);
+S354,HarmonicFitter.java,62,"return fit(new HarmonicOscillator.Parametric(), initialGuess);"
+S355,HarmonicFitter.java,77,return fit((new ParameterGuesser(getObservations())).guess());
+S356,HarmonicFitter.java,195,public ParameterGuesser(WeightedObservedPoint[] observations) {
+S357,HarmonicFitter.java,196,if (observations.length < 4) {
+S358,HarmonicFitter.java,197,"throw new NumberIsTooSmallException(LocalizedFormats.INSUFFICIENT_OBSERVED_POINTS_IN_SAMPLE,"
+S359,HarmonicFitter.java,201,this.observations = observations.clone();
+S360,HarmonicFitter.java,215,sortObservations();
+S361,HarmonicFitter.java,216,guessAOmega();
+S362,HarmonicFitter.java,217,guessPhi();
+S363,HarmonicFitter.java,218,"return new double[] { a, omega, phi };"
+S364,HarmonicFitter.java,228,WeightedObservedPoint curr = observations[0];
+S365,HarmonicFitter.java,229,for (int j = 1; j < observations.length; ++j) {
+S366,HarmonicFitter.java,230,WeightedObservedPoint prec = curr;
+S367,HarmonicFitter.java,231,curr = observations[j];
+S368,HarmonicFitter.java,232,if (curr.getX() < prec.getX()) {
+S369,HarmonicFitter.java,234,int i = j - 1;
+S370,HarmonicFitter.java,235,WeightedObservedPoint mI = observations[i];
+S371,HarmonicFitter.java,236,while ((i >= 0) && (curr.getX() < mI.getX())) {
+S372,HarmonicFitter.java,237,observations[i + 1] = mI;
+S373,HarmonicFitter.java,238,if (i-- != 0) {
+S374,HarmonicFitter.java,239,mI = observations[i];
+S375,HarmonicFitter.java,242,observations[i + 1] = curr;
+S376,HarmonicFitter.java,243,curr = observations[j];
+S377,HarmonicFitter.java,259,double sx2 = 0;
+S378,HarmonicFitter.java,260,double sy2 = 0;
+S379,HarmonicFitter.java,261,double sxy = 0;
+S380,HarmonicFitter.java,262,double sxz = 0;
+S381,HarmonicFitter.java,263,double syz = 0;
+S382,HarmonicFitter.java,265,double currentX = observations[0].getX();
+S383,HarmonicFitter.java,266,double currentY = observations[0].getY();
+S384,HarmonicFitter.java,267,double f2Integral = 0;
+S385,HarmonicFitter.java,268,double fPrime2Integral = 0;
+S386,HarmonicFitter.java,269,final double startX = currentX;
+S387,HarmonicFitter.java,270,for (int i = 1; i < observations.length; ++i) {
+S388,HarmonicFitter.java,272,final double previousX = currentX;
+S389,HarmonicFitter.java,273,final double previousY = currentY;
+S390,HarmonicFitter.java,274,currentX = observations[i].getX();
+S391,HarmonicFitter.java,275,currentY = observations[i].getY();
+S392,HarmonicFitter.java,279,final double dx = currentX - previousX;
+S393,HarmonicFitter.java,280,final double dy = currentY - previousY;
+S394,HarmonicFitter.java,281,final double f2StepIntegral =
+S395,HarmonicFitter.java,283,final double fPrime2StepIntegral = dy * dy / dx;
+S396,HarmonicFitter.java,285,final double x = currentX - startX;
+S397,HarmonicFitter.java,286,f2Integral += f2StepIntegral;
+S398,HarmonicFitter.java,287,fPrime2Integral += fPrime2StepIntegral;
+S399,HarmonicFitter.java,289,sx2 += x * x;
+S400,HarmonicFitter.java,290,sy2 += f2Integral * f2Integral;
+S401,HarmonicFitter.java,291,sxy += x * f2Integral;
+S402,HarmonicFitter.java,292,sxz += x * fPrime2Integral;
+S403,HarmonicFitter.java,293,syz += f2Integral * fPrime2Integral;
+S404,HarmonicFitter.java,297,double c1 = sy2 * sxz - sxy * syz;
+S405,HarmonicFitter.java,298,double c2 = sxy * sxz - sx2 * syz;
+S406,HarmonicFitter.java,299,double c3 = sx2 * sy2 - sxy * sxy;
+S407,HarmonicFitter.java,300,if ((c1 / c2 < 0) || (c2 / c3 < 0)) {
+S408,HarmonicFitter.java,301,final int last = observations.length - 1;
+S409,HarmonicFitter.java,304,final double xRange = observations[last].getX() - observations[0].getX();
+S410,HarmonicFitter.java,305,if (xRange == 0) {
+S411,HarmonicFitter.java,308,omega = 2 * Math.PI / xRange;
+S412,HarmonicFitter.java,310,double yMin = Double.POSITIVE_INFINITY;
+S413,HarmonicFitter.java,311,double yMax = Double.NEGATIVE_INFINITY;
+S414,HarmonicFitter.java,312,for (int i = 1; i < observations.length; ++i) {
+S415,HarmonicFitter.java,313,final double y = observations[i].getY();
+S416,HarmonicFitter.java,314,if (y < yMin) {
+S417,HarmonicFitter.java,315,yMin = y;
+S418,HarmonicFitter.java,317,if (y > yMax) {
+S419,HarmonicFitter.java,318,yMax = y;
+S420,HarmonicFitter.java,321,a = 0.5 * (yMax - yMin);
+S421,HarmonicFitter.java,322,} else {
+S422,HarmonicFitter.java,326,a = FastMath.sqrt(c1 / c2);
+S423,HarmonicFitter.java,327,omega = FastMath.sqrt(c2 / c3);
+S424,HarmonicFitter.java,336,double fcMean = 0;
+S425,HarmonicFitter.java,337,double fsMean = 0;
+S426,HarmonicFitter.java,339,double currentX = observations[0].getX();
+S427,HarmonicFitter.java,340,double currentY = observations[0].getY();
+S428,HarmonicFitter.java,341,for (int i = 1; i < observations.length; ++i) {
+S429,HarmonicFitter.java,343,final double previousX = currentX;
+S430,HarmonicFitter.java,344,final double previousY = currentY;
+S431,HarmonicFitter.java,345,currentX = observations[i].getX();
+S432,HarmonicFitter.java,346,currentY = observations[i].getY();
+S433,HarmonicFitter.java,347,final double currentYPrime = (currentY - previousY) / (currentX - previousX);
+S434,HarmonicFitter.java,349,double omegaX = omega * currentX;
+S435,HarmonicFitter.java,350,double cosine = FastMath.cos(omegaX);
+S436,HarmonicFitter.java,351,double sine = FastMath.sin(omegaX);
+S437,HarmonicFitter.java,352,fcMean += omega * currentY * cosine - currentYPrime * sine;
+S438,HarmonicFitter.java,353,fsMean += omega * currentY * sine + currentYPrime * cosine;
+S439,HarmonicFitter.java,356,"phi = FastMath.atan2(-fsMean, fcMean);"
+S440,HarmonicOscillator.java,34,public class HarmonicOscillator implements DifferentiableUnivariateFunction {
+S441,HarmonicOscillator.java,51,double phase) {
+S442,HarmonicOscillator.java,52,this.amplitude = amplitude;
+S443,HarmonicOscillator.java,53,this.omega = omega;
+S444,HarmonicOscillator.java,54,this.phase = phase;
+S445,HarmonicOscillator.java,59,"return value(omega * x + phase, amplitude);"
+S446,HarmonicOscillator.java,81,public static class Parametric implements ParametricUnivariateFunction {
+S447,HarmonicOscillator.java,93,validateParameters(param);
+S448,HarmonicOscillator.java,94,"return HarmonicOscillator.value(x * param[1] + param[2], param[0]);"
+S449,HarmonicOscillator.java,111,validateParameters(param);
+S450,HarmonicOscillator.java,113,final double amplitude = param[0];
+S451,HarmonicOscillator.java,114,final double omega = param[1];
+S452,HarmonicOscillator.java,115,final double phase = param[2];
+S453,HarmonicOscillator.java,117,final double xTimesOmegaPlusPhase = omega * x + phase;
+S454,HarmonicOscillator.java,118,"final double a = HarmonicOscillator.value(xTimesOmegaPlusPhase, 1);"
+S455,HarmonicOscillator.java,119,final double p = -amplitude * FastMath.sin(xTimesOmegaPlusPhase);
+S456,HarmonicOscillator.java,120,final double w = p * x;
+S457,HarmonicOscillator.java,122,"return new double[] { a, w, p };"
+S458,HarmonicOscillator.java,136,if (param == null) {
+S459,HarmonicOscillator.java,139,if (param.length != 3) {
+S460,HarmonicOscillator.java,152,return amplitude * FastMath.cos(xTimesOmegaPlusPhase);
+S461,Incrementor.java,41,private int count = 0;
+S462,Incrementor.java,53,this(0);
+S463,Incrementor.java,62,"this(max,"
+S464,Incrementor.java,63,new MaxCountExceededCallback() {
+S465,Incrementor.java,80,MaxCountExceededCallback cb) {
+S466,Incrementor.java,81,if (cb == null){
+S467,Incrementor.java,84,maximalCount = max;
+S468,Incrementor.java,85,maxCountCallback = cb;
+S469,Incrementor.java,96,maximalCount = max;
+S470,Incrementor.java,155,if (++count > maximalCount) {
+S471,Incrementor.java,164,count = 0;
+S472,LevenbergMarquardtOptimizer.java,151,"this(100, 1e-10, 1e-10, 1e-10, Precision.SAFE_MIN);"
+S473,LevenbergMarquardtOptimizer.java,263,super(null); // No custom convergence criterion.
+S474,LevenbergMarquardtOptimizer.java,264,this.initialStepBoundFactor = initialStepBoundFactor;
+S475,LevenbergMarquardtOptimizer.java,265,this.costRelativeTolerance = costRelativeTolerance;
+S476,LevenbergMarquardtOptimizer.java,266,this.parRelativeTolerance = parRelativeTolerance;
+S477,LevenbergMarquardtOptimizer.java,267,this.orthoTolerance = orthoTolerance;
+S478,LevenbergMarquardtOptimizer.java,268,this.qrRankingThreshold = threshold;
+S479,LevenbergMarquardtOptimizer.java,275,"solvedCols  = FastMath.min(rows, cols);"
+S480,LevenbergMarquardtOptimizer.java,276,diagR       = new double[cols];
+S481,LevenbergMarquardtOptimizer.java,277,jacNorm     = new double[cols];
+S482,LevenbergMarquardtOptimizer.java,278,beta        = new double[cols];
+S483,LevenbergMarquardtOptimizer.java,279,permutation = new int[cols];
+S484,LevenbergMarquardtOptimizer.java,280,lmDir       = new double[cols];
+S485,LevenbergMarquardtOptimizer.java,283,double   delta   = 0;
+S486,LevenbergMarquardtOptimizer.java,284,double   xNorm   = 0;
+S487,LevenbergMarquardtOptimizer.java,285,double[] diag    = new double[cols];
+S488,LevenbergMarquardtOptimizer.java,286,double[] oldX    = new double[cols];
+S489,LevenbergMarquardtOptimizer.java,287,double[] oldRes  = new double[rows];
+S490,LevenbergMarquardtOptimizer.java,288,double[] oldObj  = new double[rows];
+S491,LevenbergMarquardtOptimizer.java,289,double[] qtf     = new double[rows];
+S492,LevenbergMarquardtOptimizer.java,290,double[] work1   = new double[cols];
+S493,LevenbergMarquardtOptimizer.java,291,double[] work2   = new double[cols];
+S494,LevenbergMarquardtOptimizer.java,292,double[] work3   = new double[cols];
+S495,LevenbergMarquardtOptimizer.java,295,updateResidualsAndCost();
+S496,LevenbergMarquardtOptimizer.java,298,lmPar = 0;
+S497,LevenbergMarquardtOptimizer.java,299,boolean firstIteration = true;
+S498,LevenbergMarquardtOptimizer.java,300,"PointVectorValuePair current = new PointVectorValuePair(point, objective);"
+S499,LevenbergMarquardtOptimizer.java,301,int iter = 0;
+S500,LevenbergMarquardtOptimizer.java,302,final ConvergenceChecker<PointVectorValuePair> checker = getConvergenceChecker();
+S501,LevenbergMarquardtOptimizer.java,304,++iter;
+S502,LevenbergMarquardtOptimizer.java,306,for (int i=0;i<rows;i++) {
+S503,LevenbergMarquardtOptimizer.java,307,qtf[i]=weightedResiduals[i];
+S504,LevenbergMarquardtOptimizer.java,311,PointVectorValuePair previous = current;
+S505,LevenbergMarquardtOptimizer.java,312,updateJacobian();
+S506,LevenbergMarquardtOptimizer.java,313,qrDecomposition();
+S507,LevenbergMarquardtOptimizer.java,316,qTy(qtf);
+S508,LevenbergMarquardtOptimizer.java,319,for (int k = 0; k < solvedCols; ++k) {
+S509,LevenbergMarquardtOptimizer.java,320,int pk = permutation[k];
+S510,LevenbergMarquardtOptimizer.java,321,weightedResidualJacobian[k][pk] = diagR[pk];
+S511,LevenbergMarquardtOptimizer.java,324,if (firstIteration) {
+S512,LevenbergMarquardtOptimizer.java,327,xNorm = 0;
+S513,LevenbergMarquardtOptimizer.java,328,for (int k = 0; k < cols; ++k) {
+S514,LevenbergMarquardtOptimizer.java,329,double dk = jacNorm[k];
+S515,LevenbergMarquardtOptimizer.java,330,if (dk == 0) {
+S516,LevenbergMarquardtOptimizer.java,333,double xk = dk * point[k];
+S517,LevenbergMarquardtOptimizer.java,334,xNorm  += xk * xk;
+S518,LevenbergMarquardtOptimizer.java,335,diag[k] = dk;
+S519,LevenbergMarquardtOptimizer.java,337,xNorm = FastMath.sqrt(xNorm);
+S520,LevenbergMarquardtOptimizer.java,340,delta = (xNorm == 0) ? initialStepBoundFactor : (initialStepBoundFactor * xNorm);
+S521,LevenbergMarquardtOptimizer.java,344,double maxCosine = 0;
+S522,LevenbergMarquardtOptimizer.java,345,if (cost != 0) {
+S523,LevenbergMarquardtOptimizer.java,346,for (int j = 0; j < solvedCols; ++j) {
+S524,LevenbergMarquardtOptimizer.java,347,int    pj = permutation[j];
+S525,LevenbergMarquardtOptimizer.java,348,double s  = jacNorm[pj];
+S526,LevenbergMarquardtOptimizer.java,349,if (s != 0) {
+S527,LevenbergMarquardtOptimizer.java,350,double sum = 0;
+S528,LevenbergMarquardtOptimizer.java,351,for (int i = 0; i <= j; ++i) {
+S529,LevenbergMarquardtOptimizer.java,352,sum += weightedResidualJacobian[i][pj] * qtf[i];
+S530,LevenbergMarquardtOptimizer.java,354,"maxCosine = FastMath.max(maxCosine, FastMath.abs(sum) / (s * cost));"
+S531,LevenbergMarquardtOptimizer.java,358,if (maxCosine <= orthoTolerance) {
+S532,LevenbergMarquardtOptimizer.java,366,for (int j = 0; j < cols; ++j) {
+S533,LevenbergMarquardtOptimizer.java,367,"diag[j] = FastMath.max(diag[j], jacNorm[j]);"
+S534,LevenbergMarquardtOptimizer.java,371,for (double ratio = 0; ratio < 1.0e-4;) {
+S535,LevenbergMarquardtOptimizer.java,374,for (int j = 0; j < solvedCols; ++j) {
+S536,LevenbergMarquardtOptimizer.java,375,int pj = permutation[j];
+S537,LevenbergMarquardtOptimizer.java,376,oldX[pj] = point[pj];
+S538,LevenbergMarquardtOptimizer.java,378,double previousCost = cost;
+S539,LevenbergMarquardtOptimizer.java,379,double[] tmpVec = weightedResiduals;
+S540,LevenbergMarquardtOptimizer.java,380,weightedResiduals = oldRes;
+S541,LevenbergMarquardtOptimizer.java,381,oldRes    = tmpVec;
+S542,LevenbergMarquardtOptimizer.java,382,tmpVec    = objective;
+S543,LevenbergMarquardtOptimizer.java,383,objective = oldObj;
+S544,LevenbergMarquardtOptimizer.java,384,oldObj    = tmpVec;
+S545,LevenbergMarquardtOptimizer.java,387,"determineLMParameter(qtf, delta, diag, work1, work2, work3);"
+S546,LevenbergMarquardtOptimizer.java,390,double lmNorm = 0;
+S547,LevenbergMarquardtOptimizer.java,391,for (int j = 0; j < solvedCols; ++j) {
+S548,LevenbergMarquardtOptimizer.java,392,int pj = permutation[j];
+S549,LevenbergMarquardtOptimizer.java,393,lmDir[pj] = -lmDir[pj];
+S550,LevenbergMarquardtOptimizer.java,394,point[pj] = oldX[pj] + lmDir[pj];
+S551,LevenbergMarquardtOptimizer.java,395,double s = diag[pj] * lmDir[pj];
+S552,LevenbergMarquardtOptimizer.java,396,lmNorm  += s * s;
+S553,LevenbergMarquardtOptimizer.java,398,lmNorm = FastMath.sqrt(lmNorm);
+S554,LevenbergMarquardtOptimizer.java,400,if (firstIteration) {
+S555,LevenbergMarquardtOptimizer.java,401,"delta = FastMath.min(delta, lmNorm);"
+S556,LevenbergMarquardtOptimizer.java,405,updateResidualsAndCost();
+S557,LevenbergMarquardtOptimizer.java,408,double actRed = -1.0;
+S558,LevenbergMarquardtOptimizer.java,409,if (0.1 * cost < previousCost) {
+S559,LevenbergMarquardtOptimizer.java,410,double r = cost / previousCost;
+S560,LevenbergMarquardtOptimizer.java,411,actRed = 1.0 - r * r;
+S561,LevenbergMarquardtOptimizer.java,416,for (int j = 0; j < solvedCols; ++j) {
+S562,LevenbergMarquardtOptimizer.java,417,int pj = permutation[j];
+S563,LevenbergMarquardtOptimizer.java,418,double dirJ = lmDir[pj];
+S564,LevenbergMarquardtOptimizer.java,419,work1[j] = 0;
+S565,LevenbergMarquardtOptimizer.java,420,for (int i = 0; i <= j; ++i) {
+S566,LevenbergMarquardtOptimizer.java,421,work1[i] += weightedResidualJacobian[i][pj] * dirJ;
+S567,LevenbergMarquardtOptimizer.java,424,double coeff1 = 0;
+S568,LevenbergMarquardtOptimizer.java,425,for (int j = 0; j < solvedCols; ++j) {
+S569,LevenbergMarquardtOptimizer.java,426,coeff1 += work1[j] * work1[j];
+S570,LevenbergMarquardtOptimizer.java,428,double pc2 = previousCost * previousCost;
+S571,LevenbergMarquardtOptimizer.java,429,coeff1 = coeff1 / pc2;
+S572,LevenbergMarquardtOptimizer.java,430,double coeff2 = lmPar * lmNorm * lmNorm / pc2;
+S573,LevenbergMarquardtOptimizer.java,431,double preRed = coeff1 + 2 * coeff2;
+S574,LevenbergMarquardtOptimizer.java,432,double dirDer = -(coeff1 + coeff2);
+S575,LevenbergMarquardtOptimizer.java,435,ratio = (preRed == 0) ? 0 : (actRed / preRed);
+S576,LevenbergMarquardtOptimizer.java,438,if (ratio <= 0.25) {
+S577,LevenbergMarquardtOptimizer.java,439,double tmp =
+S578,LevenbergMarquardtOptimizer.java,441,if ((0.1 * cost >= previousCost) || (tmp < 0.1)) {
+S579,LevenbergMarquardtOptimizer.java,444,"delta = tmp * FastMath.min(delta, 10.0 * lmNorm);"
+S580,LevenbergMarquardtOptimizer.java,445,lmPar /= tmp;
+S581,LevenbergMarquardtOptimizer.java,446,} else if ((lmPar == 0) || (ratio >= 0.75)) {
+S582,LevenbergMarquardtOptimizer.java,447,delta = 2 * lmNorm;
+S583,LevenbergMarquardtOptimizer.java,448,lmPar *= 0.5;
+S584,LevenbergMarquardtOptimizer.java,452,if (ratio >= 1.0e-4) {
+S585,LevenbergMarquardtOptimizer.java,454,firstIteration = false;
+S586,LevenbergMarquardtOptimizer.java,455,xNorm = 0;
+S587,LevenbergMarquardtOptimizer.java,456,for (int k = 0; k < cols; ++k) {
+S588,LevenbergMarquardtOptimizer.java,457,double xK = diag[k] * point[k];
+S589,LevenbergMarquardtOptimizer.java,458,xNorm += xK * xK;
+S590,LevenbergMarquardtOptimizer.java,460,xNorm = FastMath.sqrt(xNorm);
+S591,LevenbergMarquardtOptimizer.java,461,"current = new PointVectorValuePair(point, objective);"
+S592,LevenbergMarquardtOptimizer.java,464,if (checker != null) {
+S593,LevenbergMarquardtOptimizer.java,472,cost = previousCost;
+S594,LevenbergMarquardtOptimizer.java,473,for (int j = 0; j < solvedCols; ++j) {
+S595,LevenbergMarquardtOptimizer.java,474,int pj = permutation[j];
+S596,LevenbergMarquardtOptimizer.java,475,point[pj] = oldX[pj];
+S597,LevenbergMarquardtOptimizer.java,477,tmpVec    = weightedResiduals;
+S598,LevenbergMarquardtOptimizer.java,478,weightedResiduals = oldRes;
+S599,LevenbergMarquardtOptimizer.java,479,oldRes    = tmpVec;
+S600,LevenbergMarquardtOptimizer.java,480,tmpVec    = objective;
+S601,LevenbergMarquardtOptimizer.java,481,objective = oldObj;
+S602,LevenbergMarquardtOptimizer.java,482,oldObj    = tmpVec;
+S603,LevenbergMarquardtOptimizer.java,486,if ((FastMath.abs(actRed) <= costRelativeTolerance &&
+S604,LevenbergMarquardtOptimizer.java,490,return current;
+S605,LevenbergMarquardtOptimizer.java,495,if ((FastMath.abs(actRed) <= 2.2204e-16) && (preRed <= 2.2204e-16) && (ratio <= 2.0)) {
+S606,LevenbergMarquardtOptimizer.java,498,} else if (delta <= 2.2204e-16 * xNorm) {
+S607,LevenbergMarquardtOptimizer.java,501,} else if (maxCosine <= 2.2204e-16)  {
+S608,LevenbergMarquardtOptimizer.java,536,for (int j = 0; j < rank; ++j) {
+S609,LevenbergMarquardtOptimizer.java,537,lmDir[permutation[j]] = qy[j];
+S610,LevenbergMarquardtOptimizer.java,539,for (int j = rank; j < cols; ++j) {
+S611,LevenbergMarquardtOptimizer.java,542,for (int k = rank - 1; k >= 0; --k) {
+S612,LevenbergMarquardtOptimizer.java,543,int pk = permutation[k];
+S613,LevenbergMarquardtOptimizer.java,544,double ypk = lmDir[pk] / diagR[pk];
+S614,LevenbergMarquardtOptimizer.java,545,for (int i = 0; i < k; ++i) {
+S615,LevenbergMarquardtOptimizer.java,546,lmDir[permutation[i]] -= ypk * weightedResidualJacobian[i][pk];
+S616,LevenbergMarquardtOptimizer.java,548,lmDir[pk] = ypk;
+S617,LevenbergMarquardtOptimizer.java,553,double dxNorm = 0;
+S618,LevenbergMarquardtOptimizer.java,554,for (int j = 0; j < solvedCols; ++j) {
+S619,LevenbergMarquardtOptimizer.java,555,int pj = permutation[j];
+S620,LevenbergMarquardtOptimizer.java,556,double s = diag[pj] * lmDir[pj];
+S621,LevenbergMarquardtOptimizer.java,557,work1[pj] = s;
+S622,LevenbergMarquardtOptimizer.java,558,dxNorm += s * s;
+S623,LevenbergMarquardtOptimizer.java,560,dxNorm = FastMath.sqrt(dxNorm);
+S624,LevenbergMarquardtOptimizer.java,561,double fp = dxNorm - delta;
+S625,LevenbergMarquardtOptimizer.java,562,if (fp <= 0.1 * delta) {
+S626,LevenbergMarquardtOptimizer.java,563,lmPar = 0;
+S627,LevenbergMarquardtOptimizer.java,564,return;
+S628,LevenbergMarquardtOptimizer.java,571,double parl = 0;
+S629,LevenbergMarquardtOptimizer.java,572,if (rank == solvedCols) {
+S630,LevenbergMarquardtOptimizer.java,573,for (int j = 0; j < solvedCols; ++j) {
+S631,LevenbergMarquardtOptimizer.java,574,int pj = permutation[j];
+S632,LevenbergMarquardtOptimizer.java,575,work1[pj] *= diag[pj] / dxNorm;
+S633,LevenbergMarquardtOptimizer.java,577,sum2 = 0;
+S634,LevenbergMarquardtOptimizer.java,578,for (int j = 0; j < solvedCols; ++j) {
+S635,LevenbergMarquardtOptimizer.java,579,int pj = permutation[j];
+S636,LevenbergMarquardtOptimizer.java,580,double sum = 0;
+S637,LevenbergMarquardtOptimizer.java,581,for (int i = 0; i < j; ++i) {
+S638,LevenbergMarquardtOptimizer.java,582,sum += weightedResidualJacobian[i][pj] * work1[permutation[i]];
+S639,LevenbergMarquardtOptimizer.java,584,double s = (work1[pj] - sum) / diagR[pj];
+S640,LevenbergMarquardtOptimizer.java,585,work1[pj] = s;
+S641,LevenbergMarquardtOptimizer.java,586,sum2 += s * s;
+S642,LevenbergMarquardtOptimizer.java,588,parl = fp / (delta * sum2);
+S643,LevenbergMarquardtOptimizer.java,592,sum2 = 0;
+S644,LevenbergMarquardtOptimizer.java,593,for (int j = 0; j < solvedCols; ++j) {
+S645,LevenbergMarquardtOptimizer.java,594,int pj = permutation[j];
+S646,LevenbergMarquardtOptimizer.java,595,double sum = 0;
+S647,LevenbergMarquardtOptimizer.java,596,for (int i = 0; i <= j; ++i) {
+S648,LevenbergMarquardtOptimizer.java,597,sum += weightedResidualJacobian[i][pj] * qy[i];
+S649,LevenbergMarquardtOptimizer.java,599,sum /= diag[pj];
+S650,LevenbergMarquardtOptimizer.java,600,sum2 += sum * sum;
+S651,LevenbergMarquardtOptimizer.java,602,double gNorm = FastMath.sqrt(sum2);
+S652,LevenbergMarquardtOptimizer.java,603,double paru = gNorm / delta;
+S653,LevenbergMarquardtOptimizer.java,604,if (paru == 0) {
+S654,LevenbergMarquardtOptimizer.java,611,"lmPar = FastMath.min(paru, FastMath.max(lmPar, parl));"
+S655,LevenbergMarquardtOptimizer.java,612,if (lmPar == 0) {
+S656,LevenbergMarquardtOptimizer.java,616,for (int countdown = 10; countdown >= 0; --countdown) {
+S657,LevenbergMarquardtOptimizer.java,619,if (lmPar == 0) {
+S658,LevenbergMarquardtOptimizer.java,622,double sPar = FastMath.sqrt(lmPar);
+S659,LevenbergMarquardtOptimizer.java,623,for (int j = 0; j < solvedCols; ++j) {
+S660,LevenbergMarquardtOptimizer.java,624,int pj = permutation[j];
+S661,LevenbergMarquardtOptimizer.java,625,work1[pj] = sPar * diag[pj];
+S662,LevenbergMarquardtOptimizer.java,627,"determineLMDirection(qy, work1, work2, work3);"
+S663,LevenbergMarquardtOptimizer.java,629,dxNorm = 0;
+S664,LevenbergMarquardtOptimizer.java,630,for (int j = 0; j < solvedCols; ++j) {
+S665,LevenbergMarquardtOptimizer.java,631,int pj = permutation[j];
+S666,LevenbergMarquardtOptimizer.java,632,double s = diag[pj] * lmDir[pj];
+S667,LevenbergMarquardtOptimizer.java,633,work3[pj] = s;
+S668,LevenbergMarquardtOptimizer.java,634,dxNorm += s * s;
+S669,LevenbergMarquardtOptimizer.java,636,dxNorm = FastMath.sqrt(dxNorm);
+S670,LevenbergMarquardtOptimizer.java,637,double previousFP = fp;
+S671,LevenbergMarquardtOptimizer.java,638,fp = dxNorm - delta;
+S672,LevenbergMarquardtOptimizer.java,642,if ((FastMath.abs(fp) <= 0.1 * delta) ||
+S673,LevenbergMarquardtOptimizer.java,644,return;
+S674,LevenbergMarquardtOptimizer.java,648,for (int j = 0; j < solvedCols; ++j) {
+S675,LevenbergMarquardtOptimizer.java,649,int pj = permutation[j];
+S676,LevenbergMarquardtOptimizer.java,650,work1[pj] = work3[pj] * diag[pj] / dxNorm;
+S677,LevenbergMarquardtOptimizer.java,652,for (int j = 0; j < solvedCols; ++j) {
+S678,LevenbergMarquardtOptimizer.java,653,int pj = permutation[j];
+S679,LevenbergMarquardtOptimizer.java,654,work1[pj] /= work2[j];
+S680,LevenbergMarquardtOptimizer.java,655,double tmp = work1[pj];
+S681,LevenbergMarquardtOptimizer.java,656,for (int i = j + 1; i < solvedCols; ++i) {
+S682,LevenbergMarquardtOptimizer.java,657,work1[permutation[i]] -= weightedResidualJacobian[i][pj] * tmp;
+S683,LevenbergMarquardtOptimizer.java,660,sum2 = 0;
+S684,LevenbergMarquardtOptimizer.java,661,for (int j = 0; j < solvedCols; ++j) {
+S685,LevenbergMarquardtOptimizer.java,662,double s = work1[permutation[j]];
+S686,LevenbergMarquardtOptimizer.java,663,sum2 += s * s;
+S687,LevenbergMarquardtOptimizer.java,665,double correction = fp / (delta * sum2);
+S688,LevenbergMarquardtOptimizer.java,668,if (fp > 0) {
+S689,LevenbergMarquardtOptimizer.java,669,"parl = FastMath.max(parl, lmPar);"
+S690,LevenbergMarquardtOptimizer.java,670,} else if (fp < 0) {
+S691,LevenbergMarquardtOptimizer.java,671,"paru = FastMath.min(paru, lmPar);"
+S692,LevenbergMarquardtOptimizer.java,675,"lmPar = FastMath.max(parl, lmPar + correction);"
+S693,LevenbergMarquardtOptimizer.java,705,for (int j = 0; j < solvedCols; ++j) {
+S694,LevenbergMarquardtOptimizer.java,706,int pj = permutation[j];
+S695,LevenbergMarquardtOptimizer.java,707,for (int i = j + 1; i < solvedCols; ++i) {
+S696,LevenbergMarquardtOptimizer.java,708,weightedResidualJacobian[i][pj] = weightedResidualJacobian[j][permutation[i]];
+S697,LevenbergMarquardtOptimizer.java,710,lmDir[j] = diagR[pj];
+S698,LevenbergMarquardtOptimizer.java,711,work[j]  = qy[j];
+S699,LevenbergMarquardtOptimizer.java,715,for (int j = 0; j < solvedCols; ++j) {
+S700,LevenbergMarquardtOptimizer.java,719,int pj = permutation[j];
+S701,LevenbergMarquardtOptimizer.java,720,double dpj = diag[pj];
+S702,LevenbergMarquardtOptimizer.java,721,if (dpj != 0) {
+S703,LevenbergMarquardtOptimizer.java,722,"Arrays.fill(lmDiag, j + 1, lmDiag.length, 0);"
+S704,LevenbergMarquardtOptimizer.java,724,lmDiag[j] = dpj;
+S705,LevenbergMarquardtOptimizer.java,729,double qtbpj = 0;
+S706,LevenbergMarquardtOptimizer.java,730,for (int k = j; k < solvedCols; ++k) {
+S707,LevenbergMarquardtOptimizer.java,731,int pk = permutation[k];
+S708,LevenbergMarquardtOptimizer.java,735,if (lmDiag[k] != 0) {
+S709,LevenbergMarquardtOptimizer.java,739,double rkk = weightedResidualJacobian[k][pk];
+S710,LevenbergMarquardtOptimizer.java,740,if (FastMath.abs(rkk) < FastMath.abs(lmDiag[k])) {
+S711,LevenbergMarquardtOptimizer.java,741,final double cotan = rkk / lmDiag[k];
+S712,LevenbergMarquardtOptimizer.java,742,sin   = 1.0 / FastMath.sqrt(1.0 + cotan * cotan);
+S713,LevenbergMarquardtOptimizer.java,743,cos   = sin * cotan;
+S714,LevenbergMarquardtOptimizer.java,744,} else {
+S715,LevenbergMarquardtOptimizer.java,745,final double tan = lmDiag[k] / rkk;
+S716,LevenbergMarquardtOptimizer.java,746,cos = 1.0 / FastMath.sqrt(1.0 + tan * tan);
+S717,LevenbergMarquardtOptimizer.java,747,sin = cos * tan;
+S718,LevenbergMarquardtOptimizer.java,752,weightedResidualJacobian[k][pk] = cos * rkk + sin * lmDiag[k];
+S719,LevenbergMarquardtOptimizer.java,753,final double temp = cos * work[k] + sin * qtbpj;
+S720,LevenbergMarquardtOptimizer.java,754,qtbpj = -sin * work[k] + cos * qtbpj;
+S721,LevenbergMarquardtOptimizer.java,755,work[k] = temp;
+S722,LevenbergMarquardtOptimizer.java,758,for (int i = k + 1; i < solvedCols; ++i) {
+S723,LevenbergMarquardtOptimizer.java,759,double rik = weightedResidualJacobian[i][pk];
+S724,LevenbergMarquardtOptimizer.java,760,final double temp2 = cos * rik + sin * lmDiag[i];
+S725,LevenbergMarquardtOptimizer.java,761,lmDiag[i] = -sin * rik + cos * lmDiag[i];
+S726,LevenbergMarquardtOptimizer.java,762,weightedResidualJacobian[i][pk] = temp2;
+S727,LevenbergMarquardtOptimizer.java,769,lmDiag[j] = weightedResidualJacobian[j][permutation[j]];
+S728,LevenbergMarquardtOptimizer.java,770,weightedResidualJacobian[j][permutation[j]] = lmDir[j];
+S729,LevenbergMarquardtOptimizer.java,775,int nSing = solvedCols;
+S730,LevenbergMarquardtOptimizer.java,776,for (int j = 0; j < solvedCols; ++j) {
+S731,LevenbergMarquardtOptimizer.java,777,if ((lmDiag[j] == 0) && (nSing == solvedCols)) {
+S732,LevenbergMarquardtOptimizer.java,780,if (nSing < solvedCols) {
+S733,LevenbergMarquardtOptimizer.java,784,if (nSing > 0) {
+S734,LevenbergMarquardtOptimizer.java,785,for (int j = nSing - 1; j >= 0; --j) {
+S735,LevenbergMarquardtOptimizer.java,786,int pj = permutation[j];
+S736,LevenbergMarquardtOptimizer.java,787,double sum = 0;
+S737,LevenbergMarquardtOptimizer.java,788,for (int i = j + 1; i < nSing; ++i) {
+S738,LevenbergMarquardtOptimizer.java,789,sum += weightedResidualJacobian[i][pj] * work[i];
+S739,LevenbergMarquardtOptimizer.java,791,work[j] = (work[j] - sum) / lmDiag[j];
+S740,LevenbergMarquardtOptimizer.java,796,for (int j = 0; j < lmDir.length; ++j) {
+S741,LevenbergMarquardtOptimizer.java,797,lmDir[permutation[j]] = work[j];
+S742,LevenbergMarquardtOptimizer.java,826,for (int k = 0; k < cols; ++k) {
+S743,LevenbergMarquardtOptimizer.java,827,permutation[k] = k;
+S744,LevenbergMarquardtOptimizer.java,828,double norm2 = 0;
+S745,LevenbergMarquardtOptimizer.java,829,for (int i = 0; i < weightedResidualJacobian.length; ++i) {
+S746,LevenbergMarquardtOptimizer.java,830,double akk = weightedResidualJacobian[i][k];
+S747,LevenbergMarquardtOptimizer.java,831,norm2 += akk * akk;
+S748,LevenbergMarquardtOptimizer.java,833,jacNorm[k] = FastMath.sqrt(norm2);
+S749,LevenbergMarquardtOptimizer.java,837,for (int k = 0; k < cols; ++k) {
+S750,LevenbergMarquardtOptimizer.java,840,int nextColumn = -1;
+S751,LevenbergMarquardtOptimizer.java,841,double ak2 = Double.NEGATIVE_INFINITY;
+S752,LevenbergMarquardtOptimizer.java,842,for (int i = k; i < cols; ++i) {
+S753,LevenbergMarquardtOptimizer.java,843,double norm2 = 0;
+S754,LevenbergMarquardtOptimizer.java,844,for (int j = k; j < weightedResidualJacobian.length; ++j) {
+S755,LevenbergMarquardtOptimizer.java,845,double aki = weightedResidualJacobian[j][permutation[i]];
+S756,LevenbergMarquardtOptimizer.java,846,norm2 += aki * aki;
+S757,LevenbergMarquardtOptimizer.java,848,if (Double.isInfinite(norm2) || Double.isNaN(norm2)) {
+S758,LevenbergMarquardtOptimizer.java,852,if (norm2 > ak2) {
+S759,LevenbergMarquardtOptimizer.java,853,nextColumn = i;
+S760,LevenbergMarquardtOptimizer.java,854,ak2        = norm2;
+S761,LevenbergMarquardtOptimizer.java,857,if (ak2 <= qrRankingThreshold) {
+S762,LevenbergMarquardtOptimizer.java,861,int pk                  = permutation[nextColumn];
+S763,LevenbergMarquardtOptimizer.java,862,permutation[nextColumn] = permutation[k];
+S764,LevenbergMarquardtOptimizer.java,863,permutation[k]          = pk;
+S765,LevenbergMarquardtOptimizer.java,866,double akk   = weightedResidualJacobian[k][pk];
+S766,LevenbergMarquardtOptimizer.java,867,double alpha = (akk > 0) ? -FastMath.sqrt(ak2) : FastMath.sqrt(ak2);
+S767,LevenbergMarquardtOptimizer.java,868,double betak = 1.0 / (ak2 - akk * alpha);
+S768,LevenbergMarquardtOptimizer.java,869,beta[pk]     = betak;
+S769,LevenbergMarquardtOptimizer.java,872,diagR[pk]        = alpha;
+S770,LevenbergMarquardtOptimizer.java,873,weightedResidualJacobian[k][pk] -= alpha;
+S771,LevenbergMarquardtOptimizer.java,876,for (int dk = cols - 1 - k; dk > 0; --dk) {
+S772,LevenbergMarquardtOptimizer.java,877,double gamma = 0;
+S773,LevenbergMarquardtOptimizer.java,878,for (int j = k; j < weightedResidualJacobian.length; ++j) {
+S774,LevenbergMarquardtOptimizer.java,879,gamma += weightedResidualJacobian[j][pk] * weightedResidualJacobian[j][permutation[k + dk]];
+S775,LevenbergMarquardtOptimizer.java,881,gamma *= betak;
+S776,LevenbergMarquardtOptimizer.java,882,for (int j = k; j < weightedResidualJacobian.length; ++j) {
+S777,LevenbergMarquardtOptimizer.java,883,weightedResidualJacobian[j][permutation[k + dk]] -= gamma * weightedResidualJacobian[j][pk];
+S778,LevenbergMarquardtOptimizer.java,887,rank = solvedCols;
+S779,LevenbergMarquardtOptimizer.java,896,for (int k = 0; k < cols; ++k) {
+S780,LevenbergMarquardtOptimizer.java,897,int pk = permutation[k];
+S781,LevenbergMarquardtOptimizer.java,898,double gamma = 0;
+S782,LevenbergMarquardtOptimizer.java,899,for (int i = k; i < rows; ++i) {
+S783,LevenbergMarquardtOptimizer.java,900,gamma += weightedResidualJacobian[i][pk] * y[i];
+S784,LevenbergMarquardtOptimizer.java,902,gamma *= beta[pk];
+S785,LevenbergMarquardtOptimizer.java,903,for (int i = k; i < rows; ++i) {
+S786,LevenbergMarquardtOptimizer.java,904,y[i] -= gamma * weightedResidualJacobian[i][pk];
+S787,LocalizedFormats.java,39,public enum LocalizedFormats implements Localizable {
+S788,LocalizedFormats.java,44,"ARGUMENT_OUTSIDE_DOMAIN(""Argument {0} outside domain [{1} ; {2}]""),"
+S789,LocalizedFormats.java,45,"ARRAY_SIZE_EXCEEDS_MAX_VARIABLES(""array size cannot be greater than {0}""),"
+S790,LocalizedFormats.java,46,"ARRAY_SIZES_SHOULD_HAVE_DIFFERENCE_1(""array sizes should have difference 1 ({0} != {1} + 1)""),"
+S791,LocalizedFormats.java,47,"ARRAY_SUMS_TO_ZERO(""array sums to zero""),"
+S792,LocalizedFormats.java,48,"ASSYMETRIC_EIGEN_NOT_SUPPORTED(""eigen decomposition of assymetric matrices not supported yet""),"
+S793,LocalizedFormats.java,49,"AT_LEAST_ONE_COLUMN(""matrix must have at least one column""),"
+S794,LocalizedFormats.java,50,"AT_LEAST_ONE_ROW(""matrix must have at least one row""),"
+S795,LocalizedFormats.java,51,"BANDWIDTH(""bandwidth ({0})""),"
+S796,LocalizedFormats.java,52,"BINOMIAL_INVALID_PARAMETERS_ORDER(""must have n >= k for binomial coefficient (n, k), got k = {0}, n = {1}""),"
+S797,LocalizedFormats.java,53,"BINOMIAL_NEGATIVE_PARAMETER(""must have n >= 0 for binomial coefficient (n, k), got n = {0}""),"
+S798,LocalizedFormats.java,54,"CANNOT_CLEAR_STATISTIC_CONSTRUCTED_FROM_EXTERNAL_MOMENTS(""statistics constructed from external moments cannot be cleared""),"
+S799,LocalizedFormats.java,55,"CANNOT_COMPUTE_0TH_ROOT_OF_UNITY(""cannot compute 0-th root of unity, indefinite result""),"
+S800,LocalizedFormats.java,56,"CANNOT_COMPUTE_BETA_DENSITY_AT_0_FOR_SOME_ALPHA(""cannot compute beta density at 0 when alpha = {0,number}""),"
+S801,LocalizedFormats.java,57,"CANNOT_COMPUTE_BETA_DENSITY_AT_1_FOR_SOME_BETA(""cannot compute beta density at 1 when beta = %.3g""),"
+S802,LocalizedFormats.java,58,"CANNOT_COMPUTE_NTH_ROOT_FOR_NEGATIVE_N(""cannot compute nth root for null or negative n: {0}""),"
+S803,LocalizedFormats.java,59,"CANNOT_DISCARD_NEGATIVE_NUMBER_OF_ELEMENTS(""cannot discard a negative number of elements ({0})""),"
+S804,LocalizedFormats.java,60,"CANNOT_FORMAT_INSTANCE_AS_3D_VECTOR(""cannot format a {0} instance as a 3D vector""),"
+S805,LocalizedFormats.java,61,"CANNOT_FORMAT_INSTANCE_AS_COMPLEX(""cannot format a {0} instance as a complex number""),"
+S806,LocalizedFormats.java,62,"CANNOT_FORMAT_INSTANCE_AS_REAL_VECTOR(""cannot format a {0} instance as a real vector""),"
+S807,LocalizedFormats.java,63,"CANNOT_FORMAT_OBJECT_TO_FRACTION(""cannot format given object as a fraction number""),"
+S808,LocalizedFormats.java,64,"CANNOT_INCREMENT_STATISTIC_CONSTRUCTED_FROM_EXTERNAL_MOMENTS(""statistics constructed from external moments cannot be incremented""),"
+S809,LocalizedFormats.java,65,"CANNOT_NORMALIZE_A_ZERO_NORM_VECTOR(""cannot normalize a zero norm vector""),"
+S810,LocalizedFormats.java,66,"CANNOT_RETRIEVE_AT_NEGATIVE_INDEX(""elements cannot be retrieved from a negative array index {0}""),"
+S811,LocalizedFormats.java,67,"CANNOT_SET_AT_NEGATIVE_INDEX(""cannot set an element at a negative index {0}""),"
+S812,LocalizedFormats.java,68,"CANNOT_SUBSTITUTE_ELEMENT_FROM_EMPTY_ARRAY(""cannot substitute an element from an empty array""),"
+S813,LocalizedFormats.java,69,"CANNOT_TRANSFORM_TO_DOUBLE(""Conversion Exception in Transformation: {0}""),"
+S814,LocalizedFormats.java,70,"CARDAN_ANGLES_SINGULARITY(""Cardan angles singularity""),"
+S815,LocalizedFormats.java,71,"CLASS_DOESNT_IMPLEMENT_COMPARABLE(""class ({0}) does not implement Comparable""),"
+S816,LocalizedFormats.java,72,"CLOSEST_ORTHOGONAL_MATRIX_HAS_NEGATIVE_DETERMINANT(""the closest orthogonal matrix has a negative determinant {0}""),"
+S817,LocalizedFormats.java,73,"COLUMN_INDEX_OUT_OF_RANGE(""column index {0} out of allowed range [{1}, {2}]""),"
+S818,LocalizedFormats.java,74,"COLUMN_INDEX(""column index ({0})""), /* keep */"
+S819,LocalizedFormats.java,75,"CONTINUED_FRACTION_INFINITY_DIVERGENCE(""Continued fraction convergents diverged to +/- infinity for value {0}""),"
+S820,LocalizedFormats.java,76,"CONTINUED_FRACTION_NAN_DIVERGENCE(""Continued fraction diverged to NaN for value {0}""),"
+S821,LocalizedFormats.java,77,"CONTRACTION_CRITERIA_SMALLER_THAN_EXPANSION_FACTOR(""contraction criteria ({0}) smaller than the expansion factor ({1}).  This would lead to a never ending loop of expansion and contraction as a newly expanded internal storage array would immediately satisfy the criteria for contraction.""),"
+S822,LocalizedFormats.java,78,"CONTRACTION_CRITERIA_SMALLER_THAN_ONE(""contraction criteria smaller than one ({0}).  This would lead to a never ending loop of expansion and contraction as an internal storage array length equal to the number of elements would satisfy the contraction criteria.""),"
+S823,LocalizedFormats.java,79,"CONVERGENCE_FAILED(""convergence failed""), /* keep */"
+S824,LocalizedFormats.java,80,"CROSSING_BOUNDARY_LOOPS(""some outline boundary loops cross each other""),"
+S825,LocalizedFormats.java,81,"CROSSOVER_RATE(""crossover rate ({0})""),"
+S826,LocalizedFormats.java,82,"CUMULATIVE_PROBABILITY_RETURNED_NAN(""Cumulative probability function returned NaN for argument {0} p = {1}""),"
+S827,LocalizedFormats.java,83,"DIFFERENT_ROWS_LENGTHS(""some rows have length {0} while others have length {1}""),"
+S828,LocalizedFormats.java,84,"DIFFERENT_ORIG_AND_PERMUTED_DATA(""original and permuted data must contain the same elements""),"
+S829,LocalizedFormats.java,85,"DIGEST_NOT_INITIALIZED(""digest not initialized""),"
+S830,LocalizedFormats.java,86,"DIMENSIONS_MISMATCH_2x2(""got {0}x{1} but expected {2}x{3}""), /* keep */"
+S831,LocalizedFormats.java,87,"DIMENSIONS_MISMATCH_SIMPLE(""{0} != {1}""), /* keep */"
+S832,LocalizedFormats.java,88,"DIMENSIONS_MISMATCH(""dimensions mismatch""), /* keep */"
+S833,LocalizedFormats.java,89,"DISCRETE_CUMULATIVE_PROBABILITY_RETURNED_NAN(""Discrete cumulative probability function returned NaN for argument {0}""),"
+S834,LocalizedFormats.java,90,"DISTRIBUTION_NOT_LOADED(""distribution not loaded""),"
+S835,LocalizedFormats.java,91,"DUPLICATED_ABSCISSA_DIVISION_BY_ZERO(""duplicated abscissa {0} causes division by zero""),"
+S836,LocalizedFormats.java,92,"ELITISM_RATE(""elitism rate ({0})""),"
+S837,LocalizedFormats.java,93,"EMPTY_CLUSTER_IN_K_MEANS(""empty cluster in k-means""),"
+S838,LocalizedFormats.java,94,"EMPTY_INTERPOLATION_SAMPLE(""sample for interpolation is empty""),"
+S839,LocalizedFormats.java,95,"EMPTY_POLYNOMIALS_COEFFICIENTS_ARRAY(""empty polynomials coefficients array""), /* keep */"
+S840,LocalizedFormats.java,96,"EMPTY_SELECTED_COLUMN_INDEX_ARRAY(""empty selected column index array""),"
+S841,LocalizedFormats.java,97,"EMPTY_SELECTED_ROW_INDEX_ARRAY(""empty selected row index array""),"
+S842,LocalizedFormats.java,98,"EMPTY_STRING_FOR_IMAGINARY_CHARACTER(""empty string for imaginary character""),"
+S843,LocalizedFormats.java,99,"ENDPOINTS_NOT_AN_INTERVAL(""endpoints do not specify an interval: [{0}, {1}]""),"
+S844,LocalizedFormats.java,100,"EQUAL_VERTICES_IN_SIMPLEX(""equal vertices {0} and {1} in simplex configuration""),"
+S845,LocalizedFormats.java,101,"EULER_ANGLES_SINGULARITY(""Euler angles singularity""),"
+S846,LocalizedFormats.java,102,"EVALUATION(""evaluation""), /* keep */"
+S847,LocalizedFormats.java,103,"EXPANSION_FACTOR_SMALLER_THAN_ONE(""expansion factor smaller than one ({0})""),"
+S848,LocalizedFormats.java,104,"FACTORIAL_NEGATIVE_PARAMETER(""must have n >= 0 for n!, got n = {0}""),"
+S849,LocalizedFormats.java,105,"FAILED_BRACKETING(""number of iterations={4}, maximum iterations={5}, initial={6}, lower bound={7}, upper bound={8}, final a value={0}, final b value={1}, f(a)={2}, f(b)={3}""),"
+S850,LocalizedFormats.java,106,"FAILED_FRACTION_CONVERSION(""Unable to convert {0} to fraction after {1} iterations""),"
+S851,LocalizedFormats.java,107,"FIRST_COLUMNS_NOT_INITIALIZED_YET(""first {0} columns are not initialized yet""),"
+S852,LocalizedFormats.java,108,"FIRST_ELEMENT_NOT_ZERO(""first element is not 0: {0}""),"
+S853,LocalizedFormats.java,109,"FIRST_ROWS_NOT_INITIALIZED_YET(""first {0} rows are not initialized yet""),"
+S854,LocalizedFormats.java,110,"FRACTION_CONVERSION_OVERFLOW(""Overflow trying to convert {0} to fraction ({1}/{2})""),"
+S855,LocalizedFormats.java,111,"FUNCTION_NOT_DIFFERENTIABLE(""function is not differentiable""),"
+S856,LocalizedFormats.java,112,"FUNCTION_NOT_POLYNOMIAL(""function is not polynomial""),"
+S857,LocalizedFormats.java,113,"GCD_OVERFLOW_32_BITS(""overflow: gcd({0}, {1}) is 2^31""),"
+S858,LocalizedFormats.java,114,"GCD_OVERFLOW_64_BITS(""overflow: gcd({0}, {1}) is 2^63""),"
+S859,LocalizedFormats.java,115,"HOLE_BETWEEN_MODELS_TIME_RANGES(""{0} wide hole between models time ranges""),"
+S860,LocalizedFormats.java,116,"ILL_CONDITIONED_OPERATOR(""condition number {1} is too high ""),"
+S861,LocalizedFormats.java,117,"INDEX_LARGER_THAN_MAX(""the index specified: {0} is larger than the current maximal index {1}""),"
+S862,LocalizedFormats.java,118,"INDEX_NOT_POSITIVE(""index ({0}) is not positive""),"
+S863,LocalizedFormats.java,119,"INDEX_OUT_OF_RANGE(""index {0} out of allowed range [{1}, {2}]""),"
+S864,LocalizedFormats.java,120,"INDEX(""index ({0})""), /* keep */"
+S865,LocalizedFormats.java,121,"NOT_FINITE_NUMBER(""{0} is not a finite number""), /* keep */"
+S866,LocalizedFormats.java,122,"INFINITE_BOUND(""interval bounds must be finite""),"
+S867,LocalizedFormats.java,123,"ARRAY_ELEMENT(""value {0} at index {1}""), /* keep */"
+S868,LocalizedFormats.java,124,"INFINITE_ARRAY_ELEMENT(""Array contains an infinite element, {0} at index {1}""),"
+S869,LocalizedFormats.java,125,"INFINITE_VALUE_CONVERSION(""cannot convert infinite value""),"
+S870,LocalizedFormats.java,126,"INITIAL_CAPACITY_NOT_POSITIVE(""initial capacity ({0}) is not positive""),"
+S871,LocalizedFormats.java,127,"INITIAL_COLUMN_AFTER_FINAL_COLUMN(""initial column {1} after final column {0}""),"
+S872,LocalizedFormats.java,128,"INITIAL_ROW_AFTER_FINAL_ROW(""initial row {1} after final row {0}""),"
+S873,LocalizedFormats.java,129,"INPUT_DATA_FROM_UNSUPPORTED_DATASOURCE(""input data comes from unsupported datasource: {0}, supported sources: {1}, {2}""),"
+S874,LocalizedFormats.java,130,"INSTANCES_NOT_COMPARABLE_TO_EXISTING_VALUES(""instance of class {0} not comparable to existing values""),"
+S875,LocalizedFormats.java,131,"INSUFFICIENT_DATA_FOR_T_STATISTIC(""insufficient data for t statistic, needs at least 2, got {0}""),"
+S876,LocalizedFormats.java,132,"INSUFFICIENT_DIMENSION(""insufficient dimension {0}, must be at least {1}""),"
+S877,LocalizedFormats.java,133,"DIMENSION(""dimension ({0})""), /* keep */"
+S878,LocalizedFormats.java,134,"INSUFFICIENT_OBSERVED_POINTS_IN_SAMPLE(""sample contains {0} observed points, at least {1} are required""),"
+S879,LocalizedFormats.java,135,"INSUFFICIENT_ROWS_AND_COLUMNS(""insufficient data: only {0} rows and {1} columns.""),"
+S880,LocalizedFormats.java,136,"INTEGRATION_METHOD_NEEDS_AT_LEAST_TWO_PREVIOUS_POINTS(""{0} method needs at least two previous points""),"
+S881,LocalizedFormats.java,137,"INTERNAL_ERROR(""internal error, please fill a bug report at {0}""),"
+S882,LocalizedFormats.java,138,"INVALID_BINARY_DIGIT(""invalid binary digit: {0}""),"
+S883,LocalizedFormats.java,139,"INVALID_BINARY_CHROMOSOME(""binary mutation works on BinaryChromosome only""),"
+S884,LocalizedFormats.java,140,"INVALID_BRACKETING_PARAMETERS(""invalid bracketing parameters:  lower bound={0},  initial={1}, upper bound={2}""),"
+S885,LocalizedFormats.java,141,"INVALID_FIXED_LENGTH_CHROMOSOME(""one-point crossover only works with fixed-length chromosomes""),"
+S886,LocalizedFormats.java,142,"INVALID_INTERVAL_INITIAL_VALUE_PARAMETERS(""invalid interval, initial value parameters:  lower={0}, initial={1}, upper={2}""),"
+S887,LocalizedFormats.java,143,"INVALID_ITERATIONS_LIMITS(""invalid iteration limits: min={0}, max={1}""),"
+S888,LocalizedFormats.java,144,"INVALID_MAX_ITERATIONS(""bad value for maximum iterations number: {0}""),"
+S889,LocalizedFormats.java,145,"NOT_ENOUGH_DATA_REGRESSION(""the number of observations is not sufficient to conduct regression""),"
+S890,LocalizedFormats.java,146,"INVALID_REGRESSION_ARRAY(""input data array length = {0} does not match the number of observations = {1} and the number of regressors = {2}""),"
+S891,LocalizedFormats.java,147,"INVALID_REGRESSION_OBSERVATION(""length of regressor array = {0} does not match the number of variables = {1} in the model""),"
+S892,LocalizedFormats.java,148,"INVALID_ROUNDING_METHOD(""invalid rounding method {0}, valid methods: {1} ({2}), {3} ({4}), {5} ({6}), {7} ({8}), {9} ({10}), {11} ({12}), {13} ({14}), {15} ({16})""),"
+S893,LocalizedFormats.java,149,"ITERATOR_EXHAUSTED(""iterator exhausted""),"
+S894,LocalizedFormats.java,150,"LCM_OVERFLOW_32_BITS(""overflow: lcm({0}, {1}) is 2^31""),"
+S895,LocalizedFormats.java,151,"LCM_OVERFLOW_64_BITS(""overflow: lcm({0}, {1}) is 2^63""),"
+S896,LocalizedFormats.java,152,"LIST_OF_CHROMOSOMES_BIGGER_THAN_POPULATION_SIZE(""list of chromosomes bigger than maxPopulationSize""),"
+S897,LocalizedFormats.java,153,"LOESS_EXPECTS_AT_LEAST_ONE_POINT(""Loess expects at least 1 point""),"
+S898,LocalizedFormats.java,154,"LOWER_BOUND_NOT_BELOW_UPPER_BOUND(""lower bound ({0}) must be strictly less than upper bound ({1})""), /* keep */"
+S899,LocalizedFormats.java,155,"LOWER_ENDPOINT_ABOVE_UPPER_ENDPOINT(""lower endpoint ({0}) must be less than or equal to upper endpoint ({1})""),"
+S900,LocalizedFormats.java,156,"MAP_MODIFIED_WHILE_ITERATING(""map has been modified while iterating""),"
+S901,LocalizedFormats.java,157,"EVALUATIONS(""evaluations""), /* keep */"
+S902,LocalizedFormats.java,158,"MAX_COUNT_EXCEEDED(""maximal count ({0}) exceeded""), /* keep */"
+S903,LocalizedFormats.java,159,"MAX_ITERATIONS_EXCEEDED(""maximal number of iterations ({0}) exceeded""),"
+S904,LocalizedFormats.java,160,"MINIMAL_STEPSIZE_REACHED_DURING_INTEGRATION(""minimal step size ({1,number,0.00E00}) reached, integration needs {0,number,0.00E00}""),"
+S905,LocalizedFormats.java,161,"MISMATCHED_LOESS_ABSCISSA_ORDINATE_ARRAYS(""Loess expects the abscissa and ordinate arrays to be of the same size, but got {0} abscissae and {1} ordinatae""),"
+S906,LocalizedFormats.java,162,"MUTATION_RATE(""mutation rate ({0})""),"
+S907,LocalizedFormats.java,163,"NAN_ELEMENT_AT_INDEX(""element {0} is NaN""),"
+S908,LocalizedFormats.java,164,"NAN_VALUE_CONVERSION(""cannot convert NaN value""),"
+S909,LocalizedFormats.java,165,"NEGATIVE_BRIGHTNESS_EXPONENT(""brightness exponent should be positive or null, but got {0}""),"
+S910,LocalizedFormats.java,166,"NEGATIVE_COMPLEX_MODULE(""negative complex module {0}""),"
+S911,LocalizedFormats.java,167,"NEGATIVE_ELEMENT_AT_2D_INDEX(""element ({0}, {1}) is negative: {2}""),"
+S912,LocalizedFormats.java,168,"NEGATIVE_ELEMENT_AT_INDEX(""element {0} is negative: {1}""),"
+S913,LocalizedFormats.java,169,"NEGATIVE_NUMBER_OF_SUCCESSES(""number of successes must be non-negative ({0})""),"
+S914,LocalizedFormats.java,170,"NUMBER_OF_SUCCESSES(""number of successes ({0})""), /* keep */"
+S915,LocalizedFormats.java,171,"NEGATIVE_NUMBER_OF_TRIALS(""number of trials must be non-negative ({0})""),"
+S916,LocalizedFormats.java,172,"NUMBER_OF_INTERPOLATION_POINTS(""number of interpolation points ({0})""), /* keep */"
+S917,LocalizedFormats.java,173,"NUMBER_OF_TRIALS(""number of trials ({0})""),"
+S918,LocalizedFormats.java,174,"ROBUSTNESS_ITERATIONS(""number of robustness iterations ({0})""),"
+S919,LocalizedFormats.java,175,"START_POSITION(""start position ({0})""), /* keep */"
+S920,LocalizedFormats.java,176,"NON_CONVERGENT_CONTINUED_FRACTION(""Continued fraction convergents failed to converge (in less than {0} iterations) for value {1}""),"
+S921,LocalizedFormats.java,177,"NON_INVERTIBLE_TRANSFORM(""non-invertible affine transform collapses some lines into single points""),"
+S922,LocalizedFormats.java,178,"NON_POSITIVE_MICROSPHERE_ELEMENTS(""number of microsphere elements must be positive, but got {0}""),"
+S923,LocalizedFormats.java,179,"NON_POSITIVE_POLYNOMIAL_DEGREE(""polynomial degree must be positive: degree={0}""),"
+S924,LocalizedFormats.java,180,"NON_REAL_FINITE_ABSCISSA(""all abscissae must be finite real numbers, but {0}-th is {1}""),"
+S925,LocalizedFormats.java,181,"NON_REAL_FINITE_ORDINATE(""all ordinatae must be finite real numbers, but {0}-th is {1}""),"
+S926,LocalizedFormats.java,182,"NON_REAL_FINITE_WEIGHT(""all weights must be finite real numbers, but {0}-th is {1}""),"
+S927,LocalizedFormats.java,183,"NON_SQUARE_MATRIX(""non square ({0}x{1}) matrix""),"
+S928,LocalizedFormats.java,184,"NORMALIZE_INFINITE(""Cannot normalize to an infinite value""),"
+S929,LocalizedFormats.java,185,"NORMALIZE_NAN(""Cannot normalize to NaN""),"
+S930,LocalizedFormats.java,186,"NOT_ADDITION_COMPATIBLE_MATRICES(""{0}x{1} and {2}x{3} matrices are not addition compatible""),"
+S931,LocalizedFormats.java,187,"NOT_DECREASING_NUMBER_OF_POINTS(""points {0} and {1} are not decreasing ({2} < {3})""),"
+S932,LocalizedFormats.java,188,"NOT_DECREASING_SEQUENCE(""points {3} and {2} are not decreasing ({1} < {0})""), /* keep */"
+S933,LocalizedFormats.java,189,"NOT_ENOUGH_DATA_FOR_NUMBER_OF_PREDICTORS(""not enough data ({0} rows) for this many predictors ({1} predictors)""),"
+S934,LocalizedFormats.java,190,"NOT_ENOUGH_POINTS_IN_SPLINE_PARTITION(""spline partition must have at least {0} points, got {1}""),"
+S935,LocalizedFormats.java,191,"NOT_INCREASING_NUMBER_OF_POINTS(""points {0} and {1} are not increasing ({2} > {3})""),"
+S936,LocalizedFormats.java,192,"NOT_INCREASING_SEQUENCE(""points {3} and {2} are not increasing ({1} > {0})""), /* keep */"
+S937,LocalizedFormats.java,193,"NOT_MULTIPLICATION_COMPATIBLE_MATRICES(""{0}x{1} and {2}x{3} matrices are not multiplication compatible""),"
+S938,LocalizedFormats.java,194,"NOT_POSITIVE_DEFINITE_MATRIX(""not positive definite matrix""), /* keep */"
+S939,LocalizedFormats.java,195,"NON_POSITIVE_DEFINITE_MATRIX(""not positive definite matrix: diagonal element at ({1},{1}) is smaller than {2} ({0})""),"
+S940,LocalizedFormats.java,196,"NON_POSITIVE_DEFINITE_OPERATOR(""non positive definite linear operator""), /* keep */"
+S941,LocalizedFormats.java,197,"NON_SELF_ADJOINT_OPERATOR(""non self-adjoint linear operator""), /* keep */"
+S942,LocalizedFormats.java,198,"NON_SQUARE_OPERATOR(""non square ({0}x{1}) linear operator""), /* keep */"
+S943,LocalizedFormats.java,199,"DEGREES_OF_FREEDOM(""degrees of freedom ({0})""), /* keep */"
+S944,LocalizedFormats.java,200,"NOT_POSITIVE_DEGREES_OF_FREEDOM(""degrees of freedom must be positive ({0})""),"
+S945,LocalizedFormats.java,201,"NOT_POSITIVE_ELEMENT_AT_INDEX(""element {0} is not positive: {1}""),"
+S946,LocalizedFormats.java,202,"NOT_POSITIVE_EXPONENT(""invalid exponent {0} (must be positive)""),"
+S947,LocalizedFormats.java,203,"NUMBER_OF_ELEMENTS_SHOULD_BE_POSITIVE(""number of elements should be positive ({0})""),"
+S948,LocalizedFormats.java,204,"EXPONENT(""exponent ({0})""), /* keep */"
+S949,LocalizedFormats.java,205,"NOT_POSITIVE_LENGTH(""length must be positive ({0})""),"
+S950,LocalizedFormats.java,206,"LENGTH(""length ({0})""), /* keep */"
+S951,LocalizedFormats.java,207,"NOT_POSITIVE_MEAN(""mean must be positive ({0})""),"
+S952,LocalizedFormats.java,208,"MEAN(""mean ({0})""), /* keep */"
+S953,LocalizedFormats.java,209,"NOT_POSITIVE_NUMBER_OF_SAMPLES(""number of sample is not positive: {0}""),"
+S954,LocalizedFormats.java,210,"NUMBER_OF_SAMPLES(""number of samples ({0})""), /* keep */"
+S955,LocalizedFormats.java,211,"NOT_POSITIVE_PERMUTATION(""permutation k ({0}) must be positive""),"
+S956,LocalizedFormats.java,212,"PERMUTATION_SIZE(""permutation size ({0}""), /* keep */"
+S957,LocalizedFormats.java,213,"NOT_POSITIVE_POISSON_MEAN(""the Poisson mean must be positive ({0})""),"
+S958,LocalizedFormats.java,214,"NOT_POSITIVE_POPULATION_SIZE(""population size must be positive ({0})""),"
+S959,LocalizedFormats.java,215,"POPULATION_SIZE(""population size ({0})""), /* keep */"
+S960,LocalizedFormats.java,216,"NOT_POSITIVE_ROW_DIMENSION(""invalid row dimension: {0} (must be positive)""),"
+S961,LocalizedFormats.java,217,"NOT_POSITIVE_SAMPLE_SIZE(""sample size must be positive ({0})""),"
+S962,LocalizedFormats.java,218,"NOT_POSITIVE_SCALE(""scale must be positive ({0})""),"
+S963,LocalizedFormats.java,219,"SCALE(""scale ({0})""), /* keep */"
+S964,LocalizedFormats.java,220,"NOT_POSITIVE_SHAPE(""shape must be positive ({0})""),"
+S965,LocalizedFormats.java,221,"SHAPE(""shape ({0})""), /* keep */"
+S966,LocalizedFormats.java,222,"NOT_POSITIVE_STANDARD_DEVIATION(""standard deviation must be positive ({0})""),"
+S967,LocalizedFormats.java,223,"STANDARD_DEVIATION(""standard deviation ({0})""), /* keep */"
+S968,LocalizedFormats.java,224,"NOT_POSITIVE_UPPER_BOUND(""upper bound must be positive ({0})""),"
+S969,LocalizedFormats.java,225,"NOT_POSITIVE_WINDOW_SIZE(""window size must be positive ({0})""),"
+S970,LocalizedFormats.java,226,"NOT_POWER_OF_TWO(""{0} is not a power of 2""),"
+S971,LocalizedFormats.java,227,"NOT_POWER_OF_TWO_CONSIDER_PADDING(""{0} is not a power of 2, consider padding for fix""),"
+S972,LocalizedFormats.java,228,"NOT_POWER_OF_TWO_PLUS_ONE(""{0} is not a power of 2 plus one""),"
+S973,LocalizedFormats.java,229,"NOT_STRICTLY_DECREASING_NUMBER_OF_POINTS(""points {0} and {1} are not strictly decreasing ({2} <= {3})""),"
+S974,LocalizedFormats.java,230,"NOT_STRICTLY_DECREASING_SEQUENCE(""points {3} and {2} are not strictly decreasing ({1} <= {0})""), /* keep */"
+S975,LocalizedFormats.java,231,"NOT_STRICTLY_INCREASING_KNOT_VALUES(""knot values must be strictly increasing""),"
+S976,LocalizedFormats.java,232,"NOT_STRICTLY_INCREASING_NUMBER_OF_POINTS(""points {0} and {1} are not strictly increasing ({2} >= {3})""),"
+S977,LocalizedFormats.java,233,"NOT_STRICTLY_INCREASING_SEQUENCE(""points {3} and {2} are not strictly increasing ({1} >= {0})""), /* keep */"
+S978,LocalizedFormats.java,234,"NOT_SUBTRACTION_COMPATIBLE_MATRICES(""{0}x{1} and {2}x{3} matrices are not subtraction compatible""),"
+S979,LocalizedFormats.java,235,"NOT_SUPPORTED_IN_DIMENSION_N(""method not supported in dimension {0}""),"
+S980,LocalizedFormats.java,236,"NOT_SYMMETRIC_MATRIX(""not symmetric matrix""),"
+S981,LocalizedFormats.java,237,"NON_SYMMETRIC_MATRIX(""non symmetric matrix: the difference between entries at ({0},{1}) and ({1},{0}) is larger than {2}""), /* keep */"
+S982,LocalizedFormats.java,238,"NO_BIN_SELECTED(""no bin selected""),"
+S983,LocalizedFormats.java,239,"NO_CONVERGENCE_WITH_ANY_START_POINT(""none of the {0} start points lead to convergence""), /* keep */"
+S984,LocalizedFormats.java,240,"NO_DATA(""no data""), /* keep */"
+S985,LocalizedFormats.java,241,"NO_DEGREES_OF_FREEDOM(""no degrees of freedom ({0} measurements, {1} parameters)""),"
+S986,LocalizedFormats.java,242,"NO_DENSITY_FOR_THIS_DISTRIBUTION(""This distribution does not have a density function implemented""),"
+S987,LocalizedFormats.java,243,"NO_FEASIBLE_SOLUTION(""no feasible solution""),"
+S988,LocalizedFormats.java,244,"NO_OPTIMUM_COMPUTED_YET(""no optimum computed yet""), /* keep */"
+S989,LocalizedFormats.java,245,"NO_REGRESSORS(""Regression model must include at least one regressor""),"
+S990,LocalizedFormats.java,246,"NO_RESULT_AVAILABLE(""no result available""),"
+S991,LocalizedFormats.java,247,"NO_SUCH_MATRIX_ENTRY(""no entry at indices ({0}, {1}) in a {2}x{3} matrix""),"
+S992,LocalizedFormats.java,248,"NAN_NOT_ALLOWED(""NaN is not allowed""),"
+S993,LocalizedFormats.java,249,"NULL_NOT_ALLOWED(""null is not allowed""), /* keep */"
+S994,LocalizedFormats.java,250,"ARRAY_ZERO_LENGTH_OR_NULL_NOT_ALLOWED(""a null or zero length array not allowed""),"
+S995,LocalizedFormats.java,251,"COVARIANCE_MATRIX(""covariance matrix""), /* keep */"
+S996,LocalizedFormats.java,252,"DENOMINATOR(""denominator""), /* keep */"
+S997,LocalizedFormats.java,253,"DENOMINATOR_FORMAT(""denominator format""), /* keep */"
+S998,LocalizedFormats.java,254,"FRACTION(""fraction""), /* keep */"
+S999,LocalizedFormats.java,255,"FUNCTION(""function""), /* keep */"
+S1000,LocalizedFormats.java,256,"IMAGINARY_FORMAT(""imaginary format""), /* keep */"
+S1001,LocalizedFormats.java,257,"INPUT_ARRAY(""input array""), /* keep */"
+S1002,LocalizedFormats.java,258,"NUMERATOR(""numerator""), /* keep */"
+S1003,LocalizedFormats.java,259,"NUMERATOR_FORMAT(""numerator format""), /* keep */"
+S1004,LocalizedFormats.java,260,"OBJECT_TRANSFORMATION(""conversion exception in transformation""), /* keep */"
+S1005,LocalizedFormats.java,261,"REAL_FORMAT(""real format""), /* keep */"
+S1006,LocalizedFormats.java,262,"WHOLE_FORMAT(""whole format""), /* keep */"
+S1007,LocalizedFormats.java,263,"NUMBER_TOO_LARGE(""{0} is larger than the maximum ({1})""), /* keep */"
+S1008,LocalizedFormats.java,264,"NUMBER_TOO_SMALL(""{0} is smaller than the minimum ({1})""), /* keep */"
+S1009,LocalizedFormats.java,265,"NUMBER_TOO_LARGE_BOUND_EXCLUDED(""{0} is larger than, or equal to, the maximum ({1})""), /* keep */"
+S1010,LocalizedFormats.java,266,"NUMBER_TOO_SMALL_BOUND_EXCLUDED(""{0} is smaller than, or equal to, the minimum ({1})""), /* keep */"
+S1011,LocalizedFormats.java,267,"NUMBER_OF_SUCCESS_LARGER_THAN_POPULATION_SIZE(""number of successes ({0}) must be less than or equal to population size ({1})""),"
+S1012,LocalizedFormats.java,268,"NUMERATOR_OVERFLOW_AFTER_MULTIPLY(""overflow, numerator too large after multiply: {0}""),"
+S1013,LocalizedFormats.java,269,"N_POINTS_GAUSS_LEGENDRE_INTEGRATOR_NOT_SUPPORTED(""{0} points Legendre-Gauss integrator not supported, number of points must be in the {1}-{2} range""),"
+S1014,LocalizedFormats.java,270,"OBSERVED_COUNTS_ALL_ZERO(""observed counts are all 0 in observed array {0}""),"
+S1015,LocalizedFormats.java,271,"OBSERVED_COUNTS_BOTTH_ZERO_FOR_ENTRY(""observed counts are both zero for entry {0}""),"
+S1016,LocalizedFormats.java,272,"BOBYQA_BOUND_DIFFERENCE_CONDITION(""the difference between the upper and lower bound must be larger than twice the initial trust region radius ({0})""),"
+S1017,LocalizedFormats.java,273,"OUT_OF_BOUNDS_QUANTILE_VALUE(""out of bounds quantile value: {0}, must be in (0, 100]""),"
+S1018,LocalizedFormats.java,274,"OUT_OF_BOUND_SIGNIFICANCE_LEVEL(""out of bounds significance level {0}, must be between {1} and {2}""),"
+S1019,LocalizedFormats.java,275,"SIGNIFICANCE_LEVEL(""significance level ({0})""), /* keep */"
+S1020,LocalizedFormats.java,276,"OUT_OF_ORDER_ABSCISSA_ARRAY(""the abscissae array must be sorted in a strictly increasing order, but the {0}-th element is {1} whereas {2}-th is {3}""),"
+S1021,LocalizedFormats.java,277,"OUT_OF_RANGE_ROOT_OF_UNITY_INDEX(""out of range root of unity index {0} (must be in [{1};{2}])""),"
+S1022,LocalizedFormats.java,278,"OUT_OF_RANGE(""out of range""), /* keep */"
+S1023,LocalizedFormats.java,279,"OUT_OF_RANGE_SIMPLE(""{0} out of [{1}, {2}] range""), /* keep */"
+S1024,LocalizedFormats.java,280,"OUT_OF_RANGE_LEFT(""{0} out of ({1}, {2}] range""),"
+S1025,LocalizedFormats.java,281,"OUT_OF_RANGE_RIGHT(""{0} out of [{1}, {2}) range""),"
+S1026,LocalizedFormats.java,282,"OUTLINE_BOUNDARY_LOOP_OPEN(""an outline boundary loop is open""),"
+S1027,LocalizedFormats.java,283,"OVERFLOW(""overflow""), /* keep */"
+S1028,LocalizedFormats.java,284,"OVERFLOW_IN_FRACTION(""overflow in fraction {0}/{1}, cannot negate""),"
+S1029,LocalizedFormats.java,285,"OVERFLOW_IN_ADDITION(""overflow in addition: {0} + {1}""),"
+S1030,LocalizedFormats.java,286,"OVERFLOW_IN_SUBTRACTION(""overflow in subtraction: {0} - {1}""),"
+S1031,LocalizedFormats.java,287,"PERCENTILE_IMPLEMENTATION_CANNOT_ACCESS_METHOD(""cannot access {0} method in percentile implementation {1}""),"
+S1032,LocalizedFormats.java,288,"PERCENTILE_IMPLEMENTATION_UNSUPPORTED_METHOD(""percentile implementation {0} does not support {1}""),"
+S1033,LocalizedFormats.java,289,"PERMUTATION_EXCEEDS_N(""permutation size ({0}) exceeds permuation domain ({1})""), /* keep */"
+S1034,LocalizedFormats.java,290,"POLYNOMIAL(""polynomial""), /* keep */"
+S1035,LocalizedFormats.java,291,"POLYNOMIAL_INTERPOLANTS_MISMATCH_SEGMENTS(""number of polynomial interpolants must match the number of segments ({0} != {1} - 1)""),"
+S1036,LocalizedFormats.java,292,"POPULATION_LIMIT_NOT_POSITIVE(""population limit has to be positive""),"
+S1037,LocalizedFormats.java,293,"POWER_NEGATIVE_PARAMETERS(""cannot raise an integral value to a negative power ({0}^{1})""),"
+S1038,LocalizedFormats.java,294,"PROPAGATION_DIRECTION_MISMATCH(""propagation direction mismatch""),"
+S1039,LocalizedFormats.java,295,"RANDOMKEY_MUTATION_WRONG_CLASS(""RandomKeyMutation works only with RandomKeys, not {0}""),"
+S1040,LocalizedFormats.java,296,"ROOTS_OF_UNITY_NOT_COMPUTED_YET(""roots of unity have not been computed yet""),"
+S1041,LocalizedFormats.java,297,"ROTATION_MATRIX_DIMENSIONS(""a {0}x{1} matrix cannot be a rotation matrix""),"
+S1042,LocalizedFormats.java,298,"ROW_INDEX_OUT_OF_RANGE(""row index {0} out of allowed range [{1}, {2}]""),"
+S1043,LocalizedFormats.java,299,"ROW_INDEX(""row index ({0})""), /* keep */"
+S1044,LocalizedFormats.java,300,"SAME_SIGN_AT_ENDPOINTS(""function values at endpoints do not have different signs, endpoints: [{0}, {1}], values: [{2}, {3}]""),"
+S1045,LocalizedFormats.java,301,"SAMPLE_SIZE_EXCEEDS_COLLECTION_SIZE(""sample size ({0}) exceeds collection size ({1})""), /* keep */"
+S1046,LocalizedFormats.java,302,"SAMPLE_SIZE_LARGER_THAN_POPULATION_SIZE(""sample size ({0}) must be less than or equal to population size ({1})""),"
+S1047,LocalizedFormats.java,303,"SIMPLEX_NEED_ONE_POINT(""simplex must contain at least one point""),"
+S1048,LocalizedFormats.java,304,"SIMPLE_MESSAGE(""{0}""),"
+S1049,LocalizedFormats.java,305,"SINGULAR_MATRIX(""matrix is singular""), /* keep */"
+S1050,LocalizedFormats.java,306,"SINGULAR_OPERATOR(""operator is singular""),"
+S1051,LocalizedFormats.java,307,"SUBARRAY_ENDS_AFTER_ARRAY_END(""subarray ends after array end""),"
+S1052,LocalizedFormats.java,308,"TOO_LARGE_CUTOFF_SINGULAR_VALUE(""cutoff singular value is {0}, should be at most {1}""),"
+S1053,LocalizedFormats.java,309,"TOO_LARGE_TOURNAMENT_ARITY(""tournament arity ({0}) cannot be bigger than population size ({1})""),"
+S1054,LocalizedFormats.java,310,"TOO_MANY_ELEMENTS_TO_DISCARD_FROM_ARRAY(""cannot discard {0} elements from a {1} elements array""),"
+S1055,LocalizedFormats.java,311,"TOO_MANY_REGRESSORS(""too many regressors ({0}) specified, only {1} in the model""),"
+S1056,LocalizedFormats.java,312,"TOO_SMALL_COST_RELATIVE_TOLERANCE(""cost relative tolerance is too small ({0}), no further reduction in the sum of squares is possible""),"
+S1057,LocalizedFormats.java,313,"TOO_SMALL_INTEGRATION_INTERVAL(""too small integration interval: length = {0}""),"
+S1058,LocalizedFormats.java,314,"TOO_SMALL_ORTHOGONALITY_TOLERANCE(""orthogonality tolerance is too small ({0}), solution is orthogonal to the jacobian""),"
+S1059,LocalizedFormats.java,315,"TOO_SMALL_PARAMETERS_RELATIVE_TOLERANCE(""parameters relative tolerance is too small ({0}), no further improvement in the approximate solution is possible""),"
+S1060,LocalizedFormats.java,316,"TRUST_REGION_STEP_FAILED(""trust region step has failed to reduce Q""),"
+S1061,LocalizedFormats.java,317,"TWO_OR_MORE_CATEGORIES_REQUIRED(""two or more categories required, got {0}""),"
+S1062,LocalizedFormats.java,318,"TWO_OR_MORE_VALUES_IN_CATEGORY_REQUIRED(""two or more values required in each category, one has {0}""),"
+S1063,LocalizedFormats.java,319,"UNABLE_TO_BRACKET_OPTIMUM_IN_LINE_SEARCH(""unable to bracket optimum in line search""),"
+S1064,LocalizedFormats.java,320,"UNABLE_TO_COMPUTE_COVARIANCE_SINGULAR_PROBLEM(""unable to compute covariances: singular problem""),"
+S1065,LocalizedFormats.java,321,"UNABLE_TO_FIRST_GUESS_HARMONIC_COEFFICIENTS(""unable to first guess the harmonic coefficients""),"
+S1066,LocalizedFormats.java,322,"UNABLE_TO_ORTHOGONOLIZE_MATRIX(""unable to orthogonalize matrix in {0} iterations""),"
+S1067,LocalizedFormats.java,323,"UNABLE_TO_PERFORM_QR_DECOMPOSITION_ON_JACOBIAN(""unable to perform Q.R decomposition on the {0}x{1} jacobian matrix""),"
+S1068,LocalizedFormats.java,324,"UNABLE_TO_SOLVE_SINGULAR_PROBLEM(""unable to solve: singular problem""),"
+S1069,LocalizedFormats.java,325,"UNBOUNDED_SOLUTION(""unbounded solution""),"
+S1070,LocalizedFormats.java,326,"UNKNOWN_MODE(""unknown mode {0}, known modes: {1} ({2}), {3} ({4}), {5} ({6}), {7} ({8}), {9} ({10}) and {11} ({12})""),"
+S1071,LocalizedFormats.java,327,"UNKNOWN_PARAMETER(""unknown parameter {0}""),"
+S1072,LocalizedFormats.java,328,"UNMATCHED_ODE_IN_EXPANDED_SET(""ode does not match the main ode set in the extended set""),"
+S1073,LocalizedFormats.java,329,"CANNOT_PARSE_AS_TYPE(""string \""{0}\"" unparseable (from position {1}) as an object of type {2}""), /* keep */"
+S1074,LocalizedFormats.java,330,"CANNOT_PARSE(""string \""{0}\"" unparseable (from position {1})""), /* keep */"
+S1075,LocalizedFormats.java,331,"UNPARSEABLE_3D_VECTOR(""unparseable 3D vector: \""{0}\""""),"
+S1076,LocalizedFormats.java,332,"UNPARSEABLE_COMPLEX_NUMBER(""unparseable complex number: \""{0}\""""),"
+S1077,LocalizedFormats.java,333,"UNPARSEABLE_REAL_VECTOR(""unparseable real vector: \""{0}\""""),"
+S1078,LocalizedFormats.java,334,"UNSUPPORTED_EXPANSION_MODE(""unsupported expansion mode {0}, supported modes are {1} ({2}) and {3} ({4})""),"
+S1079,LocalizedFormats.java,335,"UNSUPPORTED_OPERATION(""unsupported operation""), /* keep */"
+S1080,LocalizedFormats.java,336,"ARITHMETIC_EXCEPTION(""arithmetic exception""), /* keep */"
+S1081,LocalizedFormats.java,337,"ILLEGAL_STATE(""illegal state""), /* keep */"
+S1082,LocalizedFormats.java,338,"USER_EXCEPTION(""exception generated in user code""), /* keep */"
+S1083,LocalizedFormats.java,339,"URL_CONTAINS_NO_DATA(""URL {0} contains no data""),"
+S1084,LocalizedFormats.java,340,"VALUES_ADDED_BEFORE_CONFIGURING_STATISTIC(""{0} values have been added before statistic is configured""),"
+S1085,LocalizedFormats.java,341,"VECTOR_LENGTH_MISMATCH(""vector length mismatch: got {0} but expected {1}""),"
+S1086,LocalizedFormats.java,342,"VECTOR_MUST_HAVE_AT_LEAST_ONE_ELEMENT(""vector must have at least one element""),"
+S1087,LocalizedFormats.java,343,"WEIGHT_AT_LEAST_ONE_NON_ZERO(""weigth array must contain at least one non-zero value""),"
+S1088,LocalizedFormats.java,344,"WRONG_BLOCK_LENGTH(""wrong array shape (block length = {0}, expected {1})""),"
+S1089,LocalizedFormats.java,345,"WRONG_NUMBER_OF_POINTS(""{0} points are required, got only {1}""),"
+S1090,LocalizedFormats.java,346,"NUMBER_OF_POINTS(""number of points ({0})""), /* keep */"
+S1091,LocalizedFormats.java,347,"ZERO_DENOMINATOR(""denominator must be different from 0""), /* keep */"
+S1092,LocalizedFormats.java,348,"ZERO_DENOMINATOR_IN_FRACTION(""zero denominator in fraction {0}/{1}""),"
+S1093,LocalizedFormats.java,349,"ZERO_FRACTION_TO_DIVIDE_BY(""the fraction to divide by must not be zero: {0}/{1}""),"
+S1094,LocalizedFormats.java,350,"ZERO_NORM(""zero norm""),"
+S1095,LocalizedFormats.java,351,"ZERO_NORM_FOR_ROTATION_AXIS(""zero norm for rotation axis""),"
+S1096,LocalizedFormats.java,352,"ZERO_NORM_FOR_ROTATION_DEFINING_VECTOR(""zero norm for rotation defining vector""),"
+S1097,LocalizedFormats.java,353,"ZERO_NOT_ALLOWED(""zero not allowed here"");"
+S1098,LocalizedFormats.java,366,private LocalizedFormats(final String sourceFormat) {
+S1099,LocalizedFormats.java,367,this.sourceFormat = sourceFormat;
+S1100,MathIllegalArgumentException.java,44,Object ... args) {
+S1101,MathIllegalArgumentException.java,45,context = new ExceptionContext(this);
+S1102,MathIllegalArgumentException.java,46,"context.addMessage(pattern, args);"
+S1103,MathIllegalNumberException.java,46,"super(pattern, wrong, arguments);"
+S1104,MathIllegalNumberException.java,47,argument = wrong;
+S1105,MathUtils.java,91,return a - TWO_PI * FastMath.floor((a + FastMath.PI - center) / TWO_PI);
+S1106,NumberIsTooSmallException.java,68,"super(specific, wrong, min);"
+S1107,NumberIsTooSmallException.java,70,this.min = min;
+S1108,NumberIsTooSmallException.java,71,this.boundIsAllowed = boundIsAllowed;
+S1109,Pair.java,45,"public Pair(K k, V v) {"
+S1110,Pair.java,46,key = k;
+S1111,Pair.java,47,value = v;
+S1112,Pair.java,65,return key;
+S1113,PointVectorValuePair.java,47,"this(point, value, true);"
+S1114,PointVectorValuePair.java,61,super(copyArray ?
+S1115,PointVectorValuePair.java,87,return getKey();
+S1116,Precision.java,62,EPSILON = Double.longBitsToDouble((EXPONENT_OFFSET - 53l) << 52);
+S1117,Precision.java,69,SAFE_MIN = Double.longBitsToDouble((EXPONENT_OFFSET - 1022l) << 52);
+S1118,WeightedObservedPoint.java,47,"public WeightedObservedPoint(final double weight, final double x, final double y) {"
+S1119,WeightedObservedPoint.java,48,this.weight = weight;
+S1120,WeightedObservedPoint.java,49,this.x      = x;
+S1121,WeightedObservedPoint.java,50,this.y      = y;
+S1122,WeightedObservedPoint.java,57,return weight;
+S1123,WeightedObservedPoint.java,64,return x;
+S1124,WeightedObservedPoint.java,71,return y;

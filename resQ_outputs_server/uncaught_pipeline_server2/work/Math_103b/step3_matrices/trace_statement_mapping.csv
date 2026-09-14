@@ -1,0 +1,152 @@
+statement_id,file,line,code
+S1,AbstractContinuousDistribution.java,45,super();
+S2,AbstractDistribution.java,38,super();
+S3,AbstractIntegerDistribution.java,41,super();
+S4,AbstractIntegerDistribution.java,60,return cumulativeProbability((int) Math.floor(x));
+S5,AbstractIntegerDistribution.java,126,if (p < 0.0 || p > 1.0) {
+S6,AbstractIntegerDistribution.java,133,int x0 = getDomainLowerBound(p);
+S7,AbstractIntegerDistribution.java,134,int x1 = getDomainUpperBound(p);
+S8,AbstractIntegerDistribution.java,136,while (x0 < x1) {
+S9,AbstractIntegerDistribution.java,137,int xm = x0 + (x1 - x0) / 2;
+S10,AbstractIntegerDistribution.java,138,pm = cumulativeProbability(xm);
+S11,AbstractIntegerDistribution.java,139,if (pm > p) {
+S12,AbstractIntegerDistribution.java,141,if (xm == x1) {
+S13,AbstractIntegerDistribution.java,147,x1 = xm;
+S14,AbstractIntegerDistribution.java,151,if (xm == x0) {
+S15,AbstractIntegerDistribution.java,154,++x0;
+S16,AbstractIntegerDistribution.java,157,x0 = xm;
+S17,AbstractIntegerDistribution.java,163,pm = cumulativeProbability(x0);
+S18,AbstractIntegerDistribution.java,164,while (pm > p) {
+S19,AbstractIntegerDistribution.java,165,--x0;
+S20,AbstractIntegerDistribution.java,166,pm = cumulativeProbability(x0);
+S21,AbstractIntegerDistribution.java,169,return x0;
+S22,ContinuedFraction.java,51,super();
+S23,ContinuedFraction.java,133,double p0 = 1.0;
+S24,ContinuedFraction.java,134,"double p1 = getA(0, x);"
+S25,ContinuedFraction.java,135,double q0 = 0.0;
+S26,ContinuedFraction.java,136,double q1 = 1.0;
+S27,ContinuedFraction.java,137,double c = p1 / q1;
+S28,ContinuedFraction.java,138,int n = 0;
+S29,ContinuedFraction.java,139,double relativeError = Double.MAX_VALUE;
+S30,ContinuedFraction.java,140,while (n < maxIterations && relativeError > epsilon) {
+S31,ContinuedFraction.java,141,++n;
+S32,ContinuedFraction.java,142,"double a = getA(n, x);"
+S33,ContinuedFraction.java,143,"double b = getB(n, x);"
+S34,ContinuedFraction.java,144,double p2 = a * p1 + b * p0;
+S35,ContinuedFraction.java,145,double q2 = a * q1 + b * q0;
+S36,ContinuedFraction.java,146,if (Double.isInfinite(p2) || Double.isInfinite(q2)) {
+S37,ContinuedFraction.java,148,if (a != 0.0) {
+S38,ContinuedFraction.java,149,p2 = p1 + (b / a * p0);
+S39,ContinuedFraction.java,150,q2 = q1 + (b / a * q0);
+S40,ContinuedFraction.java,161,double r = p2 / q2;
+S41,ContinuedFraction.java,162,relativeError = Math.abs(r / c - 1.0);
+S42,ContinuedFraction.java,165,c = p2 / q2;
+S43,ContinuedFraction.java,166,p0 = p1;
+S44,ContinuedFraction.java,167,p1 = p2;
+S45,ContinuedFraction.java,168,q0 = q1;
+S46,ContinuedFraction.java,169,q1 = q2;
+S47,ContinuedFraction.java,172,if (n >= maxIterations) {
+S48,ContinuedFraction.java,178,return c;
+S49,ConvergenceException.java,44,"super(pattern, arguments);"
+S50,Erf.java,56,"double ret = Gamma.regularizedGammaP(0.5, x * x, 1.0e-15, 10000);"
+S51,Erf.java,57,if (x < 0) {
+S52,Erf.java,58,ret = -ret;
+S53,Erf.java,60,return ret;
+S54,Gamma.java,40,private static double[] lanczos =
+S55,Gamma.java,60,private static final double HALF_LOG_2_PI = 0.5 * Math.log(2.0 * Math.PI);
+S56,Gamma.java,90,if (Double.isNaN(x) || (x <= 0.0)) {
+S57,Gamma.java,93,double g = 607.0 / 128.0;
+S58,Gamma.java,95,double sum = 0.0;
+S59,Gamma.java,96,for (int i = lanczos.length - 1; i > 0; --i) {
+S60,Gamma.java,97,sum = sum + (lanczos[i] / (x + i));
+S61,Gamma.java,99,sum = sum + lanczos[0];
+S62,Gamma.java,101,double tmp = x + g + .5;
+S63,Gamma.java,102,ret = ((x + .5) * Math.log(tmp)) - tmp +
+S64,Gamma.java,106,return ret;
+S65,Gamma.java,158,if (Double.isNaN(a) || Double.isNaN(x) || (a <= 0.0) || (x < 0.0)) {
+S66,Gamma.java,160,} else if (x == 0.0) {
+S67,Gamma.java,161,ret = 0.0;
+S68,Gamma.java,162,} else if (a >= 1.0 && x > a) {
+S69,Gamma.java,168,double n = 0.0; // current element index
+S70,Gamma.java,169,double an = 1.0 / a; // n-th element in the series
+S71,Gamma.java,170,double sum = an; // partial sum
+S72,Gamma.java,171,while (Math.abs(an) > epsilon && n < maxIterations) {
+S73,Gamma.java,173,n = n + 1.0;
+S74,Gamma.java,174,an = an * (x / (a + n));
+S75,Gamma.java,177,sum = sum + an;
+S76,Gamma.java,179,if (n >= maxIterations) {
+S77,Gamma.java,180,throw new MaxIterationsExceededException(maxIterations);
+S78,Gamma.java,182,ret = Math.exp(-x + (a * Math.log(x)) - logGamma(a)) * sum;
+S79,Gamma.java,186,return ret;
+S80,Gamma.java,233,if (Double.isNaN(a) || Double.isNaN(x) || (a <= 0.0) || (x < 0.0)) {
+S81,Gamma.java,235,} else if (x == 0.0) {
+S82,Gamma.java,237,} else if (x < a || a < 1.0) {
+S83,Gamma.java,240,"ret = 1.0 - regularizedGammaP(a, x, epsilon, maxIterations);"
+S84,Gamma.java,243,ContinuedFraction cf = new ContinuedFraction() {
+S85,Gamma.java,248,return ((2.0 * n) + 1.0) - a + x;
+S86,Gamma.java,252,return n * (a - n);
+S87,Gamma.java,256,"ret = 1.0 / cf.evaluate(x, epsilon, maxIterations);"
+S88,Gamma.java,257,ret = Math.exp(-x + (a * Math.log(x)) - logGamma(a)) * ret;
+S89,Gamma.java,260,return ret;
+S90,MathException.java,47,boolean flag = false;
+S91,MathException.java,49,"Throwable.class.getDeclaredMethod(""getCause"", new Class[0]);"
+S92,MathException.java,50,flag = true;
+S93,MathException.java,54,JDK_SUPPORTS_NESTED = flag;
+S94,MathException.java,57,private static ResourceBundle cachedResources = null;
+S95,MathException.java,83,if ((cachedResources == null) || (! cachedResources.getLocale().equals(locale))) {
+S96,MathException.java,85,cachedResources =
+S97,MathException.java,94,} catch (MissingResourceException mre) {
+S98,MathException.java,100,return s;
+S99,MathException.java,113,"MessageFormat mf = new MessageFormat(translate(pattern, locale));"
+S100,MathException.java,114,mf.setLocale(locale);
+S101,MathException.java,115,return mf.format(arguments);
+S102,MathException.java,151,"super(buildMessage(pattern, arguments, Locale.US));"
+S103,MathException.java,152,this.pattern   = pattern;
+S104,MathException.java,153,this.arguments = arguments;
+S105,MathException.java,154,this.rootCause = null;
+S106,MathException.java,235,return rootCause;
+S107,MathException.java,251,synchronized (out) {
+S108,MathException.java,252,"PrintWriter pw = new PrintWriter(out, false);"
+S109,MathException.java,253,printStackTrace(pw);
+S110,MathException.java,255,pw.flush();
+S111,MathException.java,265,synchronized (out) {
+S112,MathException.java,266,super.printStackTrace(out);
+S113,MathException.java,267,if (rootCause != null && JDK_SUPPORTS_NESTED == false) {
+S114,MaxIterationsExceededException.java,36,"super(""Maximal number of iterations ({0}) exceeded"","
+S115,MaxIterationsExceededException.java,38,this.maxIterations = maxIterations;
+S116,NormalDistributionImpl.java,39,private double mean = 0;
+S117,NormalDistributionImpl.java,42,private double standardDeviation = 1;
+S118,NormalDistributionImpl.java,50,super();
+S119,NormalDistributionImpl.java,51,setMean(mean);
+S120,NormalDistributionImpl.java,52,setStandardDeviation(sd);
+S121,NormalDistributionImpl.java,60,"this(0.0, 1.0);"
+S122,NormalDistributionImpl.java,68,return mean;
+S123,NormalDistributionImpl.java,76,this.mean = mean;
+S124,NormalDistributionImpl.java,84,return standardDeviation;
+S125,NormalDistributionImpl.java,93,if (sd <= 0.0) {
+S126,NormalDistributionImpl.java,94,throw new IllegalArgumentException(
+S127,NormalDistributionImpl.java,97,standardDeviation = sd;
+S128,NormalDistributionImpl.java,109,return 0.5 * (1.0 + Erf.erf((x - mean) /
+S129,NormalDistributionImpl.java,129,if (p == 0) {
+S130,NormalDistributionImpl.java,130,return Double.NEGATIVE_INFINITY;
+S131,NormalDistributionImpl.java,132,if (p == 1) {
+S132,NormalDistributionImpl.java,133,return Double.POSITIVE_INFINITY;
+S133,PoissonDistributionImpl.java,52,"this(p, new NormalDistributionImpl());"
+S134,PoissonDistributionImpl.java,66,super();
+S135,PoissonDistributionImpl.java,67,setNormal(z);
+S136,PoissonDistributionImpl.java,68,setMean(p);
+S137,PoissonDistributionImpl.java,77,return this.mean;
+S138,PoissonDistributionImpl.java,89,if (p <= 0) {
+S139,PoissonDistributionImpl.java,90,throw new IllegalArgumentException(
+S140,PoissonDistributionImpl.java,93,this.mean = p;
+S141,PoissonDistributionImpl.java,94,normal.setMean(p);
+S142,PoissonDistributionImpl.java,95,normal.setStandardDeviation(Math.sqrt(p));
+S143,PoissonDistributionImpl.java,121,if (x < 0) {
+S144,PoissonDistributionImpl.java,122,return 0;
+S145,PoissonDistributionImpl.java,124,if (x == Integer.MAX_VALUE) {
+S146,PoissonDistributionImpl.java,125,return 1;
+S147,PoissonDistributionImpl.java,127,"return Gamma.regularizedGammaQ((double)x + 1, mean,"
+S148,PoissonDistributionImpl.java,145,return normal.cumulativeProbability(x + 0.5);
+S149,PoissonDistributionImpl.java,157,return 0;
+S150,PoissonDistributionImpl.java,169,return Integer.MAX_VALUE;
+S151,PoissonDistributionImpl.java,180,normal = value;

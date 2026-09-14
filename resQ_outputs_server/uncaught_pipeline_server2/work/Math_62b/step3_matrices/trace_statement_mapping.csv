@@ -1,0 +1,561 @@
+statement_id,file,line,code
+S1,AbstractUnivariateRealOptimizer.java,36,public abstract class AbstractUnivariateRealOptimizer
+S2,AbstractUnivariateRealOptimizer.java,41,private final Incrementor evaluations = new Incrementor();
+S3,AbstractUnivariateRealOptimizer.java,55,evaluations.setMaximalCount(maxEvaluations);
+S4,AbstractUnivariateRealOptimizer.java,60,return evaluations.getMaximalCount();
+S5,AbstractUnivariateRealOptimizer.java,65,return evaluations.getCount();
+S6,AbstractUnivariateRealOptimizer.java,72,return goal;
+S7,AbstractUnivariateRealOptimizer.java,78,return searchMin;
+S8,AbstractUnivariateRealOptimizer.java,84,return searchMax;
+S9,AbstractUnivariateRealOptimizer.java,90,return searchStart;
+S10,AbstractUnivariateRealOptimizer.java,106,evaluations.incrementCount();
+S11,AbstractUnivariateRealOptimizer.java,110,return function.value(point);
+S12,AbstractUnivariateRealOptimizer.java,120,if (f == null) {
+S13,AbstractUnivariateRealOptimizer.java,123,if (goalType == null) {
+S14,AbstractUnivariateRealOptimizer.java,128,searchMin = min;
+S15,AbstractUnivariateRealOptimizer.java,129,searchMax = max;
+S16,AbstractUnivariateRealOptimizer.java,130,searchStart = startValue;
+S17,AbstractUnivariateRealOptimizer.java,131,goal = goalType;
+S18,AbstractUnivariateRealOptimizer.java,132,function = f;
+S19,AbstractUnivariateRealOptimizer.java,133,evaluations.resetCount();
+S20,AbstractUnivariateRealOptimizer.java,136,return doOptimize();
+S21,AbstractUnivariateRealOptimizer.java,144,"return optimize(f, goalType, min, max, min + 0.5 * (max - min));"
+S22,AbstractUnivariateRealOptimizer.java,158,return checker;
+S23,BrentOptimizer.java,47,private static final double GOLDEN_SECTION = 0.5 * (3 - FastMath.sqrt(5));
+S24,BrentOptimizer.java,51,private static final double MIN_RELATIVE_TOLERANCE = 2 * FastMath.ulp(1d);
+S25,BrentOptimizer.java,76,double abs) {
+S26,BrentOptimizer.java,77,if (rel < MIN_RELATIVE_TOLERANCE) {
+S27,BrentOptimizer.java,80,if (abs <= 0) {
+S28,BrentOptimizer.java,83,relativeThreshold = rel;
+S29,BrentOptimizer.java,84,absoluteThreshold = abs;
+S30,BrentOptimizer.java,90,final boolean isMinim = getGoalType() == GoalType.MINIMIZE;
+S31,BrentOptimizer.java,91,final double lo = getMin();
+S32,BrentOptimizer.java,92,final double mid = getStartValue();
+S33,BrentOptimizer.java,93,final double hi = getMax();
+S34,BrentOptimizer.java,96,final ConvergenceChecker<UnivariateRealPointValuePair> checker
+S35,BrentOptimizer.java,101,if (lo < hi) {
+S36,BrentOptimizer.java,102,a = lo;
+S37,BrentOptimizer.java,103,b = hi;
+S38,BrentOptimizer.java,109,double x = mid;
+S39,BrentOptimizer.java,110,double v = x;
+S40,BrentOptimizer.java,111,double w = x;
+S41,BrentOptimizer.java,112,double d = 0;
+S42,BrentOptimizer.java,113,double e = 0;
+S43,BrentOptimizer.java,114,double fx = computeObjectiveValue(x);
+S44,BrentOptimizer.java,115,if (!isMinim) {
+S45,BrentOptimizer.java,118,double fv = fx;
+S46,BrentOptimizer.java,119,double fw = fx;
+S47,BrentOptimizer.java,121,UnivariateRealPointValuePair previous = null;
+S48,BrentOptimizer.java,122,UnivariateRealPointValuePair current
+S49,BrentOptimizer.java,125,int iter = 0;
+S50,BrentOptimizer.java,127,final double m = 0.5 * (a + b);
+S51,BrentOptimizer.java,128,final double tol1 = relativeThreshold * FastMath.abs(x) + absoluteThreshold;
+S52,BrentOptimizer.java,129,final double tol2 = 2 * tol1;
+S53,BrentOptimizer.java,132,final boolean stop = FastMath.abs(x - m) <= tol2 - 0.5 * (b - a);
+S54,BrentOptimizer.java,133,if (!stop) {
+S55,BrentOptimizer.java,134,double p = 0;
+S56,BrentOptimizer.java,135,double q = 0;
+S57,BrentOptimizer.java,136,double r = 0;
+S58,BrentOptimizer.java,137,double u = 0;
+S59,BrentOptimizer.java,139,if (FastMath.abs(e) > tol1) { // Fit parabola.
+S60,BrentOptimizer.java,140,r = (x - w) * (fx - fv);
+S61,BrentOptimizer.java,141,q = (x - v) * (fx - fw);
+S62,BrentOptimizer.java,142,p = (x - v) * q - (x - w) * r;
+S63,BrentOptimizer.java,143,q = 2 * (q - r);
+S64,BrentOptimizer.java,145,if (q > 0) {
+S65,BrentOptimizer.java,146,p = -p;
+S66,BrentOptimizer.java,148,q = -q;
+S67,BrentOptimizer.java,151,r = e;
+S68,BrentOptimizer.java,152,e = d;
+S69,BrentOptimizer.java,154,if (p > q * (a - x) &&
+S70,BrentOptimizer.java,158,d = p / q;
+S71,BrentOptimizer.java,159,u = x + d;
+S72,BrentOptimizer.java,162,if (u - a < tol2 || b - u < tol2) {
+S73,BrentOptimizer.java,163,if (x <= m) {
+S74,BrentOptimizer.java,164,d = tol1;
+S75,BrentOptimizer.java,166,d = -tol1;
+S76,BrentOptimizer.java,171,if (x < m) {
+S77,BrentOptimizer.java,172,e = b - x;
+S78,BrentOptimizer.java,174,e = a - x;
+S79,BrentOptimizer.java,176,d = GOLDEN_SECTION * e;
+S80,BrentOptimizer.java,180,if (x < m) {
+S81,BrentOptimizer.java,181,e = b - x;
+S82,BrentOptimizer.java,183,e = a - x;
+S83,BrentOptimizer.java,185,d = GOLDEN_SECTION * e;
+S84,BrentOptimizer.java,189,if (FastMath.abs(d) < tol1) {
+S85,BrentOptimizer.java,190,if (d >= 0) {
+S86,BrentOptimizer.java,191,u = x + tol1;
+S87,BrentOptimizer.java,193,u = x - tol1;
+S88,BrentOptimizer.java,196,u = x + d;
+S89,BrentOptimizer.java,199,double fu = computeObjectiveValue(u);
+S90,BrentOptimizer.java,200,if (!isMinim) {
+S91,BrentOptimizer.java,205,if (fu <= fx) {
+S92,BrentOptimizer.java,206,if (u < x) {
+S93,BrentOptimizer.java,207,b = x;
+S94,BrentOptimizer.java,209,a = x;
+S95,BrentOptimizer.java,211,v = w;
+S96,BrentOptimizer.java,212,fv = fw;
+S97,BrentOptimizer.java,213,w = x;
+S98,BrentOptimizer.java,214,fw = fx;
+S99,BrentOptimizer.java,215,x = u;
+S100,BrentOptimizer.java,216,fx = fu;
+S101,BrentOptimizer.java,218,if (u < x) {
+S102,BrentOptimizer.java,219,a = u;
+S103,BrentOptimizer.java,221,b = u;
+S104,BrentOptimizer.java,223,if (fu <= fw ||
+S105,BrentOptimizer.java,225,v = w;
+S106,BrentOptimizer.java,226,fv = fw;
+S107,BrentOptimizer.java,227,w = u;
+S108,BrentOptimizer.java,228,fw = fu;
+S109,BrentOptimizer.java,229,} else if (fu <= fv ||
+S110,BrentOptimizer.java,232,v = u;
+S111,BrentOptimizer.java,233,fv = fu;
+S112,BrentOptimizer.java,237,previous = current;
+S113,BrentOptimizer.java,238,"current = new UnivariateRealPointValuePair(x, isMinim ? fx : -fx);"
+S114,BrentOptimizer.java,241,if (checker != null) {
+S115,BrentOptimizer.java,246,} else { // Default termination (Brent's criterion).
+S116,BrentOptimizer.java,247,return current;
+S117,BrentOptimizer.java,249,++iter;
+S118,FastMath.java,35,private static final double EXP_INT_TABLE_A[] = new double[1500];
+S119,FastMath.java,40,private static final double EXP_INT_TABLE_B[] = new double[1500];
+S120,FastMath.java,45,private static final double EXP_FRAC_TABLE_A[] = new double[1025];
+S121,FastMath.java,50,private static final double EXP_FRAC_TABLE_B[] = new double[1025];
+S122,FastMath.java,53,private static final double FACT[] = new double[20];
+S123,FastMath.java,56,private static final double LN_MANT[][] = new double[1024][];
+S124,FastMath.java,65,private static final double LN_SPLIT_COEF[][] = {
+S125,FastMath.java,85,private static final double LN_QUICK_COEF[][] = {
+S126,FastMath.java,98,private static final double LN_HI_PREC_COEF[][] = {
+S127,FastMath.java,108,private static final double SINE_TABLE_A[] = new double[14];
+S128,FastMath.java,111,private static final double SINE_TABLE_B[] = new double[14];
+S129,FastMath.java,114,private static final double COSINE_TABLE_A[] = new double[14];
+S130,FastMath.java,117,private static final double COSINE_TABLE_B[] = new double[14];
+S131,FastMath.java,120,private static final double TANGENT_TABLE_A[] = new double[14];
+S132,FastMath.java,123,private static final double TANGENT_TABLE_B[] = new double[14];
+S133,FastMath.java,126,private static long RECIP_2PI[] = new long[] {
+S134,FastMath.java,147,private static long PI_O_4_BITS[] = new long[] {
+S135,FastMath.java,155,"private static final double EIGHTHES[] = {0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.125, 1.25, 1.375, 1.5, 1.625};"
+S136,FastMath.java,158,"private static final double CBRTTWO[] = { 0.6299605249474366,"
+S137,FastMath.java,169,FACT[0] = 1.0;
+S138,FastMath.java,170,for (i = 1; i < 20; i++) {
+S139,FastMath.java,171,FACT[i] = FACT[i-1] * i;
+S140,FastMath.java,174,double tmp[] = new double[2];
+S141,FastMath.java,175,double recip[] = new double[2];
+S142,FastMath.java,178,for (i = 0; i < 750; i++) {
+S143,FastMath.java,179,"expint(i, tmp);"
+S144,FastMath.java,180,EXP_INT_TABLE_A[i+750] = tmp[0];
+S145,FastMath.java,181,EXP_INT_TABLE_B[i+750] = tmp[1];
+S146,FastMath.java,183,if (i != 0) {
+S147,FastMath.java,185,"splitReciprocal(tmp, recip);"
+S148,FastMath.java,186,EXP_INT_TABLE_A[750-i] = recip[0];
+S149,FastMath.java,187,EXP_INT_TABLE_B[750-i] = recip[1];
+S150,FastMath.java,192,for (i = 0; i < 1025; i++) {
+S151,FastMath.java,193,"slowexp(i/1024.0, tmp);"
+S152,FastMath.java,194,EXP_FRAC_TABLE_A[i] = tmp[0];
+S153,FastMath.java,195,EXP_FRAC_TABLE_B[i] = tmp[1];
+S154,FastMath.java,199,for (i = 0; i < 1024; i++) {
+S155,FastMath.java,200,double d = Double.longBitsToDouble( (((long) i) << 42) | 0x3ff0000000000000L );
+S156,FastMath.java,201,LN_MANT[i] = slowLog(d);
+S157,FastMath.java,205,buildSinCosTables();
+S158,FastMath.java,219,return Math.sqrt(a);
+S159,FastMath.java,680,final double xs[] = new double[2];
+S160,FastMath.java,681,final double ys[] = new double[2];
+S161,FastMath.java,682,final double facts[] = new double[2];
+S162,FastMath.java,683,final double as[] = new double[2];
+S163,FastMath.java,684,"split(x, xs);"
+S164,FastMath.java,685,ys[0] = ys[1] = 0.0;
+S165,FastMath.java,687,for (int i = 19; i >= 0; i--) {
+S166,FastMath.java,688,"splitMult(xs, ys, as);"
+S167,FastMath.java,689,ys[0] = as[0];
+S168,FastMath.java,690,ys[1] = as[1];
+S169,FastMath.java,692,"split(FACT[i], as);"
+S170,FastMath.java,693,"splitReciprocal(as, facts);"
+S171,FastMath.java,695,"splitAdd(ys, facts, as);"
+S172,FastMath.java,696,ys[0] = as[0];
+S173,FastMath.java,697,ys[1] = as[1];
+S174,FastMath.java,700,if (result != null) {
+S175,FastMath.java,701,result[0] = ys[0];
+S176,FastMath.java,702,result[1] = ys[1];
+S177,FastMath.java,705,return ys[0] + ys[1];
+S178,FastMath.java,714,if (d < 8e298 && d > -8e298) {
+S179,FastMath.java,715,final double a = d * 1073741824.0;
+S180,FastMath.java,716,split[0] = (d + a) - a;
+S181,FastMath.java,717,split[1] = d - split[0];
+S182,FastMath.java,718,} else {
+S183,FastMath.java,730,final double c = a[0] + a[1];
+S184,FastMath.java,731,final double d = -(c - a[0] - a[1]);
+S185,FastMath.java,733,if (c < 8e298 && c > -8e298) {
+S186,FastMath.java,734,double z = c * 1073741824.0;
+S187,FastMath.java,735,a[0] = (c + z) - z;
+S188,FastMath.java,736,a[1] = c - a[0] + d;
+S189,FastMath.java,737,} else {
+S190,FastMath.java,738,double z = c * 9.31322574615478515625E-10;
+S191,FastMath.java,739,a[0] = (c + z - c) * 1073741824.0;
+S192,FastMath.java,740,a[1] = c - a[0] + d;
+S193,FastMath.java,750,ans[0] = a[0] * b[0];
+S194,FastMath.java,751,ans[1] = a[0] * b[1] + a[1] * b[0] + a[1] * b[1];
+S195,FastMath.java,754,resplit(ans);
+S196,FastMath.java,763,ans[0] = a[0] + b[0];
+S197,FastMath.java,764,ans[1] = a[1] + b[1];
+S198,FastMath.java,766,resplit(ans);
+S199,FastMath.java,788,final double b = 1.0/4194304.0;
+S200,FastMath.java,789,final double a = 1.0 - b;
+S201,FastMath.java,791,if (in[0] == 0.0) {
+S202,FastMath.java,796,result[0] = a / in[0];
+S203,FastMath.java,797,result[1] = (b*in[0]-a*in[1]) / (in[0]*in[0] + in[0]*in[1]);
+S204,FastMath.java,799,if (result[1] != result[1]) { // can happen if result[1] is NAN
+S205,FastMath.java,800,result[1] = 0.0;
+S206,FastMath.java,804,resplit(result);
+S207,FastMath.java,806,for (int i = 0; i < 2; i++) {
+S208,FastMath.java,808,double err = 1.0 - result[0] * in[0] - result[0] * in[1] -
+S209,FastMath.java,811,err = err * (result[0] + result[1]);
+S210,FastMath.java,813,result[1] += err;
+S211,FastMath.java,823,final double xs[] = new double[2];
+S212,FastMath.java,824,final double ys[] = new double[2];
+S213,FastMath.java,825,final double zs[] = new double[2];
+S214,FastMath.java,828,"split(a[0], xs);"
+S215,FastMath.java,829,"split(b[0], ys);"
+S216,FastMath.java,830,"splitMult(xs, ys, zs);"
+S217,FastMath.java,832,result[0] = zs[0];
+S218,FastMath.java,833,result[1] = zs[1];
+S219,FastMath.java,836,"split(b[1], ys);"
+S220,FastMath.java,837,"splitMult(xs, ys, zs);"
+S221,FastMath.java,839,double tmp = result[0] + zs[0];
+S222,FastMath.java,840,result[1] = result[1] - (tmp - result[0] - zs[0]);
+S223,FastMath.java,841,result[0] = tmp;
+S224,FastMath.java,842,tmp = result[0] + zs[1];
+S225,FastMath.java,843,result[1] = result[1] - (tmp - result[0] - zs[1]);
+S226,FastMath.java,844,result[0] = tmp;
+S227,FastMath.java,847,"split(a[1], xs);"
+S228,FastMath.java,848,"split(b[0], ys);"
+S229,FastMath.java,849,"splitMult(xs, ys, zs);"
+S230,FastMath.java,851,tmp = result[0] + zs[0];
+S231,FastMath.java,852,result[1] = result[1] - (tmp - result[0] - zs[0]);
+S232,FastMath.java,853,result[0] = tmp;
+S233,FastMath.java,854,tmp = result[0] + zs[1];
+S234,FastMath.java,855,result[1] = result[1] - (tmp - result[0] - zs[1]);
+S235,FastMath.java,856,result[0] = tmp;
+S236,FastMath.java,859,"split(a[1], xs);"
+S237,FastMath.java,860,"split(b[1], ys);"
+S238,FastMath.java,861,"splitMult(xs, ys, zs);"
+S239,FastMath.java,863,tmp = result[0] + zs[0];
+S240,FastMath.java,864,result[1] = result[1] - (tmp - result[0] - zs[0]);
+S241,FastMath.java,865,result[0] = tmp;
+S242,FastMath.java,866,tmp = result[0] + zs[1];
+S243,FastMath.java,867,result[1] = result[1] - (tmp - result[0] - zs[1]);
+S244,FastMath.java,868,result[0] = tmp;
+S245,FastMath.java,878,final double xs[] = new double[2];
+S246,FastMath.java,879,final double as[] = new double[2];
+S247,FastMath.java,880,final double ys[] = new double[2];
+S248,FastMath.java,889,xs[0] = 2.718281828459045;
+S249,FastMath.java,890,xs[1] = 1.4456468917292502E-16;
+S250,FastMath.java,892,"split(1.0, ys);"
+S251,FastMath.java,894,while (p > 0) {
+S252,FastMath.java,895,if ((p & 1) != 0) {
+S253,FastMath.java,896,"quadMult(ys, xs, as);"
+S254,FastMath.java,897,ys[0] = as[0]; ys[1] = as[1];
+S255,FastMath.java,900,"quadMult(xs, xs, as);"
+S256,FastMath.java,901,xs[0] = as[0]; xs[1] = as[1];
+S257,FastMath.java,903,p >>= 1;
+S258,FastMath.java,906,if (result != null) {
+S259,FastMath.java,907,result[0] = ys[0];
+S260,FastMath.java,908,result[1] = ys[1];
+S261,FastMath.java,910,resplit(result);
+S262,FastMath.java,913,return ys[0] + ys[1];
+S263,FastMath.java,1396,double x[] = new double[2];
+S264,FastMath.java,1397,double x2[] = new double[2];
+S265,FastMath.java,1398,double y[] = new double[2];
+S266,FastMath.java,1399,double a[] = new double[2];
+S267,FastMath.java,1401,"split(xi, x);"
+S268,FastMath.java,1404,x[0] += 1.0;
+S269,FastMath.java,1405,resplit(x);
+S270,FastMath.java,1406,"splitReciprocal(x, a);"
+S271,FastMath.java,1407,x[0] -= 2.0;
+S272,FastMath.java,1408,resplit(x);
+S273,FastMath.java,1409,"splitMult(x, a, y);"
+S274,FastMath.java,1410,x[0] = y[0];
+S275,FastMath.java,1411,x[1] = y[1];
+S276,FastMath.java,1414,"splitMult(x, x, x2);"
+S277,FastMath.java,1420,y[0] = LN_SPLIT_COEF[LN_SPLIT_COEF.length-1][0];
+S278,FastMath.java,1421,y[1] = LN_SPLIT_COEF[LN_SPLIT_COEF.length-1][1];
+S279,FastMath.java,1423,for (int i = LN_SPLIT_COEF.length-2; i >= 0; i--) {
+S280,FastMath.java,1424,"splitMult(y, x2, a);"
+S281,FastMath.java,1425,y[0] = a[0];
+S282,FastMath.java,1426,y[1] = a[1];
+S283,FastMath.java,1427,"splitAdd(y, LN_SPLIT_COEF[i], a);"
+S284,FastMath.java,1428,y[0] = a[0];
+S285,FastMath.java,1429,y[1] = a[1];
+S286,FastMath.java,1432,"splitMult(y, x, a);"
+S287,FastMath.java,1433,y[0] = a[0];
+S288,FastMath.java,1434,y[1] = a[1];
+S289,FastMath.java,1436,return y;
+S290,FastMath.java,1446,final double xs[] = new double[2];
+S291,FastMath.java,1447,final double ys[] = new double[2];
+S292,FastMath.java,1448,final double facts[] = new double[2];
+S293,FastMath.java,1449,final double as[] = new double[2];
+S294,FastMath.java,1450,"split(x, xs);"
+S295,FastMath.java,1451,ys[0] = ys[1] = 0.0;
+S296,FastMath.java,1453,for (int i = 19; i >= 0; i--) {
+S297,FastMath.java,1454,"splitMult(xs, ys, as);"
+S298,FastMath.java,1455,ys[0] = as[0]; ys[1] = as[1];
+S299,FastMath.java,1457,if ( (i & 1) == 0) {
+S300,FastMath.java,1458,continue;
+S301,FastMath.java,1461,"split(FACT[i], as);"
+S302,FastMath.java,1462,"splitReciprocal(as, facts);"
+S303,FastMath.java,1464,if ( (i & 2) != 0 ) {
+S304,FastMath.java,1465,facts[0] = -facts[0];
+S305,FastMath.java,1466,facts[1] = -facts[1];
+S306,FastMath.java,1469,"splitAdd(ys, facts, as);"
+S307,FastMath.java,1470,ys[0] = as[0]; ys[1] = as[1];
+S308,FastMath.java,1473,if (result != null) {
+S309,FastMath.java,1474,result[0] = ys[0];
+S310,FastMath.java,1475,result[1] = ys[1];
+S311,FastMath.java,1478,return ys[0] + ys[1];
+S312,FastMath.java,1489,final double xs[] = new double[2];
+S313,FastMath.java,1490,final double ys[] = new double[2];
+S314,FastMath.java,1491,final double facts[] = new double[2];
+S315,FastMath.java,1492,final double as[] = new double[2];
+S316,FastMath.java,1493,"split(x, xs);"
+S317,FastMath.java,1494,ys[0] = ys[1] = 0.0;
+S318,FastMath.java,1496,for (int i = 19; i >= 0; i--) {
+S319,FastMath.java,1497,"splitMult(xs, ys, as);"
+S320,FastMath.java,1498,ys[0] = as[0]; ys[1] = as[1];
+S321,FastMath.java,1500,if ( (i & 1) != 0) {
+S322,FastMath.java,1501,continue;
+S323,FastMath.java,1504,"split(FACT[i], as);"
+S324,FastMath.java,1505,"splitReciprocal(as, facts);"
+S325,FastMath.java,1507,if ( (i & 2) != 0 ) {
+S326,FastMath.java,1508,facts[0] = -facts[0];
+S327,FastMath.java,1509,facts[1] = -facts[1];
+S328,FastMath.java,1512,"splitAdd(ys, facts, as);"
+S329,FastMath.java,1513,ys[0] = as[0]; ys[1] = as[1];
+S330,FastMath.java,1516,if (result != null) {
+S331,FastMath.java,1517,result[0] = ys[0];
+S332,FastMath.java,1518,result[1] = ys[1];
+S333,FastMath.java,1521,return ys[0] + ys[1];
+S334,FastMath.java,1527,final double result[] = new double[2];
+S335,FastMath.java,1530,for (int i = 0; i < 7; i++) {
+S336,FastMath.java,1531,double x = i / 8.0;
+S337,FastMath.java,1533,"slowSin(x, result);"
+S338,FastMath.java,1534,SINE_TABLE_A[i] = result[0];
+S339,FastMath.java,1535,SINE_TABLE_B[i] = result[1];
+S340,FastMath.java,1537,"slowCos(x, result);"
+S341,FastMath.java,1538,COSINE_TABLE_A[i] = result[0];
+S342,FastMath.java,1539,COSINE_TABLE_B[i] = result[1];
+S343,FastMath.java,1543,for (int i = 7; i < 14; i++) {
+S344,FastMath.java,1544,double xs[] = new double[2];
+S345,FastMath.java,1545,double ys[] = new double[2];
+S346,FastMath.java,1546,double as[] = new double[2];
+S347,FastMath.java,1547,double bs[] = new double[2];
+S348,FastMath.java,1548,double temps[] = new double[2];
+S349,FastMath.java,1550,if ( (i & 1) == 0) {
+S350,FastMath.java,1552,xs[0] = SINE_TABLE_A[i/2];
+S351,FastMath.java,1553,xs[1] = SINE_TABLE_B[i/2];
+S352,FastMath.java,1554,ys[0] = COSINE_TABLE_A[i/2];
+S353,FastMath.java,1555,ys[1] = COSINE_TABLE_B[i/2];
+S354,FastMath.java,1558,"splitMult(xs, ys, result);"
+S355,FastMath.java,1559,SINE_TABLE_A[i] = result[0] * 2.0;
+S356,FastMath.java,1560,SINE_TABLE_B[i] = result[1] * 2.0;
+S357,FastMath.java,1563,"splitMult(ys, ys, as);"
+S358,FastMath.java,1564,"splitMult(xs, xs, temps);"
+S359,FastMath.java,1565,temps[0] = -temps[0];
+S360,FastMath.java,1566,temps[1] = -temps[1];
+S361,FastMath.java,1567,"splitAdd(as, temps, result);"
+S362,FastMath.java,1568,COSINE_TABLE_A[i] = result[0];
+S363,FastMath.java,1569,COSINE_TABLE_B[i] = result[1];
+S364,FastMath.java,1571,xs[0] = SINE_TABLE_A[i/2];
+S365,FastMath.java,1572,xs[1] = SINE_TABLE_B[i/2];
+S366,FastMath.java,1573,ys[0] = COSINE_TABLE_A[i/2];
+S367,FastMath.java,1574,ys[1] = COSINE_TABLE_B[i/2];
+S368,FastMath.java,1575,as[0] = SINE_TABLE_A[i/2+1];
+S369,FastMath.java,1576,as[1] = SINE_TABLE_B[i/2+1];
+S370,FastMath.java,1577,bs[0] = COSINE_TABLE_A[i/2+1];
+S371,FastMath.java,1578,bs[1] = COSINE_TABLE_B[i/2+1];
+S372,FastMath.java,1581,"splitMult(xs, bs, temps);"
+S373,FastMath.java,1582,"splitMult(ys, as, result);"
+S374,FastMath.java,1583,"splitAdd(result, temps, result);"
+S375,FastMath.java,1584,SINE_TABLE_A[i] = result[0];
+S376,FastMath.java,1585,SINE_TABLE_B[i] = result[1];
+S377,FastMath.java,1588,"splitMult(ys, bs, result);"
+S378,FastMath.java,1589,"splitMult(xs, as, temps);"
+S379,FastMath.java,1590,temps[0] = -temps[0];
+S380,FastMath.java,1591,temps[1] = -temps[1];
+S381,FastMath.java,1592,"splitAdd(result, temps, result);"
+S382,FastMath.java,1593,COSINE_TABLE_A[i] = result[0];
+S383,FastMath.java,1594,COSINE_TABLE_B[i] = result[1];
+S384,FastMath.java,1599,for (int i = 0; i < 14; i++) {
+S385,FastMath.java,1600,double xs[] = new double[2];
+S386,FastMath.java,1601,double ys[] = new double[2];
+S387,FastMath.java,1602,double as[] = new double[2];
+S388,FastMath.java,1604,as[0] = COSINE_TABLE_A[i];
+S389,FastMath.java,1605,as[1] = COSINE_TABLE_B[i];
+S390,FastMath.java,1607,"splitReciprocal(as, ys);"
+S391,FastMath.java,1609,xs[0] = SINE_TABLE_A[i];
+S392,FastMath.java,1610,xs[1] = SINE_TABLE_B[i];
+S393,FastMath.java,1612,"splitMult(xs, ys, as);"
+S394,FastMath.java,1614,TANGENT_TABLE_A[i] = as[0];
+S395,FastMath.java,1615,TANGENT_TABLE_B[i] = as[1];
+S396,FastMath.java,1628,double x2 = x*x;
+S397,FastMath.java,1630,double p = 2.7553817452272217E-6;
+S398,FastMath.java,1631,p = p * x2 + -1.9841269659586505E-4;
+S399,FastMath.java,1632,p = p * x2 + 0.008333333333329196;
+S400,FastMath.java,1633,p = p * x2 + -0.16666666666666666;
+S401,FastMath.java,1636,p = p * x2 * x;
+S402,FastMath.java,1638,return p;
+S403,FastMath.java,1648,double x2 = x*x;
+S404,FastMath.java,1650,double p = 2.479773539153719E-5;
+S405,FastMath.java,1651,p = p * x2 + -0.0013888888689039883;
+S406,FastMath.java,1652,p = p * x2 + 0.041666666666621166;
+S407,FastMath.java,1653,p = p * x2 + -0.49999999999999994;
+S408,FastMath.java,1654,p *= x2;
+S409,FastMath.java,1656,return p;
+S410,FastMath.java,1667,int idx = (int) ((xa * 8.0) + 0.5);
+S411,FastMath.java,1668,final double epsilon = xa - EIGHTHES[idx]; //idx*0.125;
+S412,FastMath.java,1671,final double sintA = SINE_TABLE_A[idx];
+S413,FastMath.java,1672,final double sintB = SINE_TABLE_B[idx];
+S414,FastMath.java,1673,final double costA = COSINE_TABLE_A[idx];
+S415,FastMath.java,1674,final double costB = COSINE_TABLE_B[idx];
+S416,FastMath.java,1677,double sinEpsA = epsilon;
+S417,FastMath.java,1678,double sinEpsB = polySine(epsilon);
+S418,FastMath.java,1679,final double cosEpsA = 1.0;
+S419,FastMath.java,1680,final double cosEpsB = polyCosine(epsilon);
+S420,FastMath.java,1683,final double temp = sinEpsA * 1073741824.0;
+S421,FastMath.java,1684,double temp2 = (sinEpsA + temp) - temp;
+S422,FastMath.java,1685,sinEpsB +=  sinEpsA - temp2;
+S423,FastMath.java,1686,sinEpsA = temp2;
+S424,FastMath.java,1712,double a = 0;
+S425,FastMath.java,1713,double b = 0;
+S426,FastMath.java,1715,double t = sintA;
+S427,FastMath.java,1716,double c = a + t;
+S428,FastMath.java,1717,double d = -(c - a - t);
+S429,FastMath.java,1718,a = c;
+S430,FastMath.java,1719,b = b + d;
+S431,FastMath.java,1721,t = costA * sinEpsA;
+S432,FastMath.java,1722,c = a + t;
+S433,FastMath.java,1723,d = -(c - a - t);
+S434,FastMath.java,1724,a = c;
+S435,FastMath.java,1725,b = b + d;
+S436,FastMath.java,1727,b = b + sintA * cosEpsB + costA * sinEpsB;
+S437,FastMath.java,1742,b = b + sintB + costB * sinEpsA + sintB * cosEpsB + costB * sinEpsB;
+S438,FastMath.java,1769,if (xb != 0.0) {
+S439,FastMath.java,1770,t = ((costA + costB) * (cosEpsA + cosEpsB) -
+S440,FastMath.java,1772,c = a + t;
+S441,FastMath.java,1773,d = -(c - a - t);
+S442,FastMath.java,1774,a = c;
+S443,FastMath.java,1775,b = b + d;
+S444,FastMath.java,1778,result = a + b;
+S445,FastMath.java,1780,return result;
+S446,FastMath.java,1791,final double pi2a = 1.5707963267948966;
+S447,FastMath.java,1792,final double pi2b = 6.123233995736766E-17;
+S448,FastMath.java,1794,final double a = pi2a - xa;
+S449,FastMath.java,1795,double b = -(a - pi2a + xa);
+S450,FastMath.java,1796,b += pi2b - xb;
+S451,FastMath.java,1798,"return sinQ(a, b);"
+S452,FastMath.java,2175,boolean negative = false;
+S453,FastMath.java,2176,int quadrant = 0;
+S454,FastMath.java,2178,double xb = 0.0;
+S455,FastMath.java,2181,xa = x;
+S456,FastMath.java,2182,if (x < 0) {
+S457,FastMath.java,2183,negative = true;
+S458,FastMath.java,2184,xa = -xa;
+S459,FastMath.java,2188,if (xa == 0.0) {
+S460,FastMath.java,2189,long bits = Double.doubleToLongBits(x);
+S461,FastMath.java,2190,if (bits < 0) {
+S462,FastMath.java,2193,return 0.0;
+S463,FastMath.java,2196,if (xa != xa || xa == Double.POSITIVE_INFINITY) {
+S464,FastMath.java,2201,if (xa > 3294198.0) {
+S465,FastMath.java,2215,int k = (int)(xa * 0.6366197723675814);
+S466,FastMath.java,2221,double a = -k * 1.570796251296997;
+S467,FastMath.java,2222,remA = xa + a;
+S468,FastMath.java,2223,remB = -(remA - xa - a);
+S469,FastMath.java,2225,a = -k * 7.549789948768648E-8;
+S470,FastMath.java,2226,double b = remA;
+S471,FastMath.java,2227,remA = a + b;
+S472,FastMath.java,2228,remB += -(remA - b - a);
+S473,FastMath.java,2230,a = -k * 6.123233995736766E-17;
+S474,FastMath.java,2231,b = remA;
+S475,FastMath.java,2232,remA = a + b;
+S476,FastMath.java,2233,remB += -(remA - b - a);
+S477,FastMath.java,2235,if (remA > 0.0)
+S478,FastMath.java,2236,break;
+S479,FastMath.java,2243,quadrant = k & 3;
+S480,FastMath.java,2244,xa = remA;
+S481,FastMath.java,2245,xb = remB;
+S482,FastMath.java,2248,if (negative) {
+S483,FastMath.java,2249,quadrant ^= 2;  // Flip bit 1
+S484,FastMath.java,2252,switch (quadrant) {
+S485,FastMath.java,2254,"return sinQ(xa, xb);"
+S486,FastMath.java,2256,"return cosQ(xa, xb);"
+S487,FastMath.java,2258,"return -sinQ(xa, xb);"
+S488,FastMath.java,2260,"return -cosQ(xa, xb);"
+S489,FastMath.java,3016,return (x < 0l) ? -x : x;
+S490,FastMath.java,3034,return (x < 0.0) ? -x : x;
+S491,FastMath.java,3044,return abs(x - Double.longBitsToDouble(Double.doubleToLongBits(x) ^ 1));
+S492,FastMath.java,3110,if (x != x) { // NaN
+S493,FastMath.java,3114,if (x >= 4503599627370496.0 || x <= -4503599627370496.0) {
+S494,FastMath.java,3118,y = (long) x;
+S495,FastMath.java,3119,if (x < 0 && y != x) {
+S496,FastMath.java,3120,y--;
+S497,FastMath.java,3123,if (y == 0) {
+S498,FastMath.java,3124,return x*y;
+S499,FastMath.java,3127,return (double) y;
+S500,FastMath.java,3160,double y = floor(x);
+S501,FastMath.java,3161,double d = x - y;
+S502,FastMath.java,3163,if (d > 0.5) {
+S503,FastMath.java,3164,return y+1.0;
+S504,FastMath.java,3166,if (d < 0.5) {
+S505,FastMath.java,3167,return y;
+S506,FastMath.java,3224,return (a <= b) ? a : (Double.isNaN(a + b) ? Double.NaN : b);
+S507,FastMath.java,3260,return (a <= b) ? b : (Double.isNaN(a + b) ? Double.NaN : a);
+S508,GoalType.java,27,public enum GoalType implements Serializable {
+S509,GoalType.java,30,"MAXIMIZE,"
+S510,GoalType.java,33,MINIMIZE
+S511,Incrementor.java,28,public class Incrementor {
+S512,Incrementor.java,44,maximalCount = max;
+S513,Incrementor.java,53,return maximalCount;
+S514,Incrementor.java,62,return count;
+S515,Incrementor.java,84,if (++count > maximalCount) {
+S516,Incrementor.java,93,count = 0;
+S517,JDKRandomGenerator.java,28,public class JDKRandomGenerator extends Random implements RandomGenerator {
+S518,MathUtils.java,33,public final class MathUtils {
+S519,MathUtils.java,75,private static final long[] FACTORIALS = new long[] {
+S520,MathUtils.java,417,"return equals(x, y, 1);"
+S521,MathUtils.java,479,assert maxUlps > 0 && maxUlps < NAN_GAP;
+S522,MathUtils.java,481,long xInt = Double.doubleToLongBits(x);
+S523,MathUtils.java,482,long yInt = Double.doubleToLongBits(y);
+S524,MathUtils.java,485,if (xInt < 0) {
+S525,MathUtils.java,486,xInt = SGN_MASK - xInt;
+S526,MathUtils.java,488,if (yInt < 0) {
+S527,MathUtils.java,489,yInt = SGN_MASK - yInt;
+S528,MathUtils.java,492,final boolean isEqual = FastMath.abs(xInt - yInt) <= maxUlps;
+S529,MathUtils.java,494,return isEqual && !Double.isNaN(x) && !Double.isNaN(y);
+S530,MultiStartUnivariateRealOptimizer.java,72,final RandomGenerator generator) {
+S531,MultiStartUnivariateRealOptimizer.java,73,this.optimizer = optimizer;
+S532,MultiStartUnivariateRealOptimizer.java,74,this.starts = starts;
+S533,MultiStartUnivariateRealOptimizer.java,75,this.generator = generator;
+S534,MultiStartUnivariateRealOptimizer.java,99,return totalEvaluations;
+S535,MultiStartUnivariateRealOptimizer.java,135,if (optima == null) {
+S536,MultiStartUnivariateRealOptimizer.java,138,return optima.clone();
+S537,MultiStartUnivariateRealOptimizer.java,146,"return optimize(f, goal, min, max, 0);"
+S538,MultiStartUnivariateRealOptimizer.java,154,optima = new UnivariateRealPointValuePair[starts];
+S539,MultiStartUnivariateRealOptimizer.java,155,totalEvaluations = 0;
+S540,MultiStartUnivariateRealOptimizer.java,158,for (int i = 0; i < starts; ++i) {
+S541,MultiStartUnivariateRealOptimizer.java,160,final double bound1 = (i == 0) ? min : min + generator.nextDouble() * (max - min);
+S542,MultiStartUnivariateRealOptimizer.java,161,final double bound2 = (i == 0) ? max : min + generator.nextDouble() * (max - min);
+S543,MultiStartUnivariateRealOptimizer.java,162,"optima[i] = optimizer.optimize(f, goal, FastMath.min(bound1, bound2), FastMath.max(bound1, bound2));"
+S544,MultiStartUnivariateRealOptimizer.java,169,final int usedEvaluations = optimizer.getEvaluations();
+S545,MultiStartUnivariateRealOptimizer.java,170,optimizer.setMaxEvaluations(optimizer.getMaxEvaluations() - usedEvaluations);
+S546,MultiStartUnivariateRealOptimizer.java,171,totalEvaluations += usedEvaluations;
+S547,MultiStartUnivariateRealOptimizer.java,174,sortPairs(goal);
+S548,MultiStartUnivariateRealOptimizer.java,176,if (optima[0] == null) {
+S549,MultiStartUnivariateRealOptimizer.java,182,return optima[0];
+S550,MultiStartUnivariateRealOptimizer.java,191,"Arrays.sort(optima, new Comparator<UnivariateRealPointValuePair>() {"
+S551,MultiStartUnivariateRealOptimizer.java,194,if (o1 == null) {
+S552,MultiStartUnivariateRealOptimizer.java,196,} else if (o2 == null) {
+S553,MultiStartUnivariateRealOptimizer.java,199,final double v1 = o1.getValue();
+S554,MultiStartUnivariateRealOptimizer.java,200,final double v2 = o2.getValue();
+S555,MultiStartUnivariateRealOptimizer.java,201,return (goal == GoalType.MINIMIZE) ?
+S556,UnivariateRealPointValuePair.java,45,final double value) {
+S557,UnivariateRealPointValuePair.java,46,this.point = point;
+S558,UnivariateRealPointValuePair.java,47,this.value = value;
+S559,UnivariateRealPointValuePair.java,56,return point;
+S560,UnivariateRealPointValuePair.java,65,return value;

@@ -1,0 +1,73 @@
+statement_id,file,line,code
+S1,ArchiveInputStream.java,40,public abstract class ArchiveInputStream extends InputStream {
+S2,ArchiveInputStream.java,42,private final byte[] SINGLE = new byte[1];
+S3,ArchiveInputStream.java,46,private long bytesRead = 0;
+S4,BoundedRandomAccessFileInputStream.java,29,final long size) {
+S5,BoundedRandomAccessFileInputStream.java,30,this.file = file;
+S6,BoundedRandomAccessFileInputStream.java,31,this.bytesRemaining = size;
+S7,CRC32VerifyingInputStream.java,47,"super(new CRC32(), in, size, expectedCrc32);"
+S8,ChecksumVerifyingInputStream.java,37,"final long size, final long expectedChecksum) {"
+S9,ChecksumVerifyingInputStream.java,38,this.checksum = checksum;
+S10,ChecksumVerifyingInputStream.java,39,this.in = in;
+S11,ChecksumVerifyingInputStream.java,40,this.expectedChecksum = expectedChecksum;
+S12,ChecksumVerifyingInputStream.java,41,this.bytesRemaining = size;
+S13,SevenZArchiveEntry.java,52,public SevenZArchiveEntry() {
+S14,SevenZFile.java,75,private int currentEntryIndex = -1;
+S15,SevenZFile.java,76,private int currentFolderIndex = -1;
+S16,SevenZFile.java,77,private InputStream currentFolderInputStream = null;
+S17,SevenZFile.java,80,private final ArrayList<InputStream> deferredBlockStreams = new ArrayList<InputStream>();
+S18,SevenZFile.java,95,"public SevenZFile(final File filename, final byte[] password) throws IOException {"
+S19,SevenZFile.java,97,"this.file = new RandomAccessFile(filename, ""r"");"
+S20,SevenZFile.java,98,this.fileName = filename.getAbsolutePath();
+S21,SevenZFile.java,100,archive = readHeaders(password);
+S22,SevenZFile.java,122,"this(filename, null);"
+S23,SevenZFile.java,152,if (currentEntryIndex >= archive.files.length - 1) {
+S24,SevenZFile.java,155,++currentEntryIndex;
+S25,SevenZFile.java,156,final SevenZArchiveEntry entry = archive.files[currentEntryIndex];
+S26,SevenZFile.java,158,return entry;
+S27,SevenZFile.java,179,final byte[] signature = new byte[6];
+S28,SevenZFile.java,180,file.readFully(signature);
+S29,SevenZFile.java,192,final long startHeaderCrc = 0xffffFFFFL & Integer.reverseBytes(file.readInt());
+S30,SevenZFile.java,193,final StartHeader startHeader = readStartHeader(startHeaderCrc);
+S31,SevenZFile.java,195,final int nextHeaderSizeInt = (int) startHeader.nextHeaderSize;
+S32,SevenZFile.java,200,final byte[] nextHeader = new byte[nextHeaderSizeInt];
+S33,SevenZFile.java,201,file.readFully(nextHeader);
+S34,SevenZFile.java,202,final CRC32 crc = new CRC32();
+S35,SevenZFile.java,203,crc.update(nextHeader);
+S36,SevenZFile.java,208,final ByteArrayInputStream byteStream = new ByteArrayInputStream(nextHeader);
+S37,SevenZFile.java,209,DataInputStream nextHeaderInputStream = new DataInputStream(
+S38,SevenZFile.java,221,"readHeader(nextHeaderInputStream, archive);"
+S39,SevenZFile.java,233,dataInputStream = new DataInputStream(new CRC32VerifyingInputStream(
+S40,SevenZFile.java,235,startHeader.nextHeaderOffset = Long.reverseBytes(dataInputStream.readLong());
+S41,SevenZFile.java,236,startHeader.nextHeaderSize = Long.reverseBytes(dataInputStream.readLong());
+S42,SevenZFile.java,247,int nid = header.readUnsignedByte();
+S43,SevenZFile.java,259,if (nid == NID.kMainStreamsInfo) {
+S44,SevenZFile.java,260,"readStreamsInfo(header, archive);"
+S45,SevenZFile.java,261,nid = header.readUnsignedByte();
+S46,SevenZFile.java,264,if (nid == NID.kFilesInfo) {
+S47,SevenZFile.java,265,"readFilesInfo(header, archive);"
+S48,SevenZFile.java,320,int nid = header.readUnsignedByte();
+S49,SevenZFile.java,335,if (nid == NID.kSubStreamsInfo) {
+S50,SevenZFile.java,336,"readSubStreamsInfo(header, archive);"
+S51,SevenZFile.java,613,final long numFiles = readUint64(header);
+S52,SevenZFile.java,614,final SevenZArchiveEntry[] files = new SevenZArchiveEntry[(int)numFiles];
+S53,SevenZFile.java,616,files[i] = new SevenZArchiveEntry();
+S54,SevenZFile.java,766,archive.files = files;
+S55,SevenZFile.java,949,final long firstByte = in.readUnsignedByte();
+S56,SevenZFile.java,950,int mask = 0x80;
+S57,SevenZFile.java,951,long value = 0;
+S58,SevenZFile.java,952,for (int i = 0; i < 8; i++) {
+S59,SevenZFile.java,953,if ((firstByte & mask) == 0) {
+S60,SevenZFile.java,954,return value | ((firstByte & (mask - 1)) << (8 * i));
+S61,TarArchiveInputStream.java,52,private final byte[] SMALL_BUF = new byte[SMALL_BUFFER_SIZE];
+S62,TarArchiveInputStream.java,82,"private Map<String, String> globalPaxHeaders = new HashMap<String, String>();"
+S63,TarArchiveInputStream.java,89,"this(is, TarConstants.DEFAULT_BLKSIZE, TarConstants.DEFAULT_RCDSIZE);"
+S64,TarArchiveInputStream.java,131,"this(is, blockSize, recordSize, null);"
+S65,TarArchiveInputStream.java,143,final String encoding) {
+S66,TarArchiveInputStream.java,144,this.is = is;
+S67,TarArchiveInputStream.java,145,this.hasHitEOF = false;
+S68,TarArchiveInputStream.java,146,this.encoding = encoding;
+S69,TarArchiveInputStream.java,147,this.zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+S70,TarArchiveInputStream.java,148,this.recordSize = recordSize;
+S71,TarArchiveInputStream.java,149,this.blockSize = blockSize;
+S72,TarArchiveInputStream.java,263,if (hasHitEOF) {

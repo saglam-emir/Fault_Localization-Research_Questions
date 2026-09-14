@@ -1,0 +1,605 @@
+statement_id,file,line,code
+S1,AbstractEstimator.java,38,protected AbstractEstimator() {
+S2,AbstractEstimator.java,48,this.maxCostEval = maxCostEval;
+S3,AbstractEstimator.java,57,return costEvaluations;
+S4,AbstractEstimator.java,66,return jacobianEvaluations;
+S5,AbstractEstimator.java,73,incrementJacobianEvaluationsCounter();
+S6,AbstractEstimator.java,74,"Arrays.fill(jacobian, 0);"
+S7,AbstractEstimator.java,75,"for (int i = 0, index = 0; i < rows; i++) {"
+S8,AbstractEstimator.java,76,WeightedMeasurement wm = measurements[i];
+S9,AbstractEstimator.java,77,double factor = -Math.sqrt(wm.getWeight());
+S10,AbstractEstimator.java,78,for (int j = 0; j < cols; ++j) {
+S11,AbstractEstimator.java,79,jacobian[index++] = factor * wm.getPartial(parameters[j]);
+S12,AbstractEstimator.java,88,++jacobianEvaluations;
+S13,AbstractEstimator.java,99,if (++costEvaluations > maxCostEval) {
+S14,AbstractEstimator.java,100,"throw new EstimationException(""maximal number of evaluations exceeded ({0})"","
+S15,AbstractEstimator.java,104,cost = 0;
+S16,AbstractEstimator.java,105,"for (int i = 0, index = 0; i < rows; i++, index += cols) {"
+S17,AbstractEstimator.java,106,WeightedMeasurement wm = measurements[i];
+S18,AbstractEstimator.java,107,double residual = wm.getResidual();
+S19,AbstractEstimator.java,108,residuals[i] = Math.sqrt(wm.getWeight()) * residual;
+S20,AbstractEstimator.java,109,cost += wm.getWeight() * residual * residual;
+S21,AbstractEstimator.java,111,cost = Math.sqrt(cost);
+S22,AbstractEstimator.java,127,WeightedMeasurement[] wm = problem.getMeasurements();
+S23,AbstractEstimator.java,128,double criterion = 0;
+S24,AbstractEstimator.java,129,for (int i = 0; i < wm.length; ++i) {
+S25,AbstractEstimator.java,130,double residual = wm[i].getResidual();
+S26,AbstractEstimator.java,131,criterion += wm[i].getWeight() * residual * residual;
+S27,AbstractEstimator.java,133,return Math.sqrt(criterion / wm.length);
+S28,AbstractEstimator.java,142,WeightedMeasurement[] wm = problem.getMeasurements();
+S29,AbstractEstimator.java,143,double chiSquare = 0;
+S30,AbstractEstimator.java,144,for (int i = 0; i < wm.length; ++i) {
+S31,AbstractEstimator.java,145,double residual = wm[i].getResidual();
+S32,AbstractEstimator.java,146,chiSquare += residual * residual / wm[i].getWeight();
+S33,AbstractEstimator.java,148,return chiSquare;
+S34,AbstractEstimator.java,162,updateJacobian();
+S35,AbstractEstimator.java,165,final int rows = problem.getMeasurements().length;
+S36,AbstractEstimator.java,166,final int cols = problem.getAllParameters().length;
+S37,AbstractEstimator.java,167,final int max  = cols * rows;
+S38,AbstractEstimator.java,168,double[][] jTj = new double[cols][cols];
+S39,AbstractEstimator.java,169,for (int i = 0; i < cols; ++i) {
+S40,AbstractEstimator.java,170,for (int j = i; j < cols; ++j) {
+S41,AbstractEstimator.java,171,double sum = 0;
+S42,AbstractEstimator.java,172,for (int k = 0; k < max; k += cols) {
+S43,AbstractEstimator.java,173,sum += jacobian[k + i] * jacobian[k + j];
+S44,AbstractEstimator.java,175,jTj[i][j] = sum;
+S45,AbstractEstimator.java,176,jTj[j][i] = sum;
+S46,AbstractEstimator.java,182,return new RealMatrixImpl(jTj).inverse().getData();
+S47,AbstractEstimator.java,183,} catch (InvalidMatrixException ime) {
+S48,AbstractEstimator.java,184,"throw new EstimationException(""unable to compute covariances: singular problem"","
+S49,AbstractEstimator.java,201,int m = problem.getMeasurements().length;
+S50,AbstractEstimator.java,202,int p = problem.getAllParameters().length;
+S51,AbstractEstimator.java,203,if (m <= p) {
+S52,AbstractEstimator.java,204,"throw new EstimationException(""no degrees of freedom ({0} measurements, {1} parameters)"","
+S53,AbstractEstimator.java,207,double[] errors = new double[problem.getAllParameters().length];
+S54,AbstractEstimator.java,208,final double c = Math.sqrt(getChiSquare(problem) / (m - p));
+S55,AbstractEstimator.java,209,double[][] covar = getCovariances(problem);
+S56,AbstractEstimator.java,210,for (int i = 0; i < errors.length; ++i) {
+S57,AbstractEstimator.java,211,errors[i] = Math.sqrt(covar[i][i]) * c;
+S58,AbstractEstimator.java,213,return errors;
+S59,AbstractEstimator.java,226,costEvaluations     = 0;
+S60,AbstractEstimator.java,227,jacobianEvaluations = 0;
+S61,AbstractEstimator.java,230,measurements = problem.getMeasurements();
+S62,AbstractEstimator.java,231,parameters   = problem.getUnboundParameters();
+S63,AbstractEstimator.java,234,rows      = measurements.length;
+S64,AbstractEstimator.java,235,cols      = parameters.length;
+S65,AbstractEstimator.java,236,jacobian  = new double[rows * cols];
+S66,AbstractEstimator.java,237,residuals = new double[rows];
+S67,AbstractEstimator.java,239,cost = Double.POSITIVE_INFINITY;
+S68,EstimatedParameter.java,44,"public EstimatedParameter(String name, double firstEstimate) {"
+S69,EstimatedParameter.java,45,this.name = name;
+S70,EstimatedParameter.java,46,estimate  = firstEstimate;
+S71,EstimatedParameter.java,47,bound     = false;
+S72,EstimatedParameter.java,59,boolean bound) {
+S73,EstimatedParameter.java,60,this.name  = name;
+S74,EstimatedParameter.java,61,estimate   = firstEstimate;
+S75,EstimatedParameter.java,62,this.bound = bound;
+S76,EstimatedParameter.java,69,public EstimatedParameter(EstimatedParameter parameter) {
+S77,EstimatedParameter.java,70,name     = parameter.name;
+S78,EstimatedParameter.java,71,estimate = parameter.estimate;
+S79,EstimatedParameter.java,72,bound    = parameter.bound;
+S80,EstimatedParameter.java,79,this.estimate = estimate;
+S81,EstimatedParameter.java,86,return estimate;
+S82,EstimatedParameter.java,93,return name;
+S83,EstimatedParameter.java,107,return bound;
+S84,EstimationException.java,43,"super(specifier, parts);"
+S85,GaussNewtonEstimator.java,73,double steadyStateThreshold) {
+S86,GaussNewtonEstimator.java,74,setMaxCostEval(maxCostEval);
+S87,GaussNewtonEstimator.java,75,this.steadyStateThreshold = steadyStateThreshold;
+S88,GaussNewtonEstimator.java,76,this.convergence          = convergence;
+S89,GaussNewtonEstimator.java,105,initializeEstimate(problem);
+S90,GaussNewtonEstimator.java,108,double[] grad             = new double[parameters.length];
+S91,GaussNewtonEstimator.java,109,"RealMatrixImpl bDecrement = new RealMatrixImpl(parameters.length, 1);"
+S92,GaussNewtonEstimator.java,110,double[][] bDecrementData = bDecrement.getDataRef();
+S93,GaussNewtonEstimator.java,111,"RealMatrixImpl wGradGradT = new RealMatrixImpl(parameters.length, parameters.length);"
+S94,GaussNewtonEstimator.java,112,double[][] wggData        = wGradGradT.getDataRef();
+S95,GaussNewtonEstimator.java,115,double previous = Double.POSITIVE_INFINITY;
+S96,GaussNewtonEstimator.java,119,incrementJacobianEvaluationsCounter();
+S97,GaussNewtonEstimator.java,120,"RealMatrix b = new RealMatrixImpl(parameters.length, 1);"
+S98,GaussNewtonEstimator.java,121,"RealMatrix a = new RealMatrixImpl(parameters.length, parameters.length);"
+S99,GaussNewtonEstimator.java,122,for (int i = 0; i < measurements.length; ++i) {
+S100,GaussNewtonEstimator.java,123,if (! measurements [i].isIgnored()) {
+S101,GaussNewtonEstimator.java,125,double weight   = measurements[i].getWeight();
+S102,GaussNewtonEstimator.java,126,double residual = measurements[i].getResidual();
+S103,GaussNewtonEstimator.java,129,for (int j = 0; j < parameters.length; ++j) {
+S104,GaussNewtonEstimator.java,130,grad[j] = measurements[i].getPartial(parameters[j]);
+S105,GaussNewtonEstimator.java,131,bDecrementData[j][0] = weight * residual * grad[j];
+S106,GaussNewtonEstimator.java,135,for (int k = 0; k < parameters.length; ++k) {
+S107,GaussNewtonEstimator.java,136,double[] wggRow = wggData[k];
+S108,GaussNewtonEstimator.java,137,double gk = grad[k];
+S109,GaussNewtonEstimator.java,138,for (int l = 0; l < parameters.length; ++l) {
+S110,GaussNewtonEstimator.java,139,wggRow[l] =  weight * gk * grad[l];
+S111,GaussNewtonEstimator.java,144,a = a.add(wGradGradT);
+S112,GaussNewtonEstimator.java,145,b = b.add(bDecrement);
+S113,GaussNewtonEstimator.java,153,RealMatrix dX = a.solve(b);
+S114,GaussNewtonEstimator.java,156,for (int i = 0; i < parameters.length; ++i) {
+S115,GaussNewtonEstimator.java,157,"parameters[i].setEstimate(parameters[i].getEstimate() + dX.getEntry(i, 0));"
+S116,GaussNewtonEstimator.java,160,} catch(InvalidMatrixException e) {
+S117,GaussNewtonEstimator.java,161,"throw new EstimationException(""unable to solve: singular problem"", new Object[0]);"
+S118,GaussNewtonEstimator.java,165,previous = cost;
+S119,GaussNewtonEstimator.java,166,updateResidualsAndCost();
+S120,GaussNewtonEstimator.java,168,} while ((getCostEvaluations() < 2) ||
+S121,InvalidMatrixException.java,43,super(message);
+S122,LevenbergMarquardtEstimator.java,114,public LevenbergMarquardtEstimator() {
+S123,LevenbergMarquardtEstimator.java,117,setMaxCostEval(1000);
+S124,LevenbergMarquardtEstimator.java,120,setInitialStepBoundFactor(100.0);
+S125,LevenbergMarquardtEstimator.java,121,setCostRelativeTolerance(1.0e-10);
+S126,LevenbergMarquardtEstimator.java,122,setParRelativeTolerance(1.0e-10);
+S127,LevenbergMarquardtEstimator.java,123,setOrthoTolerance(1.0e-10);
+S128,LevenbergMarquardtEstimator.java,137,this.initialStepBoundFactor = initialStepBoundFactor;
+S129,LevenbergMarquardtEstimator.java,147,this.costRelativeTolerance = costRelativeTolerance;
+S130,LevenbergMarquardtEstimator.java,158,this.parRelativeTolerance = parRelativeTolerance;
+S131,LevenbergMarquardtEstimator.java,169,this.orthoTolerance = orthoTolerance;
+S132,LevenbergMarquardtEstimator.java,203,initializeEstimate(problem);
+S133,LevenbergMarquardtEstimator.java,206,"solvedCols  = Math.min(rows, cols);"
+S134,LevenbergMarquardtEstimator.java,207,diagR       = new double[cols];
+S135,LevenbergMarquardtEstimator.java,208,jacNorm     = new double[cols];
+S136,LevenbergMarquardtEstimator.java,209,beta        = new double[cols];
+S137,LevenbergMarquardtEstimator.java,210,permutation = new int[cols];
+S138,LevenbergMarquardtEstimator.java,211,lmDir       = new double[cols];
+S139,LevenbergMarquardtEstimator.java,214,"double   delta   = 0, xNorm = 0;"
+S140,LevenbergMarquardtEstimator.java,215,double[] diag    = new double[cols];
+S141,LevenbergMarquardtEstimator.java,216,double[] oldX    = new double[cols];
+S142,LevenbergMarquardtEstimator.java,217,double[] oldRes  = new double[rows];
+S143,LevenbergMarquardtEstimator.java,218,double[] work1   = new double[cols];
+S144,LevenbergMarquardtEstimator.java,219,double[] work2   = new double[cols];
+S145,LevenbergMarquardtEstimator.java,220,double[] work3   = new double[cols];
+S146,LevenbergMarquardtEstimator.java,223,updateResidualsAndCost();
+S147,LevenbergMarquardtEstimator.java,226,lmPar = 0;
+S148,LevenbergMarquardtEstimator.java,227,boolean firstIteration = true;
+S149,LevenbergMarquardtEstimator.java,231,updateJacobian();
+S150,LevenbergMarquardtEstimator.java,232,qrDecomposition();
+S151,LevenbergMarquardtEstimator.java,235,qTy(residuals);
+S152,LevenbergMarquardtEstimator.java,239,for (int k = 0; k < solvedCols; ++k) {
+S153,LevenbergMarquardtEstimator.java,240,int pk = permutation[k];
+S154,LevenbergMarquardtEstimator.java,241,jacobian[k * cols + pk] = diagR[pk];
+S155,LevenbergMarquardtEstimator.java,244,if (firstIteration) {
+S156,LevenbergMarquardtEstimator.java,248,xNorm = 0;
+S157,LevenbergMarquardtEstimator.java,249,for (int k = 0; k < cols; ++k) {
+S158,LevenbergMarquardtEstimator.java,250,double dk = jacNorm[k];
+S159,LevenbergMarquardtEstimator.java,251,if (dk == 0) {
+S160,LevenbergMarquardtEstimator.java,252,dk = 1.0;
+S161,LevenbergMarquardtEstimator.java,254,double xk = dk * parameters[k].getEstimate();
+S162,LevenbergMarquardtEstimator.java,255,xNorm  += xk * xk;
+S163,LevenbergMarquardtEstimator.java,256,diag[k] = dk;
+S164,LevenbergMarquardtEstimator.java,258,xNorm = Math.sqrt(xNorm);
+S165,LevenbergMarquardtEstimator.java,261,delta = (xNorm == 0) ? initialStepBoundFactor : (initialStepBoundFactor * xNorm);
+S166,LevenbergMarquardtEstimator.java,266,double maxCosine = 0;
+S167,LevenbergMarquardtEstimator.java,267,if (cost != 0) {
+S168,LevenbergMarquardtEstimator.java,268,for (int j = 0; j < solvedCols; ++j) {
+S169,LevenbergMarquardtEstimator.java,269,int    pj = permutation[j];
+S170,LevenbergMarquardtEstimator.java,270,double s  = jacNorm[pj];
+S171,LevenbergMarquardtEstimator.java,271,if (s != 0) {
+S172,LevenbergMarquardtEstimator.java,272,double sum = 0;
+S173,LevenbergMarquardtEstimator.java,273,"for (int i = 0, index = pj; i <= j; ++i, index += cols) {"
+S174,LevenbergMarquardtEstimator.java,274,sum += jacobian[index] * residuals[i];
+S175,LevenbergMarquardtEstimator.java,276,"maxCosine = Math.max(maxCosine, Math.abs(sum) / (s * cost));"
+S176,LevenbergMarquardtEstimator.java,280,if (maxCosine <= orthoTolerance) {
+S177,LevenbergMarquardtEstimator.java,281,return;
+S178,LevenbergMarquardtEstimator.java,285,for (int j = 0; j < cols; ++j) {
+S179,LevenbergMarquardtEstimator.java,286,"diag[j] = Math.max(diag[j], jacNorm[j]);"
+S180,LevenbergMarquardtEstimator.java,290,for (double ratio = 0; ratio < 1.0e-4;) {
+S181,LevenbergMarquardtEstimator.java,293,for (int j = 0; j < solvedCols; ++j) {
+S182,LevenbergMarquardtEstimator.java,294,int pj = permutation[j];
+S183,LevenbergMarquardtEstimator.java,295,oldX[pj] = parameters[pj].getEstimate();
+S184,LevenbergMarquardtEstimator.java,297,double previousCost = cost;
+S185,LevenbergMarquardtEstimator.java,298,double[] tmpVec = residuals;
+S186,LevenbergMarquardtEstimator.java,299,residuals = oldRes;
+S187,LevenbergMarquardtEstimator.java,300,oldRes    = tmpVec;
+S188,LevenbergMarquardtEstimator.java,303,"determineLMParameter(oldRes, delta, diag, work1, work2, work3);"
+S189,LevenbergMarquardtEstimator.java,306,double lmNorm = 0;
+S190,LevenbergMarquardtEstimator.java,307,for (int j = 0; j < solvedCols; ++j) {
+S191,LevenbergMarquardtEstimator.java,308,int pj = permutation[j];
+S192,LevenbergMarquardtEstimator.java,309,lmDir[pj] = -lmDir[pj];
+S193,LevenbergMarquardtEstimator.java,310,parameters[pj].setEstimate(oldX[pj] + lmDir[pj]);
+S194,LevenbergMarquardtEstimator.java,311,double s = diag[pj] * lmDir[pj];
+S195,LevenbergMarquardtEstimator.java,312,lmNorm  += s * s;
+S196,LevenbergMarquardtEstimator.java,314,lmNorm = Math.sqrt(lmNorm);
+S197,LevenbergMarquardtEstimator.java,317,if (firstIteration) {
+S198,LevenbergMarquardtEstimator.java,318,"delta = Math.min(delta, lmNorm);"
+S199,LevenbergMarquardtEstimator.java,322,updateResidualsAndCost();
+S200,LevenbergMarquardtEstimator.java,325,double actRed = -1.0;
+S201,LevenbergMarquardtEstimator.java,326,if (0.1 * cost < previousCost) {
+S202,LevenbergMarquardtEstimator.java,327,double r = cost / previousCost;
+S203,LevenbergMarquardtEstimator.java,328,actRed = 1.0 - r * r;
+S204,LevenbergMarquardtEstimator.java,333,for (int j = 0; j < solvedCols; ++j) {
+S205,LevenbergMarquardtEstimator.java,334,int pj = permutation[j];
+S206,LevenbergMarquardtEstimator.java,335,double dirJ = lmDir[pj];
+S207,LevenbergMarquardtEstimator.java,336,work1[j] = 0;
+S208,LevenbergMarquardtEstimator.java,337,"for (int i = 0, index = pj; i <= j; ++i, index += cols) {"
+S209,LevenbergMarquardtEstimator.java,338,work1[i] += jacobian[index] * dirJ;
+S210,LevenbergMarquardtEstimator.java,341,double coeff1 = 0;
+S211,LevenbergMarquardtEstimator.java,342,for (int j = 0; j < solvedCols; ++j) {
+S212,LevenbergMarquardtEstimator.java,343,coeff1 += work1[j] * work1[j];
+S213,LevenbergMarquardtEstimator.java,345,double pc2 = previousCost * previousCost;
+S214,LevenbergMarquardtEstimator.java,346,coeff1 = coeff1 / pc2;
+S215,LevenbergMarquardtEstimator.java,347,double coeff2 = lmPar * lmNorm * lmNorm / pc2;
+S216,LevenbergMarquardtEstimator.java,348,double preRed = coeff1 + 2 * coeff2;
+S217,LevenbergMarquardtEstimator.java,349,double dirDer = -(coeff1 + coeff2);
+S218,LevenbergMarquardtEstimator.java,352,ratio = (preRed == 0) ? 0 : (actRed / preRed);
+S219,LevenbergMarquardtEstimator.java,355,if (ratio <= 0.25) {
+S220,LevenbergMarquardtEstimator.java,356,double tmp =
+S221,LevenbergMarquardtEstimator.java,358,if ((0.1 * cost >= previousCost) || (tmp < 0.1)) {
+S222,LevenbergMarquardtEstimator.java,359,tmp = 0.1;
+S223,LevenbergMarquardtEstimator.java,361,"delta = tmp * Math.min(delta, 10.0 * lmNorm);"
+S224,LevenbergMarquardtEstimator.java,362,lmPar /= tmp;
+S225,LevenbergMarquardtEstimator.java,363,} else if ((lmPar == 0) || (ratio >= 0.75)) {
+S226,LevenbergMarquardtEstimator.java,364,delta = 2 * lmNorm;
+S227,LevenbergMarquardtEstimator.java,365,lmPar *= 0.5;
+S228,LevenbergMarquardtEstimator.java,369,if (ratio >= 1.0e-4) {
+S229,LevenbergMarquardtEstimator.java,371,firstIteration = false;
+S230,LevenbergMarquardtEstimator.java,372,xNorm = 0;
+S231,LevenbergMarquardtEstimator.java,373,for (int k = 0; k < cols; ++k) {
+S232,LevenbergMarquardtEstimator.java,374,double xK = diag[k] * parameters[k].getEstimate();
+S233,LevenbergMarquardtEstimator.java,375,xNorm    += xK * xK;
+S234,LevenbergMarquardtEstimator.java,377,xNorm = Math.sqrt(xNorm);
+S235,LevenbergMarquardtEstimator.java,380,cost = previousCost;
+S236,LevenbergMarquardtEstimator.java,381,for (int j = 0; j < solvedCols; ++j) {
+S237,LevenbergMarquardtEstimator.java,382,int pj = permutation[j];
+S238,LevenbergMarquardtEstimator.java,383,parameters[pj].setEstimate(oldX[pj]);
+S239,LevenbergMarquardtEstimator.java,385,tmpVec    = residuals;
+S240,LevenbergMarquardtEstimator.java,386,residuals = oldRes;
+S241,LevenbergMarquardtEstimator.java,387,oldRes    = tmpVec;
+S242,LevenbergMarquardtEstimator.java,391,if (((Math.abs(actRed) <= costRelativeTolerance) &&
+S243,LevenbergMarquardtEstimator.java,395,return;
+S244,LevenbergMarquardtEstimator.java,400,if ((Math.abs(actRed) <= 2.2204e-16) && (preRed <= 2.2204e-16) && (ratio <= 2.0)) {
+S245,LevenbergMarquardtEstimator.java,405,} else if (delta <= 2.2204e-16 * xNorm) {
+S246,LevenbergMarquardtEstimator.java,406,"throw new EstimationException(""parameters relative tolerance is too small"" +"
+S247,LevenbergMarquardtEstimator.java,410,} else if (maxCosine <= 2.2204e-16)  {
+S248,LevenbergMarquardtEstimator.java,449,for (int j = 0; j < rank; ++j) {
+S249,LevenbergMarquardtEstimator.java,450,lmDir[permutation[j]] = qy[j];
+S250,LevenbergMarquardtEstimator.java,452,for (int j = rank; j < cols; ++j) {
+S251,LevenbergMarquardtEstimator.java,453,lmDir[permutation[j]] = 0;
+S252,LevenbergMarquardtEstimator.java,455,for (int k = rank - 1; k >= 0; --k) {
+S253,LevenbergMarquardtEstimator.java,456,int pk = permutation[k];
+S254,LevenbergMarquardtEstimator.java,457,double ypk = lmDir[pk] / diagR[pk];
+S255,LevenbergMarquardtEstimator.java,458,"for (int i = 0, index = pk; i < k; ++i, index += cols) {"
+S256,LevenbergMarquardtEstimator.java,459,lmDir[permutation[i]] -= ypk * jacobian[index];
+S257,LevenbergMarquardtEstimator.java,461,lmDir[pk] = ypk;
+S258,LevenbergMarquardtEstimator.java,466,double dxNorm = 0;
+S259,LevenbergMarquardtEstimator.java,467,for (int j = 0; j < solvedCols; ++j) {
+S260,LevenbergMarquardtEstimator.java,468,int pj = permutation[j];
+S261,LevenbergMarquardtEstimator.java,469,double s = diag[pj] * lmDir[pj];
+S262,LevenbergMarquardtEstimator.java,470,work1[pj] = s;
+S263,LevenbergMarquardtEstimator.java,471,dxNorm += s * s;
+S264,LevenbergMarquardtEstimator.java,473,dxNorm = Math.sqrt(dxNorm);
+S265,LevenbergMarquardtEstimator.java,474,double fp = dxNorm - delta;
+S266,LevenbergMarquardtEstimator.java,475,if (fp <= 0.1 * delta) {
+S267,LevenbergMarquardtEstimator.java,476,lmPar = 0;
+S268,LevenbergMarquardtEstimator.java,477,return;
+S269,LevenbergMarquardtEstimator.java,483,"double sum2, parl = 0;"
+S270,LevenbergMarquardtEstimator.java,484,if (rank == solvedCols) {
+S271,LevenbergMarquardtEstimator.java,485,for (int j = 0; j < solvedCols; ++j) {
+S272,LevenbergMarquardtEstimator.java,486,int pj = permutation[j];
+S273,LevenbergMarquardtEstimator.java,487,work1[pj] *= diag[pj] / dxNorm;
+S274,LevenbergMarquardtEstimator.java,489,sum2 = 0;
+S275,LevenbergMarquardtEstimator.java,490,for (int j = 0; j < solvedCols; ++j) {
+S276,LevenbergMarquardtEstimator.java,491,int pj = permutation[j];
+S277,LevenbergMarquardtEstimator.java,492,double sum = 0;
+S278,LevenbergMarquardtEstimator.java,493,"for (int i = 0, index = pj; i < j; ++i, index += cols) {"
+S279,LevenbergMarquardtEstimator.java,494,sum += jacobian[index] * work1[permutation[i]];
+S280,LevenbergMarquardtEstimator.java,496,double s = (work1[pj] - sum) / diagR[pj];
+S281,LevenbergMarquardtEstimator.java,497,work1[pj] = s;
+S282,LevenbergMarquardtEstimator.java,498,sum2 += s * s;
+S283,LevenbergMarquardtEstimator.java,500,parl = fp / (delta * sum2);
+S284,LevenbergMarquardtEstimator.java,504,sum2 = 0;
+S285,LevenbergMarquardtEstimator.java,505,for (int j = 0; j < solvedCols; ++j) {
+S286,LevenbergMarquardtEstimator.java,506,int pj = permutation[j];
+S287,LevenbergMarquardtEstimator.java,507,double sum = 0;
+S288,LevenbergMarquardtEstimator.java,508,"for (int i = 0, index = pj; i <= j; ++i, index += cols) {"
+S289,LevenbergMarquardtEstimator.java,509,sum += jacobian[index] * qy[i];
+S290,LevenbergMarquardtEstimator.java,511,sum /= diag[pj];
+S291,LevenbergMarquardtEstimator.java,512,sum2 += sum * sum;
+S292,LevenbergMarquardtEstimator.java,514,double gNorm = Math.sqrt(sum2);
+S293,LevenbergMarquardtEstimator.java,515,double paru = gNorm / delta;
+S294,LevenbergMarquardtEstimator.java,516,if (paru == 0) {
+S295,LevenbergMarquardtEstimator.java,523,"lmPar = Math.min(paru, Math.max(lmPar, parl));"
+S296,LevenbergMarquardtEstimator.java,524,if (lmPar == 0) {
+S297,LevenbergMarquardtEstimator.java,525,lmPar = gNorm / dxNorm;
+S298,LevenbergMarquardtEstimator.java,528,for (int countdown = 10; countdown >= 0; --countdown) {
+S299,LevenbergMarquardtEstimator.java,531,if (lmPar == 0) {
+S300,LevenbergMarquardtEstimator.java,532,"lmPar = Math.max(2.2251e-308, 0.001 * paru);"
+S301,LevenbergMarquardtEstimator.java,534,double sPar = Math.sqrt(lmPar);
+S302,LevenbergMarquardtEstimator.java,535,for (int j = 0; j < solvedCols; ++j) {
+S303,LevenbergMarquardtEstimator.java,536,int pj = permutation[j];
+S304,LevenbergMarquardtEstimator.java,537,work1[pj] = sPar * diag[pj];
+S305,LevenbergMarquardtEstimator.java,539,"determineLMDirection(qy, work1, work2, work3);"
+S306,LevenbergMarquardtEstimator.java,541,dxNorm = 0;
+S307,LevenbergMarquardtEstimator.java,542,for (int j = 0; j < solvedCols; ++j) {
+S308,LevenbergMarquardtEstimator.java,543,int pj = permutation[j];
+S309,LevenbergMarquardtEstimator.java,544,double s = diag[pj] * lmDir[pj];
+S310,LevenbergMarquardtEstimator.java,545,work3[pj] = s;
+S311,LevenbergMarquardtEstimator.java,546,dxNorm += s * s;
+S312,LevenbergMarquardtEstimator.java,548,dxNorm = Math.sqrt(dxNorm);
+S313,LevenbergMarquardtEstimator.java,549,double previousFP = fp;
+S314,LevenbergMarquardtEstimator.java,550,fp = dxNorm - delta;
+S315,LevenbergMarquardtEstimator.java,554,if ((Math.abs(fp) <= 0.1 * delta) ||
+S316,LevenbergMarquardtEstimator.java,556,return;
+S317,LevenbergMarquardtEstimator.java,560,for (int j = 0; j < solvedCols; ++j) {
+S318,LevenbergMarquardtEstimator.java,561,int pj = permutation[j];
+S319,LevenbergMarquardtEstimator.java,562,work1[pj] = work3[pj] * diag[pj] / dxNorm;
+S320,LevenbergMarquardtEstimator.java,564,for (int j = 0; j < solvedCols; ++j) {
+S321,LevenbergMarquardtEstimator.java,565,int pj = permutation[j];
+S322,LevenbergMarquardtEstimator.java,566,work1[pj] /= work2[j];
+S323,LevenbergMarquardtEstimator.java,567,double tmp = work1[pj];
+S324,LevenbergMarquardtEstimator.java,568,for (int i = j + 1; i < solvedCols; ++i) {
+S325,LevenbergMarquardtEstimator.java,569,work1[permutation[i]] -= jacobian[i * cols + pj] * tmp;
+S326,LevenbergMarquardtEstimator.java,572,sum2 = 0;
+S327,LevenbergMarquardtEstimator.java,573,for (int j = 0; j < solvedCols; ++j) {
+S328,LevenbergMarquardtEstimator.java,574,double s = work1[permutation[j]];
+S329,LevenbergMarquardtEstimator.java,575,sum2 += s * s;
+S330,LevenbergMarquardtEstimator.java,577,double correction = fp / (delta * sum2);
+S331,LevenbergMarquardtEstimator.java,580,if (fp > 0) {
+S332,LevenbergMarquardtEstimator.java,581,"parl = Math.max(parl, lmPar);"
+S333,LevenbergMarquardtEstimator.java,582,} else if (fp < 0) {
+S334,LevenbergMarquardtEstimator.java,583,"paru = Math.min(paru, lmPar);"
+S335,LevenbergMarquardtEstimator.java,587,"lmPar = Math.max(parl, lmPar + correction);"
+S336,LevenbergMarquardtEstimator.java,617,for (int j = 0; j < solvedCols; ++j) {
+S337,LevenbergMarquardtEstimator.java,618,int pj = permutation[j];
+S338,LevenbergMarquardtEstimator.java,619,for (int i = j + 1; i < solvedCols; ++i) {
+S339,LevenbergMarquardtEstimator.java,620,jacobian[i * cols + pj] = jacobian[j * cols + permutation[i]];
+S340,LevenbergMarquardtEstimator.java,622,lmDir[j] = diagR[pj];
+S341,LevenbergMarquardtEstimator.java,623,work[j]  = qy[j];
+S342,LevenbergMarquardtEstimator.java,627,for (int j = 0; j < solvedCols; ++j) {
+S343,LevenbergMarquardtEstimator.java,631,int pj = permutation[j];
+S344,LevenbergMarquardtEstimator.java,632,double dpj = diag[pj];
+S345,LevenbergMarquardtEstimator.java,633,if (dpj != 0) {
+S346,LevenbergMarquardtEstimator.java,634,"Arrays.fill(lmDiag, j + 1, lmDiag.length, 0);"
+S347,LevenbergMarquardtEstimator.java,636,lmDiag[j] = dpj;
+S348,LevenbergMarquardtEstimator.java,641,double qtbpj = 0;
+S349,LevenbergMarquardtEstimator.java,642,for (int k = j; k < solvedCols; ++k) {
+S350,LevenbergMarquardtEstimator.java,643,int pk = permutation[k];
+S351,LevenbergMarquardtEstimator.java,647,if (lmDiag[k] != 0) {
+S352,LevenbergMarquardtEstimator.java,650,double rkk = jacobian[k * cols + pk];
+S353,LevenbergMarquardtEstimator.java,651,if (Math.abs(rkk) < Math.abs(lmDiag[k])) {
+S354,LevenbergMarquardtEstimator.java,652,double cotan = rkk / lmDiag[k];
+S355,LevenbergMarquardtEstimator.java,653,sin   = 1.0 / Math.sqrt(1.0 + cotan * cotan);
+S356,LevenbergMarquardtEstimator.java,654,cos   = sin * cotan;
+S357,LevenbergMarquardtEstimator.java,655,} else {
+S358,LevenbergMarquardtEstimator.java,656,double tan = lmDiag[k] / rkk;
+S359,LevenbergMarquardtEstimator.java,657,cos = 1.0 / Math.sqrt(1.0 + tan * tan);
+S360,LevenbergMarquardtEstimator.java,658,sin = cos * tan;
+S361,LevenbergMarquardtEstimator.java,663,jacobian[k * cols + pk] = cos * rkk + sin * lmDiag[k];
+S362,LevenbergMarquardtEstimator.java,664,double temp = cos * work[k] + sin * qtbpj;
+S363,LevenbergMarquardtEstimator.java,665,qtbpj = -sin * work[k] + cos * qtbpj;
+S364,LevenbergMarquardtEstimator.java,666,work[k] = temp;
+S365,LevenbergMarquardtEstimator.java,669,for (int i = k + 1; i < solvedCols; ++i) {
+S366,LevenbergMarquardtEstimator.java,670,double rik = jacobian[i * cols + pk];
+S367,LevenbergMarquardtEstimator.java,671,temp = cos * rik + sin * lmDiag[i];
+S368,LevenbergMarquardtEstimator.java,672,lmDiag[i] = -sin * rik + cos * lmDiag[i];
+S369,LevenbergMarquardtEstimator.java,673,jacobian[i * cols + pk] = temp;
+S370,LevenbergMarquardtEstimator.java,681,int index = j * cols + permutation[j];
+S371,LevenbergMarquardtEstimator.java,682,lmDiag[j]       = jacobian[index];
+S372,LevenbergMarquardtEstimator.java,683,jacobian[index] = lmDir[j];
+S373,LevenbergMarquardtEstimator.java,689,int nSing = solvedCols;
+S374,LevenbergMarquardtEstimator.java,690,for (int j = 0; j < solvedCols; ++j) {
+S375,LevenbergMarquardtEstimator.java,691,if ((lmDiag[j] == 0) && (nSing == solvedCols)) {
+S376,LevenbergMarquardtEstimator.java,694,if (nSing < solvedCols) {
+S377,LevenbergMarquardtEstimator.java,698,if (nSing > 0) {
+S378,LevenbergMarquardtEstimator.java,699,for (int j = nSing - 1; j >= 0; --j) {
+S379,LevenbergMarquardtEstimator.java,700,int pj = permutation[j];
+S380,LevenbergMarquardtEstimator.java,701,double sum = 0;
+S381,LevenbergMarquardtEstimator.java,702,for (int i = j + 1; i < nSing; ++i) {
+S382,LevenbergMarquardtEstimator.java,703,sum += jacobian[i * cols + pj] * work[i];
+S383,LevenbergMarquardtEstimator.java,705,work[j] = (work[j] - sum) / lmDiag[j];
+S384,LevenbergMarquardtEstimator.java,710,for (int j = 0; j < lmDir.length; ++j) {
+S385,LevenbergMarquardtEstimator.java,711,lmDir[permutation[j]] = work[j];
+S386,LevenbergMarquardtEstimator.java,741,for (int k = 0; k < cols; ++k) {
+S387,LevenbergMarquardtEstimator.java,742,permutation[k] = k;
+S388,LevenbergMarquardtEstimator.java,743,double norm2 = 0;
+S389,LevenbergMarquardtEstimator.java,744,for (int index = k; index < jacobian.length; index += cols) {
+S390,LevenbergMarquardtEstimator.java,745,double akk = jacobian[index];
+S391,LevenbergMarquardtEstimator.java,746,norm2 += akk * akk;
+S392,LevenbergMarquardtEstimator.java,748,jacNorm[k] = Math.sqrt(norm2);
+S393,LevenbergMarquardtEstimator.java,752,for (int k = 0; k < cols; ++k) {
+S394,LevenbergMarquardtEstimator.java,755,int nextColumn = -1;
+S395,LevenbergMarquardtEstimator.java,756,double ak2 = Double.NEGATIVE_INFINITY;
+S396,LevenbergMarquardtEstimator.java,757,for (int i = k; i < cols; ++i) {
+S397,LevenbergMarquardtEstimator.java,758,double norm2 = 0;
+S398,LevenbergMarquardtEstimator.java,759,int iDiag = k * cols + permutation[i];
+S399,LevenbergMarquardtEstimator.java,760,for (int index = iDiag; index < jacobian.length; index += cols) {
+S400,LevenbergMarquardtEstimator.java,761,double aki = jacobian[index];
+S401,LevenbergMarquardtEstimator.java,762,norm2 += aki * aki;
+S402,LevenbergMarquardtEstimator.java,764,if (Double.isInfinite(norm2) || Double.isNaN(norm2)) {
+S403,LevenbergMarquardtEstimator.java,765,"throw new EstimationException(""unable to perform Q.R decomposition on the {0}x{1} jacobian matrix"","
+S404,LevenbergMarquardtEstimator.java,768,if (norm2 > ak2) {
+S405,LevenbergMarquardtEstimator.java,769,nextColumn = i;
+S406,LevenbergMarquardtEstimator.java,770,ak2        = norm2;
+S407,LevenbergMarquardtEstimator.java,773,if (ak2 == 0) {
+S408,LevenbergMarquardtEstimator.java,774,rank = k;
+S409,LevenbergMarquardtEstimator.java,775,return;
+S410,LevenbergMarquardtEstimator.java,777,int pk                  = permutation[nextColumn];
+S411,LevenbergMarquardtEstimator.java,778,permutation[nextColumn] = permutation[k];
+S412,LevenbergMarquardtEstimator.java,779,permutation[k]          = pk;
+S413,LevenbergMarquardtEstimator.java,782,int    kDiag = k * cols + pk;
+S414,LevenbergMarquardtEstimator.java,783,double akk   = jacobian[kDiag];
+S415,LevenbergMarquardtEstimator.java,784,double alpha = (akk > 0) ? -Math.sqrt(ak2) : Math.sqrt(ak2);
+S416,LevenbergMarquardtEstimator.java,785,double betak = 1.0 / (ak2 - akk * alpha);
+S417,LevenbergMarquardtEstimator.java,786,beta[pk]     = betak;
+S418,LevenbergMarquardtEstimator.java,789,diagR[pk]        = alpha;
+S419,LevenbergMarquardtEstimator.java,790,jacobian[kDiag] -= alpha;
+S420,LevenbergMarquardtEstimator.java,793,for (int dk = cols - 1 - k; dk > 0; --dk) {
+S421,LevenbergMarquardtEstimator.java,794,int dkp = permutation[k + dk] - pk;
+S422,LevenbergMarquardtEstimator.java,795,double gamma = 0;
+S423,LevenbergMarquardtEstimator.java,796,for (int index = kDiag; index < jacobian.length; index += cols) {
+S424,LevenbergMarquardtEstimator.java,797,gamma += jacobian[index] * jacobian[index + dkp];
+S425,LevenbergMarquardtEstimator.java,799,gamma *= betak;
+S426,LevenbergMarquardtEstimator.java,800,for (int index = kDiag; index < jacobian.length; index += cols) {
+S427,LevenbergMarquardtEstimator.java,801,jacobian[index + dkp] -= gamma * jacobian[index];
+S428,LevenbergMarquardtEstimator.java,807,rank = solvedCols;
+S429,LevenbergMarquardtEstimator.java,817,for (int k = 0; k < cols; ++k) {
+S430,LevenbergMarquardtEstimator.java,818,int pk = permutation[k];
+S431,LevenbergMarquardtEstimator.java,819,int kDiag = k * cols + pk;
+S432,LevenbergMarquardtEstimator.java,820,double gamma = 0;
+S433,LevenbergMarquardtEstimator.java,821,"for (int i = k, index = kDiag; i < rows; ++i, index += cols) {"
+S434,LevenbergMarquardtEstimator.java,822,gamma += jacobian[index] * y[i];
+S435,LevenbergMarquardtEstimator.java,824,gamma *= beta[pk];
+S436,LevenbergMarquardtEstimator.java,825,"for (int i = k, index = kDiag; i < rows; ++i, index += cols) {"
+S437,LevenbergMarquardtEstimator.java,826,y[i] -= gamma * jacobian[index];
+S438,MathException.java,47,boolean flag = false;
+S439,MathException.java,49,"Throwable.class.getDeclaredMethod(""getCause"", new Class[0]);"
+S440,MathException.java,50,flag = true;
+S441,MathException.java,54,JDK_SUPPORTS_NESTED = flag;
+S442,MathException.java,58,private static ResourceBundle cachedResources = null;
+S443,MathException.java,84,if ((cachedResources == null) || (! cachedResources.getLocale().equals(locale))) {
+S444,MathException.java,86,cachedResources =
+S445,MathException.java,95,} catch (MissingResourceException mre) {
+S446,MathException.java,101,return s;
+S447,MathException.java,114,"MessageFormat mf = new MessageFormat(translate(pattern, locale));"
+S448,MathException.java,115,mf.setLocale(locale);
+S449,MathException.java,116,return mf.format(arguments);
+S450,MathException.java,152,"super(buildMessage(pattern, arguments, Locale.US));"
+S451,MathException.java,153,this.pattern   = pattern;
+S452,MathException.java,154,this.arguments = (Object[]) arguments.clone();
+S453,MathException.java,155,this.rootCause = null;
+S454,MatrixUtils.java,59,"RealMatrixImpl out = new RealMatrixImpl(dimension, dimension);"
+S455,MatrixUtils.java,60,double[][] d = out.getDataRef();
+S456,MatrixUtils.java,61,for (int row = 0; row < dimension; row++) {
+S457,MatrixUtils.java,62,for (int col = 0; col < dimension; col++) {
+S458,MatrixUtils.java,63,d[row][col] = row == col ? 1d : 0d;
+S459,MatrixUtils.java,66,return out;
+S460,RealMatrixImpl.java,58,private double data[][] = null;
+S461,RealMatrixImpl.java,63,private double lu[][] = null;
+S462,RealMatrixImpl.java,66,private int[] permutation = null;
+S463,RealMatrixImpl.java,69,private int parity = 1;
+S464,RealMatrixImpl.java,72,protected static double TOO_SMALL = 10E-12;
+S465,RealMatrixImpl.java,88,"public RealMatrixImpl(int rowDimension, int columnDimension) {"
+S466,RealMatrixImpl.java,89,if (rowDimension <= 0 || columnDimension <= 0) {
+S467,RealMatrixImpl.java,93,data = new double[rowDimension][columnDimension];
+S468,RealMatrixImpl.java,94,lu = null;
+S469,RealMatrixImpl.java,108,public RealMatrixImpl(double[][] d) {
+S470,RealMatrixImpl.java,109,this.copyIn(d);
+S471,RealMatrixImpl.java,110,lu = null;
+S472,RealMatrixImpl.java,147,if (this.getColumnDimension() != m.getColumnDimension() ||
+S473,RealMatrixImpl.java,151,int rowCount = this.getRowDimension();
+S474,RealMatrixImpl.java,152,int columnCount = this.getColumnDimension();
+S475,RealMatrixImpl.java,153,double[][] outData = new double[rowCount][columnCount];
+S476,RealMatrixImpl.java,154,for (int row = 0; row < rowCount; row++) {
+S477,RealMatrixImpl.java,155,for (int col = 0; col < columnCount; col++) {
+S478,RealMatrixImpl.java,156,"outData[row][col] = data[row][col] + m.getEntry(row, col);"
+S479,RealMatrixImpl.java,159,return new RealMatrixImpl(outData);
+S480,RealMatrixImpl.java,267,return copyOut();
+S481,RealMatrixImpl.java,278,return data;
+S482,RealMatrixImpl.java,390,if ((row < 0) || (column < 0)){
+S483,RealMatrixImpl.java,394,int nRows = subMatrix.length;
+S484,RealMatrixImpl.java,395,if (nRows == 0) {
+S485,RealMatrixImpl.java,399,int nCols = subMatrix[0].length;
+S486,RealMatrixImpl.java,400,if (nCols == 0) {
+S487,RealMatrixImpl.java,404,for (int r = 1; r < nRows; r++) {
+S488,RealMatrixImpl.java,405,if (subMatrix[r].length != nCols) {
+S489,RealMatrixImpl.java,410,if (data == null) {
+S490,RealMatrixImpl.java,411,if ((row > 0)||(column > 0)) throw new MatrixIndexException
+S491,RealMatrixImpl.java,413,data = new double[nRows][nCols];
+S492,RealMatrixImpl.java,414,"System.arraycopy(subMatrix, 0, data, 0, subMatrix.length);"
+S493,RealMatrixImpl.java,416,if (((nRows + row) > this.getRowDimension()) ||
+S494,RealMatrixImpl.java,420,for (int i = 0; i < nRows; i++) {
+S495,RealMatrixImpl.java,421,"System.arraycopy(subMatrix[i], 0, data[row + i], column, nCols);"
+S496,RealMatrixImpl.java,423,lu = null;
+S497,RealMatrixImpl.java,523,"if (!isValidCoordinate(row,column)) {"
+S498,RealMatrixImpl.java,526,return data[row][column];
+S499,RealMatrixImpl.java,554,return solve(MatrixUtils.createRealIdentityMatrix
+S500,RealMatrixImpl.java,581,return (this.getColumnDimension() == this.getRowDimension());
+S501,RealMatrixImpl.java,588,if (lu == null) {
+S502,RealMatrixImpl.java,590,luDecompose();
+S503,RealMatrixImpl.java,591,return false;
+S504,RealMatrixImpl.java,592,} catch (InvalidMatrixException ex) {
+S505,RealMatrixImpl.java,593,return true;
+S506,RealMatrixImpl.java,604,return data.length;
+S507,RealMatrixImpl.java,611,return data[0].length;
+S508,RealMatrixImpl.java,710,if (b.getRowDimension() != this.getRowDimension()) {
+S509,RealMatrixImpl.java,713,if (!this.isSquare()) {
+S510,RealMatrixImpl.java,716,if (this.isSingular()) { // side effect: compute LU decomp
+S511,RealMatrixImpl.java,717,"throw new InvalidMatrixException(""Matrix is singular."");"
+S512,RealMatrixImpl.java,720,int nCol = this.getColumnDimension();
+S513,RealMatrixImpl.java,721,int nColB = b.getColumnDimension();
+S514,RealMatrixImpl.java,722,int nRowB = b.getRowDimension();
+S515,RealMatrixImpl.java,725,double[][] bp = new double[nRowB][nColB];
+S516,RealMatrixImpl.java,726,for (int row = 0; row < nRowB; row++) {
+S517,RealMatrixImpl.java,727,for (int col = 0; col < nColB; col++) {
+S518,RealMatrixImpl.java,728,"bp[row][col] = b.getEntry(permutation[row], col);"
+S519,RealMatrixImpl.java,733,for (int col = 0; col < nCol; col++) {
+S520,RealMatrixImpl.java,734,for (int i = col + 1; i < nCol; i++) {
+S521,RealMatrixImpl.java,735,for (int j = 0; j < nColB; j++) {
+S522,RealMatrixImpl.java,736,bp[i][j] -= bp[col][j] * lu[i][col];
+S523,RealMatrixImpl.java,742,for (int col = nCol - 1; col >= 0; col--) {
+S524,RealMatrixImpl.java,743,for (int j = 0; j < nColB; j++) {
+S525,RealMatrixImpl.java,744,bp[col][j] /= lu[col][col];
+S526,RealMatrixImpl.java,746,for (int i = 0; i < col; i++) {
+S527,RealMatrixImpl.java,747,for (int j = 0; j < nColB; j++) {
+S528,RealMatrixImpl.java,748,bp[i][j] -= bp[col][j] * lu[i][col];
+S529,RealMatrixImpl.java,753,RealMatrixImpl outMat = new RealMatrixImpl(bp);
+S530,RealMatrixImpl.java,754,return outMat;
+S531,RealMatrixImpl.java,777,int nRows = this.getRowDimension();
+S532,RealMatrixImpl.java,778,int nCols = this.getColumnDimension();
+S533,RealMatrixImpl.java,779,if (nRows != nCols) {
+S534,RealMatrixImpl.java,782,lu = this.getData();
+S535,RealMatrixImpl.java,785,permutation = new int[nRows];
+S536,RealMatrixImpl.java,786,for (int row = 0; row < nRows; row++) {
+S537,RealMatrixImpl.java,787,permutation[row] = row;
+S538,RealMatrixImpl.java,789,parity = 1;
+S539,RealMatrixImpl.java,792,for (int col = 0; col < nCols; col++) {
+S540,RealMatrixImpl.java,794,double sum = 0;
+S541,RealMatrixImpl.java,797,for (int row = 0; row < col; row++) {
+S542,RealMatrixImpl.java,798,sum = lu[row][col];
+S543,RealMatrixImpl.java,799,for (int i = 0; i < row; i++) {
+S544,RealMatrixImpl.java,800,sum -= lu[row][i] * lu[i][col];
+S545,RealMatrixImpl.java,802,lu[row][col] = sum;
+S546,RealMatrixImpl.java,806,int max = col; // permutation row
+S547,RealMatrixImpl.java,807,double largest = 0d;
+S548,RealMatrixImpl.java,808,for (int row = col; row < nRows; row++) {
+S549,RealMatrixImpl.java,809,sum = lu[row][col];
+S550,RealMatrixImpl.java,810,for (int i = 0; i < col; i++) {
+S551,RealMatrixImpl.java,811,sum -= lu[row][i] * lu[i][col];
+S552,RealMatrixImpl.java,813,lu[row][col] = sum;
+S553,RealMatrixImpl.java,816,if (Math.abs(sum) > largest) {
+S554,RealMatrixImpl.java,817,largest = Math.abs(sum);
+S555,RealMatrixImpl.java,818,max = row;
+S556,RealMatrixImpl.java,823,if (Math.abs(lu[max][col]) < TOO_SMALL) {
+S557,RealMatrixImpl.java,824,lu = null;
+S558,RealMatrixImpl.java,825,"throw new InvalidMatrixException(""matrix is singular"");"
+S559,RealMatrixImpl.java,829,if (max != col) {
+S560,RealMatrixImpl.java,830,double tmp = 0;
+S561,RealMatrixImpl.java,831,for (int i = 0; i < nCols; i++) {
+S562,RealMatrixImpl.java,832,tmp = lu[max][i];
+S563,RealMatrixImpl.java,833,lu[max][i] = lu[col][i];
+S564,RealMatrixImpl.java,834,lu[col][i] = tmp;
+S565,RealMatrixImpl.java,836,int temp = permutation[max];
+S566,RealMatrixImpl.java,837,permutation[max] = permutation[col];
+S567,RealMatrixImpl.java,838,permutation[col] = temp;
+S568,RealMatrixImpl.java,839,parity = -parity;
+S569,RealMatrixImpl.java,843,for (int row = col + 1; row < nRows; row++) {
+S570,RealMatrixImpl.java,844,lu[row][col] /= lu[col][col];
+S571,RealMatrixImpl.java,1000,int nRows = this.getRowDimension();
+S572,RealMatrixImpl.java,1001,double[][] out = new double[nRows][this.getColumnDimension()];
+S573,RealMatrixImpl.java,1003,for (int i = 0; i < nRows; i++) {
+S574,RealMatrixImpl.java,1004,"System.arraycopy(data[i], 0, out[i], 0, data[i].length);"
+S575,RealMatrixImpl.java,1006,return out;
+S576,RealMatrixImpl.java,1020,"setSubMatrix(in,0,0);"
+S577,RealMatrixImpl.java,1031,int nRows = this.getRowDimension();
+S578,RealMatrixImpl.java,1032,int nCols = this.getColumnDimension();
+S579,RealMatrixImpl.java,1034,return !(row < 0 || row > nRows - 1 || col < 0 || col > nCols -1);
+S580,SimpleEstimationProblem.java,48,public SimpleEstimationProblem() {
+S581,SimpleEstimationProblem.java,49,parameters   = new ArrayList();
+S582,SimpleEstimationProblem.java,50,measurements = new ArrayList();
+S583,SimpleEstimationProblem.java,58,return (EstimatedParameter[]) parameters.toArray(new EstimatedParameter[parameters.size()]);
+S584,SimpleEstimationProblem.java,68,List unbound = new ArrayList(parameters.size());
+S585,SimpleEstimationProblem.java,69,for (Iterator iterator = parameters.iterator(); iterator.hasNext();) {
+S586,SimpleEstimationProblem.java,70,EstimatedParameter p = (EstimatedParameter) iterator.next();
+S587,SimpleEstimationProblem.java,71,if (! p.isBound()) {
+S588,SimpleEstimationProblem.java,72,unbound.add(p);
+S589,SimpleEstimationProblem.java,77,return (EstimatedParameter[]) unbound.toArray(new EstimatedParameter[unbound.size()]);
+S590,SimpleEstimationProblem.java,86,return (WeightedMeasurement[]) measurements.toArray(new WeightedMeasurement[measurements.size()]);
+S591,SimpleEstimationProblem.java,93,parameters.add(p);
+S592,SimpleEstimationProblem.java,101,measurements.add(m);
+S593,WeightedMeasurement.java,65,"public WeightedMeasurement(double weight, double measuredValue) {"
+S594,WeightedMeasurement.java,66,this.weight        = weight;
+S595,WeightedMeasurement.java,67,this.measuredValue = measuredValue;
+S596,WeightedMeasurement.java,68,ignored            = false;
+S597,WeightedMeasurement.java,80,boolean ignored) {
+S598,WeightedMeasurement.java,81,this.weight        = weight;
+S599,WeightedMeasurement.java,82,this.measuredValue = measuredValue;
+S600,WeightedMeasurement.java,83,this.ignored       = ignored;
+S601,WeightedMeasurement.java,92,return weight;
+S602,WeightedMeasurement.java,111,return measuredValue - getTheoreticalValue();
+S603,WeightedMeasurement.java,146,this.ignored = ignored;
+S604,WeightedMeasurement.java,155,return ignored;

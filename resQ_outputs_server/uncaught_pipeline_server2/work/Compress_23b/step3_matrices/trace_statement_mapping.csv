@@ -1,0 +1,1922 @@
+statement_id,file,line,code
+S1,Archive.java,22,class Archive {
+S2,ArchiveStreamFactory.java,76,public class ArchiveStreamFactory {
+S3,ArchiveStreamFactory.java,117,private String entryEncoding = null;
+S4,BZip2CompressorInputStream.java,60,private final CRC crc = new CRC();
+S5,BZip2CompressorInputStream.java,76,private int currentState = START_BLOCK_STATE;
+S6,BZip2CompressorInputStream.java,109,"this(in, false);"
+S7,BZip2CompressorInputStream.java,128,"public BZip2CompressorInputStream(final InputStream in, final boolean decompressConcatenated) throws IOException {"
+S8,BZip2CompressorInputStream.java,129,this.in = in;
+S9,BZip2CompressorInputStream.java,130,this.decompressConcatenated = decompressConcatenated;
+S10,BZip2CompressorInputStream.java,132,init(true);
+S11,BZip2CompressorInputStream.java,133,initBlock();
+S12,BZip2CompressorInputStream.java,182,final boolean[] inUse = this.data.inUse;
+S13,BZip2CompressorInputStream.java,183,final byte[] seqToUnseq = this.data.seqToUnseq;
+S14,BZip2CompressorInputStream.java,185,int nInUseShadow = 0;
+S15,BZip2CompressorInputStream.java,187,for (int i = 0; i < 256; i++) {
+S16,BZip2CompressorInputStream.java,188,if (inUse[i]) {
+S17,BZip2CompressorInputStream.java,189,seqToUnseq[nInUseShadow++] = (byte) i;
+S18,BZip2CompressorInputStream.java,193,this.nInUse = nInUseShadow;
+S19,BZip2CompressorInputStream.java,228,if (null == in) {
+S20,BZip2CompressorInputStream.java,232,int magic0 = this.in.read();
+S21,BZip2CompressorInputStream.java,233,if (magic0 == -1 && !isFirstStream) {
+S22,BZip2CompressorInputStream.java,236,int magic1 = this.in.read();
+S23,BZip2CompressorInputStream.java,237,int magic2 = this.in.read();
+S24,BZip2CompressorInputStream.java,239,if (magic0 != 'B' || magic1 != 'Z' || magic2 != 'h') {
+S25,BZip2CompressorInputStream.java,245,int blockSize = this.in.read();
+S26,BZip2CompressorInputStream.java,246,if ((blockSize < '1') || (blockSize > '9')) {
+S27,BZip2CompressorInputStream.java,250,this.blockSize100k = blockSize - '0';
+S28,BZip2CompressorInputStream.java,252,this.bsLive = 0;
+S29,BZip2CompressorInputStream.java,253,this.computedCombinedCRC = 0;
+S30,BZip2CompressorInputStream.java,255,return true;
+S31,BZip2CompressorInputStream.java,268,magic0 = bsGetUByte();
+S32,BZip2CompressorInputStream.java,269,magic1 = bsGetUByte();
+S33,BZip2CompressorInputStream.java,270,magic2 = bsGetUByte();
+S34,BZip2CompressorInputStream.java,271,magic3 = bsGetUByte();
+S35,BZip2CompressorInputStream.java,272,magic4 = bsGetUByte();
+S36,BZip2CompressorInputStream.java,273,magic5 = bsGetUByte();
+S37,BZip2CompressorInputStream.java,276,if (magic0 != 0x17 || magic1 != 0x72 || magic2 != 0x45
+S38,BZip2CompressorInputStream.java,289,if (magic0 != 0x31 || // '1'
+S39,BZip2CompressorInputStream.java,299,this.storedBlockCRC = bsGetInt();
+S40,BZip2CompressorInputStream.java,300,this.blockRandomised = bsR(1) == 1;
+S41,BZip2CompressorInputStream.java,306,if (this.data == null) {
+S42,BZip2CompressorInputStream.java,307,this.data = new Data(this.blockSize100k);
+S43,BZip2CompressorInputStream.java,311,getAndMoveToFrontDecode();
+S44,BZip2CompressorInputStream.java,313,this.crc.initialiseCRC();
+S45,BZip2CompressorInputStream.java,314,this.currentState = START_BLOCK_STATE;
+S46,BZip2CompressorInputStream.java,353,InputStream inShadow = this.in;
+S47,BZip2CompressorInputStream.java,354,if (inShadow != null) {
+S48,BZip2CompressorInputStream.java,356,if (inShadow != System.in) {
+S49,BZip2CompressorInputStream.java,357,inShadow.close();
+S50,BZip2CompressorInputStream.java,360,this.data = null;
+S51,BZip2CompressorInputStream.java,361,this.in = null;
+S52,BZip2CompressorInputStream.java,367,int bsLiveShadow = this.bsLive;
+S53,BZip2CompressorInputStream.java,368,int bsBuffShadow = this.bsBuff;
+S54,BZip2CompressorInputStream.java,370,if (bsLiveShadow < n) {
+S55,BZip2CompressorInputStream.java,371,final InputStream inShadow = this.in;
+S56,BZip2CompressorInputStream.java,373,int thech = inShadow.read();
+S57,BZip2CompressorInputStream.java,375,if (thech < 0) {
+S58,BZip2CompressorInputStream.java,379,bsBuffShadow = (bsBuffShadow << 8) | thech;
+S59,BZip2CompressorInputStream.java,380,bsLiveShadow += 8;
+S60,BZip2CompressorInputStream.java,381,} while (bsLiveShadow < n);
+S61,BZip2CompressorInputStream.java,383,this.bsBuff = bsBuffShadow;
+S62,BZip2CompressorInputStream.java,386,this.bsLive = bsLiveShadow - n;
+S63,BZip2CompressorInputStream.java,387,return (bsBuffShadow >> (bsLiveShadow - n)) & ((1 << n) - 1);
+S64,BZip2CompressorInputStream.java,391,int bsLiveShadow = this.bsLive;
+S65,BZip2CompressorInputStream.java,392,int bsBuffShadow = this.bsBuff;
+S66,BZip2CompressorInputStream.java,394,if (bsLiveShadow < 1) {
+S67,BZip2CompressorInputStream.java,395,int thech = this.in.read();
+S68,BZip2CompressorInputStream.java,397,if (thech < 0) {
+S69,BZip2CompressorInputStream.java,401,bsBuffShadow = (bsBuffShadow << 8) | thech;
+S70,BZip2CompressorInputStream.java,402,bsLiveShadow += 8;
+S71,BZip2CompressorInputStream.java,403,this.bsBuff = bsBuffShadow;
+S72,BZip2CompressorInputStream.java,406,this.bsLive = bsLiveShadow - 1;
+S73,BZip2CompressorInputStream.java,407,return ((bsBuffShadow >> (bsLiveShadow - 1)) & 1) != 0;
+S74,BZip2CompressorInputStream.java,411,return (char) bsR(8);
+S75,BZip2CompressorInputStream.java,415,return (((((bsR(8) << 8) | bsR(8)) << 8) | bsR(8)) << 8) | bsR(8);
+S76,BZip2CompressorInputStream.java,424,"for (int i = minLen, pp = 0; i <= maxLen; i++) {"
+S77,BZip2CompressorInputStream.java,425,for (int j = 0; j < alphaSize; j++) {
+S78,BZip2CompressorInputStream.java,426,if (length[j] == i) {
+S79,BZip2CompressorInputStream.java,427,perm[pp++] = j;
+S80,BZip2CompressorInputStream.java,432,for (int i = MAX_CODE_LEN; --i > 0;) {
+S81,BZip2CompressorInputStream.java,433,base[i] = 0;
+S82,BZip2CompressorInputStream.java,434,limit[i] = 0;
+S83,BZip2CompressorInputStream.java,437,for (int i = 0; i < alphaSize; i++) {
+S84,BZip2CompressorInputStream.java,438,base[length[i] + 1]++;
+S85,BZip2CompressorInputStream.java,441,"for (int i = 1, b = base[0]; i < MAX_CODE_LEN; i++) {"
+S86,BZip2CompressorInputStream.java,442,b += base[i];
+S87,BZip2CompressorInputStream.java,443,base[i] = b;
+S88,BZip2CompressorInputStream.java,446,"for (int i = minLen, vec = 0, b = base[i]; i <= maxLen; i++) {"
+S89,BZip2CompressorInputStream.java,447,final int nb = base[i + 1];
+S90,BZip2CompressorInputStream.java,448,vec += nb - b;
+S91,BZip2CompressorInputStream.java,449,b = nb;
+S92,BZip2CompressorInputStream.java,450,limit[i] = vec - 1;
+S93,BZip2CompressorInputStream.java,451,vec <<= 1;
+S94,BZip2CompressorInputStream.java,454,for (int i = minLen + 1; i <= maxLen; i++) {
+S95,BZip2CompressorInputStream.java,455,base[i] = ((limit[i - 1] + 1) << 1) - base[i];
+S96,BZip2CompressorInputStream.java,460,final Data dataShadow = this.data;
+S97,BZip2CompressorInputStream.java,461,final boolean[] inUse = dataShadow.inUse;
+S98,BZip2CompressorInputStream.java,462,final byte[] pos = dataShadow.recvDecodingTables_pos;
+S99,BZip2CompressorInputStream.java,463,final byte[] selector = dataShadow.selector;
+S100,BZip2CompressorInputStream.java,464,final byte[] selectorMtf = dataShadow.selectorMtf;
+S101,BZip2CompressorInputStream.java,466,int inUse16 = 0;
+S102,BZip2CompressorInputStream.java,469,for (int i = 0; i < 16; i++) {
+S103,BZip2CompressorInputStream.java,470,if (bsGetBit()) {
+S104,BZip2CompressorInputStream.java,471,inUse16 |= 1 << i;
+S105,BZip2CompressorInputStream.java,475,for (int i = 256; --i >= 0;) {
+S106,BZip2CompressorInputStream.java,476,inUse[i] = false;
+S107,BZip2CompressorInputStream.java,479,for (int i = 0; i < 16; i++) {
+S108,BZip2CompressorInputStream.java,480,if ((inUse16 & (1 << i)) != 0) {
+S109,BZip2CompressorInputStream.java,481,final int i16 = i << 4;
+S110,BZip2CompressorInputStream.java,482,for (int j = 0; j < 16; j++) {
+S111,BZip2CompressorInputStream.java,483,if (bsGetBit()) {
+S112,BZip2CompressorInputStream.java,484,inUse[i16 + j] = true;
+S113,BZip2CompressorInputStream.java,490,makeMaps();
+S114,BZip2CompressorInputStream.java,491,final int alphaSize = this.nInUse + 2;
+S115,BZip2CompressorInputStream.java,494,final int nGroups = bsR(3);
+S116,BZip2CompressorInputStream.java,495,final int nSelectors = bsR(15);
+S117,BZip2CompressorInputStream.java,497,for (int i = 0; i < nSelectors; i++) {
+S118,BZip2CompressorInputStream.java,498,int j = 0;
+S119,BZip2CompressorInputStream.java,499,while (bsGetBit()) {
+S120,BZip2CompressorInputStream.java,500,j++;
+S121,BZip2CompressorInputStream.java,502,selectorMtf[i] = (byte) j;
+S122,BZip2CompressorInputStream.java,506,for (int v = nGroups; --v >= 0;) {
+S123,BZip2CompressorInputStream.java,507,pos[v] = (byte) v;
+S124,BZip2CompressorInputStream.java,510,for (int i = 0; i < nSelectors; i++) {
+S125,BZip2CompressorInputStream.java,511,int v = selectorMtf[i] & 0xff;
+S126,BZip2CompressorInputStream.java,512,final byte tmp = pos[v];
+S127,BZip2CompressorInputStream.java,513,while (v > 0) {
+S128,BZip2CompressorInputStream.java,515,pos[v] = pos[v - 1];
+S129,BZip2CompressorInputStream.java,516,v--;
+S130,BZip2CompressorInputStream.java,518,pos[0] = tmp;
+S131,BZip2CompressorInputStream.java,519,selector[i] = tmp;
+S132,BZip2CompressorInputStream.java,522,final char[][] len = dataShadow.temp_charArray2d;
+S133,BZip2CompressorInputStream.java,525,for (int t = 0; t < nGroups; t++) {
+S134,BZip2CompressorInputStream.java,526,int curr = bsR(5);
+S135,BZip2CompressorInputStream.java,527,final char[] len_t = len[t];
+S136,BZip2CompressorInputStream.java,528,for (int i = 0; i < alphaSize; i++) {
+S137,BZip2CompressorInputStream.java,529,while (bsGetBit()) {
+S138,BZip2CompressorInputStream.java,530,curr += bsGetBit() ? -1 : 1;
+S139,BZip2CompressorInputStream.java,532,len_t[i] = (char) curr;
+S140,BZip2CompressorInputStream.java,537,"createHuffmanDecodingTables(alphaSize, nGroups);"
+S141,BZip2CompressorInputStream.java,545,final Data dataShadow = this.data;
+S142,BZip2CompressorInputStream.java,546,final char[][] len = dataShadow.temp_charArray2d;
+S143,BZip2CompressorInputStream.java,547,final int[] minLens = dataShadow.minLens;
+S144,BZip2CompressorInputStream.java,548,final int[][] limit = dataShadow.limit;
+S145,BZip2CompressorInputStream.java,549,final int[][] base = dataShadow.base;
+S146,BZip2CompressorInputStream.java,550,final int[][] perm = dataShadow.perm;
+S147,BZip2CompressorInputStream.java,552,for (int t = 0; t < nGroups; t++) {
+S148,BZip2CompressorInputStream.java,553,int minLen = 32;
+S149,BZip2CompressorInputStream.java,554,int maxLen = 0;
+S150,BZip2CompressorInputStream.java,555,final char[] len_t = len[t];
+S151,BZip2CompressorInputStream.java,556,for (int i = alphaSize; --i >= 0;) {
+S152,BZip2CompressorInputStream.java,557,final char lent = len_t[i];
+S153,BZip2CompressorInputStream.java,558,if (lent > maxLen) {
+S154,BZip2CompressorInputStream.java,559,maxLen = lent;
+S155,BZip2CompressorInputStream.java,561,if (lent < minLen) {
+S156,BZip2CompressorInputStream.java,562,minLen = lent;
+S157,BZip2CompressorInputStream.java,565,"hbCreateDecodeTables(limit[t], base[t], perm[t], len[t], minLen,"
+S158,BZip2CompressorInputStream.java,567,minLens[t] = minLen;
+S159,BZip2CompressorInputStream.java,572,this.origPtr = bsR(24);
+S160,BZip2CompressorInputStream.java,573,recvDecodingTables();
+S161,BZip2CompressorInputStream.java,575,final InputStream inShadow = this.in;
+S162,BZip2CompressorInputStream.java,576,final Data dataShadow = this.data;
+S163,BZip2CompressorInputStream.java,577,final byte[] ll8 = dataShadow.ll8;
+S164,BZip2CompressorInputStream.java,578,final int[] unzftab = dataShadow.unzftab;
+S165,BZip2CompressorInputStream.java,579,final byte[] selector = dataShadow.selector;
+S166,BZip2CompressorInputStream.java,580,final byte[] seqToUnseq = dataShadow.seqToUnseq;
+S167,BZip2CompressorInputStream.java,581,final char[] yy = dataShadow.getAndMoveToFrontDecode_yy;
+S168,BZip2CompressorInputStream.java,582,final int[] minLens = dataShadow.minLens;
+S169,BZip2CompressorInputStream.java,583,final int[][] limit = dataShadow.limit;
+S170,BZip2CompressorInputStream.java,584,final int[][] base = dataShadow.base;
+S171,BZip2CompressorInputStream.java,585,final int[][] perm = dataShadow.perm;
+S172,BZip2CompressorInputStream.java,586,final int limitLast = this.blockSize100k * 100000;
+S173,BZip2CompressorInputStream.java,593,for (int i = 256; --i >= 0;) {
+S174,BZip2CompressorInputStream.java,594,yy[i] = (char) i;
+S175,BZip2CompressorInputStream.java,595,unzftab[i] = 0;
+S176,BZip2CompressorInputStream.java,598,int groupNo = 0;
+S177,BZip2CompressorInputStream.java,599,int groupPos = G_SIZE - 1;
+S178,BZip2CompressorInputStream.java,600,final int eob = this.nInUse + 1;
+S179,BZip2CompressorInputStream.java,601,int nextSym = getAndMoveToFrontDecode0(0);
+S180,BZip2CompressorInputStream.java,602,int bsBuffShadow = this.bsBuff;
+S181,BZip2CompressorInputStream.java,603,int bsLiveShadow = this.bsLive;
+S182,BZip2CompressorInputStream.java,604,int lastShadow = -1;
+S183,BZip2CompressorInputStream.java,605,int zt = selector[groupNo] & 0xff;
+S184,BZip2CompressorInputStream.java,606,int[] base_zt = base[zt];
+S185,BZip2CompressorInputStream.java,607,int[] limit_zt = limit[zt];
+S186,BZip2CompressorInputStream.java,608,int[] perm_zt = perm[zt];
+S187,BZip2CompressorInputStream.java,609,int minLens_zt = minLens[zt];
+S188,BZip2CompressorInputStream.java,611,while (nextSym != eob) {
+S189,BZip2CompressorInputStream.java,612,if ((nextSym == RUNA) || (nextSym == RUNB)) {
+S190,BZip2CompressorInputStream.java,613,int s = -1;
+S191,BZip2CompressorInputStream.java,615,for (int n = 1; true; n <<= 1) {
+S192,BZip2CompressorInputStream.java,616,if (nextSym == RUNA) {
+S193,BZip2CompressorInputStream.java,617,s += n;
+S194,BZip2CompressorInputStream.java,618,} else if (nextSym == RUNB) {
+S195,BZip2CompressorInputStream.java,619,s += n << 1;
+S196,BZip2CompressorInputStream.java,624,if (groupPos == 0) {
+S197,BZip2CompressorInputStream.java,632,groupPos--;
+S198,BZip2CompressorInputStream.java,635,int zn = minLens_zt;
+S199,BZip2CompressorInputStream.java,639,while (bsLiveShadow < zn) {
+S200,BZip2CompressorInputStream.java,640,final int thech = inShadow.read();
+S201,BZip2CompressorInputStream.java,641,if (thech >= 0) {
+S202,BZip2CompressorInputStream.java,642,bsBuffShadow = (bsBuffShadow << 8) | thech;
+S203,BZip2CompressorInputStream.java,643,bsLiveShadow += 8;
+S204,BZip2CompressorInputStream.java,644,continue;
+S205,BZip2CompressorInputStream.java,649,int zvec = (bsBuffShadow >> (bsLiveShadow - zn))
+S206,BZip2CompressorInputStream.java,651,bsLiveShadow -= zn;
+S207,BZip2CompressorInputStream.java,653,while (zvec > limit_zt[zn]) {
+S208,BZip2CompressorInputStream.java,654,zn++;
+S209,BZip2CompressorInputStream.java,655,while (bsLiveShadow < 1) {
+S210,BZip2CompressorInputStream.java,656,final int thech = inShadow.read();
+S211,BZip2CompressorInputStream.java,657,if (thech >= 0) {
+S212,BZip2CompressorInputStream.java,658,bsBuffShadow = (bsBuffShadow << 8) | thech;
+S213,BZip2CompressorInputStream.java,659,bsLiveShadow += 8;
+S214,BZip2CompressorInputStream.java,660,continue;
+S215,BZip2CompressorInputStream.java,666,bsLiveShadow--;
+S216,BZip2CompressorInputStream.java,667,zvec = (zvec << 1)
+S217,BZip2CompressorInputStream.java,670,nextSym = perm_zt[zvec - base_zt[zn]];
+S218,BZip2CompressorInputStream.java,673,final byte ch = seqToUnseq[yy[0]];
+S219,BZip2CompressorInputStream.java,674,unzftab[ch & 0xff] += s + 1;
+S220,BZip2CompressorInputStream.java,676,while (s-- >= 0) {
+S221,BZip2CompressorInputStream.java,677,ll8[++lastShadow] = ch;
+S222,BZip2CompressorInputStream.java,680,if (lastShadow >= limitLast) {
+S223,BZip2CompressorInputStream.java,683,} else {
+S224,BZip2CompressorInputStream.java,684,if (++lastShadow >= limitLast) {
+S225,BZip2CompressorInputStream.java,688,final char tmp = yy[nextSym - 1];
+S226,BZip2CompressorInputStream.java,689,unzftab[seqToUnseq[tmp] & 0xff]++;
+S227,BZip2CompressorInputStream.java,690,ll8[lastShadow] = seqToUnseq[tmp];
+S228,BZip2CompressorInputStream.java,697,if (nextSym <= 16) {
+S229,BZip2CompressorInputStream.java,698,for (int j = nextSym - 1; j > 0;) {
+S230,BZip2CompressorInputStream.java,699,yy[j] = yy[--j];
+S231,BZip2CompressorInputStream.java,702,"System.arraycopy(yy, 0, yy, 1, nextSym - 1);"
+S232,BZip2CompressorInputStream.java,705,yy[0] = tmp;
+S233,BZip2CompressorInputStream.java,707,if (groupPos == 0) {
+S234,BZip2CompressorInputStream.java,708,groupPos = G_SIZE - 1;
+S235,BZip2CompressorInputStream.java,709,zt = selector[++groupNo] & 0xff;
+S236,BZip2CompressorInputStream.java,710,base_zt = base[zt];
+S237,BZip2CompressorInputStream.java,711,limit_zt = limit[zt];
+S238,BZip2CompressorInputStream.java,712,perm_zt = perm[zt];
+S239,BZip2CompressorInputStream.java,713,minLens_zt = minLens[zt];
+S240,BZip2CompressorInputStream.java,715,groupPos--;
+S241,BZip2CompressorInputStream.java,718,int zn = minLens_zt;
+S242,BZip2CompressorInputStream.java,722,while (bsLiveShadow < zn) {
+S243,BZip2CompressorInputStream.java,723,final int thech = inShadow.read();
+S244,BZip2CompressorInputStream.java,724,if (thech >= 0) {
+S245,BZip2CompressorInputStream.java,725,bsBuffShadow = (bsBuffShadow << 8) | thech;
+S246,BZip2CompressorInputStream.java,726,bsLiveShadow += 8;
+S247,BZip2CompressorInputStream.java,727,continue;
+S248,BZip2CompressorInputStream.java,732,int zvec = (bsBuffShadow >> (bsLiveShadow - zn))
+S249,BZip2CompressorInputStream.java,734,bsLiveShadow -= zn;
+S250,BZip2CompressorInputStream.java,736,while (zvec > limit_zt[zn]) {
+S251,BZip2CompressorInputStream.java,737,zn++;
+S252,BZip2CompressorInputStream.java,738,while (bsLiveShadow < 1) {
+S253,BZip2CompressorInputStream.java,739,final int thech = inShadow.read();
+S254,BZip2CompressorInputStream.java,740,if (thech >= 0) {
+S255,BZip2CompressorInputStream.java,741,bsBuffShadow = (bsBuffShadow << 8) | thech;
+S256,BZip2CompressorInputStream.java,742,bsLiveShadow += 8;
+S257,BZip2CompressorInputStream.java,743,continue;
+S258,BZip2CompressorInputStream.java,748,bsLiveShadow--;
+S259,BZip2CompressorInputStream.java,749,zvec = (zvec << 1) | ((bsBuffShadow >> bsLiveShadow) & 1);
+S260,BZip2CompressorInputStream.java,751,nextSym = perm_zt[zvec - base_zt[zn]];
+S261,BZip2CompressorInputStream.java,755,this.last = lastShadow;
+S262,BZip2CompressorInputStream.java,756,this.bsLive = bsLiveShadow;
+S263,BZip2CompressorInputStream.java,757,this.bsBuff = bsBuffShadow;
+S264,BZip2CompressorInputStream.java,761,final InputStream inShadow = this.in;
+S265,BZip2CompressorInputStream.java,762,final Data dataShadow = this.data;
+S266,BZip2CompressorInputStream.java,763,final int zt = dataShadow.selector[groupNo] & 0xff;
+S267,BZip2CompressorInputStream.java,764,final int[] limit_zt = dataShadow.limit[zt];
+S268,BZip2CompressorInputStream.java,765,int zn = dataShadow.minLens[zt];
+S269,BZip2CompressorInputStream.java,766,int zvec = bsR(zn);
+S270,BZip2CompressorInputStream.java,767,int bsLiveShadow = this.bsLive;
+S271,BZip2CompressorInputStream.java,768,int bsBuffShadow = this.bsBuff;
+S272,BZip2CompressorInputStream.java,770,while (zvec > limit_zt[zn]) {
+S273,BZip2CompressorInputStream.java,771,zn++;
+S274,BZip2CompressorInputStream.java,772,while (bsLiveShadow < 1) {
+S275,BZip2CompressorInputStream.java,773,final int thech = inShadow.read();
+S276,BZip2CompressorInputStream.java,775,if (thech >= 0) {
+S277,BZip2CompressorInputStream.java,776,bsBuffShadow = (bsBuffShadow << 8) | thech;
+S278,BZip2CompressorInputStream.java,777,bsLiveShadow += 8;
+S279,BZip2CompressorInputStream.java,778,continue;
+S280,BZip2CompressorInputStream.java,783,bsLiveShadow--;
+S281,BZip2CompressorInputStream.java,784,zvec = (zvec << 1) | ((bsBuffShadow >> bsLiveShadow) & 1);
+S282,BZip2CompressorInputStream.java,787,this.bsLive = bsLiveShadow;
+S283,BZip2CompressorInputStream.java,788,this.bsBuff = bsBuffShadow;
+S284,BZip2CompressorInputStream.java,790,return dataShadow.perm[zt][zvec - dataShadow.base[zt][zn]];
+S285,BZip2CompressorInputStream.java,945,final boolean[] inUse = new boolean[256]; // 256 byte
+S286,BZip2CompressorInputStream.java,947,final byte[] seqToUnseq = new byte[256]; // 256 byte
+S287,BZip2CompressorInputStream.java,948,final byte[] selector = new byte[MAX_SELECTORS]; // 18002 byte
+S288,BZip2CompressorInputStream.java,949,final byte[] selectorMtf = new byte[MAX_SELECTORS]; // 18002 byte
+S289,BZip2CompressorInputStream.java,955,final int[] unzftab = new int[256]; // 1024 byte
+S290,BZip2CompressorInputStream.java,957,final int[][] limit = new int[N_GROUPS][MAX_ALPHA_SIZE]; // 6192 byte
+S291,BZip2CompressorInputStream.java,958,final int[][] base = new int[N_GROUPS][MAX_ALPHA_SIZE]; // 6192 byte
+S292,BZip2CompressorInputStream.java,959,final int[][] perm = new int[N_GROUPS][MAX_ALPHA_SIZE]; // 6192 byte
+S293,BZip2CompressorInputStream.java,960,final int[] minLens = new int[N_GROUPS]; // 24 byte
+S294,BZip2CompressorInputStream.java,962,final int[] cftab = new int[257]; // 1028 byte
+S295,BZip2CompressorInputStream.java,963,final char[] getAndMoveToFrontDecode_yy = new char[256]; // 512 byte
+S296,BZip2CompressorInputStream.java,964,final char[][] temp_charArray2d = new char[N_GROUPS][MAX_ALPHA_SIZE]; // 3096
+S297,BZip2CompressorInputStream.java,966,final byte[] recvDecodingTables_pos = new byte[N_GROUPS]; // 6 byte
+S298,BZip2CompressorInputStream.java,977,Data(int blockSize100k) {
+S299,BZip2CompressorInputStream.java,978,this.ll8 = new byte[blockSize100k * BZip2Constants.BASEBLOCKSIZE];
+S300,BZip2CompressorOutputStream.java,148,final int[] heap = dat.heap;
+S301,BZip2CompressorOutputStream.java,149,final int[] weight = dat.weight;
+S302,BZip2CompressorOutputStream.java,150,final int[] parent = dat.parent;
+S303,BZip2CompressorOutputStream.java,152,for (int i = alphaSize; --i >= 0;) {
+S304,BZip2CompressorOutputStream.java,153,weight[i + 1] = (freq[i] == 0 ? 1 : freq[i]) << 8;
+S305,BZip2CompressorOutputStream.java,156,for (boolean tooLong = true; tooLong;) {
+S306,BZip2CompressorOutputStream.java,157,tooLong = false;
+S307,BZip2CompressorOutputStream.java,159,int nNodes = alphaSize;
+S308,BZip2CompressorOutputStream.java,160,int nHeap = 0;
+S309,BZip2CompressorOutputStream.java,161,heap[0] = 0;
+S310,BZip2CompressorOutputStream.java,162,weight[0] = 0;
+S311,BZip2CompressorOutputStream.java,163,parent[0] = -2;
+S312,BZip2CompressorOutputStream.java,165,for (int i = 1; i <= alphaSize; i++) {
+S313,BZip2CompressorOutputStream.java,166,parent[i] = -1;
+S314,BZip2CompressorOutputStream.java,167,nHeap++;
+S315,BZip2CompressorOutputStream.java,168,heap[nHeap] = i;
+S316,BZip2CompressorOutputStream.java,170,int zz = nHeap;
+S317,BZip2CompressorOutputStream.java,171,int tmp = heap[zz];
+S318,BZip2CompressorOutputStream.java,172,while (weight[tmp] < weight[heap[zz >> 1]]) {
+S319,BZip2CompressorOutputStream.java,173,heap[zz] = heap[zz >> 1];
+S320,BZip2CompressorOutputStream.java,174,zz >>= 1;
+S321,BZip2CompressorOutputStream.java,176,heap[zz] = tmp;
+S322,BZip2CompressorOutputStream.java,179,while (nHeap > 1) {
+S323,BZip2CompressorOutputStream.java,180,int n1 = heap[1];
+S324,BZip2CompressorOutputStream.java,181,heap[1] = heap[nHeap];
+S325,BZip2CompressorOutputStream.java,182,nHeap--;
+S326,BZip2CompressorOutputStream.java,184,int yy = 0;
+S327,BZip2CompressorOutputStream.java,185,int zz = 1;
+S328,BZip2CompressorOutputStream.java,186,int tmp = heap[1];
+S329,BZip2CompressorOutputStream.java,189,yy = zz << 1;
+S330,BZip2CompressorOutputStream.java,191,if (yy > nHeap) {
+S331,BZip2CompressorOutputStream.java,192,break;
+S332,BZip2CompressorOutputStream.java,195,if ((yy < nHeap)
+S333,BZip2CompressorOutputStream.java,197,yy++;
+S334,BZip2CompressorOutputStream.java,200,if (weight[tmp] < weight[heap[yy]]) {
+S335,BZip2CompressorOutputStream.java,201,break;
+S336,BZip2CompressorOutputStream.java,204,heap[zz] = heap[yy];
+S337,BZip2CompressorOutputStream.java,205,zz = yy;
+S338,BZip2CompressorOutputStream.java,208,heap[zz] = tmp;
+S339,BZip2CompressorOutputStream.java,210,int n2 = heap[1];
+S340,BZip2CompressorOutputStream.java,211,heap[1] = heap[nHeap];
+S341,BZip2CompressorOutputStream.java,212,nHeap--;
+S342,BZip2CompressorOutputStream.java,214,yy = 0;
+S343,BZip2CompressorOutputStream.java,215,zz = 1;
+S344,BZip2CompressorOutputStream.java,216,tmp = heap[1];
+S345,BZip2CompressorOutputStream.java,219,yy = zz << 1;
+S346,BZip2CompressorOutputStream.java,221,if (yy > nHeap) {
+S347,BZip2CompressorOutputStream.java,222,break;
+S348,BZip2CompressorOutputStream.java,225,if ((yy < nHeap)
+S349,BZip2CompressorOutputStream.java,227,yy++;
+S350,BZip2CompressorOutputStream.java,230,if (weight[tmp] < weight[heap[yy]]) {
+S351,BZip2CompressorOutputStream.java,231,break;
+S352,BZip2CompressorOutputStream.java,234,heap[zz] = heap[yy];
+S353,BZip2CompressorOutputStream.java,235,zz = yy;
+S354,BZip2CompressorOutputStream.java,238,heap[zz] = tmp;
+S355,BZip2CompressorOutputStream.java,239,nNodes++;
+S356,BZip2CompressorOutputStream.java,240,parent[n1] = parent[n2] = nNodes;
+S357,BZip2CompressorOutputStream.java,242,final int weight_n1 = weight[n1];
+S358,BZip2CompressorOutputStream.java,243,final int weight_n2 = weight[n2];
+S359,BZip2CompressorOutputStream.java,244,weight[nNodes] = ((weight_n1 & 0xffffff00)
+S360,BZip2CompressorOutputStream.java,251,parent[nNodes] = -1;
+S361,BZip2CompressorOutputStream.java,252,nHeap++;
+S362,BZip2CompressorOutputStream.java,253,heap[nHeap] = nNodes;
+S363,BZip2CompressorOutputStream.java,255,tmp = 0;
+S364,BZip2CompressorOutputStream.java,256,zz = nHeap;
+S365,BZip2CompressorOutputStream.java,257,tmp = heap[zz];
+S366,BZip2CompressorOutputStream.java,258,final int weight_tmp = weight[tmp];
+S367,BZip2CompressorOutputStream.java,259,while (weight_tmp < weight[heap[zz >> 1]]) {
+S368,BZip2CompressorOutputStream.java,260,heap[zz] = heap[zz >> 1];
+S369,BZip2CompressorOutputStream.java,261,zz >>= 1;
+S370,BZip2CompressorOutputStream.java,263,heap[zz] = tmp;
+S371,BZip2CompressorOutputStream.java,267,for (int i = 1; i <= alphaSize; i++) {
+S372,BZip2CompressorOutputStream.java,268,int j = 0;
+S373,BZip2CompressorOutputStream.java,269,int k = i;
+S374,BZip2CompressorOutputStream.java,271,for (int parent_k; (parent_k = parent[k]) >= 0;) {
+S375,BZip2CompressorOutputStream.java,272,k = parent_k;
+S376,BZip2CompressorOutputStream.java,273,j++;
+S377,BZip2CompressorOutputStream.java,276,len[i - 1] = (byte) j;
+S378,BZip2CompressorOutputStream.java,277,if (j > maxLen) {
+S379,BZip2CompressorOutputStream.java,282,if (tooLong) {
+S380,BZip2CompressorOutputStream.java,305,private final CRC crc = new CRC();
+S381,BZip2CompressorOutputStream.java,311,private int currentChar = -1;
+S382,BZip2CompressorOutputStream.java,312,private int runLength = 0;
+S383,BZip2CompressorOutputStream.java,356,"this(out, MAX_BLOCKSIZE);"
+S384,BZip2CompressorOutputStream.java,377,"public BZip2CompressorOutputStream(final OutputStream out, final int blockSize) throws IOException {"
+S385,BZip2CompressorOutputStream.java,378,if (blockSize < 1) {
+S386,BZip2CompressorOutputStream.java,381,if (blockSize > 9) {
+S387,BZip2CompressorOutputStream.java,385,this.blockSize100k = blockSize;
+S388,BZip2CompressorOutputStream.java,386,this.out = out;
+S389,BZip2CompressorOutputStream.java,389,this.allowableBlockSize = (this.blockSize100k * BZip2Constants.BASEBLOCKSIZE) - 20;
+S390,BZip2CompressorOutputStream.java,390,init();
+S391,BZip2CompressorOutputStream.java,416,final int lastShadow = this.last;
+S392,BZip2CompressorOutputStream.java,418,if (lastShadow < this.allowableBlockSize) {
+S393,BZip2CompressorOutputStream.java,419,final int currentCharShadow = this.currentChar;
+S394,BZip2CompressorOutputStream.java,420,final Data dataShadow = this.data;
+S395,BZip2CompressorOutputStream.java,421,dataShadow.inUse[currentCharShadow] = true;
+S396,BZip2CompressorOutputStream.java,422,final byte ch = (byte) currentCharShadow;
+S397,BZip2CompressorOutputStream.java,424,int runLengthShadow = this.runLength;
+S398,BZip2CompressorOutputStream.java,425,"this.crc.updateCRC(currentCharShadow, runLengthShadow);"
+S399,BZip2CompressorOutputStream.java,427,switch (runLengthShadow) {
+S400,BZip2CompressorOutputStream.java,429,dataShadow.block[lastShadow + 2] = ch;
+S401,BZip2CompressorOutputStream.java,430,this.last = lastShadow + 1;
+S402,BZip2CompressorOutputStream.java,431,break;
+S403,BZip2CompressorOutputStream.java,434,dataShadow.block[lastShadow + 2] = ch;
+S404,BZip2CompressorOutputStream.java,435,dataShadow.block[lastShadow + 3] = ch;
+S405,BZip2CompressorOutputStream.java,436,this.last = lastShadow + 2;
+S406,BZip2CompressorOutputStream.java,437,break;
+S407,BZip2CompressorOutputStream.java,449,runLengthShadow -= 4;
+S408,BZip2CompressorOutputStream.java,450,dataShadow.inUse[runLengthShadow] = true;
+S409,BZip2CompressorOutputStream.java,451,final byte[] block = dataShadow.block;
+S410,BZip2CompressorOutputStream.java,452,block[lastShadow + 2] = ch;
+S411,BZip2CompressorOutputStream.java,453,block[lastShadow + 3] = ch;
+S412,BZip2CompressorOutputStream.java,454,block[lastShadow + 4] = ch;
+S413,BZip2CompressorOutputStream.java,455,block[lastShadow + 5] = ch;
+S414,BZip2CompressorOutputStream.java,456,block[lastShadow + 6] = (byte) runLengthShadow;
+S415,BZip2CompressorOutputStream.java,457,this.last = lastShadow + 5;
+S416,BZip2CompressorOutputStream.java,462,} else {
+S417,BZip2CompressorOutputStream.java,480,if (out != null) {
+S418,BZip2CompressorOutputStream.java,482,if (this.runLength > 0) {
+S419,BZip2CompressorOutputStream.java,483,writeRun();
+S420,BZip2CompressorOutputStream.java,485,this.currentChar = -1;
+S421,BZip2CompressorOutputStream.java,486,endBlock();
+S422,BZip2CompressorOutputStream.java,487,endCompression();
+S423,BZip2CompressorOutputStream.java,489,this.out = null;
+S424,BZip2CompressorOutputStream.java,490,this.data = null;
+S425,BZip2CompressorOutputStream.java,491,this.blockSorter = null;
+S426,BZip2CompressorOutputStream.java,498,if (out != null) {
+S427,BZip2CompressorOutputStream.java,499,OutputStream outShadow = this.out;
+S428,BZip2CompressorOutputStream.java,500,finish();
+S429,BZip2CompressorOutputStream.java,501,outShadow.close();
+S430,BZip2CompressorOutputStream.java,507,OutputStream outShadow = this.out;
+S431,BZip2CompressorOutputStream.java,508,if (outShadow != null) {
+S432,BZip2CompressorOutputStream.java,509,outShadow.flush();
+S433,BZip2CompressorOutputStream.java,520,bsPutUByte('B');
+S434,BZip2CompressorOutputStream.java,521,bsPutUByte('Z');
+S435,BZip2CompressorOutputStream.java,523,this.data = new Data(this.blockSize100k);
+S436,BZip2CompressorOutputStream.java,524,this.blockSorter = new BlockSort(this.data);
+S437,BZip2CompressorOutputStream.java,527,bsPutUByte('h');
+S438,BZip2CompressorOutputStream.java,528,bsPutUByte('0' + this.blockSize100k);
+S439,BZip2CompressorOutputStream.java,530,this.combinedCRC = 0;
+S440,BZip2CompressorOutputStream.java,531,initBlock();
+S441,BZip2CompressorOutputStream.java,536,this.crc.initialiseCRC();
+S442,BZip2CompressorOutputStream.java,537,this.last = -1;
+S443,BZip2CompressorOutputStream.java,540,boolean[] inUse = this.data.inUse;
+S444,BZip2CompressorOutputStream.java,541,for (int i = 256; --i >= 0;) {
+S445,BZip2CompressorOutputStream.java,542,inUse[i] = false;
+S446,BZip2CompressorOutputStream.java,548,this.blockCRC = this.crc.getFinalCRC();
+S447,BZip2CompressorOutputStream.java,549,this.combinedCRC = (this.combinedCRC << 1) | (this.combinedCRC >>> 31);
+S448,BZip2CompressorOutputStream.java,550,this.combinedCRC ^= this.blockCRC;
+S449,BZip2CompressorOutputStream.java,553,if (this.last == -1) {
+S450,BZip2CompressorOutputStream.java,558,blockSort();
+S451,BZip2CompressorOutputStream.java,571,bsPutUByte(0x31);
+S452,BZip2CompressorOutputStream.java,572,bsPutUByte(0x41);
+S453,BZip2CompressorOutputStream.java,573,bsPutUByte(0x59);
+S454,BZip2CompressorOutputStream.java,574,bsPutUByte(0x26);
+S455,BZip2CompressorOutputStream.java,575,bsPutUByte(0x53);
+S456,BZip2CompressorOutputStream.java,576,bsPutUByte(0x59);
+S457,BZip2CompressorOutputStream.java,579,bsPutInt(this.blockCRC);
+S458,BZip2CompressorOutputStream.java,582,"bsW(1, 0);"
+S459,BZip2CompressorOutputStream.java,585,moveToFrontCodeAndSend();
+S460,BZip2CompressorOutputStream.java,595,bsPutUByte(0x17);
+S461,BZip2CompressorOutputStream.java,596,bsPutUByte(0x72);
+S462,BZip2CompressorOutputStream.java,597,bsPutUByte(0x45);
+S463,BZip2CompressorOutputStream.java,598,bsPutUByte(0x38);
+S464,BZip2CompressorOutputStream.java,599,bsPutUByte(0x50);
+S465,BZip2CompressorOutputStream.java,600,bsPutUByte(0x90);
+S466,BZip2CompressorOutputStream.java,602,bsPutInt(this.combinedCRC);
+S467,BZip2CompressorOutputStream.java,603,bsFinishedWithStream();
+S468,BZip2CompressorOutputStream.java,616,if (offs < 0) {
+S469,BZip2CompressorOutputStream.java,619,if (len < 0) {
+S470,BZip2CompressorOutputStream.java,622,if (offs + len > buf.length) {
+S471,BZip2CompressorOutputStream.java,627,if (this.out == null) {
+S472,BZip2CompressorOutputStream.java,631,for (int hi = offs + len; offs < hi;) {
+S473,BZip2CompressorOutputStream.java,632,write0(buf[offs++]);
+S474,BZip2CompressorOutputStream.java,641,if (this.currentChar != -1) {
+S475,BZip2CompressorOutputStream.java,642,b &= 0xff;
+S476,BZip2CompressorOutputStream.java,643,if (this.currentChar == b) {
+S477,BZip2CompressorOutputStream.java,644,if (++this.runLength > 254) {
+S478,BZip2CompressorOutputStream.java,651,writeRun();
+S479,BZip2CompressorOutputStream.java,652,this.runLength = 1;
+S480,BZip2CompressorOutputStream.java,653,this.currentChar = b;
+S481,BZip2CompressorOutputStream.java,656,this.currentChar = b & 0xff;
+S482,BZip2CompressorOutputStream.java,657,this.runLength++;
+S483,BZip2CompressorOutputStream.java,664,int vec = 0;
+S484,BZip2CompressorOutputStream.java,665,for (int n = minLen; n <= maxLen; n++) {
+S485,BZip2CompressorOutputStream.java,666,for (int i = 0; i < alphaSize; i++) {
+S486,BZip2CompressorOutputStream.java,667,if ((length[i] & 0xff) == n) {
+S487,BZip2CompressorOutputStream.java,668,code[i] = vec;
+S488,BZip2CompressorOutputStream.java,669,vec++;
+S489,BZip2CompressorOutputStream.java,672,vec <<= 1;
+S490,BZip2CompressorOutputStream.java,677,while (this.bsLive > 0) {
+S491,BZip2CompressorOutputStream.java,678,int ch = this.bsBuff >> 24;
+S492,BZip2CompressorOutputStream.java,679,this.out.write(ch); // write 8-bit
+S493,BZip2CompressorOutputStream.java,680,this.bsBuff <<= 8;
+S494,BZip2CompressorOutputStream.java,681,this.bsLive -= 8;
+S495,BZip2CompressorOutputStream.java,686,final OutputStream outShadow = this.out;
+S496,BZip2CompressorOutputStream.java,687,int bsLiveShadow = this.bsLive;
+S497,BZip2CompressorOutputStream.java,688,int bsBuffShadow = this.bsBuff;
+S498,BZip2CompressorOutputStream.java,690,while (bsLiveShadow >= 8) {
+S499,BZip2CompressorOutputStream.java,691,outShadow.write(bsBuffShadow >> 24); // write 8-bit
+S500,BZip2CompressorOutputStream.java,692,bsBuffShadow <<= 8;
+S501,BZip2CompressorOutputStream.java,693,bsLiveShadow -= 8;
+S502,BZip2CompressorOutputStream.java,696,this.bsBuff = bsBuffShadow | (v << (32 - bsLiveShadow - n));
+S503,BZip2CompressorOutputStream.java,697,this.bsLive = bsLiveShadow + n;
+S504,BZip2CompressorOutputStream.java,701,"bsW(8, c);"
+S505,BZip2CompressorOutputStream.java,705,"bsW(8, (u >> 24) & 0xff);"
+S506,BZip2CompressorOutputStream.java,706,"bsW(8, (u >> 16) & 0xff);"
+S507,BZip2CompressorOutputStream.java,707,"bsW(8, (u >> 8) & 0xff);"
+S508,BZip2CompressorOutputStream.java,708,"bsW(8, u & 0xff);"
+S509,BZip2CompressorOutputStream.java,712,final byte[][] len = this.data.sendMTFValues_len;
+S510,BZip2CompressorOutputStream.java,713,final int alphaSize = this.nInUse + 2;
+S511,BZip2CompressorOutputStream.java,715,for (int t = N_GROUPS; --t >= 0;) {
+S512,BZip2CompressorOutputStream.java,716,byte[] len_t = len[t];
+S513,BZip2CompressorOutputStream.java,717,for (int v = alphaSize; --v >= 0;) {
+S514,BZip2CompressorOutputStream.java,718,len_t[v] = GREATER_ICOST;
+S515,BZip2CompressorOutputStream.java,724,final int nGroups = (this.nMTF < 200) ? 2 : (this.nMTF < 600) ? 3
+S516,BZip2CompressorOutputStream.java,728,"sendMTFValues0(nGroups, alphaSize);"
+S517,BZip2CompressorOutputStream.java,733,"final int nSelectors = sendMTFValues1(nGroups, alphaSize);"
+S518,BZip2CompressorOutputStream.java,736,"sendMTFValues2(nGroups, nSelectors);"
+S519,BZip2CompressorOutputStream.java,739,"sendMTFValues3(nGroups, alphaSize);"
+S520,BZip2CompressorOutputStream.java,742,sendMTFValues4();
+S521,BZip2CompressorOutputStream.java,745,"sendMTFValues5(nGroups, nSelectors);"
+S522,BZip2CompressorOutputStream.java,748,"sendMTFValues6(nGroups, alphaSize);"
+S523,BZip2CompressorOutputStream.java,751,sendMTFValues7();
+S524,BZip2CompressorOutputStream.java,755,final byte[][] len = this.data.sendMTFValues_len;
+S525,BZip2CompressorOutputStream.java,756,final int[] mtfFreq = this.data.mtfFreq;
+S526,BZip2CompressorOutputStream.java,758,int remF = this.nMTF;
+S527,BZip2CompressorOutputStream.java,759,int gs = 0;
+S528,BZip2CompressorOutputStream.java,761,for (int nPart = nGroups; nPart > 0; nPart--) {
+S529,BZip2CompressorOutputStream.java,762,final int tFreq = remF / nPart;
+S530,BZip2CompressorOutputStream.java,763,int ge = gs - 1;
+S531,BZip2CompressorOutputStream.java,764,int aFreq = 0;
+S532,BZip2CompressorOutputStream.java,766,for (final int a = alphaSize - 1; (aFreq < tFreq) && (ge < a);) {
+S533,BZip2CompressorOutputStream.java,767,aFreq += mtfFreq[++ge];
+S534,BZip2CompressorOutputStream.java,770,if ((ge > gs) && (nPart != nGroups) && (nPart != 1)
+S535,BZip2CompressorOutputStream.java,775,final byte[] len_np = len[nPart - 1];
+S536,BZip2CompressorOutputStream.java,776,for (int v = alphaSize; --v >= 0;) {
+S537,BZip2CompressorOutputStream.java,777,if ((v >= gs) && (v <= ge)) {
+S538,BZip2CompressorOutputStream.java,778,len_np[v] = LESSER_ICOST;
+S539,BZip2CompressorOutputStream.java,780,len_np[v] = GREATER_ICOST;
+S540,BZip2CompressorOutputStream.java,784,gs = ge + 1;
+S541,BZip2CompressorOutputStream.java,785,remF -= aFreq;
+S542,BZip2CompressorOutputStream.java,790,final Data dataShadow = this.data;
+S543,BZip2CompressorOutputStream.java,791,final int[][] rfreq = dataShadow.sendMTFValues_rfreq;
+S544,BZip2CompressorOutputStream.java,792,final int[] fave = dataShadow.sendMTFValues_fave;
+S545,BZip2CompressorOutputStream.java,793,final short[] cost = dataShadow.sendMTFValues_cost;
+S546,BZip2CompressorOutputStream.java,794,final char[] sfmap = dataShadow.sfmap;
+S547,BZip2CompressorOutputStream.java,795,final byte[] selector = dataShadow.selector;
+S548,BZip2CompressorOutputStream.java,796,final byte[][] len = dataShadow.sendMTFValues_len;
+S549,BZip2CompressorOutputStream.java,797,final byte[] len_0 = len[0];
+S550,BZip2CompressorOutputStream.java,798,final byte[] len_1 = len[1];
+S551,BZip2CompressorOutputStream.java,799,final byte[] len_2 = len[2];
+S552,BZip2CompressorOutputStream.java,800,final byte[] len_3 = len[3];
+S553,BZip2CompressorOutputStream.java,801,final byte[] len_4 = len[4];
+S554,BZip2CompressorOutputStream.java,802,final byte[] len_5 = len[5];
+S555,BZip2CompressorOutputStream.java,803,final int nMTFShadow = this.nMTF;
+S556,BZip2CompressorOutputStream.java,805,int nSelectors = 0;
+S557,BZip2CompressorOutputStream.java,807,for (int iter = 0; iter < N_ITERS; iter++) {
+S558,BZip2CompressorOutputStream.java,808,for (int t = nGroups; --t >= 0;) {
+S559,BZip2CompressorOutputStream.java,809,fave[t] = 0;
+S560,BZip2CompressorOutputStream.java,810,int[] rfreqt = rfreq[t];
+S561,BZip2CompressorOutputStream.java,811,for (int i = alphaSize; --i >= 0;) {
+S562,BZip2CompressorOutputStream.java,812,rfreqt[i] = 0;
+S563,BZip2CompressorOutputStream.java,816,nSelectors = 0;
+S564,BZip2CompressorOutputStream.java,818,for (int gs = 0; gs < this.nMTF;) {
+S565,BZip2CompressorOutputStream.java,826,"final int ge = Math.min(gs + G_SIZE - 1, nMTFShadow - 1);"
+S566,BZip2CompressorOutputStream.java,828,if (nGroups == N_GROUPS) {
+S567,BZip2CompressorOutputStream.java,856,for (int t = nGroups; --t >= 0;) {
+S568,BZip2CompressorOutputStream.java,857,cost[t] = 0;
+S569,BZip2CompressorOutputStream.java,860,for (int i = gs; i <= ge; i++) {
+S570,BZip2CompressorOutputStream.java,861,final int icv = sfmap[i];
+S571,BZip2CompressorOutputStream.java,862,for (int t = nGroups; --t >= 0;) {
+S572,BZip2CompressorOutputStream.java,863,cost[t] += len[t][icv] & 0xff;
+S573,BZip2CompressorOutputStream.java,872,int bt = -1;
+S574,BZip2CompressorOutputStream.java,873,"for (int t = nGroups, bc = 999999999; --t >= 0;) {"
+S575,BZip2CompressorOutputStream.java,874,final int cost_t = cost[t];
+S576,BZip2CompressorOutputStream.java,875,if (cost_t < bc) {
+S577,BZip2CompressorOutputStream.java,876,bc = cost_t;
+S578,BZip2CompressorOutputStream.java,877,bt = t;
+S579,BZip2CompressorOutputStream.java,881,fave[bt]++;
+S580,BZip2CompressorOutputStream.java,882,selector[nSelectors] = (byte) bt;
+S581,BZip2CompressorOutputStream.java,883,nSelectors++;
+S582,BZip2CompressorOutputStream.java,888,final int[] rfreq_bt = rfreq[bt];
+S583,BZip2CompressorOutputStream.java,889,for (int i = gs; i <= ge; i++) {
+S584,BZip2CompressorOutputStream.java,890,rfreq_bt[sfmap[i]]++;
+S585,BZip2CompressorOutputStream.java,893,gs = ge + 1;
+S586,BZip2CompressorOutputStream.java,899,for (int t = 0; t < nGroups; t++) {
+S587,BZip2CompressorOutputStream.java,900,"hbMakeCodeLengths(len[t], rfreq[t], this.data, alphaSize, 20);"
+S588,BZip2CompressorOutputStream.java,904,return nSelectors;
+S589,BZip2CompressorOutputStream.java,910,final Data dataShadow = this.data;
+S590,BZip2CompressorOutputStream.java,911,byte[] pos = dataShadow.sendMTFValues2_pos;
+S591,BZip2CompressorOutputStream.java,913,for (int i = nGroups; --i >= 0;) {
+S592,BZip2CompressorOutputStream.java,914,pos[i] = (byte) i;
+S593,BZip2CompressorOutputStream.java,917,for (int i = 0; i < nSelectors; i++) {
+S594,BZip2CompressorOutputStream.java,918,final byte ll_i = dataShadow.selector[i];
+S595,BZip2CompressorOutputStream.java,919,byte tmp = pos[0];
+S596,BZip2CompressorOutputStream.java,920,int j = 0;
+S597,BZip2CompressorOutputStream.java,922,while (ll_i != tmp) {
+S598,BZip2CompressorOutputStream.java,923,j++;
+S599,BZip2CompressorOutputStream.java,924,byte tmp2 = tmp;
+S600,BZip2CompressorOutputStream.java,925,tmp = pos[j];
+S601,BZip2CompressorOutputStream.java,926,pos[j] = tmp2;
+S602,BZip2CompressorOutputStream.java,929,pos[0] = tmp;
+S603,BZip2CompressorOutputStream.java,930,dataShadow.selectorMtf[i] = (byte) j;
+S604,BZip2CompressorOutputStream.java,935,int[][] code = this.data.sendMTFValues_code;
+S605,BZip2CompressorOutputStream.java,936,byte[][] len = this.data.sendMTFValues_len;
+S606,BZip2CompressorOutputStream.java,938,for (int t = 0; t < nGroups; t++) {
+S607,BZip2CompressorOutputStream.java,939,int minLen = 32;
+S608,BZip2CompressorOutputStream.java,940,int maxLen = 0;
+S609,BZip2CompressorOutputStream.java,941,final byte[] len_t = len[t];
+S610,BZip2CompressorOutputStream.java,942,for (int i = alphaSize; --i >= 0;) {
+S611,BZip2CompressorOutputStream.java,943,final int l = len_t[i] & 0xff;
+S612,BZip2CompressorOutputStream.java,944,if (l > maxLen) {
+S613,BZip2CompressorOutputStream.java,945,maxLen = l;
+S614,BZip2CompressorOutputStream.java,947,if (l < minLen) {
+S615,BZip2CompressorOutputStream.java,948,minLen = l;
+S616,BZip2CompressorOutputStream.java,955,"hbAssignCodes(code[t], len[t], minLen, maxLen, alphaSize);"
+S617,BZip2CompressorOutputStream.java,960,final boolean[] inUse = this.data.inUse;
+S618,BZip2CompressorOutputStream.java,961,final boolean[] inUse16 = this.data.sentMTFValues4_inUse16;
+S619,BZip2CompressorOutputStream.java,963,for (int i = 16; --i >= 0;) {
+S620,BZip2CompressorOutputStream.java,964,inUse16[i] = false;
+S621,BZip2CompressorOutputStream.java,965,final int i16 = i * 16;
+S622,BZip2CompressorOutputStream.java,966,for (int j = 16; --j >= 0;) {
+S623,BZip2CompressorOutputStream.java,967,if (inUse[i16 + j]) {
+S624,BZip2CompressorOutputStream.java,968,inUse16[i] = true;
+S625,BZip2CompressorOutputStream.java,973,for (int i = 0; i < 16; i++) {
+S626,BZip2CompressorOutputStream.java,974,"bsW(1, inUse16[i] ? 1 : 0);"
+S627,BZip2CompressorOutputStream.java,977,final OutputStream outShadow = this.out;
+S628,BZip2CompressorOutputStream.java,978,int bsLiveShadow = this.bsLive;
+S629,BZip2CompressorOutputStream.java,979,int bsBuffShadow = this.bsBuff;
+S630,BZip2CompressorOutputStream.java,981,for (int i = 0; i < 16; i++) {
+S631,BZip2CompressorOutputStream.java,982,if (inUse16[i]) {
+S632,BZip2CompressorOutputStream.java,983,final int i16 = i * 16;
+S633,BZip2CompressorOutputStream.java,984,for (int j = 0; j < 16; j++) {
+S634,BZip2CompressorOutputStream.java,986,while (bsLiveShadow >= 8) {
+S635,BZip2CompressorOutputStream.java,987,outShadow.write(bsBuffShadow >> 24); // write 8-bit
+S636,BZip2CompressorOutputStream.java,988,bsBuffShadow <<= 8;
+S637,BZip2CompressorOutputStream.java,989,bsLiveShadow -= 8;
+S638,BZip2CompressorOutputStream.java,991,if (inUse[i16 + j]) {
+S639,BZip2CompressorOutputStream.java,992,bsBuffShadow |= 1 << (32 - bsLiveShadow - 1);
+S640,BZip2CompressorOutputStream.java,994,bsLiveShadow++;
+S641,BZip2CompressorOutputStream.java,999,this.bsBuff = bsBuffShadow;
+S642,BZip2CompressorOutputStream.java,1000,this.bsLive = bsLiveShadow;
+S643,BZip2CompressorOutputStream.java,1005,"bsW(3, nGroups);"
+S644,BZip2CompressorOutputStream.java,1006,"bsW(15, nSelectors);"
+S645,BZip2CompressorOutputStream.java,1008,final OutputStream outShadow = this.out;
+S646,BZip2CompressorOutputStream.java,1009,final byte[] selectorMtf = this.data.selectorMtf;
+S647,BZip2CompressorOutputStream.java,1011,int bsLiveShadow = this.bsLive;
+S648,BZip2CompressorOutputStream.java,1012,int bsBuffShadow = this.bsBuff;
+S649,BZip2CompressorOutputStream.java,1014,for (int i = 0; i < nSelectors; i++) {
+S650,BZip2CompressorOutputStream.java,1015,"for (int j = 0, hj = selectorMtf[i] & 0xff; j < hj; j++) {"
+S651,BZip2CompressorOutputStream.java,1017,while (bsLiveShadow >= 8) {
+S652,BZip2CompressorOutputStream.java,1022,bsBuffShadow |= 1 << (32 - bsLiveShadow - 1);
+S653,BZip2CompressorOutputStream.java,1023,bsLiveShadow++;
+S654,BZip2CompressorOutputStream.java,1027,while (bsLiveShadow >= 8) {
+S655,BZip2CompressorOutputStream.java,1028,outShadow.write(bsBuffShadow >> 24);
+S656,BZip2CompressorOutputStream.java,1029,bsBuffShadow <<= 8;
+S657,BZip2CompressorOutputStream.java,1030,bsLiveShadow -= 8;
+S658,BZip2CompressorOutputStream.java,1033,bsLiveShadow++;
+S659,BZip2CompressorOutputStream.java,1036,this.bsBuff = bsBuffShadow;
+S660,BZip2CompressorOutputStream.java,1037,this.bsLive = bsLiveShadow;
+S661,BZip2CompressorOutputStream.java,1042,final byte[][] len = this.data.sendMTFValues_len;
+S662,BZip2CompressorOutputStream.java,1043,final OutputStream outShadow = this.out;
+S663,BZip2CompressorOutputStream.java,1045,int bsLiveShadow = this.bsLive;
+S664,BZip2CompressorOutputStream.java,1046,int bsBuffShadow = this.bsBuff;
+S665,BZip2CompressorOutputStream.java,1048,for (int t = 0; t < nGroups; t++) {
+S666,BZip2CompressorOutputStream.java,1049,byte[] len_t = len[t];
+S667,BZip2CompressorOutputStream.java,1050,int curr = len_t[0] & 0xff;
+S668,BZip2CompressorOutputStream.java,1053,while (bsLiveShadow >= 8) {
+S669,BZip2CompressorOutputStream.java,1054,outShadow.write(bsBuffShadow >> 24); // write 8-bit
+S670,BZip2CompressorOutputStream.java,1055,bsBuffShadow <<= 8;
+S671,BZip2CompressorOutputStream.java,1056,bsLiveShadow -= 8;
+S672,BZip2CompressorOutputStream.java,1058,bsBuffShadow |= curr << (32 - bsLiveShadow - 5);
+S673,BZip2CompressorOutputStream.java,1059,bsLiveShadow += 5;
+S674,BZip2CompressorOutputStream.java,1061,for (int i = 0; i < alphaSize; i++) {
+S675,BZip2CompressorOutputStream.java,1062,int lti = len_t[i] & 0xff;
+S676,BZip2CompressorOutputStream.java,1063,while (curr < lti) {
+S677,BZip2CompressorOutputStream.java,1065,while (bsLiveShadow >= 8) {
+S678,BZip2CompressorOutputStream.java,1066,outShadow.write(bsBuffShadow >> 24); // write 8-bit
+S679,BZip2CompressorOutputStream.java,1067,bsBuffShadow <<= 8;
+S680,BZip2CompressorOutputStream.java,1068,bsLiveShadow -= 8;
+S681,BZip2CompressorOutputStream.java,1070,bsBuffShadow |= 2 << (32 - bsLiveShadow - 2);
+S682,BZip2CompressorOutputStream.java,1071,bsLiveShadow += 2;
+S683,BZip2CompressorOutputStream.java,1073,curr++; /* 10 */
+S684,BZip2CompressorOutputStream.java,1076,while (curr > lti) {
+S685,BZip2CompressorOutputStream.java,1078,while (bsLiveShadow >= 8) {
+S686,BZip2CompressorOutputStream.java,1079,outShadow.write(bsBuffShadow >> 24); // write 8-bit
+S687,BZip2CompressorOutputStream.java,1080,bsBuffShadow <<= 8;
+S688,BZip2CompressorOutputStream.java,1081,bsLiveShadow -= 8;
+S689,BZip2CompressorOutputStream.java,1083,bsBuffShadow |= 3 << (32 - bsLiveShadow - 2);
+S690,BZip2CompressorOutputStream.java,1084,bsLiveShadow += 2;
+S691,BZip2CompressorOutputStream.java,1086,curr--; /* 11 */
+S692,BZip2CompressorOutputStream.java,1090,while (bsLiveShadow >= 8) {
+S693,BZip2CompressorOutputStream.java,1091,outShadow.write(bsBuffShadow >> 24); // write 8-bit
+S694,BZip2CompressorOutputStream.java,1092,bsBuffShadow <<= 8;
+S695,BZip2CompressorOutputStream.java,1093,bsLiveShadow -= 8;
+S696,BZip2CompressorOutputStream.java,1096,bsLiveShadow++;
+S697,BZip2CompressorOutputStream.java,1100,this.bsBuff = bsBuffShadow;
+S698,BZip2CompressorOutputStream.java,1101,this.bsLive = bsLiveShadow;
+S699,BZip2CompressorOutputStream.java,1105,final Data dataShadow = this.data;
+S700,BZip2CompressorOutputStream.java,1106,final byte[][] len = dataShadow.sendMTFValues_len;
+S701,BZip2CompressorOutputStream.java,1107,final int[][] code = dataShadow.sendMTFValues_code;
+S702,BZip2CompressorOutputStream.java,1108,final OutputStream outShadow = this.out;
+S703,BZip2CompressorOutputStream.java,1109,final byte[] selector = dataShadow.selector;
+S704,BZip2CompressorOutputStream.java,1110,final char[] sfmap = dataShadow.sfmap;
+S705,BZip2CompressorOutputStream.java,1111,final int nMTFShadow = this.nMTF;
+S706,BZip2CompressorOutputStream.java,1113,int selCtr = 0;
+S707,BZip2CompressorOutputStream.java,1115,int bsLiveShadow = this.bsLive;
+S708,BZip2CompressorOutputStream.java,1116,int bsBuffShadow = this.bsBuff;
+S709,BZip2CompressorOutputStream.java,1118,for (int gs = 0; gs < nMTFShadow;) {
+S710,BZip2CompressorOutputStream.java,1119,"final int ge = Math.min(gs + G_SIZE - 1, nMTFShadow - 1);"
+S711,BZip2CompressorOutputStream.java,1120,final int selector_selCtr = selector[selCtr] & 0xff;
+S712,BZip2CompressorOutputStream.java,1121,final int[] code_selCtr = code[selector_selCtr];
+S713,BZip2CompressorOutputStream.java,1122,final byte[] len_selCtr = len[selector_selCtr];
+S714,BZip2CompressorOutputStream.java,1124,while (gs <= ge) {
+S715,BZip2CompressorOutputStream.java,1125,final int sfmap_i = sfmap[gs];
+S716,BZip2CompressorOutputStream.java,1131,while (bsLiveShadow >= 8) {
+S717,BZip2CompressorOutputStream.java,1132,outShadow.write(bsBuffShadow >> 24);
+S718,BZip2CompressorOutputStream.java,1133,bsBuffShadow <<= 8;
+S719,BZip2CompressorOutputStream.java,1134,bsLiveShadow -= 8;
+S720,BZip2CompressorOutputStream.java,1136,final int n = len_selCtr[sfmap_i] & 0xFF;
+S721,BZip2CompressorOutputStream.java,1137,bsBuffShadow |= code_selCtr[sfmap_i] << (32 - bsLiveShadow - n);
+S722,BZip2CompressorOutputStream.java,1138,bsLiveShadow += n;
+S723,BZip2CompressorOutputStream.java,1140,gs++;
+S724,BZip2CompressorOutputStream.java,1143,gs = ge + 1;
+S725,BZip2CompressorOutputStream.java,1144,selCtr++;
+S726,BZip2CompressorOutputStream.java,1147,this.bsBuff = bsBuffShadow;
+S727,BZip2CompressorOutputStream.java,1148,this.bsLive = bsLiveShadow;
+S728,BZip2CompressorOutputStream.java,1152,"bsW(24, this.data.origPtr);"
+S729,BZip2CompressorOutputStream.java,1153,generateMTFValues();
+S730,BZip2CompressorOutputStream.java,1154,sendMTFValues();
+S731,BZip2CompressorOutputStream.java,1158,"blockSorter.blockSort(data, last);"
+S732,BZip2CompressorOutputStream.java,1169,final int lastShadow = this.last;
+S733,BZip2CompressorOutputStream.java,1170,final Data dataShadow = this.data;
+S734,BZip2CompressorOutputStream.java,1171,final boolean[] inUse = dataShadow.inUse;
+S735,BZip2CompressorOutputStream.java,1172,final byte[] block = dataShadow.block;
+S736,BZip2CompressorOutputStream.java,1173,final int[] fmap = dataShadow.fmap;
+S737,BZip2CompressorOutputStream.java,1174,final char[] sfmap = dataShadow.sfmap;
+S738,BZip2CompressorOutputStream.java,1175,final int[] mtfFreq = dataShadow.mtfFreq;
+S739,BZip2CompressorOutputStream.java,1176,final byte[] unseqToSeq = dataShadow.unseqToSeq;
+S740,BZip2CompressorOutputStream.java,1177,final byte[] yy = dataShadow.generateMTFValues_yy;
+S741,BZip2CompressorOutputStream.java,1180,int nInUseShadow = 0;
+S742,BZip2CompressorOutputStream.java,1181,for (int i = 0; i < 256; i++) {
+S743,BZip2CompressorOutputStream.java,1182,if (inUse[i]) {
+S744,BZip2CompressorOutputStream.java,1183,unseqToSeq[i] = (byte) nInUseShadow;
+S745,BZip2CompressorOutputStream.java,1184,nInUseShadow++;
+S746,BZip2CompressorOutputStream.java,1187,this.nInUse = nInUseShadow;
+S747,BZip2CompressorOutputStream.java,1189,final int eob = nInUseShadow + 1;
+S748,BZip2CompressorOutputStream.java,1191,for (int i = eob; i >= 0; i--) {
+S749,BZip2CompressorOutputStream.java,1192,mtfFreq[i] = 0;
+S750,BZip2CompressorOutputStream.java,1195,for (int i = nInUseShadow; --i >= 0;) {
+S751,BZip2CompressorOutputStream.java,1196,yy[i] = (byte) i;
+S752,BZip2CompressorOutputStream.java,1199,int wr = 0;
+S753,BZip2CompressorOutputStream.java,1200,int zPend = 0;
+S754,BZip2CompressorOutputStream.java,1202,for (int i = 0; i <= lastShadow; i++) {
+S755,BZip2CompressorOutputStream.java,1203,final byte ll_i = unseqToSeq[block[fmap[i]] & 0xff];
+S756,BZip2CompressorOutputStream.java,1204,byte tmp = yy[0];
+S757,BZip2CompressorOutputStream.java,1205,int j = 0;
+S758,BZip2CompressorOutputStream.java,1207,while (ll_i != tmp) {
+S759,BZip2CompressorOutputStream.java,1208,j++;
+S760,BZip2CompressorOutputStream.java,1209,byte tmp2 = tmp;
+S761,BZip2CompressorOutputStream.java,1210,tmp = yy[j];
+S762,BZip2CompressorOutputStream.java,1211,yy[j] = tmp2;
+S763,BZip2CompressorOutputStream.java,1213,yy[0] = tmp;
+S764,BZip2CompressorOutputStream.java,1215,if (j == 0) {
+S765,BZip2CompressorOutputStream.java,1216,zPend++;
+S766,BZip2CompressorOutputStream.java,1218,if (zPend > 0) {
+S767,BZip2CompressorOutputStream.java,1219,zPend--;
+S768,BZip2CompressorOutputStream.java,1221,if ((zPend & 1) == 0) {
+S769,BZip2CompressorOutputStream.java,1222,sfmap[wr] = RUNA;
+S770,BZip2CompressorOutputStream.java,1223,wr++;
+S771,BZip2CompressorOutputStream.java,1224,mtfFreq[RUNA]++;
+S772,BZip2CompressorOutputStream.java,1226,sfmap[wr] = RUNB;
+S773,BZip2CompressorOutputStream.java,1227,wr++;
+S774,BZip2CompressorOutputStream.java,1228,mtfFreq[RUNB]++;
+S775,BZip2CompressorOutputStream.java,1231,if (zPend >= 2) {
+S776,BZip2CompressorOutputStream.java,1232,zPend = (zPend - 2) >> 1;
+S777,BZip2CompressorOutputStream.java,1237,zPend = 0;
+S778,BZip2CompressorOutputStream.java,1239,sfmap[wr] = (char) (j + 1);
+S779,BZip2CompressorOutputStream.java,1240,wr++;
+S780,BZip2CompressorOutputStream.java,1241,mtfFreq[j + 1]++;
+S781,BZip2CompressorOutputStream.java,1245,if (zPend > 0) {
+S782,BZip2CompressorOutputStream.java,1246,zPend--;
+S783,BZip2CompressorOutputStream.java,1248,if ((zPend & 1) == 0) {
+S784,BZip2CompressorOutputStream.java,1249,sfmap[wr] = RUNA;
+S785,BZip2CompressorOutputStream.java,1250,wr++;
+S786,BZip2CompressorOutputStream.java,1251,mtfFreq[RUNA]++;
+S787,BZip2CompressorOutputStream.java,1258,if (zPend >= 2) {
+S788,BZip2CompressorOutputStream.java,1266,sfmap[wr] = (char) eob;
+S789,BZip2CompressorOutputStream.java,1267,mtfFreq[eob]++;
+S790,BZip2CompressorOutputStream.java,1268,this.nMTF = wr + 1;
+S791,BZip2CompressorOutputStream.java,1275,final boolean[] inUse = new boolean[256]; // 256 byte
+S792,BZip2CompressorOutputStream.java,1276,final byte[] unseqToSeq = new byte[256]; // 256 byte
+S793,BZip2CompressorOutputStream.java,1277,final int[] mtfFreq = new int[MAX_ALPHA_SIZE]; // 1032 byte
+S794,BZip2CompressorOutputStream.java,1278,final byte[] selector = new byte[MAX_SELECTORS]; // 18002 byte
+S795,BZip2CompressorOutputStream.java,1279,final byte[] selectorMtf = new byte[MAX_SELECTORS]; // 18002 byte
+S796,BZip2CompressorOutputStream.java,1281,final byte[] generateMTFValues_yy = new byte[256]; // 256 byte
+S797,BZip2CompressorOutputStream.java,1282,final byte[][] sendMTFValues_len = new byte[N_GROUPS][MAX_ALPHA_SIZE]; // 1548
+S798,BZip2CompressorOutputStream.java,1284,final int[][] sendMTFValues_rfreq = new int[N_GROUPS][MAX_ALPHA_SIZE]; // 6192
+S799,BZip2CompressorOutputStream.java,1286,final int[] sendMTFValues_fave = new int[N_GROUPS]; // 24 byte
+S800,BZip2CompressorOutputStream.java,1287,final short[] sendMTFValues_cost = new short[N_GROUPS]; // 12 byte
+S801,BZip2CompressorOutputStream.java,1288,final int[][] sendMTFValues_code = new int[N_GROUPS][MAX_ALPHA_SIZE]; // 6192
+S802,BZip2CompressorOutputStream.java,1290,final byte[] sendMTFValues2_pos = new byte[N_GROUPS]; // 6 byte
+S803,BZip2CompressorOutputStream.java,1291,final boolean[] sentMTFValues4_inUse16 = new boolean[16]; // 16 byte
+S804,BZip2CompressorOutputStream.java,1293,final int[] heap = new int[MAX_ALPHA_SIZE + 2]; // 1040 byte
+S805,BZip2CompressorOutputStream.java,1294,final int[] weight = new int[MAX_ALPHA_SIZE * 2]; // 2064 byte
+S806,BZip2CompressorOutputStream.java,1295,final int[] parent = new int[MAX_ALPHA_SIZE * 2]; // 2064 byte
+S807,BZip2CompressorOutputStream.java,1320,Data(int blockSize100k) {
+S808,BZip2CompressorOutputStream.java,1321,final int n = blockSize100k * BZip2Constants.BASEBLOCKSIZE;
+S809,BZip2CompressorOutputStream.java,1322,this.block = new byte[(n + 1 + NUM_OVERSHOOT_BYTES)];
+S810,BZip2CompressorOutputStream.java,1323,this.fmap = new int[n];
+S811,BZip2CompressorOutputStream.java,1324,this.sfmap = new char[2 * n];
+S812,BindPair.java,20,class BindPair {
+S813,BlockSort.java,132,private final int[] stack_ll = new int[STACK_SIZE]; // 4000 byte
+S814,BlockSort.java,133,private final int[] stack_hh = new int[STACK_SIZE]; // 4000 byte
+S815,BlockSort.java,134,private final int[] stack_dd = new int[QSORT_STACK_SIZE]; // 4000 byte
+S816,BlockSort.java,136,private final int[] mainSort_runningOrder = new int[256]; // 1024 byte
+S817,BlockSort.java,137,private final int[] mainSort_copy = new int[256]; // 1024 byte
+S818,BlockSort.java,138,private final boolean[] mainSort_bigDone = new boolean[256]; // 256 byte
+S819,BlockSort.java,140,private final int[] ftab = new int[65537]; // 262148 byte
+S820,BlockSort.java,149,BlockSort(final BZip2CompressorOutputStream.Data data) {
+S821,BlockSort.java,150,this.quadrant = data.sfmap;
+S822,BlockSort.java,154,this.workLimit = WORK_FACTOR * last;
+S823,BlockSort.java,155,this.workDone = 0;
+S824,BlockSort.java,156,this.firstAttempt = true;
+S825,BlockSort.java,158,if (last + 1 < 10000) {
+S826,BlockSort.java,159,"fallbackSort(data, last);"
+S827,BlockSort.java,168,final int[] fmap = data.fmap;
+S828,BlockSort.java,169,data.origPtr = -1;
+S829,BlockSort.java,170,for (int i = 0; i <= last; i++) {
+S830,BlockSort.java,171,if (fmap[i] == 0) {
+S831,BlockSort.java,172,data.origPtr = i;
+S832,BlockSort.java,173,break;
+S833,BlockSort.java,187,data.block[0] = data.block[last + 1];
+S834,BlockSort.java,188,"fallbackSort(data.fmap, data.block, last + 1);"
+S835,BlockSort.java,189,for (int i = 0; i < last + 1; i++) {
+S836,BlockSort.java,190,--data.fmap[i];
+S837,BlockSort.java,192,for (int i = 0; i < last + 1; i++) {
+S838,BlockSort.java,193,if (data.fmap[i] == -1) {
+S839,BlockSort.java,194,data.fmap[i] = last;
+S840,BlockSort.java,195,break;
+S841,BlockSort.java,271,if (lo == hi) {
+S842,BlockSort.java,276,if (hi - lo > 3) {
+S843,BlockSort.java,277,for (int i = hi - 4; i >= lo; i--) {
+S844,BlockSort.java,278,int tmp = fmap[i];
+S845,BlockSort.java,279,int ec_tmp = eclass[tmp];
+S846,BlockSort.java,280,for (j = i + 4; j <= hi && ec_tmp > eclass[fmap[j]];
+S847,BlockSort.java,281,j += 4) {
+S848,BlockSort.java,282,fmap[j - 4] = fmap[j];
+S849,BlockSort.java,284,fmap[j - 4] = tmp;
+S850,BlockSort.java,288,for (int i = hi - 1; i >= lo; i--) {
+S851,BlockSort.java,289,int tmp = fmap[i];
+S852,BlockSort.java,290,int ec_tmp = eclass[tmp];
+S853,BlockSort.java,291,for (j = i + 1; j <= hi && ec_tmp > eclass[fmap[j]]; j++) {
+S854,BlockSort.java,292,fmap[j - 1] = fmap[j];
+S855,BlockSort.java,294,fmap[j-1] = tmp;
+S856,BlockSort.java,324,stack_ll[sp] = lz;
+S857,BlockSort.java,325,stack_hh[sp] = hz;
+S858,BlockSort.java,329,"return new int[] { stack_ll[sp], stack_hh[sp] };"
+S859,BlockSort.java,348,long r = 0;
+S860,BlockSort.java,349,int sp = 0;
+S861,BlockSort.java,350,"fpush(sp++, loSt, hiSt);"
+S862,BlockSort.java,352,while (sp > 0) {
+S863,BlockSort.java,353,int[] s = fpop(--sp);
+S864,BlockSort.java,354,lo = s[0]; hi = s[1];
+S865,BlockSort.java,356,if (hi - lo < FALLBACK_QSORT_SMALL_THRESH) {
+S866,BlockSort.java,357,"fallbackSimpleSort(fmap, eclass, lo, hi);"
+S867,BlockSort.java,358,continue;
+S868,BlockSort.java,448,return eclass == null
+S869,BlockSort.java,471,final int[] ftab = new int[257];
+S870,BlockSort.java,475,final int[] eclass = getEclass();
+S871,BlockSort.java,477,for (i = 0; i < nblock; i++) {
+S872,BlockSort.java,478,eclass[i] = 0;
+S873,BlockSort.java,484,for (i = 0; i < nblock; i++) {
+S874,BlockSort.java,485,ftab[block[i] & 0xff]++;
+S875,BlockSort.java,487,for (i = 1; i < 257;    i++) {
+S876,BlockSort.java,488,ftab[i] += ftab[i - 1];
+S877,BlockSort.java,491,for (i = 0; i < nblock; i++) {
+S878,BlockSort.java,492,j = block[i] & 0xff;
+S879,BlockSort.java,493,k = ftab[j] - 1;
+S880,BlockSort.java,494,ftab[j] = k;
+S881,BlockSort.java,495,fmap[k] = i;
+S882,BlockSort.java,498,nBhtab = 64 + nblock;
+S883,BlockSort.java,499,BitSet bhtab = new BitSet(nBhtab);
+S884,BlockSort.java,500,for (i = 0; i < 256; i++) {
+S885,BlockSort.java,501,bhtab.set(ftab[i]);
+S886,BlockSort.java,511,for (i = 0; i < 32; i++) {
+S887,BlockSort.java,512,bhtab.set(nblock + 2 * i);
+S888,BlockSort.java,513,bhtab.clear(nblock + 2 * i + 1);
+S889,BlockSort.java,517,H = 1;
+S890,BlockSort.java,520,j = 0;
+S891,BlockSort.java,521,for (i = 0; i < nblock; i++) {
+S892,BlockSort.java,522,if (bhtab.get(i)) {
+S893,BlockSort.java,523,j = i;
+S894,BlockSort.java,525,k = fmap[i] - H;
+S895,BlockSort.java,526,if (k < 0) {
+S896,BlockSort.java,527,k += nblock;
+S897,BlockSort.java,529,eclass[k] = j;
+S898,BlockSort.java,532,nNotDone = 0;
+S899,BlockSort.java,533,r = -1;
+S900,BlockSort.java,537,k = r + 1;
+S901,BlockSort.java,538,k = bhtab.nextClearBit(k);
+S902,BlockSort.java,539,l = k - 1;
+S903,BlockSort.java,540,if (l >= nblock) {
+S904,BlockSort.java,541,break;
+S905,BlockSort.java,543,k = bhtab.nextSetBit(k + 1);
+S906,BlockSort.java,544,r = k - 1;
+S907,BlockSort.java,545,if (r >= nblock) {
+S908,BlockSort.java,550,if (r > l) {
+S909,BlockSort.java,551,nNotDone += (r - l + 1);
+S910,BlockSort.java,552,"fallbackQSort3(fmap, eclass, l, r);"
+S911,BlockSort.java,555,cc = -1;
+S912,BlockSort.java,556,for (i = l; i <= r; i++) {
+S913,BlockSort.java,557,cc1 = eclass[fmap[i]];
+S914,BlockSort.java,558,if (cc != cc1) {
+S915,BlockSort.java,559,bhtab.set(i);
+S916,BlockSort.java,560,cc = cc1;
+S917,BlockSort.java,566,H *= 2;
+S918,BlockSort.java,567,if (H > nblock || nNotDone == 0) {
+S919,BlockSort.java,568,break;
+S920,BlockSort.java,580,"private static final int[] INCS = { 1, 4, 13, 40, 121, 364, 1093, 3280,"
+S921,BoundedInputStream.java,38,"public BoundedInputStream(final InputStream in, final long size) {"
+S922,BoundedInputStream.java,39,this.in = in;
+S923,BoundedInputStream.java,40,bytesRemaining = size;
+S924,BoundedInputStream.java,45,if (bytesRemaining > 0) {
+S925,BoundedInputStream.java,46,--bytesRemaining;
+S926,BoundedInputStream.java,47,return in.read();
+S927,BoundedInputStream.java,49,return -1;
+S928,BoundedInputStream.java,55,if (bytesRemaining == 0) {
+S929,BoundedInputStream.java,58,int bytesToRead = len;
+S930,BoundedInputStream.java,59,if (bytesToRead > bytesRemaining) {
+S931,BoundedInputStream.java,62,"final int bytesRead = in.read(b, off, bytesToRead);"
+S932,BoundedInputStream.java,63,if (bytesRead >= 0) {
+S933,BoundedInputStream.java,64,bytesRemaining -= bytesRead;
+S934,BoundedInputStream.java,66,return bytesRead;
+S935,BoundedRandomAccessFileInputStream.java,29,final long size) {
+S936,BoundedRandomAccessFileInputStream.java,30,this.file = file;
+S937,BoundedRandomAccessFileInputStream.java,31,this.bytesRemaining = size;
+S938,BoundedRandomAccessFileInputStream.java,36,if (bytesRemaining > 0) {
+S939,BoundedRandomAccessFileInputStream.java,37,--bytesRemaining;
+S940,BoundedRandomAccessFileInputStream.java,38,return file.read();
+S941,BoundedRandomAccessFileInputStream.java,46,if (bytesRemaining == 0) {
+S942,BoundedRandomAccessFileInputStream.java,49,int bytesToRead = len;
+S943,BoundedRandomAccessFileInputStream.java,50,if (bytesToRead > bytesRemaining) {
+S944,BoundedRandomAccessFileInputStream.java,51,bytesToRead = (int) bytesRemaining;
+S945,BoundedRandomAccessFileInputStream.java,53,"final int bytesRead = file.read(b, off, bytesToRead);"
+S946,BoundedRandomAccessFileInputStream.java,54,if (bytesRead >= 0) {
+S947,BoundedRandomAccessFileInputStream.java,55,bytesRemaining -= bytesRead;
+S948,BoundedRandomAccessFileInputStream.java,57,return bytesRead;
+S949,CRC.java,27,private static final int crc32Table[] = {
+S950,CRC.java,94,CRC() {
+S951,CRC.java,95,initialiseCRC();
+S952,CRC.java,99,globalCrc = 0xffffffff;
+S953,CRC.java,103,return ~globalCrc;
+S954,CRC.java,123,int globalCrcShadow = this.globalCrc;
+S955,CRC.java,124,while (repeat-- > 0) {
+S956,CRC.java,125,int temp = (globalCrcShadow >> 24) ^ inCh;
+S957,CRC.java,126,globalCrcShadow = (globalCrcShadow << 8) ^ crc32Table[(temp >= 0)
+S958,CRC.java,130,this.globalCrc = globalCrcShadow;
+S959,CRC32VerifyingInputStream.java,39,"super(new CRC32(), in, size, expectedCrc32);"
+S960,ChecksumVerifyingInputStream.java,37,"final long size, final long expectedChecksum) {"
+S961,ChecksumVerifyingInputStream.java,38,this.checksum = checksum;
+S962,ChecksumVerifyingInputStream.java,39,this.in = in;
+S963,ChecksumVerifyingInputStream.java,40,this.expectedChecksum = expectedChecksum;
+S964,ChecksumVerifyingInputStream.java,41,this.bytesRemaining = size;
+S965,ChecksumVerifyingInputStream.java,52,if (bytesRemaining <= 0) {
+S966,ChecksumVerifyingInputStream.java,53,return -1;
+S967,ChecksumVerifyingInputStream.java,55,int ret = in.read();
+S968,ChecksumVerifyingInputStream.java,56,if (ret >= 0) {
+S969,ChecksumVerifyingInputStream.java,57,checksum.update(ret);
+S970,ChecksumVerifyingInputStream.java,58,--bytesRemaining;
+S971,ChecksumVerifyingInputStream.java,60,if (bytesRemaining == 0 && expectedChecksum != checksum.getValue()) {
+S972,ChecksumVerifyingInputStream.java,63,return ret;
+S973,ChecksumVerifyingInputStream.java,85,"int ret = in.read(b, off, len);"
+S974,ChecksumVerifyingInputStream.java,86,if (ret >= 0) {
+S975,ChecksumVerifyingInputStream.java,87,"checksum.update(b, off, ret);"
+S976,ChecksumVerifyingInputStream.java,88,bytesRemaining -= ret;
+S977,ChecksumVerifyingInputStream.java,90,if (bytesRemaining <= 0 && expectedChecksum != checksum.getValue()) {
+S978,ChecksumVerifyingInputStream.java,93,return ret;
+S979,ChecksumVerifyingInputStream.java,99,if (read() >= 0) {
+S980,ChecksumVerifyingInputStream.java,100,return 1;
+S981,ChecksumVerifyingInputStream.java,102,return 0;
+S982,ChecksumVerifyingInputStream.java,108,in.close();
+S983,Coder.java,20,class Coder {
+S984,Coder.java,24,byte[] properties = null;
+S985,Coders.java,46,for (final CoderId coderId : coderTable) {
+S986,Coders.java,47,"if (Arrays.equals(coderId.method.getId(), coder.decompressionMethodId)) {"
+S987,Coders.java,48,"return coderId.coder.decode(is, coder, password);"
+S988,Coders.java,57,for (final CoderId coderId : coderTable) {
+S989,Coders.java,58,if (coderId.method.equals(method)) {
+S990,Coders.java,59,"return coderId.coder.encode(out, password);"
+S991,Coders.java,65,static CoderId[] coderTable = new CoderId[] {
+S992,Coders.java,75,"CoderId(SevenZMethod method, final CoderBase coder) {"
+S993,Coders.java,76,this.method = method;
+S994,Coders.java,77,this.coder = coder;
+S995,Coders.java,84,static abstract class CoderBase {
+S996,Coders.java,93,static class CopyDecoder extends CoderBase {
+S997,Coders.java,97,return in;
+S998,Coders.java,101,return out;
+S999,Coders.java,105,static class LZMADecoder extends CoderBase {
+S1000,Coders.java,109,byte propsByte = coder.properties[0];
+S1001,Coders.java,110,long dictSize = coder.properties[1];
+S1002,Coders.java,111,for (int i = 1; i < 4; i++) {
+S1003,Coders.java,112,dictSize |= (coder.properties[i + 1] << (8 * i));
+S1004,Coders.java,114,if (dictSize > LZMAInputStream.DICT_SIZE_MAX) {
+S1005,Coders.java,117,"return new LZMAInputStream(in, -1, propsByte, (int) dictSize);"
+S1006,Coders.java,121,static class DeflateDecoder extends CoderBase {
+S1007,Coders.java,125,"return new InflaterInputStream(new DummyByteAddingInputStream(in),"
+S1008,Coders.java,130,"return new DeflaterOutputStream(out, new Deflater(9, true));"
+S1009,Coders.java,134,static class BZIP2Decoder extends CoderBase {
+S1010,Coders.java,138,return new BZip2CompressorInputStream(in);
+S1011,Coders.java,143,return new BZip2CompressorOutputStream(out);
+S1012,Coders.java,147,static class AES256SHA256Decoder extends CoderBase {
+S1013,Coders.java,151,return new InputStream() {
+S1014,Coders.java,152,private boolean isInitialized = false;
+S1015,Coders.java,153,private CipherInputStream cipherInputStream = null;
+S1016,Coders.java,156,if (isInitialized) {
+S1017,Coders.java,157,return cipherInputStream;
+S1018,Coders.java,159,final int byte0 = 0xff & coder.properties[0];
+S1019,Coders.java,160,final int numCyclesPower = byte0 & 0x3f;
+S1020,Coders.java,161,final int byte1 = 0xff & coder.properties[1];
+S1021,Coders.java,162,final int ivSize = ((byte0 >> 6) & 1) + (byte1 & 0x0f);
+S1022,Coders.java,163,final int saltSize = ((byte0 >> 7) & 1) + (byte1 >> 4);
+S1023,Coders.java,164,if (2 + saltSize + ivSize > coder.properties.length) {
+S1024,Coders.java,167,final byte[] salt = new byte[saltSize];
+S1025,Coders.java,168,"System.arraycopy(coder.properties, 2, salt, 0, saltSize);"
+S1026,Coders.java,169,final byte[] iv = new byte[16];
+S1027,Coders.java,170,"System.arraycopy(coder.properties, 2 + saltSize, iv, 0, ivSize);"
+S1028,Coders.java,172,if (passwordBytes == null) {
+S1029,Coders.java,173,"throw new IOException(""Cannot read encrypted files without a password"");"
+S1030,Coders.java,176,if (numCyclesPower == 0x3f) {
+S1031,Coders.java,184,"digest = MessageDigest.getInstance(""SHA-256"");"
+S1032,Coders.java,193,final byte[] extra = new byte[8];
+S1033,Coders.java,194,for (long j = 0; j < (1L << numCyclesPower); j++) {
+S1034,Coders.java,195,digest.update(salt);
+S1035,Coders.java,196,digest.update(passwordBytes);
+S1036,Coders.java,197,digest.update(extra);
+S1037,Coders.java,198,for (int k = 0; k < extra.length; k++) {
+S1038,Coders.java,199,++extra[k];
+S1039,Coders.java,200,if (extra[k] != 0) {
+S1040,Coders.java,201,break;
+S1041,Coders.java,205,aesKeyBytes = digest.digest();
+S1042,Coders.java,208,"final SecretKey aesKey = new SecretKeySpec(aesKeyBytes, ""AES"");"
+S1043,Coders.java,210,"final Cipher cipher = Cipher.getInstance(""AES/CBC/NoPadding"");"
+S1044,Coders.java,211,"cipher.init(Cipher.DECRYPT_MODE, aesKey, new IvParameterSpec(iv));"
+S1045,Coders.java,212,"cipherInputStream = new CipherInputStream(in, cipher);"
+S1046,Coders.java,213,isInitialized = true;
+S1047,Coders.java,214,return cipherInputStream;
+S1048,Coders.java,229,return init().read();
+S1049,Coders.java,250,private static class DummyByteAddingInputStream extends FilterInputStream {
+S1050,Coders.java,251,private boolean addDummyByte = true;
+S1051,Coders.java,254,super(in);
+S1052,Coders.java,269,"int result = super.read(b, off, len);"
+S1053,Coders.java,270,if (result == -1 && addDummyByte) {
+S1054,Coders.java,275,return result;
+S1055,CompressorInputStream.java,23,public abstract class CompressorInputStream extends InputStream {
+S1056,CompressorInputStream.java,24,private long bytesRead = 0;
+S1057,CompressorOutputStream.java,23,public abstract class CompressorOutputStream extends OutputStream {
+S1058,CountingOutputStream.java,31,private long bytesWritten = 0;
+S1059,CountingOutputStream.java,34,super(out);
+S1060,CountingOutputStream.java,39,out.write(b);
+S1061,CountingOutputStream.java,40,count(1);
+S1062,CountingOutputStream.java,48,"out.write(b, off, len);"
+S1063,CountingOutputStream.java,49,count(len);
+S1064,CountingOutputStream.java,59,if (written != -1) {
+S1065,CountingOutputStream.java,60,bytesWritten += written;
+S1066,CountingOutputStream.java,69,return bytesWritten;
+S1067,Folder.java,23,class Folder {
+S1068,Folder.java,45,for (int i = 0; i < bindPairs.length; i++) {
+S1069,Folder.java,46,if (bindPairs[i].inIndex == index) {
+S1070,Folder.java,50,return -1;
+S1071,Folder.java,54,for (int i = 0; i < bindPairs.length; i++) {
+S1072,Folder.java,55,if (bindPairs[i].outIndex == index) {
+S1073,Folder.java,59,return -1;
+S1074,Folder.java,63,if (totalOutputStreams == 0) {
+S1075,Folder.java,66,for (int i = ((int)totalOutputStreams) - 1; i >= 0; i--) {
+S1076,Folder.java,67,if (findBindPairForOutStream(i) < 0) {
+S1077,Folder.java,68,return unpackSizes[i];
+S1078,IOUtils.java,88,long available = numToSkip;
+S1079,IOUtils.java,89,while (numToSkip > 0) {
+S1080,IOUtils.java,90,long skipped = input.skip(numToSkip);
+S1081,IOUtils.java,91,if (skipped == 0) {
+S1082,IOUtils.java,92,break;
+S1083,IOUtils.java,94,numToSkip -= skipped;
+S1084,IOUtils.java,96,return available - numToSkip;
+S1085,LZMA2Decoder.java,28,class LZMA2Decoder extends Coders.CoderBase {
+S1086,LZMA2Decoder.java,32,final int dictionarySizeBits = 0xff & coder.properties[0];
+S1087,LZMA2Decoder.java,33,if ((dictionarySizeBits & (~0x3f)) != 0) {
+S1088,LZMA2Decoder.java,36,if (dictionarySizeBits > 40) {
+S1089,LZMA2Decoder.java,40,if (dictionarySizeBits == 40) {
+S1090,LZMA2Decoder.java,43,dictionarySize = (2 | (dictionarySizeBits & 0x1)) << (dictionarySizeBits / 2 + 11);
+S1091,LZMA2Decoder.java,45,"return new LZMA2InputStream(in, dictionarySize);"
+S1092,LZMA2Decoder.java,51,LZMA2Options options = new LZMA2Options();
+S1093,LZMA2Decoder.java,52,options.setDictSize(LZMA2Options.DICT_SIZE_DEFAULT);
+S1094,LZMA2Decoder.java,53,FinishableOutputStream wrapped = new FinishableWrapperOutputStream(out);
+S1095,LZMA2Decoder.java,54,return options.getOutputStream(wrapped);
+S1096,SevenZArchiveEntry.java,49,public SevenZArchiveEntry() {
+S1097,SevenZArchiveEntry.java,58,return name;
+S1098,SevenZArchiveEntry.java,67,this.name = name;
+S1099,SevenZArchiveEntry.java,75,return hasStream;
+S1100,SevenZArchiveEntry.java,83,this.hasStream = hasStream;
+S1101,SevenZArchiveEntry.java,92,return isDirectory;
+S1102,SevenZArchiveEntry.java,101,this.isDirectory = isDirectory;
+S1103,SevenZArchiveEntry.java,110,return isAntiItem;
+S1104,SevenZArchiveEntry.java,119,this.isAntiItem = isAntiItem;
+S1105,SevenZArchiveEntry.java,126,return hasCreationDate;
+S1106,SevenZArchiveEntry.java,133,this.hasCreationDate = hasCreationDate;
+S1107,SevenZArchiveEntry.java,142,if (hasCreationDate) {
+S1108,SevenZArchiveEntry.java,143,return ntfsTimeToJavaTime(creationDate);
+S1109,SevenZArchiveEntry.java,155,this.creationDate = ntfsCreationDate;
+S1110,SevenZArchiveEntry.java,162,hasCreationDate = creationDate != null;
+S1111,SevenZArchiveEntry.java,163,if (hasCreationDate) {
+S1112,SevenZArchiveEntry.java,164,this.creationDate = javaTimeToNtfsTime(creationDate);
+S1113,SevenZArchiveEntry.java,172,return hasLastModifiedDate;
+S1114,SevenZArchiveEntry.java,179,this.hasLastModifiedDate = hasLastModifiedDate;
+S1115,SevenZArchiveEntry.java,188,if (hasLastModifiedDate) {
+S1116,SevenZArchiveEntry.java,189,return ntfsTimeToJavaTime(lastModifiedDate);
+S1117,SevenZArchiveEntry.java,201,this.lastModifiedDate = ntfsLastModifiedDate;
+S1118,SevenZArchiveEntry.java,208,hasLastModifiedDate = lastModifiedDate != null;
+S1119,SevenZArchiveEntry.java,209,if (hasLastModifiedDate) {
+S1120,SevenZArchiveEntry.java,210,this.lastModifiedDate = javaTimeToNtfsTime(lastModifiedDate);
+S1121,SevenZArchiveEntry.java,218,return hasAccessDate;
+S1122,SevenZArchiveEntry.java,225,this.hasAccessDate = hasAcessDate;
+S1123,SevenZArchiveEntry.java,234,if (hasAccessDate) {
+S1124,SevenZArchiveEntry.java,235,return ntfsTimeToJavaTime(accessDate);
+S1125,SevenZArchiveEntry.java,247,this.accessDate = ntfsAccessDate;
+S1126,SevenZArchiveEntry.java,254,hasAccessDate = accessDate != null;
+S1127,SevenZArchiveEntry.java,255,if (hasAccessDate) {
+S1128,SevenZArchiveEntry.java,256,this.accessDate = javaTimeToNtfsTime(accessDate);
+S1129,SevenZArchiveEntry.java,264,return hasWindowsAttributes;
+S1130,SevenZArchiveEntry.java,271,this.hasWindowsAttributes = hasWindowsAttributes;
+S1131,SevenZArchiveEntry.java,278,return windowsAttributes;
+S1132,SevenZArchiveEntry.java,285,this.windowsAttributes = windowsAttributes;
+S1133,SevenZArchiveEntry.java,294,return hasCrc;
+S1134,SevenZArchiveEntry.java,301,this.hasCrc = hasCrc;
+S1135,SevenZArchiveEntry.java,327,return crc;
+S1136,SevenZArchiveEntry.java,335,this.crc = crc;
+S1137,SevenZArchiveEntry.java,361,return compressedCrc;
+S1138,SevenZArchiveEntry.java,369,this.compressedCrc = crc;
+S1139,SevenZArchiveEntry.java,378,return size;
+S1140,SevenZArchiveEntry.java,387,this.size = size;
+S1141,SevenZArchiveEntry.java,396,return compressedSize;
+S1142,SevenZArchiveEntry.java,405,this.compressedSize = size;
+S1143,SevenZArchiveEntry.java,415,final Calendar ntfsEpoch = Calendar.getInstance();
+S1144,SevenZArchiveEntry.java,416,"ntfsEpoch.setTimeZone(TimeZone.getTimeZone(""GMT+0""));"
+S1145,SevenZArchiveEntry.java,417,"ntfsEpoch.set(1601, 0, 1, 0, 0, 0);"
+S1146,SevenZArchiveEntry.java,418,"ntfsEpoch.set(Calendar.MILLISECOND, 0);"
+S1147,SevenZArchiveEntry.java,419,final long realTime = ntfsEpoch.getTimeInMillis() + (ntfsTime / (10*1000));
+S1148,SevenZArchiveEntry.java,420,return new Date(realTime);
+S1149,SevenZArchiveEntry.java,429,final Calendar ntfsEpoch = Calendar.getInstance();
+S1150,SevenZArchiveEntry.java,430,"ntfsEpoch.setTimeZone(TimeZone.getTimeZone(""GMT+0""));"
+S1151,SevenZArchiveEntry.java,431,"ntfsEpoch.set(1601, 0, 1, 0, 0, 0);"
+S1152,SevenZArchiveEntry.java,432,"ntfsEpoch.set(Calendar.MILLISECOND, 0);"
+S1153,SevenZArchiveEntry.java,433,return ((date.getTime() - ntfsEpoch.getTimeInMillis())* 1000 * 10);
+S1154,SevenZFile.java,71,private int currentEntryIndex = -1;
+S1155,SevenZFile.java,72,private int currentFolderIndex = -1;
+S1156,SevenZFile.java,73,private InputStream currentFolderInputStream = null;
+S1157,SevenZFile.java,74,private InputStream currentEntryInputStream = null;
+S1158,SevenZFile.java,77,static final byte[] sevenZSignature = {
+S1159,SevenZFile.java,90,"public SevenZFile(final File filename, final byte[] password) throws IOException {"
+S1160,SevenZFile.java,91,boolean succeeded = false;
+S1161,SevenZFile.java,92,"this.file = new RandomAccessFile(filename, ""r"");"
+S1162,SevenZFile.java,94,archive = readHeaders(password);
+S1163,SevenZFile.java,95,if (password != null) {
+S1164,SevenZFile.java,96,this.password = new byte[password.length];
+S1165,SevenZFile.java,97,"System.arraycopy(password, 0, this.password, 0, password.length);"
+S1166,SevenZFile.java,99,this.password = null;
+S1167,SevenZFile.java,101,succeeded = true;
+S1168,SevenZFile.java,103,if (!succeeded) {
+S1169,SevenZFile.java,104,this.file.close();
+S1170,SevenZFile.java,116,"this(filename, null);"
+S1171,SevenZFile.java,124,if (file != null) {
+S1172,SevenZFile.java,126,file.close();
+S1173,SevenZFile.java,128,file = null;
+S1174,SevenZFile.java,129,if (password != null) {
+S1175,SevenZFile.java,130,"Arrays.fill(password, (byte) 0);"
+S1176,SevenZFile.java,132,password = null;
+S1177,SevenZFile.java,145,if (currentEntryIndex >= archive.files.length - 1) {
+S1178,SevenZFile.java,146,return null;
+S1179,SevenZFile.java,148,++currentEntryIndex;
+S1180,SevenZFile.java,149,final SevenZArchiveEntry entry = archive.files[currentEntryIndex];
+S1181,SevenZFile.java,150,buildDecodingStream();
+S1182,SevenZFile.java,151,return entry;
+S1183,SevenZFile.java,155,final byte[] signature = new byte[6];
+S1184,SevenZFile.java,156,file.readFully(signature);
+S1185,SevenZFile.java,157,"if (!Arrays.equals(signature, sevenZSignature)) {"
+S1186,SevenZFile.java,161,final byte archiveVersionMajor = file.readByte();
+S1187,SevenZFile.java,162,final byte archiveVersionMinor = file.readByte();
+S1188,SevenZFile.java,163,if (archiveVersionMajor != 0) {
+S1189,SevenZFile.java,168,final long startHeaderCrc = 0xffffFFFFL & Integer.reverseBytes(file.readInt());
+S1190,SevenZFile.java,169,final StartHeader startHeader = readStartHeader(startHeaderCrc);
+S1191,SevenZFile.java,171,final int nextHeaderSizeInt = (int) startHeader.nextHeaderSize;
+S1192,SevenZFile.java,172,if (nextHeaderSizeInt != startHeader.nextHeaderSize) {
+S1193,SevenZFile.java,175,file.seek(SIGNATURE_HEADER_SIZE + startHeader.nextHeaderOffset);
+S1194,SevenZFile.java,176,final byte[] nextHeader = new byte[nextHeaderSizeInt];
+S1195,SevenZFile.java,177,file.readFully(nextHeader);
+S1196,SevenZFile.java,178,final CRC32 crc = new CRC32();
+S1197,SevenZFile.java,179,crc.update(nextHeader);
+S1198,SevenZFile.java,180,if (startHeader.nextHeaderCrc != crc.getValue()) {
+S1199,SevenZFile.java,184,final ByteArrayInputStream byteStream = new ByteArrayInputStream(nextHeader);
+S1200,SevenZFile.java,185,DataInputStream nextHeaderInputStream = new DataInputStream(
+S1201,SevenZFile.java,187,Archive archive = new Archive();
+S1202,SevenZFile.java,188,int nid = nextHeaderInputStream.readUnsignedByte();
+S1203,SevenZFile.java,189,if (nid == NID.kEncodedHeader) {
+S1204,SevenZFile.java,190,nextHeaderInputStream =
+S1205,SevenZFile.java,193,archive = new Archive();
+S1206,SevenZFile.java,194,nid = nextHeaderInputStream.readUnsignedByte();
+S1207,SevenZFile.java,196,if (nid == NID.kHeader) {
+S1208,SevenZFile.java,197,"readHeader(nextHeaderInputStream, archive);"
+S1209,SevenZFile.java,198,nextHeaderInputStream.close();
+S1210,SevenZFile.java,202,return archive;
+S1211,SevenZFile.java,206,final StartHeader startHeader = new StartHeader();
+S1212,SevenZFile.java,207,DataInputStream dataInputStream = null;
+S1213,SevenZFile.java,209,dataInputStream = new DataInputStream(new CRC32VerifyingInputStream(
+S1214,SevenZFile.java,211,startHeader.nextHeaderOffset = Long.reverseBytes(dataInputStream.readLong());
+S1215,SevenZFile.java,212,startHeader.nextHeaderSize = Long.reverseBytes(dataInputStream.readLong());
+S1216,SevenZFile.java,213,startHeader.nextHeaderCrc = 0xffffFFFFL & Integer.reverseBytes(dataInputStream.readInt());
+S1217,SevenZFile.java,214,return startHeader;
+S1218,SevenZFile.java,216,if (dataInputStream != null) {
+S1219,SevenZFile.java,217,dataInputStream.close();
+S1220,SevenZFile.java,223,int nid = header.readUnsignedByte();
+S1221,SevenZFile.java,225,if (nid == NID.kArchiveProperties) {
+S1222,SevenZFile.java,230,if (nid == NID.kAdditionalStreamsInfo) {
+S1223,SevenZFile.java,235,if (nid == NID.kMainStreamsInfo) {
+S1224,SevenZFile.java,236,"readStreamsInfo(header, archive);"
+S1225,SevenZFile.java,237,nid = header.readUnsignedByte();
+S1226,SevenZFile.java,240,if (nid == NID.kFilesInfo) {
+S1227,SevenZFile.java,241,"readFilesInfo(header, archive);"
+S1228,SevenZFile.java,242,nid = header.readUnsignedByte();
+S1229,SevenZFile.java,245,if (nid != NID.kEnd) {
+S1230,SevenZFile.java,263,"readStreamsInfo(header, archive);"
+S1231,SevenZFile.java,266,final Folder folder = archive.folders[0];
+S1232,SevenZFile.java,267,final int firstPackStreamIndex = 0;
+S1233,SevenZFile.java,268,final long folderOffset = SIGNATURE_HEADER_SIZE + archive.packPos +
+S1234,SevenZFile.java,271,file.seek(folderOffset);
+S1235,SevenZFile.java,272,"InputStream inputStreamStack = new BoundedRandomAccessFileInputStream(file,"
+S1236,SevenZFile.java,274,for (final Coder coder : folder.coders) {
+S1237,SevenZFile.java,275,if (coder.numInStreams != 1 || coder.numOutStreams != 1) {
+S1238,SevenZFile.java,278,"inputStreamStack = Coders.addDecoder(inputStreamStack, coder, password);"
+S1239,SevenZFile.java,280,if (folder.hasCrc) {
+S1240,SevenZFile.java,281,"inputStreamStack = new CRC32VerifyingInputStream(inputStreamStack,"
+S1241,SevenZFile.java,284,final byte[] nextHeader = new byte[(int)folder.getUnpackSize()];
+S1242,SevenZFile.java,285,final DataInputStream nextHeaderInputStream = new DataInputStream(inputStreamStack);
+S1243,SevenZFile.java,287,nextHeaderInputStream.readFully(nextHeader);
+S1244,SevenZFile.java,289,nextHeaderInputStream.close();
+S1245,SevenZFile.java,291,return new DataInputStream(new ByteArrayInputStream(nextHeader));
+S1246,SevenZFile.java,295,int nid = header.readUnsignedByte();
+S1247,SevenZFile.java,297,if (nid == NID.kPackInfo) {
+S1248,SevenZFile.java,298,"readPackInfo(header, archive);"
+S1249,SevenZFile.java,299,nid = header.readUnsignedByte();
+S1250,SevenZFile.java,302,if (nid == NID.kUnpackInfo) {
+S1251,SevenZFile.java,303,"readUnpackInfo(header, archive);"
+S1252,SevenZFile.java,304,nid = header.readUnsignedByte();
+S1253,SevenZFile.java,307,archive.folders = new Folder[0];
+S1254,SevenZFile.java,310,if (nid == NID.kSubStreamsInfo) {
+S1255,SevenZFile.java,311,"readSubStreamsInfo(header, archive);"
+S1256,SevenZFile.java,312,nid = header.readUnsignedByte();
+S1257,SevenZFile.java,315,if (nid != NID.kEnd) {
+S1258,SevenZFile.java,321,archive.packPos = readUint64(header);
+S1259,SevenZFile.java,322,final long numPackStreams = readUint64(header);
+S1260,SevenZFile.java,323,int nid = header.readUnsignedByte();
+S1261,SevenZFile.java,324,if (nid == NID.kSize) {
+S1262,SevenZFile.java,325,archive.packSizes = new long[(int)numPackStreams];
+S1263,SevenZFile.java,326,for (int i = 0; i < archive.packSizes.length; i++) {
+S1264,SevenZFile.java,327,archive.packSizes[i] = readUint64(header);
+S1265,SevenZFile.java,329,nid = header.readUnsignedByte();
+S1266,SevenZFile.java,332,if (nid == NID.kCRC) {
+S1267,SevenZFile.java,333,"archive.packCrcsDefined = readAllOrBits(header, (int)numPackStreams);"
+S1268,SevenZFile.java,334,archive.packCrcs = new long[(int)numPackStreams];
+S1269,SevenZFile.java,335,for (int i = 0; i < (int)numPackStreams; i++) {
+S1270,SevenZFile.java,336,if (archive.packCrcsDefined.get(i)) {
+S1271,SevenZFile.java,337,archive.packCrcs[i] = 0xffffFFFFL & Integer.reverseBytes(header.readInt());
+S1272,SevenZFile.java,341,nid = header.readUnsignedByte();
+S1273,SevenZFile.java,344,if (nid != NID.kEnd) {
+S1274,SevenZFile.java,350,int nid = header.readUnsignedByte();
+S1275,SevenZFile.java,351,if (nid != NID.kFolder) {
+S1276,SevenZFile.java,354,final long numFolders = readUint64(header);
+S1277,SevenZFile.java,355,final Folder[] folders = new Folder[(int)numFolders];
+S1278,SevenZFile.java,356,archive.folders = folders;
+S1279,SevenZFile.java,357,final int external = header.readUnsignedByte();
+S1280,SevenZFile.java,358,if (external != 0) {
+S1281,SevenZFile.java,361,for (int i = 0; i < (int)numFolders; i++) {
+S1282,SevenZFile.java,362,folders[i] = readFolder(header);
+S1283,SevenZFile.java,366,nid = header.readUnsignedByte();
+S1284,SevenZFile.java,367,if (nid != NID.kCodersUnpackSize) {
+S1285,SevenZFile.java,370,for (final Folder folder : folders) {
+S1286,SevenZFile.java,371,folder.unpackSizes = new long[(int)folder.totalOutputStreams];
+S1287,SevenZFile.java,372,for (int i = 0; i < folder.totalOutputStreams; i++) {
+S1288,SevenZFile.java,373,folder.unpackSizes[i] = readUint64(header);
+S1289,SevenZFile.java,377,nid = header.readUnsignedByte();
+S1290,SevenZFile.java,378,if (nid == NID.kCRC) {
+S1291,SevenZFile.java,379,"final BitSet crcsDefined = readAllOrBits(header, (int)numFolders);"
+S1292,SevenZFile.java,380,for (int i = 0; i < (int)numFolders; i++) {
+S1293,SevenZFile.java,381,if (crcsDefined.get(i)) {
+S1294,SevenZFile.java,382,folders[i].hasCrc = true;
+S1295,SevenZFile.java,383,folders[i].crc = 0xffffFFFFL & Integer.reverseBytes(header.readInt());
+S1296,SevenZFile.java,389,nid = header.readUnsignedByte();
+S1297,SevenZFile.java,392,if (nid != NID.kEnd) {
+S1298,SevenZFile.java,398,for (final Folder folder : archive.folders) {
+S1299,SevenZFile.java,399,folder.numUnpackSubStreams = 1;
+S1300,SevenZFile.java,401,int totalUnpackStreams = archive.folders.length;
+S1301,SevenZFile.java,403,int nid = header.readUnsignedByte();
+S1302,SevenZFile.java,404,if (nid == NID.kNumUnpackStream) {
+S1303,SevenZFile.java,405,totalUnpackStreams = 0;
+S1304,SevenZFile.java,406,for (final Folder folder : archive.folders) {
+S1305,SevenZFile.java,407,final long numStreams = readUint64(header);
+S1306,SevenZFile.java,408,folder.numUnpackSubStreams = (int)numStreams;
+S1307,SevenZFile.java,409,totalUnpackStreams += numStreams;
+S1308,SevenZFile.java,411,nid = header.readUnsignedByte();
+S1309,SevenZFile.java,414,final SubStreamsInfo subStreamsInfo = new SubStreamsInfo();
+S1310,SevenZFile.java,415,subStreamsInfo.unpackSizes = new long[totalUnpackStreams];
+S1311,SevenZFile.java,416,subStreamsInfo.hasCrc = new BitSet(totalUnpackStreams);
+S1312,SevenZFile.java,417,subStreamsInfo.crcs = new long[totalUnpackStreams];
+S1313,SevenZFile.java,419,int nextUnpackStream = 0;
+S1314,SevenZFile.java,420,for (final Folder folder : archive.folders) {
+S1315,SevenZFile.java,421,if (folder.numUnpackSubStreams == 0) {
+S1316,SevenZFile.java,424,long sum = 0;
+S1317,SevenZFile.java,425,if (nid == NID.kSize) {
+S1318,SevenZFile.java,426,for (int i = 0; i < folder.numUnpackSubStreams - 1; i++) {
+S1319,SevenZFile.java,427,final long size = readUint64(header);
+S1320,SevenZFile.java,428,subStreamsInfo.unpackSizes[nextUnpackStream++] = size;
+S1321,SevenZFile.java,429,sum += size;
+S1322,SevenZFile.java,432,subStreamsInfo.unpackSizes[nextUnpackStream++] = folder.getUnpackSize() - sum;
+S1323,SevenZFile.java,434,if (nid == NID.kSize) {
+S1324,SevenZFile.java,435,nid = header.readUnsignedByte();
+S1325,SevenZFile.java,438,int numDigests = 0;
+S1326,SevenZFile.java,439,for (final Folder folder : archive.folders) {
+S1327,SevenZFile.java,440,if (folder.numUnpackSubStreams != 1 || !folder.hasCrc) {
+S1328,SevenZFile.java,441,numDigests += folder.numUnpackSubStreams;
+S1329,SevenZFile.java,445,if (nid == NID.kCRC) {
+S1330,SevenZFile.java,446,"final BitSet hasMissingCrc = readAllOrBits(header, numDigests);"
+S1331,SevenZFile.java,447,final long[] missingCrcs = new long[numDigests];
+S1332,SevenZFile.java,448,for (int i = 0; i < numDigests; i++) {
+S1333,SevenZFile.java,449,if (hasMissingCrc.get(i)) {
+S1334,SevenZFile.java,450,missingCrcs[i] = 0xffffFFFFL & Integer.reverseBytes(header.readInt());
+S1335,SevenZFile.java,453,int nextCrc = 0;
+S1336,SevenZFile.java,454,int nextMissingCrc = 0;
+S1337,SevenZFile.java,455,for (final Folder folder: archive.folders) {
+S1338,SevenZFile.java,456,if (folder.numUnpackSubStreams == 1 && folder.hasCrc) {
+S1339,SevenZFile.java,461,for (int i = 0; i < folder.numUnpackSubStreams; i++) {
+S1340,SevenZFile.java,462,"subStreamsInfo.hasCrc.set(nextCrc, hasMissingCrc.get(nextMissingCrc));"
+S1341,SevenZFile.java,463,subStreamsInfo.crcs[nextCrc] = missingCrcs[nextMissingCrc];
+S1342,SevenZFile.java,464,++nextCrc;
+S1343,SevenZFile.java,465,++nextMissingCrc;
+S1344,SevenZFile.java,470,nid = header.readUnsignedByte();
+S1345,SevenZFile.java,473,if (nid != NID.kEnd) {
+S1346,SevenZFile.java,477,archive.subStreamsInfo = subStreamsInfo;
+S1347,SevenZFile.java,481,final Folder folder = new Folder();
+S1348,SevenZFile.java,483,final long numCoders = readUint64(header);
+S1349,SevenZFile.java,484,final Coder[] coders = new Coder[(int)numCoders];
+S1350,SevenZFile.java,485,long totalInStreams = 0;
+S1351,SevenZFile.java,486,long totalOutStreams = 0;
+S1352,SevenZFile.java,487,for (int i = 0; i < coders.length; i++) {
+S1353,SevenZFile.java,488,coders[i] = new Coder();
+S1354,SevenZFile.java,489,int bits = header.readUnsignedByte();
+S1355,SevenZFile.java,490,final int idSize = bits & 0xf;
+S1356,SevenZFile.java,491,final boolean isSimple = (bits & 0x10) == 0;
+S1357,SevenZFile.java,492,final boolean hasAttributes = (bits & 0x20) != 0;
+S1358,SevenZFile.java,493,final boolean moreAlternativeMethods = (bits & 0x80) != 0;
+S1359,SevenZFile.java,495,coders[i].decompressionMethodId = new byte[idSize];
+S1360,SevenZFile.java,496,header.readFully(coders[i].decompressionMethodId);
+S1361,SevenZFile.java,497,if (isSimple) {
+S1362,SevenZFile.java,498,coders[i].numInStreams = 1;
+S1363,SevenZFile.java,499,coders[i].numOutStreams = 1;
+S1364,SevenZFile.java,504,totalInStreams += coders[i].numInStreams;
+S1365,SevenZFile.java,505,totalOutStreams += coders[i].numOutStreams;
+S1366,SevenZFile.java,506,if (hasAttributes) {
+S1367,SevenZFile.java,507,final long propertiesSize = readUint64(header);
+S1368,SevenZFile.java,508,coders[i].properties = new byte[(int)propertiesSize];
+S1369,SevenZFile.java,509,header.readFully(coders[i].properties);
+S1370,SevenZFile.java,512,while (moreAlternativeMethods) {
+S1371,SevenZFile.java,517,folder.coders = coders;
+S1372,SevenZFile.java,518,folder.totalInputStreams = totalInStreams;
+S1373,SevenZFile.java,519,folder.totalOutputStreams = totalOutStreams;
+S1374,SevenZFile.java,521,if (totalOutStreams == 0) {
+S1375,SevenZFile.java,524,final long numBindPairs = totalOutStreams - 1;
+S1376,SevenZFile.java,525,final BindPair[] bindPairs = new BindPair[(int)numBindPairs];
+S1377,SevenZFile.java,526,for (int i = 0; i < bindPairs.length; i++) {
+S1378,SevenZFile.java,527,bindPairs[i] = new BindPair();
+S1379,SevenZFile.java,528,bindPairs[i].inIndex = readUint64(header);
+S1380,SevenZFile.java,529,bindPairs[i].outIndex = readUint64(header);
+S1381,SevenZFile.java,531,folder.bindPairs = bindPairs;
+S1382,SevenZFile.java,533,if (totalInStreams < numBindPairs) {
+S1383,SevenZFile.java,536,final long numPackedStreams = totalInStreams - numBindPairs;
+S1384,SevenZFile.java,537,final long packedStreams[] = new long[(int)numPackedStreams];
+S1385,SevenZFile.java,538,if (numPackedStreams == 1) {
+S1386,SevenZFile.java,540,for (i = 0; i < (int)totalInStreams; i++) {
+S1387,SevenZFile.java,541,if (folder.findBindPairForInStream(i) < 0) {
+S1388,SevenZFile.java,542,break;
+S1389,SevenZFile.java,545,if (i == (int)totalInStreams) {
+S1390,SevenZFile.java,548,packedStreams[0] = i;
+S1391,SevenZFile.java,549,} else {
+S1392,SevenZFile.java,554,folder.packedStreams = packedStreams;
+S1393,SevenZFile.java,556,return folder;
+S1394,SevenZFile.java,560,final int areAllDefined = header.readUnsignedByte();
+S1395,SevenZFile.java,562,if (areAllDefined != 0) {
+S1396,SevenZFile.java,563,bits = new BitSet(size);
+S1397,SevenZFile.java,564,for (int i = 0; i < size; i++) {
+S1398,SevenZFile.java,565,"bits.set(i, true);"
+S1399,SevenZFile.java,568,"bits = readBits(header, size);"
+S1400,SevenZFile.java,570,return bits;
+S1401,SevenZFile.java,574,final BitSet bits = new BitSet(size);
+S1402,SevenZFile.java,575,int mask = 0;
+S1403,SevenZFile.java,576,int cache = 0;
+S1404,SevenZFile.java,577,for (int i = 0; i < size; i++) {
+S1405,SevenZFile.java,578,if (mask == 0) {
+S1406,SevenZFile.java,579,mask = 0x80;
+S1407,SevenZFile.java,580,cache = header.readUnsignedByte();
+S1408,SevenZFile.java,582,"bits.set(i, (cache & mask) != 0);"
+S1409,SevenZFile.java,583,mask >>>= 1;
+S1410,SevenZFile.java,585,return bits;
+S1411,SevenZFile.java,589,final long numFiles = readUint64(header);
+S1412,SevenZFile.java,590,final SevenZArchiveEntry[] files = new SevenZArchiveEntry[(int)numFiles];
+S1413,SevenZFile.java,591,for (int i = 0; i < files.length; i++) {
+S1414,SevenZFile.java,592,files[i] = new SevenZArchiveEntry();
+S1415,SevenZFile.java,594,BitSet isEmptyStream = null;
+S1416,SevenZFile.java,595,BitSet isEmptyFile = null;
+S1417,SevenZFile.java,596,BitSet isAnti = null;
+S1418,SevenZFile.java,598,final int propertyType = header.readUnsignedByte();
+S1419,SevenZFile.java,599,if (propertyType == 0) {
+S1420,SevenZFile.java,600,break;
+S1421,SevenZFile.java,602,long size = readUint64(header);
+S1422,SevenZFile.java,603,switch (propertyType) {
+S1423,SevenZFile.java,605,"isEmptyStream = readBits(header, files.length);"
+S1424,SevenZFile.java,606,break;
+S1425,SevenZFile.java,609,if (isEmptyStream == null) { // protect against NPE
+S1426,SevenZFile.java,612,"isEmptyFile = readBits(header, isEmptyStream.cardinality());"
+S1427,SevenZFile.java,613,break;
+S1428,SevenZFile.java,616,if (isEmptyStream == null) { // protect against NPE
+S1429,SevenZFile.java,619,"isAnti = readBits(header, isEmptyStream.cardinality());"
+S1430,SevenZFile.java,620,break;
+S1431,SevenZFile.java,623,final int external = header.readUnsignedByte();
+S1432,SevenZFile.java,624,if (external != 0) {
+S1433,SevenZFile.java,627,if (((size - 1) & 1) != 0) {
+S1434,SevenZFile.java,630,final byte[] names = new byte[(int)(size - 1)];
+S1435,SevenZFile.java,631,header.readFully(names);
+S1436,SevenZFile.java,632,int nextFile = 0;
+S1437,SevenZFile.java,633,int nextName = 0;
+S1438,SevenZFile.java,634,for (int i = 0; i < names.length; i += 2) {
+S1439,SevenZFile.java,635,if (names[i] == 0 && names[i+1] == 0) {
+S1440,SevenZFile.java,636,"files[nextFile++].setName(new String(names, nextName, i-nextName, CharsetNames.UTF_16LE));"
+S1441,SevenZFile.java,637,nextName = i + 2;
+S1442,SevenZFile.java,640,if (nextName != names.length || nextFile != files.length) {
+S1443,SevenZFile.java,644,break;
+S1444,SevenZFile.java,647,"final BitSet timesDefined = readAllOrBits(header, files.length);"
+S1445,SevenZFile.java,648,final int external = header.readUnsignedByte();
+S1446,SevenZFile.java,649,if (external != 0) {
+S1447,SevenZFile.java,652,for (int i = 0; i < files.length; i++) {
+S1448,SevenZFile.java,653,files[i].setHasCreationDate(timesDefined.get(i));
+S1449,SevenZFile.java,654,if (files[i].getHasCreationDate()) {
+S1450,SevenZFile.java,655,files[i].setCreationDate(Long.reverseBytes(header.readLong()));
+S1451,SevenZFile.java,659,break;
+S1452,SevenZFile.java,662,"final BitSet timesDefined = readAllOrBits(header, files.length);"
+S1453,SevenZFile.java,663,final int external = header.readUnsignedByte();
+S1454,SevenZFile.java,664,if (external != 0) {
+S1455,SevenZFile.java,667,for (int i = 0; i < files.length; i++) {
+S1456,SevenZFile.java,668,files[i].setHasAccessDate(timesDefined.get(i));
+S1457,SevenZFile.java,669,if (files[i].getHasAccessDate()) {
+S1458,SevenZFile.java,670,files[i].setAccessDate(Long.reverseBytes(header.readLong()));
+S1459,SevenZFile.java,674,break;
+S1460,SevenZFile.java,677,"final BitSet timesDefined = readAllOrBits(header, files.length);"
+S1461,SevenZFile.java,678,final int external = header.readUnsignedByte();
+S1462,SevenZFile.java,679,if (external != 0) {
+S1463,SevenZFile.java,682,for (int i = 0; i < files.length; i++) {
+S1464,SevenZFile.java,683,files[i].setHasLastModifiedDate(timesDefined.get(i));
+S1465,SevenZFile.java,684,if (files[i].getHasLastModifiedDate()) {
+S1466,SevenZFile.java,685,files[i].setLastModifiedDate(Long.reverseBytes(header.readLong()));
+S1467,SevenZFile.java,689,break;
+S1468,SevenZFile.java,692,"final BitSet attributesDefined = readAllOrBits(header, files.length);"
+S1469,SevenZFile.java,693,final int external = header.readUnsignedByte();
+S1470,SevenZFile.java,694,if (external != 0) {
+S1471,SevenZFile.java,697,for (int i = 0; i < files.length; i++) {
+S1472,SevenZFile.java,698,files[i].setHasWindowsAttributes(attributesDefined.get(i));
+S1473,SevenZFile.java,699,if (files[i].getHasWindowsAttributes()) {
+S1474,SevenZFile.java,700,files[i].setWindowsAttributes(Integer.reverseBytes(header.readInt()));
+S1475,SevenZFile.java,704,break;
+S1476,SevenZFile.java,720,int nonEmptyFileCounter = 0;
+S1477,SevenZFile.java,721,int emptyFileCounter = 0;
+S1478,SevenZFile.java,722,for (int i = 0; i < files.length; i++) {
+S1479,SevenZFile.java,723,files[i].setHasStream(isEmptyStream == null ? true : !isEmptyStream.get(i));
+S1480,SevenZFile.java,724,if (files[i].hasStream()) {
+S1481,SevenZFile.java,725,files[i].setDirectory(false);
+S1482,SevenZFile.java,726,files[i].setAntiItem(false);
+S1483,SevenZFile.java,727,files[i].setHasCrc(archive.subStreamsInfo.hasCrc.get(nonEmptyFileCounter));
+S1484,SevenZFile.java,728,files[i].setCrcValue(archive.subStreamsInfo.crcs[nonEmptyFileCounter]);
+S1485,SevenZFile.java,729,files[i].setSize(archive.subStreamsInfo.unpackSizes[nonEmptyFileCounter]);
+S1486,SevenZFile.java,730,++nonEmptyFileCounter;
+S1487,SevenZFile.java,732,files[i].setDirectory(isEmptyFile == null ? true : !isEmptyFile.get(emptyFileCounter));
+S1488,SevenZFile.java,733,files[i].setAntiItem(isAnti == null ? false : isAnti.get(emptyFileCounter));
+S1489,SevenZFile.java,734,files[i].setHasCrc(false);
+S1490,SevenZFile.java,735,files[i].setSize(0);
+S1491,SevenZFile.java,736,++emptyFileCounter;
+S1492,SevenZFile.java,739,archive.files = files;
+S1493,SevenZFile.java,740,calculateStreamMap(archive);
+S1494,SevenZFile.java,744,final StreamMap streamMap = new StreamMap();
+S1495,SevenZFile.java,746,int nextFolderPackStreamIndex = 0;
+S1496,SevenZFile.java,747,final int numFolders = archive.folders != null ? archive.folders.length : 0;
+S1497,SevenZFile.java,748,streamMap.folderFirstPackStreamIndex = new int[numFolders];
+S1498,SevenZFile.java,749,for (int i = 0; i < numFolders; i++) {
+S1499,SevenZFile.java,750,streamMap.folderFirstPackStreamIndex[i] = nextFolderPackStreamIndex;
+S1500,SevenZFile.java,751,nextFolderPackStreamIndex += archive.folders[i].packedStreams.length;
+S1501,SevenZFile.java,754,long nextPackStreamOffset = 0;
+S1502,SevenZFile.java,755,final int numPackSizes = archive.packSizes != null ? archive.packSizes.length : 0;
+S1503,SevenZFile.java,756,streamMap.packStreamOffsets = new long[numPackSizes];
+S1504,SevenZFile.java,757,for (int i = 0; i < numPackSizes; i++) {
+S1505,SevenZFile.java,758,streamMap.packStreamOffsets[i] = nextPackStreamOffset;
+S1506,SevenZFile.java,759,nextPackStreamOffset += archive.packSizes[i];
+S1507,SevenZFile.java,762,streamMap.folderFirstFileIndex = new int[numFolders];
+S1508,SevenZFile.java,763,streamMap.fileFolderIndex = new int[archive.files.length];
+S1509,SevenZFile.java,764,int nextFolderIndex = 0;
+S1510,SevenZFile.java,765,int nextFolderUnpackStreamIndex = 0;
+S1511,SevenZFile.java,766,for (int i = 0; i < archive.files.length; i++) {
+S1512,SevenZFile.java,767,if (!archive.files[i].hasStream() && nextFolderUnpackStreamIndex == 0) {
+S1513,SevenZFile.java,768,streamMap.fileFolderIndex[i] = -1;
+S1514,SevenZFile.java,769,continue;
+S1515,SevenZFile.java,771,if (nextFolderUnpackStreamIndex == 0) {
+S1516,SevenZFile.java,772,for (; nextFolderIndex < archive.folders.length; ++nextFolderIndex) {
+S1517,SevenZFile.java,773,streamMap.folderFirstFileIndex[nextFolderIndex] = i;
+S1518,SevenZFile.java,774,if (archive.folders[nextFolderIndex].numUnpackSubStreams > 0) {
+S1519,SevenZFile.java,775,break;
+S1520,SevenZFile.java,778,if (nextFolderIndex >= archive.folders.length) {
+S1521,SevenZFile.java,782,streamMap.fileFolderIndex[i] = nextFolderIndex;
+S1522,SevenZFile.java,783,if (!archive.files[i].hasStream()) {
+S1523,SevenZFile.java,786,++nextFolderUnpackStreamIndex;
+S1524,SevenZFile.java,787,if (nextFolderUnpackStreamIndex >= archive.folders[nextFolderIndex].numUnpackSubStreams) {
+S1525,SevenZFile.java,788,++nextFolderIndex;
+S1526,SevenZFile.java,789,nextFolderUnpackStreamIndex = 0;
+S1527,SevenZFile.java,793,archive.streamMap = streamMap;
+S1528,SevenZFile.java,797,final int folderIndex = archive.streamMap.fileFolderIndex[currentEntryIndex];
+S1529,SevenZFile.java,798,if (folderIndex < 0) {
+S1530,SevenZFile.java,799,currentEntryInputStream = new BoundedInputStream(
+S1531,SevenZFile.java,801,return;
+S1532,SevenZFile.java,803,if (currentFolderIndex == folderIndex) {
+S1533,SevenZFile.java,805,drainPreviousEntry();
+S1534,SevenZFile.java,807,currentFolderIndex = folderIndex;
+S1535,SevenZFile.java,808,if (currentFolderInputStream != null) {
+S1536,SevenZFile.java,809,currentFolderInputStream.close();
+S1537,SevenZFile.java,810,currentFolderInputStream = null;
+S1538,SevenZFile.java,813,final Folder folder = archive.folders[folderIndex];
+S1539,SevenZFile.java,814,final int firstPackStreamIndex = archive.streamMap.folderFirstPackStreamIndex[folderIndex];
+S1540,SevenZFile.java,815,final long folderOffset = SIGNATURE_HEADER_SIZE + archive.packPos +
+S1541,SevenZFile.java,817,"currentFolderInputStream = buildDecoderStack(folder, folderOffset, firstPackStreamIndex);"
+S1542,SevenZFile.java,819,final SevenZArchiveEntry file = archive.files[currentEntryIndex];
+S1543,SevenZFile.java,820,final InputStream fileStream = new BoundedInputStream(
+S1544,SevenZFile.java,822,if (file.getHasCrc()) {
+S1545,SevenZFile.java,823,currentEntryInputStream = new CRC32VerifyingInputStream(
+S1546,SevenZFile.java,826,currentEntryInputStream = fileStream;
+S1547,SevenZFile.java,832,if (currentEntryInputStream != null) {
+S1548,SevenZFile.java,834,"IOUtils.skip(currentEntryInputStream, Long.MAX_VALUE);"
+S1549,SevenZFile.java,835,currentEntryInputStream.close();
+S1550,SevenZFile.java,836,currentEntryInputStream = null;
+S1551,SevenZFile.java,842,file.seek(folderOffset);
+S1552,SevenZFile.java,843,"InputStream inputStreamStack = new BoundedRandomAccessFileInputStream(file,"
+S1553,SevenZFile.java,845,for (final Coder coder : folder.coders) {
+S1554,SevenZFile.java,846,if (coder.numInStreams != 1 || coder.numOutStreams != 1) {
+S1555,SevenZFile.java,849,"inputStreamStack = Coders.addDecoder(inputStreamStack, coder, password);"
+S1556,SevenZFile.java,851,if (folder.hasCrc) {
+S1557,SevenZFile.java,852,"return new CRC32VerifyingInputStream(inputStreamStack,"
+S1558,SevenZFile.java,855,return inputStreamStack;
+S1559,SevenZFile.java,867,return currentEntryInputStream.read();
+S1560,SevenZFile.java,879,"return read(b, 0, b.length);"
+S1561,SevenZFile.java,893,"return currentEntryInputStream.read(b, off, len);"
+S1562,SevenZFile.java,898,long firstByte = in.readUnsignedByte();
+S1563,SevenZFile.java,899,int mask = 0x80;
+S1564,SevenZFile.java,900,long value = 0;
+S1565,SevenZFile.java,901,for (int i = 0; i < 8; i++) {
+S1566,SevenZFile.java,902,if ((firstByte & mask) == 0) {
+S1567,SevenZFile.java,903,return value | ((firstByte & (mask - 1)) << (8 * i));
+S1568,SevenZFile.java,905,long nextByte = in.readUnsignedByte();
+S1569,SevenZFile.java,906,value |= nextByte << (8 * i);
+S1570,SevenZFile.java,907,mask >>>= 1;
+S1571,SevenZMethod.java,25,public enum SevenZMethod {
+S1572,SevenZMethod.java,27,"COPY(new byte[] { (byte)0x00 }),"
+S1573,SevenZMethod.java,29,"LZMA(new byte[] { (byte)0x03, (byte)0x01, (byte)0x01 }),"
+S1574,SevenZMethod.java,31,LZMA2(new byte[] { (byte)0x21 }) {
+S1575,SevenZMethod.java,34,int dictSize = LZMA2Options.DICT_SIZE_DEFAULT;
+S1576,SevenZMethod.java,35,int lead = Integer.numberOfLeadingZeros(dictSize);
+S1577,SevenZMethod.java,36,int secondBit = (dictSize >>> (30 - lead)) - 2;
+S1578,SevenZMethod.java,37,return new byte[] {
+S1579,SevenZMethod.java,43,"DEFLATE(new byte[] { (byte)0x04, (byte)0x01, (byte)0x08 }),"
+S1580,SevenZMethod.java,45,"BZIP2(new byte[] { (byte)0x04, (byte)0x02, (byte)0x02 }),"
+S1581,SevenZMethod.java,50,"AES256SHA256(new byte[] { (byte)0x06, (byte)0xf1, (byte)0x07, (byte)0x01 });"
+S1582,SevenZMethod.java,54,private SevenZMethod(byte[] id) {
+S1583,SevenZMethod.java,55,this.id = id;
+S1584,SevenZMethod.java,59,byte[] copy = new byte[id.length];
+S1585,SevenZMethod.java,60,"System.arraycopy(id, 0, copy, 0, id.length);"
+S1586,SevenZMethod.java,61,return copy;
+S1587,SevenZMethod.java,65,return new byte[0];
+S1588,SevenZOutputFile.java,41,public class SevenZOutputFile implements Closeable {
+S1589,SevenZOutputFile.java,43,private final List<SevenZArchiveEntry> files = new ArrayList<SevenZArchiveEntry>();
+S1590,SevenZOutputFile.java,44,private int numNonEmptyStreams = 0;
+S1591,SevenZOutputFile.java,45,private CRC32 crc32 = new CRC32();
+S1592,SevenZOutputFile.java,46,private CRC32 compressedCrc32 = new CRC32();
+S1593,SevenZOutputFile.java,47,private long fileBytesWritten = 0;
+S1594,SevenZOutputFile.java,48,private boolean finished = false;
+S1595,SevenZOutputFile.java,50,private SevenZMethod contentCompression = SevenZMethod.LZMA2;
+S1596,SevenZOutputFile.java,58,public SevenZOutputFile(final File filename) throws IOException {
+S1597,SevenZOutputFile.java,59,"file = new RandomAccessFile(filename, ""rw"");"
+S1598,SevenZOutputFile.java,60,file.seek(SevenZFile.SIGNATURE_HEADER_SIZE);
+S1599,SevenZOutputFile.java,72,this.contentCompression = method;
+S1600,SevenZOutputFile.java,81,if (!finished) {
+S1601,SevenZOutputFile.java,82,finish();
+S1602,SevenZOutputFile.java,84,file.close();
+S1603,SevenZOutputFile.java,98,final SevenZArchiveEntry entry = new SevenZArchiveEntry();
+S1604,SevenZOutputFile.java,99,entry.setDirectory(inputFile.isDirectory());
+S1605,SevenZOutputFile.java,100,entry.setName(entryName);
+S1606,SevenZOutputFile.java,101,entry.setLastModifiedDate(new Date(inputFile.lastModified()));
+S1607,SevenZOutputFile.java,102,return entry;
+S1608,SevenZOutputFile.java,115,final SevenZArchiveEntry entry = (SevenZArchiveEntry) archiveEntry;
+S1609,SevenZOutputFile.java,116,files.add(entry);
+S1610,SevenZOutputFile.java,124,if (currentOutputStream != null) {
+S1611,SevenZOutputFile.java,125,currentOutputStream.flush();
+S1612,SevenZOutputFile.java,126,currentOutputStream.close();
+S1613,SevenZOutputFile.java,129,final SevenZArchiveEntry entry = files.get(files.size() - 1);
+S1614,SevenZOutputFile.java,130,if (fileBytesWritten > 0) {
+S1615,SevenZOutputFile.java,131,entry.setHasStream(true);
+S1616,SevenZOutputFile.java,132,++numNonEmptyStreams;
+S1617,SevenZOutputFile.java,133,entry.setSize(currentOutputStream.getBytesWritten());
+S1618,SevenZOutputFile.java,134,entry.setCompressedSize(fileBytesWritten);
+S1619,SevenZOutputFile.java,135,entry.setCrcValue(crc32.getValue());
+S1620,SevenZOutputFile.java,136,entry.setCompressedCrcValue(compressedCrc32.getValue());
+S1621,SevenZOutputFile.java,137,entry.setHasCrc(true);
+S1622,SevenZOutputFile.java,139,entry.setHasStream(false);
+S1623,SevenZOutputFile.java,140,entry.setSize(0);
+S1624,SevenZOutputFile.java,141,entry.setCompressedSize(0);
+S1625,SevenZOutputFile.java,142,entry.setHasCrc(false);
+S1626,SevenZOutputFile.java,144,currentOutputStream = null;
+S1627,SevenZOutputFile.java,145,crc32.reset();
+S1628,SevenZOutputFile.java,146,compressedCrc32.reset();
+S1629,SevenZOutputFile.java,147,fileBytesWritten = 0;
+S1630,SevenZOutputFile.java,156,getCurrentOutputStream().write(b);
+S1631,SevenZOutputFile.java,165,"write(b, 0, b.length);"
+S1632,SevenZOutputFile.java,176,if (len > 0) {
+S1633,SevenZOutputFile.java,177,"getCurrentOutputStream().write(b, off, len);"
+S1634,SevenZOutputFile.java,187,if (finished) {
+S1635,SevenZOutputFile.java,188,"throw new IOException(""This archive has already been finished"");"
+S1636,SevenZOutputFile.java,190,finished = true;
+S1637,SevenZOutputFile.java,192,final long headerPosition = file.getFilePointer();
+S1638,SevenZOutputFile.java,194,final ByteArrayOutputStream headerBaos = new ByteArrayOutputStream();
+S1639,SevenZOutputFile.java,195,final DataOutputStream header = new DataOutputStream(headerBaos);
+S1640,SevenZOutputFile.java,197,writeHeader(header);
+S1641,SevenZOutputFile.java,198,header.flush();
+S1642,SevenZOutputFile.java,199,final byte[] headerBytes = headerBaos.toByteArray();
+S1643,SevenZOutputFile.java,200,file.write(headerBytes);
+S1644,SevenZOutputFile.java,202,final CRC32 crc32 = new CRC32();
+S1645,SevenZOutputFile.java,205,file.seek(0);
+S1646,SevenZOutputFile.java,206,file.write(SevenZFile.sevenZSignature);
+S1647,SevenZOutputFile.java,208,file.write(0);
+S1648,SevenZOutputFile.java,209,file.write(2);
+S1649,SevenZOutputFile.java,212,final ByteArrayOutputStream startHeaderBaos = new ByteArrayOutputStream();
+S1650,SevenZOutputFile.java,213,final DataOutputStream startHeaderStream = new DataOutputStream(startHeaderBaos);
+S1651,SevenZOutputFile.java,214,startHeaderStream.writeLong(Long.reverseBytes(headerPosition - SevenZFile.SIGNATURE_HEADER_SIZE));
+S1652,SevenZOutputFile.java,215,startHeaderStream.writeLong(Long.reverseBytes(0xffffFFFFL & headerBytes.length));
+S1653,SevenZOutputFile.java,216,crc32.reset();
+S1654,SevenZOutputFile.java,217,crc32.update(headerBytes);
+S1655,SevenZOutputFile.java,218,startHeaderStream.writeInt(Integer.reverseBytes((int)crc32.getValue()));
+S1656,SevenZOutputFile.java,219,startHeaderStream.flush();
+S1657,SevenZOutputFile.java,220,final byte[] startHeaderBytes = startHeaderBaos.toByteArray();
+S1658,SevenZOutputFile.java,221,crc32.reset();
+S1659,SevenZOutputFile.java,222,crc32.update(startHeaderBytes);
+S1660,SevenZOutputFile.java,223,file.writeInt(Integer.reverseBytes((int) crc32.getValue()));
+S1661,SevenZOutputFile.java,224,file.write(startHeaderBytes);
+S1662,SevenZOutputFile.java,233,if (currentOutputStream == null) {
+S1663,SevenZOutputFile.java,234,currentOutputStream = setupFileOutputStream();
+S1664,SevenZOutputFile.java,236,return currentOutputStream;
+S1665,SevenZOutputFile.java,240,OutputStream out = new OutputStreamWrapper();
+S1666,SevenZOutputFile.java,241,return new CountingOutputStream(Coders
+S1667,SevenZOutputFile.java,244,null)) {
+S1668,SevenZOutputFile.java,247,super.write(b);
+S1669,SevenZOutputFile.java,248,crc32.update(b);
+S1670,SevenZOutputFile.java,260,"super.write(b, off, len);"
+S1671,SevenZOutputFile.java,261,"crc32.update(b, off, len);"
+S1672,SevenZOutputFile.java,267,header.write(NID.kHeader);
+S1673,SevenZOutputFile.java,269,header.write(NID.kMainStreamsInfo);
+S1674,SevenZOutputFile.java,270,writeStreamsInfo(header);
+S1675,SevenZOutputFile.java,271,writeFilesInfo(header);
+S1676,SevenZOutputFile.java,272,header.write(NID.kEnd);
+S1677,SevenZOutputFile.java,276,if (numNonEmptyStreams > 0) {
+S1678,SevenZOutputFile.java,277,writePackInfo(header);
+S1679,SevenZOutputFile.java,278,writeUnpackInfo(header);
+S1680,SevenZOutputFile.java,281,writeSubStreamsInfo(header);
+S1681,SevenZOutputFile.java,283,header.write(NID.kEnd);
+S1682,SevenZOutputFile.java,287,header.write(NID.kPackInfo);
+S1683,SevenZOutputFile.java,289,"writeUint64(header, 0);"
+S1684,SevenZOutputFile.java,290,"writeUint64(header, 0xffffFFFFL & numNonEmptyStreams);"
+S1685,SevenZOutputFile.java,292,header.write(NID.kSize);
+S1686,SevenZOutputFile.java,293,for (final SevenZArchiveEntry entry : files) {
+S1687,SevenZOutputFile.java,294,if (entry.hasStream()) {
+S1688,SevenZOutputFile.java,295,"writeUint64(header, entry.getCompressedSize());"
+S1689,SevenZOutputFile.java,299,header.write(NID.kCRC);
+S1690,SevenZOutputFile.java,300,header.write(1);
+S1691,SevenZOutputFile.java,301,for (final SevenZArchiveEntry entry : files) {
+S1692,SevenZOutputFile.java,302,if (entry.hasStream()) {
+S1693,SevenZOutputFile.java,303,header.writeInt(Integer.reverseBytes((int) entry.getCompressedCrcValue()));
+S1694,SevenZOutputFile.java,307,header.write(NID.kEnd);
+S1695,SevenZOutputFile.java,311,header.write(NID.kUnpackInfo);
+S1696,SevenZOutputFile.java,313,header.write(NID.kFolder);
+S1697,SevenZOutputFile.java,314,"writeUint64(header, numNonEmptyStreams);"
+S1698,SevenZOutputFile.java,315,header.write(0);
+S1699,SevenZOutputFile.java,316,for (int i = 0; i < numNonEmptyStreams; i++) {
+S1700,SevenZOutputFile.java,317,writeFolder(header);
+S1701,SevenZOutputFile.java,320,header.write(NID.kCodersUnpackSize);
+S1702,SevenZOutputFile.java,321,for (final SevenZArchiveEntry entry : files) {
+S1703,SevenZOutputFile.java,322,if (entry.hasStream()) {
+S1704,SevenZOutputFile.java,323,"writeUint64(header, entry.getSize());"
+S1705,SevenZOutputFile.java,327,header.write(NID.kCRC);
+S1706,SevenZOutputFile.java,328,header.write(1);
+S1707,SevenZOutputFile.java,329,for (final SevenZArchiveEntry entry : files) {
+S1708,SevenZOutputFile.java,330,if (entry.hasStream()) {
+S1709,SevenZOutputFile.java,331,header.writeInt(Integer.reverseBytes((int) entry.getCrcValue()));
+S1710,SevenZOutputFile.java,335,header.write(NID.kEnd);
+S1711,SevenZOutputFile.java,340,"writeUint64(header, 1);"
+S1712,SevenZOutputFile.java,341,byte[] id = contentCompression.getId();
+S1713,SevenZOutputFile.java,342,byte[] properties = contentCompression.getProperties();
+S1714,SevenZOutputFile.java,344,int codecFlags = id.length;
+S1715,SevenZOutputFile.java,345,if (properties.length > 0) {
+S1716,SevenZOutputFile.java,346,codecFlags |= 0x20;
+S1717,SevenZOutputFile.java,348,header.write(codecFlags);
+S1718,SevenZOutputFile.java,349,header.write(id);
+S1719,SevenZOutputFile.java,351,if (properties.length > 0) {
+S1720,SevenZOutputFile.java,352,header.write(properties.length);
+S1721,SevenZOutputFile.java,353,header.write(properties);
+S1722,SevenZOutputFile.java,358,header.write(NID.kSubStreamsInfo);
+S1723,SevenZOutputFile.java,368,header.write(NID.kEnd);
+S1724,SevenZOutputFile.java,372,header.write(NID.kFilesInfo);
+S1725,SevenZOutputFile.java,374,"writeUint64(header, files.size());"
+S1726,SevenZOutputFile.java,376,writeFileEmptyStreams(header);
+S1727,SevenZOutputFile.java,377,writeFileEmptyFiles(header);
+S1728,SevenZOutputFile.java,378,writeFileAntiItems(header);
+S1729,SevenZOutputFile.java,379,writeFileNames(header);
+S1730,SevenZOutputFile.java,380,writeFileCTimes(header);
+S1731,SevenZOutputFile.java,381,writeFileATimes(header);
+S1732,SevenZOutputFile.java,382,writeFileMTimes(header);
+S1733,SevenZOutputFile.java,383,writeFileWindowsAttributes(header);
+S1734,SevenZOutputFile.java,384,header.write(0);
+S1735,SevenZOutputFile.java,388,boolean hasEmptyStreams = false;
+S1736,SevenZOutputFile.java,389,for (final SevenZArchiveEntry entry : files) {
+S1737,SevenZOutputFile.java,390,if (!entry.hasStream()) {
+S1738,SevenZOutputFile.java,391,hasEmptyStreams = true;
+S1739,SevenZOutputFile.java,392,break;
+S1740,SevenZOutputFile.java,395,if (hasEmptyStreams) {
+S1741,SevenZOutputFile.java,396,header.write(NID.kEmptyStream);
+S1742,SevenZOutputFile.java,397,final BitSet emptyStreams = new BitSet(files.size());
+S1743,SevenZOutputFile.java,398,for (int i = 0; i < files.size(); i++) {
+S1744,SevenZOutputFile.java,399,"emptyStreams.set(i, !files.get(i).hasStream());"
+S1745,SevenZOutputFile.java,401,final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S1746,SevenZOutputFile.java,402,final DataOutputStream out = new DataOutputStream(baos);
+S1747,SevenZOutputFile.java,403,"writeBits(out, emptyStreams, files.size());"
+S1748,SevenZOutputFile.java,404,out.flush();
+S1749,SevenZOutputFile.java,405,final byte[] contents = baos.toByteArray();
+S1750,SevenZOutputFile.java,406,"writeUint64(header, contents.length);"
+S1751,SevenZOutputFile.java,407,header.write(contents);
+S1752,SevenZOutputFile.java,412,boolean hasEmptyFiles = false;
+S1753,SevenZOutputFile.java,413,int emptyStreamCounter = 0;
+S1754,SevenZOutputFile.java,414,final BitSet emptyFiles = new BitSet(0);
+S1755,SevenZOutputFile.java,415,for (int i = 0; i < files.size(); i++) {
+S1756,SevenZOutputFile.java,416,if (!files.get(i).hasStream()) {
+S1757,SevenZOutputFile.java,417,boolean isDir = files.get(i).isDirectory();
+S1758,SevenZOutputFile.java,418,"emptyFiles.set(emptyStreamCounter++, !isDir);"
+S1759,SevenZOutputFile.java,419,hasEmptyFiles |= !isDir;
+S1760,SevenZOutputFile.java,422,if (hasEmptyFiles) {
+S1761,SevenZOutputFile.java,423,header.write(NID.kEmptyFile);
+S1762,SevenZOutputFile.java,424,final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S1763,SevenZOutputFile.java,425,final DataOutputStream out = new DataOutputStream(baos);
+S1764,SevenZOutputFile.java,426,"writeBits(out, emptyFiles, emptyStreamCounter);"
+S1765,SevenZOutputFile.java,427,out.flush();
+S1766,SevenZOutputFile.java,428,final byte[] contents = baos.toByteArray();
+S1767,SevenZOutputFile.java,429,"writeUint64(header, contents.length);"
+S1768,SevenZOutputFile.java,430,header.write(contents);
+S1769,SevenZOutputFile.java,435,boolean hasAntiItems = false;
+S1770,SevenZOutputFile.java,436,final BitSet antiItems = new BitSet(0);
+S1771,SevenZOutputFile.java,437,int antiItemCounter = 0;
+S1772,SevenZOutputFile.java,438,for (int i = 0; i < files.size(); i++) {
+S1773,SevenZOutputFile.java,439,if (!files.get(i).hasStream()) {
+S1774,SevenZOutputFile.java,440,boolean isAnti = files.get(i).isAntiItem();
+S1775,SevenZOutputFile.java,441,"antiItems.set(antiItemCounter++, isAnti);"
+S1776,SevenZOutputFile.java,442,hasAntiItems |= isAnti;
+S1777,SevenZOutputFile.java,445,if (hasAntiItems) {
+S1778,SevenZOutputFile.java,446,header.write(NID.kAnti);
+S1779,SevenZOutputFile.java,447,final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S1780,SevenZOutputFile.java,448,final DataOutputStream out = new DataOutputStream(baos);
+S1781,SevenZOutputFile.java,449,"writeBits(out, antiItems, antiItemCounter);"
+S1782,SevenZOutputFile.java,450,out.flush();
+S1783,SevenZOutputFile.java,451,final byte[] contents = baos.toByteArray();
+S1784,SevenZOutputFile.java,452,"writeUint64(header, contents.length);"
+S1785,SevenZOutputFile.java,453,header.write(contents);
+S1786,SevenZOutputFile.java,458,header.write(NID.kName);
+S1787,SevenZOutputFile.java,460,final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S1788,SevenZOutputFile.java,461,final DataOutputStream out = new DataOutputStream(baos);
+S1789,SevenZOutputFile.java,462,out.write(0);
+S1790,SevenZOutputFile.java,463,for (final SevenZArchiveEntry entry : files) {
+S1791,SevenZOutputFile.java,464,"out.write(entry.getName().getBytes(""UTF-16LE""));"
+S1792,SevenZOutputFile.java,465,out.writeShort(0);
+S1793,SevenZOutputFile.java,467,out.flush();
+S1794,SevenZOutputFile.java,468,final byte[] contents = baos.toByteArray();
+S1795,SevenZOutputFile.java,469,"writeUint64(header, contents.length);"
+S1796,SevenZOutputFile.java,470,header.write(contents);
+S1797,SevenZOutputFile.java,474,int numCreationDates = 0;
+S1798,SevenZOutputFile.java,475,for (final SevenZArchiveEntry entry : files) {
+S1799,SevenZOutputFile.java,476,if (entry.getHasCreationDate()) {
+S1800,SevenZOutputFile.java,477,++numCreationDates;
+S1801,SevenZOutputFile.java,480,if (numCreationDates > 0) {
+S1802,SevenZOutputFile.java,481,header.write(NID.kCTime);
+S1803,SevenZOutputFile.java,483,final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S1804,SevenZOutputFile.java,484,final DataOutputStream out = new DataOutputStream(baos);
+S1805,SevenZOutputFile.java,485,if (numCreationDates != files.size()) {
+S1806,SevenZOutputFile.java,486,out.write(0);
+S1807,SevenZOutputFile.java,487,final BitSet cTimes = new BitSet(files.size());
+S1808,SevenZOutputFile.java,488,for (int i = 0; i < files.size(); i++) {
+S1809,SevenZOutputFile.java,489,"cTimes.set(i, files.get(i).getHasCreationDate());"
+S1810,SevenZOutputFile.java,491,"writeBits(out, cTimes, files.size());"
+S1811,SevenZOutputFile.java,492,} else {
+S1812,SevenZOutputFile.java,495,out.write(0);
+S1813,SevenZOutputFile.java,496,for (final SevenZArchiveEntry entry : files) {
+S1814,SevenZOutputFile.java,497,if (entry.getHasCreationDate()) {
+S1815,SevenZOutputFile.java,498,out.writeLong(Long.reverseBytes(
+S1816,SevenZOutputFile.java,502,out.flush();
+S1817,SevenZOutputFile.java,503,final byte[] contents = baos.toByteArray();
+S1818,SevenZOutputFile.java,504,"writeUint64(header, contents.length);"
+S1819,SevenZOutputFile.java,505,header.write(contents);
+S1820,SevenZOutputFile.java,510,int numAccessDates = 0;
+S1821,SevenZOutputFile.java,511,for (final SevenZArchiveEntry entry : files) {
+S1822,SevenZOutputFile.java,512,if (entry.getHasAccessDate()) {
+S1823,SevenZOutputFile.java,513,++numAccessDates;
+S1824,SevenZOutputFile.java,516,if (numAccessDates > 0) {
+S1825,SevenZOutputFile.java,517,header.write(NID.kATime);
+S1826,SevenZOutputFile.java,519,final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S1827,SevenZOutputFile.java,520,final DataOutputStream out = new DataOutputStream(baos);
+S1828,SevenZOutputFile.java,521,if (numAccessDates != files.size()) {
+S1829,SevenZOutputFile.java,522,out.write(0);
+S1830,SevenZOutputFile.java,523,final BitSet aTimes = new BitSet(files.size());
+S1831,SevenZOutputFile.java,524,for (int i = 0; i < files.size(); i++) {
+S1832,SevenZOutputFile.java,525,"aTimes.set(i, files.get(i).getHasAccessDate());"
+S1833,SevenZOutputFile.java,527,"writeBits(out, aTimes, files.size());"
+S1834,SevenZOutputFile.java,528,} else {
+S1835,SevenZOutputFile.java,531,out.write(0);
+S1836,SevenZOutputFile.java,532,for (final SevenZArchiveEntry entry : files) {
+S1837,SevenZOutputFile.java,533,if (entry.getHasAccessDate()) {
+S1838,SevenZOutputFile.java,534,out.writeLong(Long.reverseBytes(
+S1839,SevenZOutputFile.java,538,out.flush();
+S1840,SevenZOutputFile.java,539,final byte[] contents = baos.toByteArray();
+S1841,SevenZOutputFile.java,540,"writeUint64(header, contents.length);"
+S1842,SevenZOutputFile.java,541,header.write(contents);
+S1843,SevenZOutputFile.java,546,int numLastModifiedDates = 0;
+S1844,SevenZOutputFile.java,547,for (final SevenZArchiveEntry entry : files) {
+S1845,SevenZOutputFile.java,548,if (entry.getHasLastModifiedDate()) {
+S1846,SevenZOutputFile.java,549,++numLastModifiedDates;
+S1847,SevenZOutputFile.java,552,if (numLastModifiedDates > 0) {
+S1848,SevenZOutputFile.java,553,header.write(NID.kMTime);
+S1849,SevenZOutputFile.java,555,final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S1850,SevenZOutputFile.java,556,final DataOutputStream out = new DataOutputStream(baos);
+S1851,SevenZOutputFile.java,557,if (numLastModifiedDates != files.size()) {
+S1852,SevenZOutputFile.java,558,out.write(0);
+S1853,SevenZOutputFile.java,559,final BitSet mTimes = new BitSet(files.size());
+S1854,SevenZOutputFile.java,560,for (int i = 0; i < files.size(); i++) {
+S1855,SevenZOutputFile.java,561,"mTimes.set(i, files.get(i).getHasLastModifiedDate());"
+S1856,SevenZOutputFile.java,563,"writeBits(out, mTimes, files.size());"
+S1857,SevenZOutputFile.java,564,} else {
+S1858,SevenZOutputFile.java,565,out.write(1);
+S1859,SevenZOutputFile.java,567,out.write(0);
+S1860,SevenZOutputFile.java,568,for (final SevenZArchiveEntry entry : files) {
+S1861,SevenZOutputFile.java,569,if (entry.getHasLastModifiedDate()) {
+S1862,SevenZOutputFile.java,570,out.writeLong(Long.reverseBytes(
+S1863,SevenZOutputFile.java,574,out.flush();
+S1864,SevenZOutputFile.java,575,final byte[] contents = baos.toByteArray();
+S1865,SevenZOutputFile.java,576,"writeUint64(header, contents.length);"
+S1866,SevenZOutputFile.java,577,header.write(contents);
+S1867,SevenZOutputFile.java,582,int numWindowsAttributes = 0;
+S1868,SevenZOutputFile.java,583,for (final SevenZArchiveEntry entry : files) {
+S1869,SevenZOutputFile.java,584,if (entry.getHasWindowsAttributes()) {
+S1870,SevenZOutputFile.java,585,++numWindowsAttributes;
+S1871,SevenZOutputFile.java,588,if (numWindowsAttributes > 0) {
+S1872,SevenZOutputFile.java,589,header.write(NID.kWinAttributes);
+S1873,SevenZOutputFile.java,591,final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+S1874,SevenZOutputFile.java,592,final DataOutputStream out = new DataOutputStream(baos);
+S1875,SevenZOutputFile.java,593,if (numWindowsAttributes != files.size()) {
+S1876,SevenZOutputFile.java,594,out.write(0);
+S1877,SevenZOutputFile.java,595,final BitSet attributes = new BitSet(files.size());
+S1878,SevenZOutputFile.java,596,for (int i = 0; i < files.size(); i++) {
+S1879,SevenZOutputFile.java,597,"attributes.set(i, files.get(i).getHasWindowsAttributes());"
+S1880,SevenZOutputFile.java,599,"writeBits(out, attributes, files.size());"
+S1881,SevenZOutputFile.java,600,} else {
+S1882,SevenZOutputFile.java,603,out.write(0);
+S1883,SevenZOutputFile.java,604,for (final SevenZArchiveEntry entry : files) {
+S1884,SevenZOutputFile.java,605,if (entry.getHasWindowsAttributes()) {
+S1885,SevenZOutputFile.java,606,out.writeInt(Integer.reverseBytes(entry.getWindowsAttributes()));
+S1886,SevenZOutputFile.java,609,out.flush();
+S1887,SevenZOutputFile.java,610,final byte[] contents = baos.toByteArray();
+S1888,SevenZOutputFile.java,611,"writeUint64(header, contents.length);"
+S1889,SevenZOutputFile.java,612,header.write(contents);
+S1890,SevenZOutputFile.java,617,int firstByte = 0;
+S1891,SevenZOutputFile.java,618,int mask = 0x80;
+S1892,SevenZOutputFile.java,620,for (i = 0; i < 8; i++) {
+S1893,SevenZOutputFile.java,621,if (value < ((1L << ( 7  * (i + 1))))) {
+S1894,SevenZOutputFile.java,622,firstByte |= (value >>> (8 * i));
+S1895,SevenZOutputFile.java,623,break;
+S1896,SevenZOutputFile.java,625,firstByte |= mask;
+S1897,SevenZOutputFile.java,626,mask >>>= 1;
+S1898,SevenZOutputFile.java,628,header.write(firstByte);
+S1899,SevenZOutputFile.java,629,for (; i > 0; i--) {
+S1900,SevenZOutputFile.java,630,header.write((int) (0xff & value));
+S1901,SevenZOutputFile.java,631,value >>>= 8;
+S1902,SevenZOutputFile.java,636,int cache = 0;
+S1903,SevenZOutputFile.java,637,int shift = 7;
+S1904,SevenZOutputFile.java,638,for (int i = 0; i < length; i++) {
+S1905,SevenZOutputFile.java,639,cache |= ((bits.get(i) ? 1 : 0) << shift);
+S1906,SevenZOutputFile.java,640,if (--shift < 0) {
+S1907,SevenZOutputFile.java,641,header.write(cache);
+S1908,SevenZOutputFile.java,642,shift = 7;
+S1909,SevenZOutputFile.java,643,cache = 0;
+S1910,SevenZOutputFile.java,646,if (shift != 7) {
+S1911,SevenZOutputFile.java,647,header.write(cache);
+S1912,SevenZOutputFile.java,651,private class OutputStreamWrapper extends OutputStream {
+S1913,SevenZOutputFile.java,654,file.write(b);
+S1914,SevenZOutputFile.java,655,compressedCrc32.update(b);
+S1915,SevenZOutputFile.java,656,fileBytesWritten++;
+S1916,SevenZOutputFile.java,667,"file.write(b, off, len);"
+S1917,SevenZOutputFile.java,668,"compressedCrc32.update(b, off, len);"
+S1918,SevenZOutputFile.java,669,fileBytesWritten += len;
+S1919,StartHeader.java,20,class StartHeader {
+S1920,StreamMap.java,21,class StreamMap {
+S1921,SubStreamsInfo.java,23,class SubStreamsInfo {

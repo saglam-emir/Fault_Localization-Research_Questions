@@ -1,0 +1,1622 @@
+statement_id,file,line,code
+S1,AVLTree.java,47,public class AVLTree<T extends Comparable<T>> {
+S2,AVLTree.java,54,public AVLTree() {
+S3,AVLTree.java,55,top = null;
+S4,AVLTree.java,62,if (element != null) {
+S5,AVLTree.java,63,if (top == null) {
+S6,AVLTree.java,64,"top = new Node(element, null);"
+S7,AVLTree.java,66,top.insert(element);
+S8,AVLTree.java,103,return top == null;
+S9,AVLTree.java,124,return (top == null) ? null : top.getSmallest();
+S10,AVLTree.java,152,Node candidate = null;
+S11,AVLTree.java,153,for (Node node = top; node != null;) {
+S12,AVLTree.java,154,if (node.element.compareTo(reference) < 0) {
+S13,AVLTree.java,155,if (node.right == null) {
+S14,AVLTree.java,156,return candidate;
+S15,AVLTree.java,158,node = node.right;
+S16,AVLTree.java,160,candidate = node;
+S17,AVLTree.java,161,if (node.left == null) {
+S18,AVLTree.java,162,return candidate;
+S19,AVLTree.java,164,node = node.left;
+S20,AVLTree.java,167,return null;
+S21,AVLTree.java,202,private static enum Skew {
+S22,AVLTree.java,204,"LEFT_HIGH,"
+S23,AVLTree.java,207,"RIGHT_HIGH,"
+S24,AVLTree.java,210,BALANCED;
+S25,AVLTree.java,224,public class Node {
+S26,AVLTree.java,245,"Node(final T element, final Node parent) {"
+S27,AVLTree.java,246,this.element = element;
+S28,AVLTree.java,247,left         = null;
+S29,AVLTree.java,248,right        = null;
+S30,AVLTree.java,249,this.parent  = parent;
+S31,AVLTree.java,250,skew         = Skew.BALANCED;
+S32,AVLTree.java,257,return element;
+S33,AVLTree.java,274,Node node = this;
+S34,AVLTree.java,275,while (node.left != null) {
+S35,AVLTree.java,276,node = node.left;
+S36,AVLTree.java,278,return node;
+S37,AVLTree.java,288,Node node = this;
+S38,AVLTree.java,289,while (node.right != null) {
+S39,AVLTree.java,290,node = node.right;
+S40,AVLTree.java,292,return node;
+S41,AVLTree.java,327,if (right != null) {
+S42,AVLTree.java,328,final Node node = right.getSmallest();
+S43,AVLTree.java,329,if (node != null) {
+S44,AVLTree.java,330,return node;
+S45,AVLTree.java,334,for (Node node = this; node.parent != null; node = node.parent) {
+S46,AVLTree.java,335,if (node != node.parent.right) {
+S47,AVLTree.java,336,return node.parent;
+S48,AVLTree.java,340,return null;
+S49,AVLTree.java,349,if (newElement.compareTo(this.element) < 0) {
+S50,AVLTree.java,351,if (left == null) {
+S51,AVLTree.java,352,"left = new Node(newElement, this);"
+S52,AVLTree.java,353,return rebalanceLeftGrown();
+S53,AVLTree.java,355,return left.insert(newElement) ? rebalanceLeftGrown() : false;
+S54,AVLTree.java,359,if (right == null) {
+S55,AVLTree.java,360,"right = new Node(newElement, this);"
+S56,AVLTree.java,361,return rebalanceRightGrown();
+S57,AVLTree.java,363,return right.insert(newElement) ? rebalanceRightGrown() : false;
+S58,AVLTree.java,370,if ((parent == null) && (left == null) && (right == null)) {
+S59,AVLTree.java,372,element = null;
+S60,AVLTree.java,373,top     = null;
+S61,AVLTree.java,379,if ((left == null) && (right == null)) {
+S62,AVLTree.java,380,node       = this;
+S63,AVLTree.java,381,element    = null;
+S64,AVLTree.java,382,leftShrunk = node == node.parent.left;
+S65,AVLTree.java,383,child      = null;
+S66,AVLTree.java,385,node       = (left != null) ? left.getLargest() : right.getSmallest();
+S67,AVLTree.java,386,element    = node.element;
+S68,AVLTree.java,387,leftShrunk = node == node.parent.left;
+S69,AVLTree.java,388,child      = (node.left != null) ? node.left : node.right;
+S70,AVLTree.java,391,node = node.parent;
+S71,AVLTree.java,392,if (leftShrunk) {
+S72,AVLTree.java,393,node.left = child;
+S73,AVLTree.java,395,node.right = child;
+S74,AVLTree.java,397,if (child != null) {
+S75,AVLTree.java,398,child.parent = node;
+S76,AVLTree.java,401,while (leftShrunk ? node.rebalanceLeftShrunk() : node.rebalanceRightShrunk()) {
+S77,AVLTree.java,402,if (node.parent == null) {
+S78,AVLTree.java,403,return;
+S79,AVLTree.java,405,leftShrunk = node == node.parent.left;
+S80,AVLTree.java,406,node = node.parent;
+S81,AVLTree.java,416,switch (skew) {
+S82,AVLTree.java,418,if (left.skew == Skew.LEFT_HIGH) {
+S83,AVLTree.java,419,rotateCW();
+S84,AVLTree.java,420,skew       = Skew.BALANCED;
+S85,AVLTree.java,421,right.skew = Skew.BALANCED;
+S86,AVLTree.java,423,final Skew s = left.right.skew;
+S87,AVLTree.java,424,left.rotateCCW();
+S88,AVLTree.java,425,rotateCW();
+S89,AVLTree.java,426,switch(s) {
+S90,AVLTree.java,428,left.skew  = Skew.BALANCED;
+S91,AVLTree.java,429,right.skew = Skew.RIGHT_HIGH;
+S92,AVLTree.java,430,break;
+S93,AVLTree.java,432,left.skew  = Skew.LEFT_HIGH;
+S94,AVLTree.java,433,right.skew = Skew.BALANCED;
+S95,AVLTree.java,434,break;
+S96,AVLTree.java,436,left.skew  = Skew.BALANCED;
+S97,AVLTree.java,437,right.skew = Skew.BALANCED;
+S98,AVLTree.java,439,skew = Skew.BALANCED;
+S99,AVLTree.java,441,return false;
+S100,AVLTree.java,443,skew = Skew.BALANCED;
+S101,AVLTree.java,444,return false;
+S102,AVLTree.java,446,skew = Skew.LEFT_HIGH;
+S103,AVLTree.java,447,return true;
+S104,AVLTree.java,455,switch (skew) {
+S105,AVLTree.java,457,skew = Skew.BALANCED;
+S106,AVLTree.java,458,return false;
+S107,AVLTree.java,460,if (right.skew == Skew.RIGHT_HIGH) {
+S108,AVLTree.java,461,rotateCCW();
+S109,AVLTree.java,462,skew      = Skew.BALANCED;
+S110,AVLTree.java,463,left.skew = Skew.BALANCED;
+S111,AVLTree.java,465,final Skew s = right.left.skew;
+S112,AVLTree.java,466,right.rotateCW();
+S113,AVLTree.java,467,rotateCCW();
+S114,AVLTree.java,468,switch (s) {
+S115,AVLTree.java,470,left.skew  = Skew.BALANCED;
+S116,AVLTree.java,471,right.skew = Skew.RIGHT_HIGH;
+S117,AVLTree.java,472,break;
+S118,AVLTree.java,474,left.skew  = Skew.LEFT_HIGH;
+S119,AVLTree.java,475,right.skew = Skew.BALANCED;
+S120,AVLTree.java,476,break;
+S121,AVLTree.java,478,left.skew  = Skew.BALANCED;
+S122,AVLTree.java,479,right.skew = Skew.BALANCED;
+S123,AVLTree.java,481,skew = Skew.BALANCED;
+S124,AVLTree.java,483,return false;
+S125,AVLTree.java,485,skew = Skew.RIGHT_HIGH;
+S126,AVLTree.java,486,return true;
+S127,AVLTree.java,494,switch (skew) {
+S128,AVLTree.java,496,skew = Skew.BALANCED;
+S129,AVLTree.java,497,return true;
+S130,AVLTree.java,499,if (right.skew == Skew.RIGHT_HIGH) {
+S131,AVLTree.java,500,rotateCCW();
+S132,AVLTree.java,501,skew      = Skew.BALANCED;
+S133,AVLTree.java,502,left.skew = Skew.BALANCED;
+S134,AVLTree.java,503,return true;
+S135,AVLTree.java,504,} else if (right.skew == Skew.BALANCED) {
+S136,AVLTree.java,505,rotateCCW();
+S137,AVLTree.java,506,skew      = Skew.LEFT_HIGH;
+S138,AVLTree.java,507,left.skew = Skew.RIGHT_HIGH;
+S139,AVLTree.java,508,return false;
+S140,AVLTree.java,510,final Skew s = right.left.skew;
+S141,AVLTree.java,511,right.rotateCW();
+S142,AVLTree.java,512,rotateCCW();
+S143,AVLTree.java,513,switch (s) {
+S144,AVLTree.java,519,left.skew  = Skew.LEFT_HIGH;
+S145,AVLTree.java,520,right.skew = Skew.BALANCED;
+S146,AVLTree.java,521,break;
+S147,AVLTree.java,523,left.skew  = Skew.BALANCED;
+S148,AVLTree.java,524,right.skew = Skew.BALANCED;
+S149,AVLTree.java,526,skew = Skew.BALANCED;
+S150,AVLTree.java,527,return true;
+S151,AVLTree.java,530,skew = Skew.RIGHT_HIGH;
+S152,AVLTree.java,531,return false;
+S153,AVLTree.java,539,switch (skew) {
+S154,AVLTree.java,541,skew = Skew.BALANCED;
+S155,AVLTree.java,542,return true;
+S156,AVLTree.java,544,if (left.skew == Skew.LEFT_HIGH) {
+S157,AVLTree.java,545,rotateCW();
+S158,AVLTree.java,546,skew       = Skew.BALANCED;
+S159,AVLTree.java,547,right.skew = Skew.BALANCED;
+S160,AVLTree.java,548,return true;
+S161,AVLTree.java,549,} else if (left.skew == Skew.BALANCED) {
+S162,AVLTree.java,550,rotateCW();
+S163,AVLTree.java,551,skew       = Skew.RIGHT_HIGH;
+S164,AVLTree.java,552,right.skew = Skew.LEFT_HIGH;
+S165,AVLTree.java,553,return false;
+S166,AVLTree.java,555,final Skew s = left.right.skew;
+S167,AVLTree.java,556,left.rotateCCW();
+S168,AVLTree.java,557,rotateCW();
+S169,AVLTree.java,558,switch (s) {
+S170,AVLTree.java,568,left.skew  = Skew.BALANCED;
+S171,AVLTree.java,569,right.skew = Skew.BALANCED;
+S172,AVLTree.java,571,skew = Skew.BALANCED;
+S173,AVLTree.java,572,return true;
+S174,AVLTree.java,575,skew = Skew.LEFT_HIGH;
+S175,AVLTree.java,576,return false;
+S176,AVLTree.java,586,final T tmpElt       = element;
+S177,AVLTree.java,587,element              = left.element;
+S178,AVLTree.java,588,left.element         = tmpElt;
+S179,AVLTree.java,590,final Node tmpNode   = left;
+S180,AVLTree.java,591,left                 = tmpNode.left;
+S181,AVLTree.java,592,tmpNode.left         = tmpNode.right;
+S182,AVLTree.java,593,tmpNode.right        = right;
+S183,AVLTree.java,594,right                = tmpNode;
+S184,AVLTree.java,596,if (left != null) {
+S185,AVLTree.java,597,left.parent = this;
+S186,AVLTree.java,599,if (right.right != null) {
+S187,AVLTree.java,600,right.right.parent = right;
+S188,AVLTree.java,611,final T tmpElt        = element;
+S189,AVLTree.java,612,element               = right.element;
+S190,AVLTree.java,613,right.element         = tmpElt;
+S191,AVLTree.java,615,final Node tmpNode    = right;
+S192,AVLTree.java,616,right                 = tmpNode.right;
+S193,AVLTree.java,617,tmpNode.right         = tmpNode.left;
+S194,AVLTree.java,618,tmpNode.left          = left;
+S195,AVLTree.java,619,left                  = tmpNode;
+S196,AVLTree.java,621,if (right != null) {
+S197,AVLTree.java,622,right.parent = this;
+S198,AVLTree.java,624,if (left.left != null) {
+S199,AVLTree.java,625,left.left.parent = left;
+S200,AbstractRegion.java,50,protected AbstractRegion() {
+S201,AbstractRegion.java,51,tree = new BSPTree<S>(Boolean.TRUE);
+S202,AbstractRegion.java,66,protected AbstractRegion(final BSPTree<S> tree) {
+S203,AbstractRegion.java,67,this.tree = tree;
+S204,AbstractRegion.java,89,protected AbstractRegion(final Collection<SubHyperplane<S>> boundary) {
+S205,AbstractRegion.java,91,if (boundary.size() == 0) {
+S206,AbstractRegion.java,101,final TreeSet<SubHyperplane<S>> ordered = new TreeSet<SubHyperplane<S>>(new Comparator<SubHyperplane<S>>() {
+S207,AbstractRegion.java,103,final double size1 = o1.getSize();
+S208,AbstractRegion.java,104,final double size2 = o2.getSize();
+S209,AbstractRegion.java,105,return (size2 < size1) ? -1 : ((o1 == o2) ? 0 : +1);
+S210,AbstractRegion.java,108,ordered.addAll(boundary);
+S211,AbstractRegion.java,111,tree = new BSPTree<S>();
+S212,AbstractRegion.java,112,"insertCuts(tree, ordered);"
+S213,AbstractRegion.java,115,tree.visit(new BSPTreeVisitor<S>() {
+S214,AbstractRegion.java,119,return Order.PLUS_SUB_MINUS;
+S215,AbstractRegion.java,128,node.setAttribute((node == node.getParent().getPlus()) ?
+S216,AbstractRegion.java,176,final Iterator<SubHyperplane<S>> iterator = boundary.iterator();
+S217,AbstractRegion.java,179,Hyperplane<S> inserted = null;
+S218,AbstractRegion.java,180,while ((inserted == null) && iterator.hasNext()) {
+S219,AbstractRegion.java,181,inserted = iterator.next().getHyperplane();
+S220,AbstractRegion.java,182,if (!node.insertCut(inserted.copySelf())) {
+S221,AbstractRegion.java,187,if (!iterator.hasNext()) {
+S222,AbstractRegion.java,188,return;
+S223,AbstractRegion.java,192,final ArrayList<SubHyperplane<S>> plusList  = new ArrayList<SubHyperplane<S>>();
+S224,AbstractRegion.java,193,final ArrayList<SubHyperplane<S>> minusList = new ArrayList<SubHyperplane<S>>();
+S225,AbstractRegion.java,194,while (iterator.hasNext()) {
+S226,AbstractRegion.java,195,final SubHyperplane<S> other = iterator.next();
+S227,AbstractRegion.java,196,switch (other.side(inserted)) {
+S228,AbstractRegion.java,198,plusList.add(other);
+S229,AbstractRegion.java,199,break;
+S230,AbstractRegion.java,201,minusList.add(other);
+S231,AbstractRegion.java,202,break;
+S232,AbstractRegion.java,204,final SubHyperplane.SplitSubHyperplane<S> split = other.split(inserted);
+S233,AbstractRegion.java,205,plusList.add(split.getPlus());
+S234,AbstractRegion.java,206,minusList.add(split.getMinus());
+S235,AbstractRegion.java,207,break;
+S236,AbstractRegion.java,214,"insertCuts(node.getPlus(),  plusList);"
+S237,AbstractRegion.java,215,"insertCuts(node.getMinus(), minusList);"
+S238,AbstractRegion.java,221,return buildNew(tree.copySelf());
+S239,AbstractRegion.java,226,return isEmpty(tree);
+S240,AbstractRegion.java,236,if (node.getCut() == null) {
+S241,AbstractRegion.java,238,return !((Boolean) node.getAttribute());
+S242,AbstractRegion.java,242,return isEmpty(node.getMinus()) && isEmpty(node.getPlus());
+S243,AbstractRegion.java,248,"return new RegionFactory<S>().difference(region, this).isEmpty();"
+S244,AbstractRegion.java,253,"return checkPoint(tree, point);"
+S245,AbstractRegion.java,264,final BSPTree<S> cell = node.getCell(point);
+S246,AbstractRegion.java,265,if (cell.getCut() == null) {
+S247,AbstractRegion.java,267,return ((Boolean) cell.getAttribute()) ? Location.INSIDE : Location.OUTSIDE;
+S248,AbstractRegion.java,271,"final Location minusCode = checkPoint(cell.getMinus(), point);"
+S249,AbstractRegion.java,272,"final Location plusCode  = checkPoint(cell.getPlus(),  point);"
+S250,AbstractRegion.java,273,return (minusCode == plusCode) ? minusCode : Location.BOUNDARY;
+S251,AbstractRegion.java,279,if (includeBoundaryAttributes && (tree.getCut() != null) && (tree.getAttribute() == null)) {
+S252,AbstractRegion.java,281,recurseBuildBoundary(tree);
+S253,AbstractRegion.java,283,return tree;
+S254,AbstractRegion.java,290,if (node.getCut() != null) {
+S255,AbstractRegion.java,292,SubHyperplane<S> plusOutside = null;
+S256,AbstractRegion.java,293,SubHyperplane<S> plusInside  = null;
+S257,AbstractRegion.java,297,final Characterization<S> plusChar = new Characterization<S>();
+S258,AbstractRegion.java,298,"characterize(node.getPlus(), node.getCut().copySelf(), plusChar);"
+S259,AbstractRegion.java,300,if (plusChar.hasOut()) {
+S260,AbstractRegion.java,305,final Characterization<S> minusChar = new Characterization<S>();
+S261,AbstractRegion.java,306,"characterize(node.getMinus(), plusChar.getOut(), minusChar);"
+S262,AbstractRegion.java,307,if (minusChar.hasIn()) {
+S263,AbstractRegion.java,308,plusOutside = minusChar.getIn();
+S264,AbstractRegion.java,312,if (plusChar.hasIn()) {
+S265,AbstractRegion.java,317,final Characterization<S> minusChar = new Characterization<S>();
+S266,AbstractRegion.java,318,"characterize(node.getMinus(), plusChar.getIn(), minusChar);"
+S267,AbstractRegion.java,319,if (minusChar.hasOut()) {
+S268,AbstractRegion.java,320,plusInside = minusChar.getOut();
+S269,AbstractRegion.java,324,"node.setAttribute(new BoundaryAttribute<S>(plusOutside, plusInside));"
+S270,AbstractRegion.java,325,recurseBuildBoundary(node.getPlus());
+S271,AbstractRegion.java,326,recurseBuildBoundary(node.getMinus());
+S272,AbstractRegion.java,346,if (node.getCut() == null) {
+S273,AbstractRegion.java,348,final boolean inside = (Boolean) node.getAttribute();
+S274,AbstractRegion.java,349,"characterization.add(sub, inside);"
+S275,AbstractRegion.java,350,} else {
+S276,AbstractRegion.java,351,final Hyperplane<S> hyperplane = node.getCut().getHyperplane();
+S277,AbstractRegion.java,352,switch (sub.side(hyperplane)) {
+S278,AbstractRegion.java,354,"characterize(node.getPlus(), sub, characterization);"
+S279,AbstractRegion.java,355,break;
+S280,AbstractRegion.java,357,"characterize(node.getMinus(), sub, characterization);"
+S281,AbstractRegion.java,358,break;
+S282,AbstractRegion.java,360,final SubHyperplane.SplitSubHyperplane<S> split = sub.split(hyperplane);
+S283,AbstractRegion.java,361,"characterize(node.getPlus(),  split.getPlus(),  characterization);"
+S284,AbstractRegion.java,362,"characterize(node.getMinus(), split.getMinus(), characterization);"
+S285,AbstractRegion.java,363,break;
+S286,AbstractRegion.java,373,final BoundarySizeVisitor<S> visitor = new BoundarySizeVisitor<S>();
+S287,AbstractRegion.java,374,getTree(true).visit(visitor);
+S288,AbstractRegion.java,375,return visitor.getSize();
+S289,AbstractRegion.java,380,if (barycenter == null) {
+S290,AbstractRegion.java,381,computeGeometricalProperties();
+S291,AbstractRegion.java,383,return size;
+S292,AbstractRegion.java,390,this.size = size;
+S293,AbstractRegion.java,395,if (barycenter == null) {
+S294,AbstractRegion.java,396,computeGeometricalProperties();
+S295,AbstractRegion.java,398,return barycenter;
+S296,AbstractRegion.java,405,this.barycenter = barycenter;
+S297,AbstractRegion.java,415,final Sides sides = new Sides();
+S298,AbstractRegion.java,416,"recurseSides(tree, hyperplane.wholeHyperplane(), sides);"
+S299,AbstractRegion.java,417,return sides.plusFound() ?
+S300,AbstractRegion.java,439,if (node.getCut() == null) {
+S301,AbstractRegion.java,440,if ((Boolean) node.getAttribute()) {
+S302,AbstractRegion.java,442,sides.rememberPlusFound();
+S303,AbstractRegion.java,443,sides.rememberMinusFound();
+S304,AbstractRegion.java,445,return;
+S305,AbstractRegion.java,448,final Hyperplane<S> hyperplane = node.getCut().getHyperplane();
+S306,AbstractRegion.java,449,switch (sub.side(hyperplane)) {
+S307,AbstractRegion.java,452,if (node.getCut().side(sub.getHyperplane()) == Side.PLUS) {
+S308,AbstractRegion.java,453,if (!isEmpty(node.getMinus())) {
+S309,AbstractRegion.java,454,sides.rememberPlusFound();
+S310,AbstractRegion.java,457,if (!isEmpty(node.getMinus())) {
+S311,AbstractRegion.java,458,sides.rememberMinusFound();
+S312,AbstractRegion.java,461,if (!(sides.plusFound() && sides.minusFound())) {
+S313,AbstractRegion.java,462,"recurseSides(node.getPlus(), sub, sides);"
+S314,AbstractRegion.java,467,if (node.getCut().side(sub.getHyperplane()) == Side.PLUS) {
+S315,AbstractRegion.java,468,if (!isEmpty(node.getPlus())) {
+S316,AbstractRegion.java,472,if (!isEmpty(node.getPlus())) {
+S317,AbstractRegion.java,473,sides.rememberMinusFound();
+S318,AbstractRegion.java,476,if (!(sides.plusFound() && sides.minusFound())) {
+S319,AbstractRegion.java,477,"recurseSides(node.getMinus(), sub, sides);"
+S320,AbstractRegion.java,482,final SubHyperplane.SplitSubHyperplane<S> split = sub.split(hyperplane);
+S321,AbstractRegion.java,485,"recurseSides(node.getPlus(), split.getPlus(), sides);"
+S322,AbstractRegion.java,488,if (!(sides.plusFound() && sides.minusFound())) {
+S323,AbstractRegion.java,489,"recurseSides(node.getMinus(), split.getMinus(), sides);"
+S324,AbstractRegion.java,494,if (node.getCut().getHyperplane().sameOrientationAs(sub.getHyperplane())) {
+S325,AbstractRegion.java,495,if ((node.getPlus().getCut() != null) || ((Boolean) node.getPlus().getAttribute())) {
+S326,AbstractRegion.java,496,sides.rememberPlusFound();
+S327,AbstractRegion.java,498,if ((node.getMinus().getCut() != null) || ((Boolean) node.getMinus().getAttribute())) {
+S328,AbstractRegion.java,499,sides.rememberMinusFound();
+S329,AbstractRegion.java,502,if ((node.getPlus().getCut() != null) || ((Boolean) node.getPlus().getAttribute())) {
+S330,AbstractRegion.java,503,sides.rememberMinusFound();
+S331,AbstractRegion.java,505,if ((node.getMinus().getCut() != null) || ((Boolean) node.getMinus().getAttribute())) {
+S332,AbstractRegion.java,506,sides.rememberPlusFound();
+S333,AbstractRegion.java,524,public Sides() {
+S334,AbstractRegion.java,525,plusFound  = false;
+S335,AbstractRegion.java,526,minusFound = false;
+S336,AbstractRegion.java,532,plusFound = true;
+S337,AbstractRegion.java,539,return plusFound;
+S338,AbstractRegion.java,545,minusFound = true;
+S339,AbstractRegion.java,552,return minusFound;
+S340,AbstractRegion.java,559,"return recurseIntersection(tree, sub);"
+S341,AbstractRegion.java,570,if (node.getCut() == null) {
+S342,AbstractRegion.java,571,return (Boolean) node.getAttribute() ? sub.copySelf() : null;
+S343,AbstractRegion.java,574,final Hyperplane<S> hyperplane = node.getCut().getHyperplane();
+S344,AbstractRegion.java,575,switch (sub.side(hyperplane)) {
+S345,AbstractRegion.java,579,"return recurseIntersection(node.getMinus(), sub);"
+S346,AbstractRegion.java,581,final SubHyperplane.SplitSubHyperplane<S> split = sub.split(hyperplane);
+S347,AbstractRegion.java,582,"final SubHyperplane<S> plus  = recurseIntersection(node.getPlus(),  split.getPlus());"
+S348,AbstractRegion.java,583,"final SubHyperplane<S> minus = recurseIntersection(node.getMinus(), split.getMinus());"
+S349,AbstractRegion.java,584,if (plus == null) {
+S350,AbstractRegion.java,585,return minus;
+S351,AbstractRegion.java,586,} else if (minus == null) {
+S352,AbstractRegion.java,589,return plus.reunite(minus);
+S353,AbstractRegion.java,592,"return recurseIntersection(node.getPlus(),"
+S354,AbstractRegion.java,609,"return buildNew(recurseTransform(getTree(false), transform));"
+S355,AbstractRegion.java,620,if (node.getCut() == null) {
+S356,AbstractRegion.java,621,return new BSPTree<S>(node.getAttribute());
+S357,AbstractRegion.java,624,final SubHyperplane<S>  sub = node.getCut();
+S358,AbstractRegion.java,625,"final SubHyperplane<S> tSub = ((AbstractSubHyperplane<S, T>) sub).applyTransform(transform);"
+S359,AbstractRegion.java,626,BoundaryAttribute<S> attribute = (BoundaryAttribute<S>) node.getAttribute();
+S360,AbstractRegion.java,627,if (attribute != null) {
+S361,AbstractRegion.java,628,final SubHyperplane<S> tPO = (attribute.getPlusOutside() == null) ?
+S362,AbstractRegion.java,630,final SubHyperplane<S> tPI = (attribute.getPlusInside()  == null) ?
+S363,AbstractRegion.java,632,"attribute = new BoundaryAttribute<S>(tPO, tPI);"
+S364,AbstractRegion.java,635,"return new BSPTree<S>(tSub,"
+S365,AbstractSubHyperplane.java,37,"public abstract class AbstractSubHyperplane<S extends Space, T extends Space>"
+S366,AbstractSubHyperplane.java,51,final Region<T> remainingRegion) {
+S367,AbstractSubHyperplane.java,52,this.hyperplane      = hyperplane;
+S368,AbstractSubHyperplane.java,53,this.remainingRegion = remainingRegion;
+S369,AbstractSubHyperplane.java,66,"return buildNew(hyperplane, remainingRegion);"
+S370,AbstractSubHyperplane.java,73,return hyperplane;
+S371,AbstractSubHyperplane.java,84,return remainingRegion;
+S372,AbstractSubHyperplane.java,89,return remainingRegion.getSize();
+S373,AbstractSubHyperplane.java,95,"AbstractSubHyperplane<S, T> o = (AbstractSubHyperplane<S, T>) other;"
+S374,AbstractSubHyperplane.java,96,"return buildNew(hyperplane,"
+S375,AbstractSubHyperplane.java,111,final Hyperplane<S> tHyperplane = transform.apply(hyperplane);
+S376,AbstractSubHyperplane.java,112,final BSPTree<T> tTree =
+S377,AbstractSubHyperplane.java,114,"return buildNew(tHyperplane, remainingRegion.buildNew(tTree));"
+S378,AbstractSubHyperplane.java,126,if (node.getCut() == null) {
+S379,AbstractSubHyperplane.java,127,return new BSPTree<T>(node.getAttribute());
+S380,AbstractSubHyperplane.java,131,BoundaryAttribute<T> attribute =
+S381,AbstractSubHyperplane.java,133,if (attribute != null) {
+S382,AbstractSubHyperplane.java,134,final SubHyperplane<T> tPO = (attribute.getPlusOutside() == null) ?
+S383,AbstractSubHyperplane.java,136,final SubHyperplane<T> tPI = (attribute.getPlusInside() == null) ?
+S384,AbstractSubHyperplane.java,138,"attribute = new BoundaryAttribute<T>(tPO, tPI);"
+S385,AbstractSubHyperplane.java,141,"return new BSPTree<T>(transform.apply(node.getCut(), hyperplane, transformed),"
+S386,AbstractSubHyperplane.java,156,return remainingRegion.isEmpty();
+S387,BSPTree.java,82,public BSPTree() {
+S388,BSPTree.java,83,cut       = null;
+S389,BSPTree.java,84,plus      = null;
+S390,BSPTree.java,85,minus     = null;
+S391,BSPTree.java,86,parent    = null;
+S392,BSPTree.java,87,attribute = null;
+S393,BSPTree.java,93,public BSPTree(final Object attribute) {
+S394,BSPTree.java,94,cut    = null;
+S395,BSPTree.java,95,plus   = null;
+S396,BSPTree.java,96,minus  = null;
+S397,BSPTree.java,97,parent = null;
+S398,BSPTree.java,98,this.attribute = attribute;
+S399,BSPTree.java,115,final Object attribute) {
+S400,BSPTree.java,116,this.cut       = cut;
+S401,BSPTree.java,117,this.plus      = plus;
+S402,BSPTree.java,118,this.minus     = minus;
+S403,BSPTree.java,119,this.parent    = null;
+S404,BSPTree.java,120,this.attribute = attribute;
+S405,BSPTree.java,121,plus.parent    = this;
+S406,BSPTree.java,122,minus.parent   = this;
+S407,BSPTree.java,150,if (cut != null) {
+S408,BSPTree.java,155,final SubHyperplane<S> chopped = fitToCell(hyperplane.wholeHyperplane());
+S409,BSPTree.java,156,if (chopped.isEmpty()) {
+S410,BSPTree.java,163,cut          = chopped;
+S411,BSPTree.java,164,plus         = new BSPTree<S>();
+S412,BSPTree.java,165,plus.parent  = this;
+S413,BSPTree.java,166,minus        = new BSPTree<S>();
+S414,BSPTree.java,167,minus.parent = this;
+S415,BSPTree.java,168,return true;
+S416,BSPTree.java,181,if (cut == null) {
+S417,BSPTree.java,182,return new BSPTree<S>(attribute);
+S418,BSPTree.java,185,"return new BSPTree<S>(cut.copySelf(), plus.copySelf(), minus.copySelf(),"
+S419,BSPTree.java,194,return cut;
+S420,BSPTree.java,202,return plus;
+S421,BSPTree.java,210,return minus;
+S422,BSPTree.java,217,return parent;
+S423,BSPTree.java,225,this.attribute = attribute;
+S424,BSPTree.java,235,return attribute;
+S425,BSPTree.java,242,if (cut == null) {
+S426,BSPTree.java,243,visitor.visitLeafNode(this);
+S427,BSPTree.java,245,switch (visitor.visitOrder(this)) {
+S428,BSPTree.java,252,plus.visit(visitor);
+S429,BSPTree.java,253,visitor.visitInternalNode(this);
+S430,BSPTree.java,254,minus.visit(visitor);
+S431,BSPTree.java,255,break;
+S432,BSPTree.java,262,minus.visit(visitor);
+S433,BSPTree.java,263,visitor.visitInternalNode(this);
+S434,BSPTree.java,264,plus.visit(visitor);
+S435,BSPTree.java,265,break;
+S436,BSPTree.java,292,SubHyperplane<S> s = sub;
+S437,BSPTree.java,293,for (BSPTree<S> tree = this; tree.parent != null; tree = tree.parent) {
+S438,BSPTree.java,294,if (tree == tree.parent.plus) {
+S439,BSPTree.java,295,s = s.split(tree.parent.cut.getHyperplane()).getPlus();
+S440,BSPTree.java,297,s = s.split(tree.parent.cut.getHyperplane()).getMinus();
+S441,BSPTree.java,300,return s;
+S442,BSPTree.java,312,if (cut == null) {
+S443,BSPTree.java,313,return this;
+S444,BSPTree.java,317,final double offset = cut.getHyperplane().getOffset(point);
+S445,BSPTree.java,319,if (FastMath.abs(offset) < 1.0e-10) {
+S446,BSPTree.java,320,return this;
+S447,BSPTree.java,321,} else if (offset <= 0) {
+S448,BSPTree.java,323,return minus.getCell(point);
+S449,BSPTree.java,326,return plus.getCell(point);
+S450,BSPTree.java,336,if ((cut != null) && (plus.cut == null) && (minus.cut == null) &&
+S451,BSPTree.java,339,attribute = (plus.attribute == null) ? minus.attribute : plus.attribute;
+S452,BSPTree.java,340,cut       = null;
+S453,BSPTree.java,341,plus      = null;
+S454,BSPTree.java,342,minus     = null;
+S455,BSPTree.java,365,"return merge(tree, leafMerger, null, false);"
+S456,BSPTree.java,385,if (cut == null) {
+S457,BSPTree.java,387,"return leafMerger.merge(this, tree, parentTree, isPlusChild, true);"
+S458,BSPTree.java,388,} else if (tree.cut == null) {
+S459,BSPTree.java,390,"return leafMerger.merge(tree, this, parentTree, isPlusChild, false);"
+S460,BSPTree.java,393,final BSPTree<S> merged = tree.split(cut);
+S461,BSPTree.java,394,if (parentTree != null) {
+S462,BSPTree.java,395,merged.parent = parentTree;
+S463,BSPTree.java,396,if (isPlusChild) {
+S464,BSPTree.java,397,parentTree.plus = merged;
+S465,BSPTree.java,399,parentTree.minus = merged;
+S466,BSPTree.java,404,"plus.merge(merged.plus, leafMerger, merged, true);"
+S467,BSPTree.java,405,"minus.merge(merged.minus, leafMerger, merged, false);"
+S468,BSPTree.java,406,merged.condense();
+S469,BSPTree.java,407,if (merged.cut != null) {
+S470,BSPTree.java,408,merged.cut =
+S471,BSPTree.java,412,return merged;
+S472,BSPTree.java,489,if (cut == null) {
+S473,BSPTree.java,490,"return new BSPTree<S>(sub, copySelf(),"
+S474,BSPTree.java,494,final Hyperplane<S> cHyperplane = cut.getHyperplane();
+S475,BSPTree.java,495,final Hyperplane<S> sHyperplane = sub.getHyperplane();
+S476,BSPTree.java,496,switch (sub.side(cHyperplane)) {
+S477,BSPTree.java,499,final BSPTree<S> split = plus.split(sub);
+S478,BSPTree.java,500,if (cut.side(sHyperplane) == Side.PLUS) {
+S479,BSPTree.java,501,split.plus =
+S480,BSPTree.java,503,split.plus.condense();
+S481,BSPTree.java,504,split.plus.parent = split;
+S482,BSPTree.java,506,split.minus =
+S483,BSPTree.java,508,split.minus.condense();
+S484,BSPTree.java,509,split.minus.parent = split;
+S485,BSPTree.java,511,return split;
+S486,BSPTree.java,515,final BSPTree<S> split = minus.split(sub);
+S487,BSPTree.java,516,if (cut.side(sHyperplane) == Side.PLUS) {
+S488,BSPTree.java,517,split.plus =
+S489,BSPTree.java,519,split.plus.condense();
+S490,BSPTree.java,520,split.plus.parent = split;
+S491,BSPTree.java,522,split.minus =
+S492,BSPTree.java,524,split.minus.condense();
+S493,BSPTree.java,525,split.minus.parent = split;
+S494,BSPTree.java,527,return split;
+S495,BSPTree.java,531,final SubHyperplane.SplitSubHyperplane<S> cutParts = cut.split(sHyperplane);
+S496,BSPTree.java,532,final SubHyperplane.SplitSubHyperplane<S> subParts = sub.split(cHyperplane);
+S497,BSPTree.java,533,final BSPTree<S> split =
+S498,BSPTree.java,536,split.plus.cut          = cutParts.getPlus();
+S499,BSPTree.java,537,split.minus.cut         = cutParts.getMinus();
+S500,BSPTree.java,538,final BSPTree<S> tmp    = split.plus.minus;
+S501,BSPTree.java,539,split.plus.minus        = split.minus.plus;
+S502,BSPTree.java,540,split.plus.minus.parent = split.plus;
+S503,BSPTree.java,541,split.minus.plus        = tmp;
+S504,BSPTree.java,542,split.minus.plus.parent = split.minus;
+S505,BSPTree.java,543,split.plus.condense();
+S506,BSPTree.java,544,split.minus.condense();
+S507,BSPTree.java,545,return split;
+S508,BSPTree.java,548,return cHyperplane.sameOrientationAs(sHyperplane) ?
+S509,BSPTree.java,567,parent = parentTree;
+S510,BSPTree.java,568,if (parentTree != null) {
+S511,BSPTree.java,569,if (isPlusChild) {
+S512,BSPTree.java,570,parentTree.plus = this;
+S513,BSPTree.java,572,parentTree.minus = this;
+S514,BSPTree.java,577,if (cut != null) {
+S515,BSPTree.java,580,for (BSPTree<S> tree = this; tree.parent != null; tree = tree.parent) {
+S516,BSPTree.java,583,final Hyperplane<S> hyperplane = tree.parent.cut.getHyperplane();
+S517,BSPTree.java,587,if (tree == tree.parent.plus) {
+S518,BSPTree.java,588,cut = cut.split(hyperplane).getPlus();
+S519,BSPTree.java,589,plus.chopOffMinus(hyperplane);
+S520,BSPTree.java,590,minus.chopOffMinus(hyperplane);
+S521,BSPTree.java,592,cut = cut.split(hyperplane).getMinus();
+S522,BSPTree.java,593,plus.chopOffPlus(hyperplane);
+S523,BSPTree.java,594,minus.chopOffPlus(hyperplane);
+S524,BSPTree.java,601,condense();
+S525,BSPTree.java,614,if (cut != null) {
+S526,BSPTree.java,615,cut = cut.split(hyperplane).getPlus();
+S527,BSPTree.java,616,plus.chopOffMinus(hyperplane);
+S528,BSPTree.java,617,minus.chopOffMinus(hyperplane);
+S529,BSPTree.java,628,if (cut != null) {
+S530,BSPTree.java,629,cut = cut.split(hyperplane).getMinus();
+S531,BSPTree.java,630,plus.chopOffPlus(hyperplane);
+S532,BSPTree.java,631,minus.chopOffPlus(hyperplane);
+S533,BSPTreeVisitor.java,54,enum Order {
+S534,BSPTreeVisitor.java,58,"PLUS_MINUS_SUB,"
+S535,BSPTreeVisitor.java,63,"PLUS_SUB_MINUS,"
+S536,BSPTreeVisitor.java,68,"MINUS_PLUS_SUB,"
+S537,BSPTreeVisitor.java,73,"MINUS_SUB_PLUS,"
+S538,BSPTreeVisitor.java,78,"SUB_PLUS_MINUS,"
+S539,BSPTreeVisitor.java,83,SUB_MINUS_PLUS;
+S540,BoundaryAttribute.java,57,final SubHyperplane<S> plusInside) {
+S541,BoundaryAttribute.java,58,this.plusOutside = plusOutside;
+S542,BoundaryAttribute.java,59,this.plusInside  = plusInside;
+S543,BoundaryAttribute.java,70,return plusOutside;
+S544,BoundaryAttribute.java,81,return plusInside;
+S545,BoundarySizeVisitor.java,33,public BoundarySizeVisitor() {
+S546,BoundarySizeVisitor.java,34,boundarySize = 0;
+S547,BoundarySizeVisitor.java,39,return Order.MINUS_SUB_PLUS;
+S548,BoundarySizeVisitor.java,45,final BoundaryAttribute<S> attribute =
+S549,BoundarySizeVisitor.java,47,if (attribute.getPlusOutside() != null) {
+S550,BoundarySizeVisitor.java,48,boundarySize += attribute.getPlusOutside().getSize();
+S551,BoundarySizeVisitor.java,50,if (attribute.getPlusInside() != null) {
+S552,BoundarySizeVisitor.java,51,boundarySize += attribute.getPlusInside().getSize();
+S553,BoundarySizeVisitor.java,63,return boundarySize;
+S554,Characterization.java,36,public Characterization() {
+S555,Characterization.java,37,in  = null;
+S556,Characterization.java,38,out = null;
+S557,Characterization.java,45,return (in != null) && (!in.isEmpty());
+S558,Characterization.java,52,return in;
+S559,Characterization.java,59,return (out != null) && (!out.isEmpty());
+S560,Characterization.java,66,return out;
+S561,Characterization.java,75,if (inside) {
+S562,Characterization.java,76,if (in == null) {
+S563,Characterization.java,77,in = sub;
+S564,Characterization.java,79,in = in.reunite(sub);
+S565,Characterization.java,82,if (out == null) {
+S566,Characterization.java,83,out = sub;
+S567,Characterization.java,85,out = out.reunite(sub);
+S568,FastMath.java,113,private static final double LN_QUICK_COEF[][] = {
+S569,FastMath.java,126,private static final double LN_HI_PREC_COEF[][] = {
+S570,FastMath.java,139,private static final double SINE_TABLE_A[] =
+S571,FastMath.java,158,private static final double SINE_TABLE_B[] =
+S572,FastMath.java,177,private static final double COSINE_TABLE_A[] =
+S573,FastMath.java,196,private static final double COSINE_TABLE_B[] =
+S574,FastMath.java,216,private static final double TANGENT_TABLE_A[] =
+S575,FastMath.java,235,private static final double TANGENT_TABLE_B[] =
+S576,FastMath.java,254,private static final long RECIP_2PI[] = new long[] {
+S577,FastMath.java,275,private static final long PI_O_4_BITS[] = new long[] {
+S578,FastMath.java,283,"private static final double EIGHTHS[] = {0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875, 1.0, 1.125, 1.25, 1.375, 1.5, 1.625};"
+S579,FastMath.java,286,"private static final double CBRTTWO[] = { 0.6299605249474366,"
+S580,FastMath.java,361,if (d > -Precision.SAFE_MIN && d < Precision.SAFE_MIN){
+S581,FastMath.java,364,long xl = Double.doubleToLongBits(d);
+S582,FastMath.java,365,xl = xl & MASK_30BITS; // Drop low order bits
+S583,FastMath.java,366,return Double.longBitsToDouble(xl);
+S584,FastMath.java,375,return Math.sqrt(a);
+S585,FastMath.java,1588,double x2 = x*x;
+S586,FastMath.java,1590,double p = 2.7553817452272217E-6;
+S587,FastMath.java,1591,p = p * x2 + -1.9841269659586505E-4;
+S588,FastMath.java,1592,p = p * x2 + 0.008333333333329196;
+S589,FastMath.java,1593,p = p * x2 + -0.16666666666666666;
+S590,FastMath.java,1596,p = p * x2 * x;
+S591,FastMath.java,1598,return p;
+S592,FastMath.java,1608,double x2 = x*x;
+S593,FastMath.java,1610,double p = 2.479773539153719E-5;
+S594,FastMath.java,1611,p = p * x2 + -0.0013888888689039883;
+S595,FastMath.java,1612,p = p * x2 + 0.041666666666621166;
+S596,FastMath.java,1613,p = p * x2 + -0.49999999999999994;
+S597,FastMath.java,1614,p *= x2;
+S598,FastMath.java,1616,return p;
+S599,FastMath.java,1627,int idx = (int) ((xa * 8.0) + 0.5);
+S600,FastMath.java,1628,final double epsilon = xa - EIGHTHS[idx]; //idx*0.125;
+S601,FastMath.java,1631,final double sintA = SINE_TABLE_A[idx];
+S602,FastMath.java,1632,final double sintB = SINE_TABLE_B[idx];
+S603,FastMath.java,1633,final double costA = COSINE_TABLE_A[idx];
+S604,FastMath.java,1634,final double costB = COSINE_TABLE_B[idx];
+S605,FastMath.java,1637,double sinEpsA = epsilon;
+S606,FastMath.java,1638,double sinEpsB = polySine(epsilon);
+S607,FastMath.java,1639,final double cosEpsA = 1.0;
+S608,FastMath.java,1640,final double cosEpsB = polyCosine(epsilon);
+S609,FastMath.java,1643,final double temp = sinEpsA * HEX_40000000;
+S610,FastMath.java,1644,double temp2 = (sinEpsA + temp) - temp;
+S611,FastMath.java,1645,sinEpsB +=  sinEpsA - temp2;
+S612,FastMath.java,1646,sinEpsA = temp2;
+S613,FastMath.java,1672,double a = 0;
+S614,FastMath.java,1673,double b = 0;
+S615,FastMath.java,1675,double t = sintA;
+S616,FastMath.java,1676,double c = a + t;
+S617,FastMath.java,1677,double d = -(c - a - t);
+S618,FastMath.java,1678,a = c;
+S619,FastMath.java,1679,b = b + d;
+S620,FastMath.java,1681,t = costA * sinEpsA;
+S621,FastMath.java,1682,c = a + t;
+S622,FastMath.java,1683,d = -(c - a - t);
+S623,FastMath.java,1684,a = c;
+S624,FastMath.java,1685,b = b + d;
+S625,FastMath.java,1687,b = b + sintA * cosEpsB + costA * sinEpsB;
+S626,FastMath.java,1702,b = b + sintB + costB * sinEpsA + sintB * cosEpsB + costB * sinEpsB;
+S627,FastMath.java,1729,if (xb != 0.0) {
+S628,FastMath.java,1730,t = ((costA + costB) * (cosEpsA + cosEpsB) -
+S629,FastMath.java,1732,c = a + t;
+S630,FastMath.java,1733,d = -(c - a - t);
+S631,FastMath.java,1734,a = c;
+S632,FastMath.java,1735,b = b + d;
+S633,FastMath.java,1738,result = a + b;
+S634,FastMath.java,1740,return result;
+S635,FastMath.java,1751,final double pi2a = 1.5707963267948966;
+S636,FastMath.java,1752,final double pi2b = 6.123233995736766E-17;
+S637,FastMath.java,1754,final double a = pi2a - xa;
+S638,FastMath.java,1755,double b = -(a - pi2a + xa);
+S639,FastMath.java,1756,b += pi2b - xb;
+S640,FastMath.java,1758,"return sinQ(a, b);"
+S641,FastMath.java,2135,boolean negative = false;
+S642,FastMath.java,2136,int quadrant = 0;
+S643,FastMath.java,2138,double xb = 0.0;
+S644,FastMath.java,2141,xa = x;
+S645,FastMath.java,2142,if (x < 0) {
+S646,FastMath.java,2143,negative = true;
+S647,FastMath.java,2144,xa = -xa;
+S648,FastMath.java,2148,if (xa == 0.0) {
+S649,FastMath.java,2149,long bits = Double.doubleToLongBits(x);
+S650,FastMath.java,2150,if (bits < 0) {
+S651,FastMath.java,2153,return 0.0;
+S652,FastMath.java,2156,if (xa != xa || xa == Double.POSITIVE_INFINITY) {
+S653,FastMath.java,2161,if (xa > 3294198.0) {
+S654,FastMath.java,2175,int k = (int)(xa * 0.6366197723675814);
+S655,FastMath.java,2181,double a = -k * 1.570796251296997;
+S656,FastMath.java,2182,remA = xa + a;
+S657,FastMath.java,2183,remB = -(remA - xa - a);
+S658,FastMath.java,2185,a = -k * 7.549789948768648E-8;
+S659,FastMath.java,2186,double b = remA;
+S660,FastMath.java,2187,remA = a + b;
+S661,FastMath.java,2188,remB += -(remA - b - a);
+S662,FastMath.java,2190,a = -k * 6.123233995736766E-17;
+S663,FastMath.java,2191,b = remA;
+S664,FastMath.java,2192,remA = a + b;
+S665,FastMath.java,2193,remB += -(remA - b - a);
+S666,FastMath.java,2195,if (remA > 0.0) {
+S667,FastMath.java,2196,break;
+S668,FastMath.java,2202,k--;
+S669,FastMath.java,2204,quadrant = k & 3;
+S670,FastMath.java,2205,xa = remA;
+S671,FastMath.java,2206,xb = remB;
+S672,FastMath.java,2209,if (negative) {
+S673,FastMath.java,2210,quadrant ^= 2;  // Flip bit 1
+S674,FastMath.java,2213,switch (quadrant) {
+S675,FastMath.java,2215,"return sinQ(xa, xb);"
+S676,FastMath.java,2217,"return cosQ(xa, xb);"
+S677,FastMath.java,2219,"return -sinQ(xa, xb);"
+S678,FastMath.java,2221,"return -cosQ(xa, xb);"
+S679,FastMath.java,2233,int quadrant = 0;
+S680,FastMath.java,2236,double xa = x;
+S681,FastMath.java,2237,if (x < 0) {
+S682,FastMath.java,2238,xa = -xa;
+S683,FastMath.java,2241,if (xa != xa || xa == Double.POSITIVE_INFINITY) {
+S684,FastMath.java,2246,double xb = 0;
+S685,FastMath.java,2247,if (xa > 3294198.0) {
+S686,FastMath.java,2261,int k = (int)(xa * 0.6366197723675814);
+S687,FastMath.java,2267,double a = -k * 1.570796251296997;
+S688,FastMath.java,2268,remA = xa + a;
+S689,FastMath.java,2269,remB = -(remA - xa - a);
+S690,FastMath.java,2271,a = -k * 7.549789948768648E-8;
+S691,FastMath.java,2272,double b = remA;
+S692,FastMath.java,2273,remA = a + b;
+S693,FastMath.java,2274,remB += -(remA - b - a);
+S694,FastMath.java,2276,a = -k * 6.123233995736766E-17;
+S695,FastMath.java,2277,b = remA;
+S696,FastMath.java,2278,remA = a + b;
+S697,FastMath.java,2279,remB += -(remA - b - a);
+S698,FastMath.java,2281,if (remA > 0.0) {
+S699,FastMath.java,2282,break;
+S700,FastMath.java,2288,k--;
+S701,FastMath.java,2290,quadrant = k & 3;
+S702,FastMath.java,2291,xa = remA;
+S703,FastMath.java,2292,xb = remB;
+S704,FastMath.java,2298,switch (quadrant) {
+S705,FastMath.java,2300,"return cosQ(xa, xb);"
+S706,FastMath.java,2302,"return -sinQ(xa, xb);"
+S707,FastMath.java,2304,"return -cosQ(xa, xb);"
+S708,FastMath.java,2306,"return sinQ(xa, xb);"
+S709,FastMath.java,2436,boolean negate = false;
+S710,FastMath.java,2439,if (xa == 0.0) { // Matches +/- 0.0; return correct sign
+S711,FastMath.java,2443,if (xa < 0) {
+S712,FastMath.java,2445,xa = -xa;
+S713,FastMath.java,2446,xb = -xb;
+S714,FastMath.java,2447,negate = true;
+S715,FastMath.java,2450,if (xa > 1.633123935319537E16) { // Very large input
+S716,FastMath.java,2455,if (xa < 1) {
+S717,FastMath.java,2456,idx = (int) (((-1.7168146928204136 * xa * xa + 8.0) * xa) + 0.5);
+S718,FastMath.java,2458,final double oneOverXa = 1 / xa;
+S719,FastMath.java,2459,idx = (int) (-((-1.7168146928204136 * oneOverXa * oneOverXa + 8.0) * oneOverXa) + 13.07);
+S720,FastMath.java,2461,double epsA = xa - TANGENT_TABLE_A[idx];
+S721,FastMath.java,2462,double epsB = -(epsA - xa + TANGENT_TABLE_A[idx]);
+S722,FastMath.java,2463,epsB += xb - TANGENT_TABLE_B[idx];
+S723,FastMath.java,2465,double temp = epsA + epsB;
+S724,FastMath.java,2466,epsB = -(temp - epsA - epsB);
+S725,FastMath.java,2467,epsA = temp;
+S726,FastMath.java,2470,temp = xa * HEX_40000000;
+S727,FastMath.java,2471,double ya = xa + temp - temp;
+S728,FastMath.java,2472,double yb = xb + xa - ya;
+S729,FastMath.java,2473,xa = ya;
+S730,FastMath.java,2474,xb += yb;
+S731,FastMath.java,2477,if (idx == 0) {
+S732,FastMath.java,2480,final double denom = 1d / (1d + (xa + xb) * (TANGENT_TABLE_A[idx] + TANGENT_TABLE_B[idx]));
+S733,FastMath.java,2482,ya = epsA * denom;
+S734,FastMath.java,2483,yb = epsB * denom;
+S735,FastMath.java,2484,} else {
+S736,FastMath.java,2485,double temp2 = xa * TANGENT_TABLE_A[idx];
+S737,FastMath.java,2486,double za = 1d + temp2;
+S738,FastMath.java,2487,double zb = -(za - 1d - temp2);
+S739,FastMath.java,2488,temp2 = xb * TANGENT_TABLE_A[idx] + xa * TANGENT_TABLE_B[idx];
+S740,FastMath.java,2489,temp = za + temp2;
+S741,FastMath.java,2490,zb += -(temp - za - temp2);
+S742,FastMath.java,2491,za = temp;
+S743,FastMath.java,2493,zb += xb * TANGENT_TABLE_B[idx];
+S744,FastMath.java,2494,ya = epsA / za;
+S745,FastMath.java,2496,temp = ya * HEX_40000000;
+S746,FastMath.java,2497,final double yaa = (ya + temp) - temp;
+S747,FastMath.java,2498,final double yab = ya - yaa;
+S748,FastMath.java,2500,temp = za * HEX_40000000;
+S749,FastMath.java,2501,final double zaa = (za + temp) - temp;
+S750,FastMath.java,2502,final double zab = za - zaa;
+S751,FastMath.java,2505,yb = (epsA - yaa * zaa - yaa * zab - yab * zaa - yab * zab) / za;
+S752,FastMath.java,2507,yb += -epsA * zb / za / za;
+S753,FastMath.java,2508,yb += epsB / za;
+S754,FastMath.java,2512,epsA = ya;
+S755,FastMath.java,2513,epsB = yb;
+S756,FastMath.java,2516,final double epsA2 = epsA * epsA;
+S757,FastMath.java,2527,yb = 0.07490822288864472;
+S758,FastMath.java,2528,yb = yb * epsA2 + -0.09088450866185192;
+S759,FastMath.java,2529,yb = yb * epsA2 + 0.11111095942313305;
+S760,FastMath.java,2530,yb = yb * epsA2 + -0.1428571423679182;
+S761,FastMath.java,2531,yb = yb * epsA2 + 0.19999999999923582;
+S762,FastMath.java,2532,yb = yb * epsA2 + -0.33333333333333287;
+S763,FastMath.java,2533,yb = yb * epsA2 * epsA;
+S764,FastMath.java,2536,ya = epsA;
+S765,FastMath.java,2538,temp = ya + yb;
+S766,FastMath.java,2539,yb = -(temp - ya - yb);
+S767,FastMath.java,2540,ya = temp;
+S768,FastMath.java,2543,yb += epsB / (1d + epsA * epsA);
+S769,FastMath.java,2546,double za = EIGHTHS[idx] + ya;
+S770,FastMath.java,2547,double zb = -(za - EIGHTHS[idx] - ya);
+S771,FastMath.java,2548,temp = za + yb;
+S772,FastMath.java,2549,zb += -(temp - za - yb);
+S773,FastMath.java,2550,za = temp;
+S774,FastMath.java,2552,double result = za + zb;
+S775,FastMath.java,2553,double resultb = -(result - za - zb);
+S776,FastMath.java,2555,if (leftPlane) {
+S777,FastMath.java,2557,final double pia = 1.5707963267948966 * 2;
+S778,FastMath.java,2558,final double pib = 6.123233995736766E-17 * 2;
+S779,FastMath.java,2560,za = pia - result;
+S780,FastMath.java,2561,zb = -(za - pia + result);
+S781,FastMath.java,2562,zb += pib - resultb;
+S782,FastMath.java,2564,result = za + zb;
+S783,FastMath.java,2565,resultb = -(result - za - zb);
+S784,FastMath.java,2569,if (negate ^ leftPlane) {
+S785,FastMath.java,2570,result = -result;
+S786,FastMath.java,2573,return result;
+S787,FastMath.java,2583,if (x != x || y != y) {
+S788,FastMath.java,2587,if (y == 0) {
+S789,FastMath.java,2588,final double result = x * y;
+S790,FastMath.java,2589,final double invx = 1d / x;
+S791,FastMath.java,2590,final double invy = 1d / y;
+S792,FastMath.java,2592,if (invx == 0) { // X is infinite
+S793,FastMath.java,2600,if (x < 0 || invx < 0) {
+S794,FastMath.java,2601,if (y < 0 || invy < 0) {
+S795,FastMath.java,2602,return -Math.PI;
+S796,FastMath.java,2607,return result;
+S797,FastMath.java,2613,if (y == Double.POSITIVE_INFINITY) {
+S798,FastMath.java,2625,if (y == Double.NEGATIVE_INFINITY) {
+S799,FastMath.java,2637,if (x == Double.POSITIVE_INFINITY) {
+S800,FastMath.java,2647,if (x == Double.NEGATIVE_INFINITY)
+S801,FastMath.java,2660,if (x == 0) {
+S802,FastMath.java,2661,if (y > 0 || 1 / y > 0) {
+S803,FastMath.java,2662,return Math.PI * F_1_2;
+S804,FastMath.java,2665,if (y < 0 || 1 / y < 0) {
+S805,FastMath.java,2666,return -Math.PI * F_1_2;
+S806,FastMath.java,2671,final double r = y / x;
+S807,FastMath.java,2672,if (Double.isInfinite(r)) { // bypass calculations that can create NaN
+S808,FastMath.java,2676,double ra = doubleHighPart(r);
+S809,FastMath.java,2677,double rb = r - ra;
+S810,FastMath.java,2680,final double xa = doubleHighPart(x);
+S811,FastMath.java,2681,final double xb = x - xa;
+S812,FastMath.java,2683,rb += (y - ra * xa - ra * xb - rb * xa - rb * xb) / x;
+S813,FastMath.java,2685,final double temp = ra + rb;
+S814,FastMath.java,2686,rb = -(temp - ra - rb);
+S815,FastMath.java,2687,ra = temp;
+S816,FastMath.java,2689,if (ra == 0) { // Fix up the sign so atan works correctly
+S817,FastMath.java,2694,"final double result = atan(ra, rb, x < 0);"
+S818,FastMath.java,2696,return result;
+S819,FastMath.java,3020,return (x < 0.0) ? -x : (x == 0.0) ? 0.0 : x; // -0.0 => +0.0
+S820,FastMath.java,3056,if ((n > -1023) && (n < 1024)) {
+S821,FastMath.java,3057,return d * Double.longBitsToDouble(((long) (n + 1023)) << 52);
+S822,FastMath.java,3334,if (x != x) { // NaN
+S823,FastMath.java,3338,if (x >= TWO_POWER_52 || x <= -TWO_POWER_52) {
+S824,FastMath.java,3342,y = (long) x;
+S825,FastMath.java,3343,if (x < 0 && y != x) {
+S826,FastMath.java,3347,if (y == 0) {
+S827,FastMath.java,3348,return x*y;
+S828,FastMath.java,3351,return y;
+S829,FastMath.java,3424,return (a <= b) ? a : b;
+S830,FastMath.java,3467,if (a > b) {
+S831,FastMath.java,3468,return b;
+S832,FastMath.java,3470,if (a < b) {
+S833,FastMath.java,3471,return a;
+S834,FastMath.java,3474,if (a != b) {
+S835,FastMath.java,3479,long bits = Double.doubleToRawLongBits(a);
+S836,FastMath.java,3480,if (bits == 0x8000000000000000L) {
+S837,FastMath.java,3483,return b;
+S838,FastMath.java,3492,return (a <= b) ? b : a;
+S839,FastMath.java,3569,if (Double.isInfinite(x) || Double.isInfinite(y)) {
+S840,FastMath.java,3571,} else if (Double.isNaN(x) || Double.isNaN(y)) {
+S841,FastMath.java,3575,final int expX = getExponent(x);
+S842,FastMath.java,3576,final int expY = getExponent(y);
+S843,FastMath.java,3577,if (expX > expY + 27) {
+S844,FastMath.java,3579,return abs(x);
+S845,FastMath.java,3580,} else if (expY > expX + 27) {
+S846,FastMath.java,3582,return abs(y);
+S847,FastMath.java,3586,final int middleExp = (expX + expY) / 2;
+S848,FastMath.java,3589,"final double scaledX = scalb(x, -middleExp);"
+S849,FastMath.java,3590,"final double scaledY = scalb(y, -middleExp);"
+S850,FastMath.java,3593,final double scaledH = sqrt(scaledX * scaledX + scaledY * scaledY);
+S851,FastMath.java,3596,"return scalb(scaledH, middleExp);"
+S852,FastMath.java,3671,return (int) ((Double.doubleToLongBits(d) >>> 52) & 0x7ff) - 1023;
+S853,Interval.java,37,"public Interval(final double lower, final double upper) {"
+S854,Interval.java,38,this.lower = lower;
+S855,Interval.java,39,this.upper = upper;
+S856,Interval.java,46,return lower;
+S857,Interval.java,53,return upper;
+S858,Interval.java,60,return upper - lower;
+S859,Interval.java,67,return 0.5 * (lower + upper);
+S860,IntervalsSet.java,32,"public class IntervalsSet extends AbstractRegion<Euclidean1D, Euclidean1D> {"
+S861,IntervalsSet.java,37,super();
+S862,IntervalsSet.java,47,"super(buildTree(lower, upper));"
+S863,IntervalsSet.java,60,super(tree);
+S864,IntervalsSet.java,94,if (Double.isInfinite(lower) && (lower < 0)) {
+S865,IntervalsSet.java,95,if (Double.isInfinite(upper) && (upper > 0)) {
+S866,IntervalsSet.java,100,final SubHyperplane<Euclidean1D> upperCut =
+S867,IntervalsSet.java,102,"return new BSPTree<Euclidean1D>(upperCut,"
+S868,IntervalsSet.java,107,final SubHyperplane<Euclidean1D> lowerCut =
+S869,IntervalsSet.java,109,if (Double.isInfinite(upper) && (upper > 0)) {
+S870,IntervalsSet.java,111,"return new BSPTree<Euclidean1D>(lowerCut,"
+S871,IntervalsSet.java,118,final SubHyperplane<Euclidean1D> upperCut =
+S872,IntervalsSet.java,120,"return new BSPTree<Euclidean1D>(lowerCut,"
+S873,IntervalsSet.java,133,return new IntervalsSet(tree);
+S874,IntervalsSet.java,139,if (getTree(false).getCut() == null) {
+S875,IntervalsSet.java,143,double size = 0.0;
+S876,IntervalsSet.java,144,double sum = 0.0;
+S877,IntervalsSet.java,145,for (final Interval interval : asList()) {
+S878,IntervalsSet.java,146,size += interval.getLength();
+S879,IntervalsSet.java,147,sum  += interval.getLength() * interval.getMidPoint();
+S880,IntervalsSet.java,149,setSize(size);
+S881,IntervalsSet.java,150,if (Double.isInfinite(size)) {
+S882,IntervalsSet.java,152,} else if (size >= Precision.SAFE_MIN) {
+S883,IntervalsSet.java,153,setBarycenter(new Vector1D(sum / size));
+S884,IntervalsSet.java,208,final List<Interval> list = new ArrayList<Interval>();
+S885,IntervalsSet.java,209,"recurseList(getTree(false), list,"
+S886,IntervalsSet.java,211,return list;
+S887,IntervalsSet.java,224,if (node.getCut() == null) {
+S888,IntervalsSet.java,225,if ((Boolean) node.getAttribute()) {
+S889,IntervalsSet.java,227,"list.add(new Interval(lower, upper));"
+S890,IntervalsSet.java,230,final OrientedPoint op  = (OrientedPoint) node.getCut().getHyperplane();
+S891,IntervalsSet.java,231,final Vector1D       loc = op.getLocation();
+S892,IntervalsSet.java,232,double              x   = loc.getX();
+S893,IntervalsSet.java,235,final BSPTree<Euclidean1D> low  =
+S894,IntervalsSet.java,237,final BSPTree<Euclidean1D> high =
+S895,IntervalsSet.java,240,"recurseList(low, list, lower, x);"
+S896,IntervalsSet.java,241,"if ((checkPoint(low,  loc) == Location.INSIDE) &&"
+S897,IntervalsSet.java,244,x = list.remove(list.size() - 1).getLower();
+S898,IntervalsSet.java,246,"recurseList(high, list, x, upper);"
+S899,Line.java,54,"public Line(final Vector3D p1, final Vector3D p2) {"
+S900,Line.java,55,"reset(p1, p2);"
+S901,Line.java,62,*/
+S902,Line.java,74,final Vector3D delta = p2.subtract(p1);
+S903,Line.java,75,final double norm2 = delta.getNormSq();
+S904,Line.java,76,if (norm2 == 0.0) {
+S905,Line.java,79,"this.direction = new Vector3D(1.0 / FastMath.sqrt(norm2), delta);"
+S906,Line.java,80,"zero = new Vector3D(1.0, p1, -p1.dotProduct(delta) / norm2, delta);"
+S907,Line.java,82,
+S908,Line.java,83,/** Get a line with reversed direction.
+S909,Line.java,89,
+S910,Line.java,90,/** Get the normalized direction vector.
+S911,Line.java,91,* @return normalized direction vector
+S912,Line.java,94,return direction;
+S913,Line.java,99,*/
+S914,Line.java,100,public Vector3D getOrigin() {
+S915,Line.java,101,return zero;
+S916,Line.java,103,
+S917,Line.java,104,/** Get the abscissa of a point with respect to the line.
+S918,Line.java,111,public double getAbscissa(final Vector3D point) {
+S919,Line.java,112,return point.subtract(zero).dotProduct(direction);
+S920,Line.java,114,
+S921,Line.java,115,/** Get one point from the line.
+S922,Line.java,116,* @param abscissa desired abscissa for the point
+S923,Line.java,120,"return new Vector3D(1.0, zero, abscissa, direction);"
+S924,Line.java,129,
+S925,Line.java,130,/** {@inheritDoc}
+S926,Line.java,131,* @see #pointAt(double)
+S927,Line.java,132,*/
+S928,Line.java,138,* <p>Lines are considered similar if they contain the same
+S929,Line.java,139,* points. This does not mean they are equal since they can have
+S930,Line.java,140,* opposite directions.</p>
+S931,Line.java,141,* @param line line to which instance should be compared
+S932,Line.java,143,*/
+S933,Line.java,150,* @param p point to check
+S934,Line.java,151,* @return true if p belongs to the line
+S935,Line.java,152,*/
+S936,Line.java,153,public boolean contains(final Vector3D p) {
+S937,Line.java,154,return distance(p) < 1.0e-10;
+S938,Line.java,175,if (n < Precision.SAFE_MIN) {
+S939,Line.java,181,final double offset = line.zero.subtract(zero).dotProduct(normal) / n;
+S940,Line.java,182,
+S941,Line.java,187,/** Compute the point of the instance closest to another line.
+S942,Line.java,188,* @param line line to check against the instance
+S943,Line.java,199,
+S944,Line.java,200,final Vector3D delta0 = line.zero.subtract(zero);
+S945,Line.java,202,final double b        = delta0.dotProduct(line.direction);
+S946,Line.java,208,/** Get the intersection point of the instance and another line.
+S947,Line.java,230,
+S948,Line.java,236,
+S949,Line.java,237,
+S950,Line.java,242,
+S951,Line.java,243,
+S952,Line.java,286,
+S953,Line.java,327,
+S954,Line.java,337,
+S955,Line.java,358,
+S956,Line.java,360,
+S957,Line.java,361,
+S958,Line.java,362,
+S959,Line.java,363,
+S960,Line.java,364,
+S961,Line.java,365,
+S962,Line.java,366,
+S963,Line.java,367,
+S964,Line.java,369,
+S965,Line.java,370,
+S966,Line.java,371,
+S967,Line.java,373,
+S968,Line.java,377,
+S969,Line.java,381,
+S970,Line.java,382,
+S971,Line.java,383,
+S972,Line.java,384,
+S973,Line.java,390,
+S974,Line.java,391,
+S975,Line.java,392,
+S976,Line.java,393,
+S977,Line.java,394,
+S978,Line.java,395,
+S979,Line.java,404,
+S980,Line.java,405,
+S981,Line.java,406,
+S982,Line.java,407,
+S983,Line.java,409,
+S984,MathArrays.java,143,public static enum OrderDirection {
+S985,MathArrays.java,145,"INCREASING,"
+S986,MathArrays.java,147,DECREASING
+S987,MathArrays.java,674,final double ca1        = SPLIT_FACTOR * a1;
+S988,MathArrays.java,675,final double a1High     = ca1 - (ca1 - a1);
+S989,MathArrays.java,676,final double a1Low      = a1 - a1High;
+S990,MathArrays.java,677,final double cb1        = SPLIT_FACTOR * b1;
+S991,MathArrays.java,678,final double b1High     = cb1 - (cb1 - b1);
+S992,MathArrays.java,679,final double b1Low      = b1 - b1High;
+S993,MathArrays.java,682,final double prod1High  = a1 * b1;
+S994,MathArrays.java,683,final double prod1Low   = a1Low * b1Low - (((prod1High - a1High * b1High) - a1Low * b1High) - a1High * b1Low);
+S995,MathArrays.java,686,final double ca2        = SPLIT_FACTOR * a2;
+S996,MathArrays.java,687,final double a2High     = ca2 - (ca2 - a2);
+S997,MathArrays.java,688,final double a2Low      = a2 - a2High;
+S998,MathArrays.java,689,final double cb2        = SPLIT_FACTOR * b2;
+S999,MathArrays.java,690,final double b2High     = cb2 - (cb2 - b2);
+S1000,MathArrays.java,691,final double b2Low      = b2 - b2High;
+S1001,MathArrays.java,694,final double prod2High  = a2 * b2;
+S1002,MathArrays.java,695,final double prod2Low   = a2Low * b2Low - (((prod2High - a2High * b2High) - a2Low * b2High) - a2High * b2Low);
+S1003,MathArrays.java,698,final double s12High    = prod1High + prod2High;
+S1004,MathArrays.java,699,final double s12Prime   = s12High - prod2High;
+S1005,MathArrays.java,700,final double s12Low     = (prod2High - (s12High - s12Prime)) + (prod1High - s12Prime);
+S1006,MathArrays.java,704,double result = s12High + (prod1Low + prod2Low + s12Low);
+S1007,MathArrays.java,706,if (Double.isNaN(result)) {
+S1008,MathArrays.java,712,return result;
+S1009,MathArrays.java,754,final double ca1        = SPLIT_FACTOR * a1;
+S1010,MathArrays.java,755,final double a1High     = ca1 - (ca1 - a1);
+S1011,MathArrays.java,756,final double a1Low      = a1 - a1High;
+S1012,MathArrays.java,757,final double cb1        = SPLIT_FACTOR * b1;
+S1013,MathArrays.java,758,final double b1High     = cb1 - (cb1 - b1);
+S1014,MathArrays.java,759,final double b1Low      = b1 - b1High;
+S1015,MathArrays.java,762,final double prod1High  = a1 * b1;
+S1016,MathArrays.java,763,final double prod1Low   = a1Low * b1Low - (((prod1High - a1High * b1High) - a1Low * b1High) - a1High * b1Low);
+S1017,MathArrays.java,766,final double ca2        = SPLIT_FACTOR * a2;
+S1018,MathArrays.java,767,final double a2High     = ca2 - (ca2 - a2);
+S1019,MathArrays.java,768,final double a2Low      = a2 - a2High;
+S1020,MathArrays.java,769,final double cb2        = SPLIT_FACTOR * b2;
+S1021,MathArrays.java,770,final double b2High     = cb2 - (cb2 - b2);
+S1022,MathArrays.java,771,final double b2Low      = b2 - b2High;
+S1023,MathArrays.java,774,final double prod2High  = a2 * b2;
+S1024,MathArrays.java,775,final double prod2Low   = a2Low * b2Low - (((prod2High - a2High * b2High) - a2Low * b2High) - a2High * b2Low);
+S1025,MathArrays.java,778,final double ca3        = SPLIT_FACTOR * a3;
+S1026,MathArrays.java,779,final double a3High     = ca3 - (ca3 - a3);
+S1027,MathArrays.java,780,final double a3Low      = a3 - a3High;
+S1028,MathArrays.java,781,final double cb3        = SPLIT_FACTOR * b3;
+S1029,MathArrays.java,782,final double b3High     = cb3 - (cb3 - b3);
+S1030,MathArrays.java,783,final double b3Low      = b3 - b3High;
+S1031,MathArrays.java,786,final double prod3High  = a3 * b3;
+S1032,MathArrays.java,787,final double prod3Low   = a3Low * b3Low - (((prod3High - a3High * b3High) - a3Low * b3High) - a3High * b3Low);
+S1033,MathArrays.java,790,final double s12High    = prod1High + prod2High;
+S1034,MathArrays.java,791,final double s12Prime   = s12High - prod2High;
+S1035,MathArrays.java,792,final double s12Low     = (prod2High - (s12High - s12Prime)) + (prod1High - s12Prime);
+S1036,MathArrays.java,795,final double s123High   = s12High + prod3High;
+S1037,MathArrays.java,796,final double s123Prime  = s123High - prod3High;
+S1038,MathArrays.java,797,final double s123Low    = (prod3High - (s123High - s123Prime)) + (s12High - s123Prime);
+S1039,MathArrays.java,801,double result = s123High + (prod1Low + prod2Low + prod3Low + s12Low + s123Low);
+S1040,MathArrays.java,803,if (Double.isNaN(result)) {
+S1041,MathArrays.java,809,return result;
+S1042,MathUtils.java,91,return a - TWO_PI * FastMath.floor((a + FastMath.PI - center) / TWO_PI);
+S1043,OrderedTuple.java,132,public OrderedTuple(final double ... components) {
+S1044,OrderedTuple.java,133,this.components = components.clone();
+S1045,OrderedTuple.java,134,int msb = Integer.MIN_VALUE;
+S1046,OrderedTuple.java,135,lsb     = Integer.MAX_VALUE;
+S1047,OrderedTuple.java,136,posInf  = false;
+S1048,OrderedTuple.java,137,negInf  = false;
+S1049,OrderedTuple.java,138,nan     = false;
+S1050,OrderedTuple.java,139,for (int i = 0; i < components.length; ++i) {
+S1051,OrderedTuple.java,140,if (Double.isInfinite(components[i])) {
+S1052,OrderedTuple.java,146,} else if (Double.isNaN(components[i])) {
+S1053,OrderedTuple.java,149,final long b = Double.doubleToLongBits(components[i]);
+S1054,OrderedTuple.java,150,final long m = mantissa(b);
+S1055,OrderedTuple.java,151,if (m != 0) {
+S1056,OrderedTuple.java,152,final int e = exponent(b);
+S1057,OrderedTuple.java,153,"msb = FastMath.max(msb, e + computeMSB(m));"
+S1058,OrderedTuple.java,154,"lsb = FastMath.min(lsb, e + computeLSB(m));"
+S1059,OrderedTuple.java,159,if (posInf && negInf) {
+S1060,OrderedTuple.java,166,if (lsb <= msb) {
+S1061,OrderedTuple.java,168,encode(msb + 16);
+S1062,OrderedTuple.java,170,encoding = new long[] {
+S1063,OrderedTuple.java,184,offset  = minOffset + 31;
+S1064,OrderedTuple.java,185,offset -= offset % 32;
+S1065,OrderedTuple.java,187,if ((encoding != null) && (encoding.length == 1) && (encoding[0] == 0x0L)) {
+S1066,OrderedTuple.java,189,return;
+S1067,OrderedTuple.java,194,final int neededBits  = offset + 1 - lsb;
+S1068,OrderedTuple.java,195,final int neededLongs = (neededBits + 62) / 63;
+S1069,OrderedTuple.java,196,encoding = new long[components.length * neededLongs];
+S1070,OrderedTuple.java,199,int  eIndex = 0;
+S1071,OrderedTuple.java,200,int  shift  = 62;
+S1072,OrderedTuple.java,201,long word   = 0x0L;
+S1073,OrderedTuple.java,202,for (int k = offset; eIndex < encoding.length; --k) {
+S1074,OrderedTuple.java,203,for (int vIndex = 0; vIndex < components.length; ++vIndex) {
+S1075,OrderedTuple.java,204,"if (getBit(vIndex, k) != 0) {"
+S1076,OrderedTuple.java,205,word |= 0x1L << shift;
+S1077,OrderedTuple.java,207,if (shift-- == 0) {
+S1078,OrderedTuple.java,208,encoding[eIndex++] = word;
+S1079,OrderedTuple.java,209,word  = 0x0L;
+S1080,OrderedTuple.java,210,shift = 62;
+S1081,OrderedTuple.java,248,if (components.length == ot.components.length) {
+S1082,OrderedTuple.java,249,if (nan) {
+S1083,OrderedTuple.java,251,} else if (ot.nan) {
+S1084,OrderedTuple.java,253,} else if (negInf || ot.posInf) {
+S1085,OrderedTuple.java,255,} else if (posInf || ot.negInf) {
+S1086,OrderedTuple.java,259,if (offset < ot.offset) {
+S1087,OrderedTuple.java,260,encode(ot.offset);
+S1088,OrderedTuple.java,261,} else if (offset > ot.offset) {
+S1089,OrderedTuple.java,262,ot.encode(offset);
+S1090,OrderedTuple.java,265,"final int limit = FastMath.min(encoding.length, ot.encoding.length);"
+S1091,OrderedTuple.java,266,for (int i = 0; i < limit; ++i) {
+S1092,OrderedTuple.java,267,if (encoding[i] < ot.encoding[i]) {
+S1093,OrderedTuple.java,268,return -1;
+S1094,OrderedTuple.java,269,} else if (encoding[i] > ot.encoding[i]) {
+S1095,OrderedTuple.java,270,return +1;
+S1096,OrderedTuple.java,274,if (encoding.length < ot.encoding.length) {
+S1097,OrderedTuple.java,275,return -1;
+S1098,OrderedTuple.java,276,} else if (encoding.length > ot.encoding.length) {
+S1099,OrderedTuple.java,279,return 0;
+S1100,OrderedTuple.java,324,return bits & SIGN_MASK;
+S1101,OrderedTuple.java,332,return ((int) ((bits & EXPONENT_MASK) >> 52)) - 1075;
+S1102,OrderedTuple.java,340,return ((bits & EXPONENT_MASK) == 0) ?
+S1103,OrderedTuple.java,353,long ll = l;
+S1104,OrderedTuple.java,354,long mask  = 0xffffffffL;
+S1105,OrderedTuple.java,355,int  scale = 32;
+S1106,OrderedTuple.java,356,int  msb   = 0;
+S1107,OrderedTuple.java,358,while (scale != 0) {
+S1108,OrderedTuple.java,359,if ((ll & mask) != ll) {
+S1109,OrderedTuple.java,360,msb |= scale;
+S1110,OrderedTuple.java,361,ll = ll >> scale;
+S1111,OrderedTuple.java,363,scale = scale >> 1;
+S1112,OrderedTuple.java,364,mask  = mask >> scale;
+S1113,OrderedTuple.java,367,return msb;
+S1114,OrderedTuple.java,379,long ll = l;
+S1115,OrderedTuple.java,380,long mask  = 0xffffffff00000000L;
+S1116,OrderedTuple.java,381,int  scale = 32;
+S1117,OrderedTuple.java,382,int  lsb   = 0;
+S1118,OrderedTuple.java,384,while (scale != 0) {
+S1119,OrderedTuple.java,385,if ((ll & mask) == ll) {
+S1120,OrderedTuple.java,386,lsb |= scale;
+S1121,OrderedTuple.java,387,ll = ll >> scale;
+S1122,OrderedTuple.java,389,scale = scale >> 1;
+S1123,OrderedTuple.java,390,mask  = mask >> scale;
+S1124,OrderedTuple.java,393,return lsb;
+S1125,OrderedTuple.java,404,final long bits = Double.doubleToLongBits(components[i]);
+S1126,OrderedTuple.java,405,final int e = exponent(bits);
+S1127,OrderedTuple.java,406,if ((k < e) || (k > offset)) {
+S1128,OrderedTuple.java,407,return 0;
+S1129,OrderedTuple.java,408,} else if (k == offset) {
+S1130,OrderedTuple.java,409,return (sign(bits) == 0L) ? 1 : 0;
+S1131,OrderedTuple.java,410,} else if (k > (e + 52)) {
+S1132,OrderedTuple.java,411,return (sign(bits) == 0L) ? 0 : 1;
+S1133,OrderedTuple.java,413,final long m = (sign(bits) == 0L) ? mantissa(bits) : -mantissa(bits);
+S1134,OrderedTuple.java,414,return (int) ((m >> (k - e)) & 0x1L);
+S1135,OrientedPoint.java,29,public class OrientedPoint implements Hyperplane<Euclidean1D> {
+S1136,OrientedPoint.java,42,"public OrientedPoint(final Vector1D location, final boolean direct) {"
+S1137,OrientedPoint.java,43,this.location = location;
+S1138,OrientedPoint.java,44,this.direct   = direct;
+S1139,OrientedPoint.java,58,final double delta = ((Vector1D) point).getX() - location.getX();
+S1140,OrientedPoint.java,59,return direct ? delta : -delta;
+S1141,OrientedPoint.java,74,"return new SubOrientedPoint(this, null);"
+S1142,OrientedPoint.java,87,return !(direct ^ ((OrientedPoint) other).direct);
+S1143,OrientedPoint.java,94,return location;
+S1144,OrientedPoint.java,102,return direct;
+S1145,Plane.java,34,"public class Plane implements Hyperplane<Euclidean3D>, Embedding<Euclidean3D, Euclidean2D> {"
+S1146,Plane.java,55,public Plane(final Vector3D normal) {
+S1147,Plane.java,56,setNormal(normal);
+S1148,Plane.java,57,originOffset = 0;
+S1149,Plane.java,58,setFrame();
+S1150,Plane.java,66,"public Plane(final Vector3D p, final Vector3D normal) {"
+S1151,Plane.java,67,setNormal(normal);
+S1152,Plane.java,68,originOffset = -p.dotProduct(w);
+S1153,Plane.java,69,setFrame();
+S1154,Plane.java,81,"this(p1, p2.subtract(p1).crossProduct(p3.subtract(p1)));"
+S1155,Plane.java,90,public Plane(final Plane plane) {
+S1156,Plane.java,91,originOffset = plane.originOffset;
+S1157,Plane.java,92,origin = plane.origin;
+S1158,Plane.java,93,u      = plane.u;
+S1159,Plane.java,94,v      = plane.v;
+S1160,Plane.java,95,w      = plane.w;
+S1161,Plane.java,105,return new Plane(this);
+S1162,Plane.java,137,final double norm = normal.getNorm();
+S1163,Plane.java,138,if (norm < 1.0e-10) {
+S1164,Plane.java,141,"w = new Vector3D(1.0 / norm, normal);"
+S1165,Plane.java,147,"origin = new Vector3D(-originOffset, w);"
+S1166,Plane.java,148,u = w.orthogonal();
+S1167,Plane.java,149,"v = Vector3D.crossProduct(w, u);"
+S1168,Plane.java,159,return origin;
+S1169,Plane.java,171,return w;
+S1170,Plane.java,225,"return new Vector2D(point.dotProduct(u), point.dotProduct(v));"
+S1171,Plane.java,235,final Vector2D p2D = (Vector2D) point;
+S1172,Plane.java,236,"return new Vector3D(p2D.getX(), u, p2D.getY(), v, -originOffset, w);"
+S1173,Plane.java,271,final Vector3D delta = origin.subtract(center);
+S1174,Plane.java,272,"final Plane plane = new Plane(center.add(rotation.applyTo(delta)),"
+S1175,Plane.java,276,plane.u = rotation.applyTo(u);
+S1176,Plane.java,277,plane.v = rotation.applyTo(v);
+S1177,Plane.java,279,return plane;
+S1178,Plane.java,290,"final Plane plane = new Plane(origin.add(translation), w);"
+S1179,Plane.java,293,plane.u = u;
+S1180,Plane.java,294,plane.v = v;
+S1181,Plane.java,296,return plane;
+S1182,Plane.java,322,"final Vector3D direction = Vector3D.crossProduct(w, other.w);"
+S1183,Plane.java,323,if (direction.getNorm() < 1.0e-10) {
+S1184,Plane.java,324,return null;
+S1185,Plane.java,326,"final Vector3D point = intersection(this, other, new Plane(direction));"
+S1186,Plane.java,327,"return new Line(point, point.add(direction));"
+S1187,Plane.java,339,final double a1 = plane1.w.getX();
+S1188,Plane.java,340,final double b1 = plane1.w.getY();
+S1189,Plane.java,341,final double c1 = plane1.w.getZ();
+S1190,Plane.java,342,final double d1 = plane1.originOffset;
+S1191,Plane.java,344,final double a2 = plane2.w.getX();
+S1192,Plane.java,345,final double b2 = plane2.w.getY();
+S1193,Plane.java,346,final double c2 = plane2.w.getZ();
+S1194,Plane.java,347,final double d2 = plane2.originOffset;
+S1195,Plane.java,349,final double a3 = plane3.w.getX();
+S1196,Plane.java,350,final double b3 = plane3.w.getY();
+S1197,Plane.java,351,final double c3 = plane3.w.getZ();
+S1198,Plane.java,352,final double d3 = plane3.originOffset;
+S1199,Plane.java,356,final double a23         = b2 * c3 - b3 * c2;
+S1200,Plane.java,357,final double b23         = c2 * a3 - c3 * a2;
+S1201,Plane.java,358,final double c23         = a2 * b3 - a3 * b2;
+S1202,Plane.java,359,final double determinant = a1 * a23 + b1 * b23 + c1 * c23;
+S1203,Plane.java,360,if (FastMath.abs(determinant) < 1.0e-10) {
+S1204,Plane.java,364,final double r = 1.0 / determinant;
+S1205,Plane.java,365,return new Vector3D(
+S1206,Plane.java,376,"return new SubPlane(this, new PolygonsSet());"
+S1207,Plane.java,384,return new PolyhedronsSet();
+S1208,Plane.java,406,return originOffset + (sameOrientationAs(plane) ? -plane.originOffset : plane.originOffset);
+S1209,Plane.java,418,return point.dotProduct(w) + originOffset;
+S1210,Plane.java,427,return (((Plane) other).w).dotProduct(w) > 0.0;
+S1211,PolygonsSet.java,42,"public class PolygonsSet extends AbstractRegion<Euclidean2D, Euclidean1D> {"
+S1212,PolygonsSet.java,50,super();
+S1213,PolygonsSet.java,63,super(tree);
+S1214,PolygonsSet.java,87,super(boundary);
+S1215,PolygonsSet.java,125,return new PolygonsSet(tree);
+S1216,PolygonsSet.java,132,final Vector2D[][] v = getVertices();
+S1217,PolygonsSet.java,134,if (v.length == 0) {
+S1218,PolygonsSet.java,135,final BSPTree<Euclidean2D> tree = getTree(false);
+S1219,PolygonsSet.java,136,if ((Boolean) tree.getAttribute()) {
+S1220,PolygonsSet.java,151,double sum  = 0;
+S1221,PolygonsSet.java,152,double sumX = 0;
+S1222,PolygonsSet.java,153,double sumY = 0;
+S1223,PolygonsSet.java,155,for (Vector2D[] loop : v) {
+S1224,PolygonsSet.java,156,double x1 = loop[loop.length - 1].getX();
+S1225,PolygonsSet.java,157,double y1 = loop[loop.length - 1].getY();
+S1226,PolygonsSet.java,158,for (final Vector2D point : loop) {
+S1227,PolygonsSet.java,159,final double x0 = x1;
+S1228,PolygonsSet.java,160,final double y0 = y1;
+S1229,PolygonsSet.java,161,x1 = point.getX();
+S1230,PolygonsSet.java,162,y1 = point.getY();
+S1231,PolygonsSet.java,163,final double factor = x0 * y1 - y0 * x1;
+S1232,PolygonsSet.java,164,sum  += factor;
+S1233,PolygonsSet.java,165,sumX += factor * (x0 + x1);
+S1234,PolygonsSet.java,166,sumY += factor * (y0 + y1);
+S1235,PolygonsSet.java,170,if (sum < 0) {
+S1236,PolygonsSet.java,175,setSize(sum / 2);
+S1237,PolygonsSet.java,176,"setBarycenter(new Vector2D(sumX / (3 * sum), sumY / (3 * sum)));"
+S1238,PolygonsSet.java,207,if (vertices == null) {
+S1239,PolygonsSet.java,208,if (getTree(false).getCut() == null) {
+S1240,PolygonsSet.java,213,final SegmentsBuilder visitor = new SegmentsBuilder();
+S1241,PolygonsSet.java,214,getTree(true).visit(visitor);
+S1242,PolygonsSet.java,215,final AVLTree<ComparableSegment> sorted = visitor.getSorted();
+S1243,PolygonsSet.java,219,final ArrayList<List<ComparableSegment>> loops = new ArrayList<List<ComparableSegment>>();
+S1244,PolygonsSet.java,220,while (!sorted.isEmpty()) {
+S1245,PolygonsSet.java,221,final AVLTree<ComparableSegment>.Node node = sorted.getSmallest();
+S1246,PolygonsSet.java,222,"final List<ComparableSegment> loop = followLoop(node, sorted);"
+S1247,PolygonsSet.java,223,if (loop != null) {
+S1248,PolygonsSet.java,224,loops.add(loop);
+S1249,PolygonsSet.java,229,vertices = new Vector2D[loops.size()][];
+S1250,PolygonsSet.java,230,int i = 0;
+S1251,PolygonsSet.java,232,for (final List<ComparableSegment> loop : loops) {
+S1252,PolygonsSet.java,233,if (loop.size() < 2) {
+S1253,PolygonsSet.java,270,final Vector2D[] array = new Vector2D[loop.size()];
+S1254,PolygonsSet.java,271,int j = 0;
+S1255,PolygonsSet.java,272,for (Segment segment : loop) {
+S1256,PolygonsSet.java,273,array[j++] = segment.getStart();
+S1257,PolygonsSet.java,275,vertices[i++] = array;
+S1258,PolygonsSet.java,282,return vertices.clone();
+S1259,PolygonsSet.java,296,final ArrayList<ComparableSegment> loop = new ArrayList<ComparableSegment>();
+S1260,PolygonsSet.java,297,ComparableSegment segment = node.getElement();
+S1261,PolygonsSet.java,298,loop.add(segment);
+S1262,PolygonsSet.java,299,final Vector2D globalStart = segment.getStart();
+S1263,PolygonsSet.java,300,Vector2D end = segment.getEnd();
+S1264,PolygonsSet.java,301,node.delete();
+S1265,PolygonsSet.java,304,final boolean open = segment.getStart() == null;
+S1266,PolygonsSet.java,306,while ((end != null) && (open || (globalStart.distance(end) > 1.0e-10))) {
+S1267,PolygonsSet.java,309,AVLTree<ComparableSegment>.Node selectedNode = null;
+S1268,PolygonsSet.java,310,ComparableSegment       selectedSegment  = null;
+S1269,PolygonsSet.java,311,double                  selectedDistance = Double.POSITIVE_INFINITY;
+S1270,PolygonsSet.java,312,"final ComparableSegment lowerLeft        = new ComparableSegment(end, -1.0e-10, -1.0e-10);"
+S1271,PolygonsSet.java,313,"final ComparableSegment upperRight       = new ComparableSegment(end, +1.0e-10, +1.0e-10);"
+S1272,PolygonsSet.java,314,for (AVLTree<ComparableSegment>.Node n = sorted.getNotSmaller(lowerLeft);
+S1273,PolygonsSet.java,315,(n != null) && (n.getElement().compareTo(upperRight) <= 0);
+S1274,PolygonsSet.java,316,n = n.getNext()) {
+S1275,PolygonsSet.java,317,segment = n.getElement();
+S1276,PolygonsSet.java,318,final double distance = end.distance(segment.getStart());
+S1277,PolygonsSet.java,319,if (distance < selectedDistance) {
+S1278,PolygonsSet.java,320,selectedNode     = n;
+S1279,PolygonsSet.java,321,selectedSegment  = segment;
+S1280,PolygonsSet.java,322,selectedDistance = distance;
+S1281,PolygonsSet.java,326,if (selectedDistance > 1.0e-10) {
+S1282,PolygonsSet.java,330,return null;
+S1283,PolygonsSet.java,333,end = selectedSegment.getEnd();
+S1284,PolygonsSet.java,334,loop.add(selectedSegment);
+S1285,PolygonsSet.java,335,selectedNode.delete();
+S1286,PolygonsSet.java,339,if ((loop.size() == 2) && !open) {
+S1287,PolygonsSet.java,341,return null;
+S1288,PolygonsSet.java,344,if ((end == null) && !open) {
+S1289,PolygonsSet.java,348,return loop;
+S1290,PolygonsSet.java,353,private static class ComparableSegment extends Segment implements Comparable<ComparableSegment> {
+S1291,PolygonsSet.java,364,"super(start, end, line);"
+S1292,PolygonsSet.java,365,sortingKey = (start == null) ?
+S1293,PolygonsSet.java,380,"super(null, null, null);"
+S1294,PolygonsSet.java,381,"sortingKey = new OrderedTuple(start.getX() + dx, start.getY() + dy);"
+S1295,PolygonsSet.java,386,return sortingKey.compareTo(o.sortingKey);
+S1296,PolygonsSet.java,417,public SegmentsBuilder() {
+S1297,PolygonsSet.java,418,sorted = new AVLTree<ComparableSegment>();
+S1298,PolygonsSet.java,423,return Order.MINUS_SUB_PLUS;
+S1299,PolygonsSet.java,429,final BoundaryAttribute<Euclidean2D> attribute = (BoundaryAttribute<Euclidean2D>) node.getAttribute();
+S1300,PolygonsSet.java,430,if (attribute.getPlusOutside() != null) {
+S1301,PolygonsSet.java,431,"addContribution(attribute.getPlusOutside(), false);"
+S1302,PolygonsSet.java,433,if (attribute.getPlusInside() != null) {
+S1303,PolygonsSet.java,434,"addContribution(attribute.getPlusInside(), true);"
+S1304,PolygonsSet.java,448,"final AbstractSubHyperplane<Euclidean2D, Euclidean1D> absSub ="
+S1305,PolygonsSet.java,450,final Line line      = (Line) sub.getHyperplane();
+S1306,PolygonsSet.java,451,final List<Interval> intervals = ((IntervalsSet) absSub.getRemainingRegion()).asList();
+S1307,PolygonsSet.java,452,for (final Interval i : intervals) {
+S1308,PolygonsSet.java,453,final Vector2D start = Double.isInfinite(i.getLower()) ?
+S1309,PolygonsSet.java,455,final Vector2D end   = Double.isInfinite(i.getUpper()) ?
+S1310,PolygonsSet.java,457,if (reversed) {
+S1311,PolygonsSet.java,458,"sorted.insert(new ComparableSegment(end, start, line.getReverse()));"
+S1312,PolygonsSet.java,460,"sorted.insert(new ComparableSegment(start, end, line));"
+S1313,PolygonsSet.java,469,return sorted;
+S1314,PolyhedronsSet.java,42,"public class PolyhedronsSet extends AbstractRegion<Euclidean3D, Euclidean2D> {"
+S1315,PolyhedronsSet.java,47,super();
+S1316,PolyhedronsSet.java,60,super(tree);
+S1317,PolyhedronsSet.java,83,super(boundary);
+S1318,PolyhedronsSet.java,98,this(new RegionFactory<Euclidean3D>().buildConvex(
+S1319,PolyhedronsSet.java,110,return new PolyhedronsSet(tree);
+S1320,PolyhedronsSet.java,118,getTree(true).visit(new FacetsContributionVisitor());
+S1321,PolyhedronsSet.java,120,if (getSize() < 0) {
+S1322,PolyhedronsSet.java,127,setSize(getSize() / 3.0);
+S1323,PolyhedronsSet.java,128,"setBarycenter(new Vector3D(1.0 / (4 * getSize()), (Vector3D) getBarycenter()));"
+S1324,PolyhedronsSet.java,137,public FacetsContributionVisitor() {
+S1325,PolyhedronsSet.java,138,setSize(0);
+S1326,PolyhedronsSet.java,139,"setBarycenter(new Vector3D(0, 0, 0));"
+S1327,PolyhedronsSet.java,144,return Order.MINUS_SUB_PLUS;
+S1328,PolyhedronsSet.java,150,final BoundaryAttribute<Euclidean3D> attribute =
+S1329,PolyhedronsSet.java,152,if (attribute.getPlusOutside() != null) {
+S1330,PolyhedronsSet.java,153,"addContribution(attribute.getPlusOutside(), false);"
+S1331,PolyhedronsSet.java,155,if (attribute.getPlusInside() != null) {
+S1332,PolyhedronsSet.java,170,final Region<Euclidean2D> polygon = ((SubPlane) facet).getRemainingRegion();
+S1333,PolyhedronsSet.java,171,final double area    = polygon.getSize();
+S1334,PolyhedronsSet.java,173,if (Double.isInfinite(area)) {
+S1335,PolyhedronsSet.java,178,final Plane    plane  = (Plane) facet.getHyperplane();
+S1336,PolyhedronsSet.java,179,final Vector3D facetB = plane.toSpace(polygon.getBarycenter());
+S1337,PolyhedronsSet.java,180,double   scaled = area * facetB.dotProduct(plane.getNormal());
+S1338,PolyhedronsSet.java,181,if (reversed) {
+S1339,PolyhedronsSet.java,185,setSize(getSize() + scaled);
+S1340,PolyhedronsSet.java,186,"setBarycenter(new Vector3D(1.0, (Vector3D) getBarycenter(), scaled, facetB));"
+S1341,PolyhedronsSet.java,298,"return (PolyhedronsSet) applyTransform(new RotationTransform(center, rotation));"
+S1342,PolyhedronsSet.java,302,"private static class RotationTransform implements Transform<Euclidean3D, Euclidean2D> {"
+S1343,PolyhedronsSet.java,320,"public RotationTransform(final Vector3D center, final Rotation rotation) {"
+S1344,PolyhedronsSet.java,321,this.center   = center;
+S1345,PolyhedronsSet.java,322,this.rotation = rotation;
+S1346,PolyhedronsSet.java,327,final Vector3D delta = ((Vector3D) point).subtract(center);
+S1347,PolyhedronsSet.java,328,"return new Vector3D(1.0, center, 1.0, rotation.applyTo(delta));"
+S1348,PolyhedronsSet.java,333,"return ((Plane) hyperplane).rotate(center, rotation);"
+S1349,PolyhedronsSet.java,340,if (original != cachedOriginal) {
+S1350,PolyhedronsSet.java,343,final Plane    oPlane = (Plane) original;
+S1351,PolyhedronsSet.java,344,final Plane    tPlane = (Plane) transformed;
+S1352,PolyhedronsSet.java,345,final Vector3D p00    = oPlane.getOrigin();
+S1353,PolyhedronsSet.java,346,"final Vector3D p10    = oPlane.toSpace(new Vector2D(1.0, 0.0));"
+S1354,PolyhedronsSet.java,347,"final Vector3D p01    = oPlane.toSpace(new Vector2D(0.0, 1.0));"
+S1355,PolyhedronsSet.java,348,final Vector2D  tP00   = tPlane.toSubSpace(apply(p00));
+S1356,PolyhedronsSet.java,349,final Vector2D  tP10   = tPlane.toSubSpace(apply(p10));
+S1357,PolyhedronsSet.java,350,final Vector2D  tP01   = tPlane.toSubSpace(apply(p01));
+S1358,PolyhedronsSet.java,351,final AffineTransform at =
+S1359,PolyhedronsSet.java,356,cachedOriginal  = (Plane) original;
+S1360,PolyhedronsSet.java,357,cachedTransform = org.apache.commons.math3.geometry.euclidean.twod.Line.getTransform(at);
+S1361,PolyhedronsSet.java,360,return ((SubLine) sub).applyTransform(cachedTransform);
+S1362,PolyhedronsSet.java,371,return (PolyhedronsSet) applyTransform(new TranslationTransform(translation));
+S1363,PolyhedronsSet.java,375,"private static class TranslationTransform implements Transform<Euclidean3D, Euclidean2D> {"
+S1364,PolyhedronsSet.java,389,public TranslationTransform(final Vector3D translation) {
+S1365,PolyhedronsSet.java,390,this.translation = translation;
+S1366,PolyhedronsSet.java,395,"return new Vector3D(1.0, (Vector3D) point, 1.0, translation);"
+S1367,PolyhedronsSet.java,400,return ((Plane) hyperplane).translate(translation);
+S1368,PolyhedronsSet.java,407,if (original != cachedOriginal) {
+S1369,PolyhedronsSet.java,410,final Plane   oPlane = (Plane) original;
+S1370,PolyhedronsSet.java,411,final Plane   tPlane = (Plane) transformed;
+S1371,PolyhedronsSet.java,412,final Vector2D shift  = tPlane.toSubSpace(apply(oPlane.getOrigin()));
+S1372,PolyhedronsSet.java,413,final AffineTransform at =
+S1373,PolyhedronsSet.java,416,cachedOriginal  = (Plane) original;
+S1374,PolyhedronsSet.java,417,cachedTransform =
+S1375,PolyhedronsSet.java,422,return ((SubLine) sub).applyTransform(cachedTransform);
+S1376,Precision.java,63,EPSILON = Double.longBitsToDouble((EXPONENT_OFFSET - 53l) << 52);
+S1377,Precision.java,70,SAFE_MIN = Double.longBitsToDouble((EXPONENT_OFFSET - 1022l) << 52);
+S1378,Region.java,50,public static enum Location {
+S1379,Region.java,52,"INSIDE,"
+S1380,Region.java,55,"OUTSIDE,"
+S1381,Region.java,58,BOUNDARY;
+S1382,RegionFactory.java,28,public class RegionFactory<S extends Space> {
+S1383,RegionFactory.java,35,public RegionFactory() {
+S1384,RegionFactory.java,36,nodeCleaner = new NodesCleaner();
+S1385,RegionFactory.java,44,if ((hyperplanes == null) || (hyperplanes.length == 0)) {
+S1386,RegionFactory.java,49,final Region<S> region = hyperplanes[0].wholeSpace();
+S1387,RegionFactory.java,52,BSPTree<S> node = region.getTree(false);
+S1388,RegionFactory.java,53,node.setAttribute(Boolean.TRUE);
+S1389,RegionFactory.java,54,for (final Hyperplane<S> hyperplane : hyperplanes) {
+S1390,RegionFactory.java,55,if (node.insertCut(hyperplane)) {
+S1391,RegionFactory.java,56,node.setAttribute(null);
+S1392,RegionFactory.java,57,node.getPlus().setAttribute(Boolean.FALSE);
+S1393,RegionFactory.java,58,node = node.getMinus();
+S1394,RegionFactory.java,59,node.setAttribute(Boolean.TRUE);
+S1395,RegionFactory.java,63,return region;
+S1396,RegionFactory.java,75,final BSPTree<S> tree =
+S1397,RegionFactory.java,77,tree.visit(nodeCleaner);
+S1398,RegionFactory.java,78,return region1.buildNew(tree);
+S1399,RegionFactory.java,89,final BSPTree<S> tree =
+S1400,RegionFactory.java,91,tree.visit(nodeCleaner);
+S1401,RegionFactory.java,92,return region1.buildNew(tree);
+S1402,RegionFactory.java,103,final BSPTree<S> tree =
+S1403,RegionFactory.java,105,tree.visit(nodeCleaner);
+S1404,RegionFactory.java,106,return region1.buildNew(tree);
+S1405,RegionFactory.java,117,final BSPTree<S> tree =
+S1406,RegionFactory.java,119,tree.visit(nodeCleaner);
+S1407,RegionFactory.java,120,return region1.buildNew(tree);
+S1408,RegionFactory.java,137,if (node.getCut() == null) {
+S1409,RegionFactory.java,138,return new BSPTree<S>(((Boolean) node.getAttribute()) ? Boolean.FALSE : Boolean.TRUE);
+S1410,RegionFactory.java,142,BoundaryAttribute<S> attribute = (BoundaryAttribute<S>) node.getAttribute();
+S1411,RegionFactory.java,143,if (attribute != null) {
+S1412,RegionFactory.java,151,"return new BSPTree<S>(node.getCut().copySelf(),"
+S1413,RegionFactory.java,159,private class UnionMerger implements BSPTree.LeafMerger<S> {
+S1414,RegionFactory.java,164,if ((Boolean) leaf.getAttribute()) {
+S1415,RegionFactory.java,166,"leaf.insertInTree(parentTree, isPlusChild);"
+S1416,RegionFactory.java,167,return leaf;
+S1417,RegionFactory.java,170,"tree.insertInTree(parentTree, isPlusChild);"
+S1418,RegionFactory.java,171,return tree;
+S1419,RegionFactory.java,176,private class IntersectionMerger implements BSPTree.LeafMerger<S> {
+S1420,RegionFactory.java,181,if ((Boolean) leaf.getAttribute()) {
+S1421,RegionFactory.java,183,"tree.insertInTree(parentTree, isPlusChild);"
+S1422,RegionFactory.java,184,return tree;
+S1423,RegionFactory.java,187,"leaf.insertInTree(parentTree, isPlusChild);"
+S1424,RegionFactory.java,188,return leaf;
+S1425,RegionFactory.java,193,private class XorMerger implements BSPTree.LeafMerger<S> {
+S1426,RegionFactory.java,198,BSPTree<S> t = tree;
+S1427,RegionFactory.java,199,if ((Boolean) leaf.getAttribute()) {
+S1428,RegionFactory.java,201,t = recurseComplement(t);
+S1429,RegionFactory.java,203,"t.insertInTree(parentTree, isPlusChild);"
+S1430,RegionFactory.java,204,return t;
+S1431,RegionFactory.java,209,private class DifferenceMerger implements BSPTree.LeafMerger<S> {
+S1432,RegionFactory.java,214,if ((Boolean) leaf.getAttribute()) {
+S1433,RegionFactory.java,216,final BSPTree<S> argTree =
+S1434,RegionFactory.java,218,"argTree.insertInTree(parentTree, isPlusChild);"
+S1435,RegionFactory.java,219,return argTree;
+S1436,RegionFactory.java,222,final BSPTree<S> instanceTree =
+S1437,RegionFactory.java,224,"instanceTree.insertInTree(parentTree, isPlusChild);"
+S1438,RegionFactory.java,225,return instanceTree;
+S1439,RegionFactory.java,230,private class NodesCleaner implements  BSPTreeVisitor<S> {
+S1440,RegionFactory.java,234,return Order.PLUS_SUB_MINUS;
+S1441,RegionFactory.java,239,node.setAttribute(null);
+S1442,Rotation.java,98,"public static final Rotation IDENTITY = new Rotation(1.0, 0.0, 0.0, 0.0, false);"
+S1443,Rotation.java,134,boolean needsNormalization) {
+S1444,Rotation.java,136,if (needsNormalization) {
+S1445,Rotation.java,145,this.q0 = q0;
+S1446,Rotation.java,146,this.q1 = q1;
+S1447,Rotation.java,147,this.q2 = q2;
+S1448,Rotation.java,148,this.q3 = q3;
+S1449,Rotation.java,173,"public Rotation(Vector3D axis, double angle) {"
+S1450,Rotation.java,175,double norm = axis.getNorm();
+S1451,Rotation.java,176,if (norm == 0) {
+S1452,Rotation.java,180,double halfAngle = -0.5 * angle;
+S1453,Rotation.java,181,double coeff = FastMath.sin(halfAngle) / norm;
+S1454,Rotation.java,183,q0 = FastMath.cos (halfAngle);
+S1455,Rotation.java,184,q1 = coeff * axis.getX();
+S1456,Rotation.java,185,q2 = coeff * axis.getY();
+S1457,Rotation.java,186,q3 = coeff * axis.getZ();
+S1458,Rotation.java,838,double x = u.getX();
+S1459,Rotation.java,839,double y = u.getY();
+S1460,Rotation.java,840,double z = u.getZ();
+S1461,Rotation.java,842,double s = q1 * x + q2 * y + q3 * z;
+S1462,Rotation.java,844,"return new Vector3D(2 * (q0 * (x * q0 - (q2 * z - q3 * y)) + s * q1) - x,"
+S1463,Segment.java,40,"public Segment(final Vector3D start, final Vector3D end, final Line line) {"
+S1464,Segment.java,41,this.start  = start;
+S1465,Segment.java,42,this.end    = end;
+S1466,Segment.java,43,this.line   = line;
+S1467,Segment.java,50,return start;
+S1468,Segment.java,57,return end;
+S1469,Side.java,24,public enum Side {
+S1470,Side.java,27,"PLUS,"
+S1471,Side.java,30,"MINUS,"
+S1472,Side.java,33,"BOTH,"
+S1473,Side.java,36,HYPER;
+S1474,SubHyperplane.java,104,final SubHyperplane<U> minus) {
+S1475,SubHyperplane.java,105,this.plus  = plus;
+S1476,SubHyperplane.java,106,this.minus = minus;
+S1477,SubHyperplane.java,113,return plus;
+S1478,SubHyperplane.java,120,return minus;
+S1479,SubLine.java,48,/** Create a sub-line from two endpoints.
+S1480,SubLine.java,49,* @param start start point
+S1481,SubLine.java,56,/** Create a sub-line from a segment.
+S1482,SubLine.java,57,* @param segment single segment forming the sub-line
+S1483,SubLine.java,139,
+S1484,SubLine.java,140,
+S1485,SubLine.java,148,
+S1486,SubLine.java,155,
+S1487,SubLine.java,156,
+S1488,SubLine.java,157,
+S1489,SubLine.java,159,
+S1490,SubLine.java,161,
+S1491,SubLine.java,162,
+S1492,SubLine.java,166,
+S1493,SubLine.java,167,
+S1494,SubLine.java,168,
+S1495,SubLine.java,176,
+S1496,SubLine.java,177,
+S1497,SubLine.java,178,
+S1498,SubLine.java,180,
+S1499,SubLine.java,182,
+S1500,SubLine.java,183,
+S1501,SubLine.java,189,
+S1502,SubLine.java,190,
+S1503,SubLine.java,191,
+S1504,SubLine.java,192,
+S1505,SubLine.java,194,
+S1506,SubLine.java,195,
+S1507,SubLine.java,199,
+S1508,SubLine.java,204,
+S1509,SubOrientedPoint.java,39,"super(hyperplane, remainingRegion);"
+S1510,SubOrientedPoint.java,52,"return new SubOrientedPoint(hyperplane, remainingRegion);"
+S1511,SubOrientedPoint.java,58,final double global = hyperplane.getOffset(((OrientedPoint) getHyperplane()).getLocation());
+S1512,SubOrientedPoint.java,59,return (global < -1.0e-10) ? Side.MINUS : ((global > 1.0e-10) ? Side.PLUS : Side.HYPER);
+S1513,SubOrientedPoint.java,65,final double global = hyperplane.getOffset(((OrientedPoint) getHyperplane()).getLocation());
+S1514,SubOrientedPoint.java,66,return (global < -1.0e-10) ?
+S1515,SubPlane.java,42,"super(hyperplane, remainingRegion);"
+S1516,SubPlane.java,49,"return new SubPlane(hyperplane, remainingRegion);"
+S1517,SubPlane.java,56,final Plane otherPlane = (Plane) hyperplane;
+S1518,SubPlane.java,57,final Plane thisPlane  = (Plane) getHyperplane();
+S1519,SubPlane.java,58,final Line  inter      = otherPlane.intersection(thisPlane);
+S1520,SubPlane.java,60,if (inter == null) {
+S1521,SubPlane.java,63,final double global = otherPlane.getOffset(thisPlane);
+S1522,SubPlane.java,64,return (global < -1.0e-10) ? Side.MINUS : ((global > 1.0e-10) ? Side.PLUS : Side.HYPER);
+S1523,SubPlane.java,74,Vector2D p = thisPlane.toSubSpace(inter.toSpace(Vector1D.ZERO));
+S1524,SubPlane.java,75,Vector2D q = thisPlane.toSubSpace(inter.toSpace(Vector1D.ONE));
+S1525,SubPlane.java,76,"Vector3D crossP = Vector3D.crossProduct(inter.getDirection(), thisPlane.getNormal());"
+S1526,SubPlane.java,77,if (crossP.dotProduct(otherPlane.getNormal()) < 0) {
+S1527,SubPlane.java,78,final Vector2D tmp = p;
+S1528,SubPlane.java,79,p           = q;
+S1529,SubPlane.java,80,q           = tmp;
+S1530,SubPlane.java,82,final org.apache.commons.math3.geometry.euclidean.twod.Line line2D =
+S1531,SubPlane.java,86,return getRemainingRegion().side(line2D);
+S1532,SubPlane.java,99,final Plane otherPlane = (Plane) hyperplane;
+S1533,SubPlane.java,100,final Plane thisPlane  = (Plane) getHyperplane();
+S1534,SubPlane.java,101,final Line  inter      = otherPlane.intersection(thisPlane);
+S1535,SubPlane.java,103,if (inter == null) {
+S1536,SubPlane.java,105,final double global = otherPlane.getOffset(thisPlane);
+S1537,SubPlane.java,106,return (global < -1.0e-10) ?
+S1538,SubPlane.java,112,Vector2D p = thisPlane.toSubSpace(inter.toSpace(Vector1D.ZERO));
+S1539,SubPlane.java,113,Vector2D q = thisPlane.toSubSpace(inter.toSpace(Vector1D.ONE));
+S1540,SubPlane.java,114,"Vector3D crossP = Vector3D.crossProduct(inter.getDirection(), thisPlane.getNormal());"
+S1541,SubPlane.java,115,if (crossP.dotProduct(otherPlane.getNormal()) < 0) {
+S1542,SubPlane.java,116,final Vector2D tmp = p;
+S1543,SubPlane.java,117,p           = q;
+S1544,SubPlane.java,118,q           = tmp;
+S1545,SubPlane.java,120,final SubHyperplane<Euclidean2D> l2DMinus =
+S1546,SubPlane.java,122,final SubHyperplane<Euclidean2D> l2DPlus =
+S1547,SubPlane.java,125,final BSPTree<Euclidean2D> splitTree = getRemainingRegion().getTree(false).split(l2DMinus);
+S1548,SubPlane.java,126,final BSPTree<Euclidean2D> plusTree  = getRemainingRegion().isEmpty(splitTree.getPlus()) ?
+S1549,SubPlane.java,131,final BSPTree<Euclidean2D> minusTree = getRemainingRegion().isEmpty(splitTree.getMinus()) ?
+S1550,SubPlane.java,136,"return new SplitSubHyperplane<Euclidean3D>(new SubPlane(thisPlane.copySelf(), new PolygonsSet(plusTree)),"
+S1551,Vector1D.java,36,public static final Vector1D ZERO = new Vector1D(0.0);
+S1552,Vector1D.java,39,public static final Vector1D ONE  = new Vector1D(1.0);
+S1553,Vector1D.java,43,public static final Vector1D NaN = new Vector1D(Double.NaN);
+S1554,Vector1D.java,47,public static final Vector1D POSITIVE_INFINITY =
+S1555,Vector1D.java,51,public static final Vector1D NEGATIVE_INFINITY =
+S1556,Vector1D.java,65,public Vector1D(double x) {
+S1557,Vector1D.java,66,this.x = x;
+S1558,Vector1D.java,128,return x;
+S1559,Vector2D.java,37,"public static final Vector2D ZERO   = new Vector2D(0, 0);"
+S1560,Vector2D.java,41,"public static final Vector2D NaN = new Vector2D(Double.NaN, Double.NaN);"
+S1561,Vector2D.java,45,public static final Vector2D POSITIVE_INFINITY =
+S1562,Vector2D.java,49,public static final Vector2D NEGATIVE_INFINITY =
+S1563,Vector2D.java,68,"public Vector2D(double x, double y) {"
+S1564,Vector2D.java,69,this.x = x;
+S1565,Vector2D.java,70,this.y = y;
+S1566,Vector2D.java,150,return x;
+S1567,Vector2D.java,158,return y;
+S1568,Vector2D.java,261,Vector2D p3 = (Vector2D) p;
+S1569,Vector2D.java,262,final double dx = p3.x - x;
+S1570,Vector2D.java,263,final double dy = p3.y - y;
+S1571,Vector2D.java,264,return FastMath.sqrt(dx * dx + dy * dy);
+S1572,Vector3D.java,41,"public static final Vector3D ZERO   = new Vector3D(0, 0, 0);"
+S1573,Vector3D.java,44,"public static final Vector3D PLUS_I = new Vector3D(1, 0, 0);"
+S1574,Vector3D.java,47,"public static final Vector3D MINUS_I = new Vector3D(-1, 0, 0);"
+S1575,Vector3D.java,50,"public static final Vector3D PLUS_J = new Vector3D(0, 1, 0);"
+S1576,Vector3D.java,53,"public static final Vector3D MINUS_J = new Vector3D(0, -1, 0);"
+S1577,Vector3D.java,56,"public static final Vector3D PLUS_K = new Vector3D(0, 0, 1);"
+S1578,Vector3D.java,59,"public static final Vector3D MINUS_K = new Vector3D(0, 0, -1);"
+S1579,Vector3D.java,63,"public static final Vector3D NaN = new Vector3D(Double.NaN, Double.NaN, Double.NaN);"
+S1580,Vector3D.java,67,public static final Vector3D POSITIVE_INFINITY =
+S1581,Vector3D.java,71,public static final Vector3D NEGATIVE_INFINITY =
+S1582,Vector3D.java,95,"public Vector3D(double x, double y, double z) {"
+S1583,Vector3D.java,96,this.x = x;
+S1584,Vector3D.java,97,this.y = y;
+S1585,Vector3D.java,98,this.z = z;
+S1586,Vector3D.java,137,"public Vector3D(double a, Vector3D u) {"
+S1587,Vector3D.java,138,this.x = a * u.x;
+S1588,Vector3D.java,139,this.y = a * u.y;
+S1589,Vector3D.java,140,this.z = a * u.z;
+S1590,Vector3D.java,151,"public Vector3D(double a1, Vector3D u1, double a2, Vector3D u2) {"
+S1591,Vector3D.java,152,"this.x = MathArrays.linearCombination(a1, u1.x, a2, u2.x);"
+S1592,Vector3D.java,153,"this.y = MathArrays.linearCombination(a1, u1.y, a2, u2.y);"
+S1593,Vector3D.java,154,"this.z = MathArrays.linearCombination(a1, u1.z, a2, u2.z);"
+S1594,Vector3D.java,168,"double a3, Vector3D u3) {"
+S1595,Vector3D.java,169,"this.x = MathArrays.linearCombination(a1, u1.x, a2, u2.x, a3, u3.x);"
+S1596,Vector3D.java,170,"this.y = MathArrays.linearCombination(a1, u1.y, a2, u2.y, a3, u3.y);"
+S1597,Vector3D.java,171,"this.z = MathArrays.linearCombination(a1, u1.z, a2, u2.z, a3, u3.z);"
+S1598,Vector3D.java,198,return x;
+S1599,Vector3D.java,206,return y;
+S1600,Vector3D.java,214,return z;
+S1601,Vector3D.java,243,return FastMath.sqrt (x * x + y * y + z * z);
+S1602,Vector3D.java,249,return x * x + y * y + z * z;
+S1603,Vector3D.java,275,final Vector3D v3 = (Vector3D) v;
+S1604,Vector3D.java,276,"return new Vector3D(x + v3.x, y + v3.y, z + v3.z);"
+S1605,Vector3D.java,286,final Vector3D v3 = (Vector3D) v;
+S1606,Vector3D.java,287,"return new Vector3D(x - v3.x, y - v3.y, z - v3.z);"
+S1607,Vector3D.java,321,double threshold = 0.6 * getNorm();
+S1608,Vector3D.java,322,if (threshold == 0) {
+S1609,Vector3D.java,326,if ((x >= -threshold) && (x <= threshold)) {
+S1610,Vector3D.java,327,double inverse  = 1 / FastMath.sqrt(y * y + z * z);
+S1611,Vector3D.java,328,"return new Vector3D(0, inverse * z, -inverse * y);"
+S1612,Vector3D.java,329,} else if ((y >= -threshold) && (y <= threshold)) {
+S1613,Vector3D.java,330,double inverse  = 1 / FastMath.sqrt(x * x + z * z);
+S1614,Vector3D.java,331,"return new Vector3D(-inverse * z, 0, inverse * x);"
+S1615,Vector3D.java,333,double inverse  = 1 / FastMath.sqrt(x * x + y * y);
+S1616,Vector3D.java,334,"return new Vector3D(inverse * y, -inverse * x, 0);"
+S1617,Vector3D.java,453,final Vector3D v3 = (Vector3D) v;
+S1618,Vector3D.java,454,"return MathArrays.linearCombination(x, v3.x, y, v3.y, z, v3.z);"
+S1619,Vector3D.java,462,final Vector3D v3 = (Vector3D) v;
+S1620,Vector3D.java,463,"return new Vector3D(MathArrays.linearCombination(y, v3.z, -z, v3.y),"
+S1621,Vector3D.java,519,return v1.crossProduct(v2);

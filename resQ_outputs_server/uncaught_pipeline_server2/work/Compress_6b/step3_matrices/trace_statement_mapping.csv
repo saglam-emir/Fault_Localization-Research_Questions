@@ -1,0 +1,2003 @@
+statement_id,file,line,code
+S1,AbstractUnicodeExtraField.java,34,protected AbstractUnicodeExtraField() {
+S2,AbstractUnicodeExtraField.java,49,"protected AbstractUnicodeExtraField(String text, byte[] bytes, int off, int len) {"
+S3,AbstractUnicodeExtraField.java,50,CRC32 crc32 = new CRC32();
+S4,AbstractUnicodeExtraField.java,51,"crc32.update(bytes, off, len);"
+S5,AbstractUnicodeExtraField.java,52,nameCRC32 = crc32.getValue();
+S6,AbstractUnicodeExtraField.java,55,"unicodeName = text.getBytes(""UTF-8"");"
+S7,AbstractUnicodeExtraField.java,74,if (unicodeName == null) {
+S8,AbstractUnicodeExtraField.java,78,data = new byte[5 + unicodeName.length];
+S9,AbstractUnicodeExtraField.java,80,data[0] = 0x01;
+S10,AbstractUnicodeExtraField.java,81,"System.arraycopy(ZipLong.getBytes(nameCRC32), 0, data, 1, 4);"
+S11,AbstractUnicodeExtraField.java,82,"System.arraycopy(unicodeName, 0, data, 5, unicodeName.length);"
+S12,AbstractUnicodeExtraField.java,90,return nameCRC32;
+S13,AbstractUnicodeExtraField.java,106,return unicodeName;
+S14,AbstractUnicodeExtraField.java,118,if (data == null) {
+S15,AbstractUnicodeExtraField.java,119,this.assembleData();
+S16,AbstractUnicodeExtraField.java,121,return data;
+S17,AbstractUnicodeExtraField.java,125,if (data == null) {
+S18,AbstractUnicodeExtraField.java,126,assembleData();
+S19,AbstractUnicodeExtraField.java,128,return new ZipShort(data.length);
+S20,AbstractUnicodeExtraField.java,132,return getCentralDirectoryData();
+S21,AbstractUnicodeExtraField.java,136,return getCentralDirectoryLength();
+S22,AbstractUnicodeExtraField.java,142,if (length < 5) {
+S23,AbstractUnicodeExtraField.java,146,int version = buffer[offset];
+S24,AbstractUnicodeExtraField.java,148,if (version != 0x01) {
+S25,AbstractUnicodeExtraField.java,153,"nameCRC32 = ZipLong.getValue(buffer, offset + 1);"
+S26,AbstractUnicodeExtraField.java,154,unicodeName = new byte[length - 5];
+S27,AbstractUnicodeExtraField.java,155,"System.arraycopy(buffer, offset + 5, unicodeName, 0, length - 5);"
+S28,AbstractUnicodeExtraField.java,156,data = null;
+S29,AbstractUnicodeExtraField.java,166,"parseFromLocalFileData(buffer, offset, length);"
+S30,ArArchiveEntry.java,83,"this(name, length, 0, 0, DEFAULT_MODE,"
+S31,ArArchiveEntry.java,98,"int mode, long lastModified) {"
+S32,ArArchiveEntry.java,99,this.name = name;
+S33,ArArchiveEntry.java,100,this.length = length;
+S34,ArArchiveEntry.java,101,this.userId = userId;
+S35,ArArchiveEntry.java,102,this.groupId = groupId;
+S36,ArArchiveEntry.java,103,this.mode = mode;
+S37,ArArchiveEntry.java,104,this.lastModified = lastModified;
+S38,ArArchiveEntry.java,112,"this(entryName, inputFile.isFile() ? inputFile.length() : 0,"
+S39,ArArchiveEntry.java,117,return this.getLength();
+S40,ArArchiveEntry.java,121,return name;
+S41,ArArchiveEntry.java,125,return userId;
+S42,ArArchiveEntry.java,129,return groupId;
+S43,ArArchiveEntry.java,133,return mode;
+S44,ArArchiveEntry.java,140,return lastModified;
+S45,ArArchiveEntry.java,149,return length;
+S46,ArArchiveInputStream.java,37,private long offset = 0;
+S47,ArArchiveInputStream.java,44,private ArArchiveEntry currentEntry = null;
+S48,ArArchiveInputStream.java,50,private long entryOffset = -1;
+S49,ArArchiveInputStream.java,58,public ArArchiveInputStream(final InputStream pInput) {
+S50,ArArchiveInputStream.java,59,input = pInput;
+S51,ArArchiveInputStream.java,60,closed = false;
+S52,ArArchiveInputStream.java,71,if (currentEntry != null) {
+S53,ArArchiveInputStream.java,72,final long entryEnd = entryOffset + currentEntry.getLength();
+S54,ArArchiveInputStream.java,73,while (offset < entryEnd) {
+S55,ArArchiveInputStream.java,74,int x = read();
+S56,ArArchiveInputStream.java,75,if (x == -1) {
+S57,ArArchiveInputStream.java,81,currentEntry = null;
+S58,ArArchiveInputStream.java,84,if (offset == 0) {
+S59,ArArchiveInputStream.java,85,final byte[] expected = ArchiveUtils.toAsciiBytes(ArArchiveEntry.HEADER);
+S60,ArArchiveInputStream.java,86,final byte[] realized = new byte[expected.length];
+S61,ArArchiveInputStream.java,87,final int read = read(realized);
+S62,ArArchiveInputStream.java,88,if (read != expected.length) {
+S63,ArArchiveInputStream.java,91,for (int i = 0; i < expected.length; i++) {
+S64,ArArchiveInputStream.java,92,if (expected[i] != realized[i]) {
+S65,ArArchiveInputStream.java,98,if (offset % 2 != 0) {
+S66,ArArchiveInputStream.java,99,if (read() < 0) {
+S67,ArArchiveInputStream.java,105,if (input.available() == 0) {
+S68,ArArchiveInputStream.java,106,return null;
+S69,ArArchiveInputStream.java,109,final byte[] name = new byte[16];
+S70,ArArchiveInputStream.java,110,final byte[] lastmodified = new byte[12];
+S71,ArArchiveInputStream.java,111,final byte[] userid = new byte[6];
+S72,ArArchiveInputStream.java,112,final byte[] groupid = new byte[6];
+S73,ArArchiveInputStream.java,113,final byte[] filemode = new byte[8];
+S74,ArArchiveInputStream.java,114,final byte[] length = new byte[10];
+S75,ArArchiveInputStream.java,116,read(name);
+S76,ArArchiveInputStream.java,117,read(lastmodified);
+S77,ArArchiveInputStream.java,118,read(userid);
+S78,ArArchiveInputStream.java,119,read(groupid);
+S79,ArArchiveInputStream.java,120,read(filemode);
+S80,ArArchiveInputStream.java,121,read(length);
+S81,ArArchiveInputStream.java,124,final byte[] expected = ArchiveUtils.toAsciiBytes(ArArchiveEntry.TRAILER);
+S82,ArArchiveInputStream.java,125,final byte[] realized = new byte[expected.length];
+S83,ArArchiveInputStream.java,126,final int read = read(realized);
+S84,ArArchiveInputStream.java,127,if (read != expected.length) {
+S85,ArArchiveInputStream.java,130,for (int i = 0; i < expected.length; i++) {
+S86,ArArchiveInputStream.java,131,if (expected[i] != realized[i]) {
+S87,ArArchiveInputStream.java,137,entryOffset = offset;
+S88,ArArchiveInputStream.java,141,String temp = ArchiveUtils.toAsciiString(name).trim();
+S89,ArArchiveInputStream.java,142,"if (temp.endsWith(""/"")) {"
+S90,ArArchiveInputStream.java,145,"currentEntry = new ArArchiveEntry(temp, asLong(length), asInt(userid),"
+S91,ArArchiveInputStream.java,148,return currentEntry;
+S92,ArArchiveInputStream.java,152,return Long.parseLong(new String(input).trim());
+S93,ArArchiveInputStream.java,156,"return asInt(input, 10);"
+S94,ArArchiveInputStream.java,160,"return Integer.parseInt(new String(input).trim(), base);"
+S95,ArArchiveInputStream.java,170,return getNextArEntry();
+S96,ArArchiveInputStream.java,179,if (!closed) {
+S97,ArArchiveInputStream.java,180,closed = true;
+S98,ArArchiveInputStream.java,181,input.close();
+S99,ArArchiveInputStream.java,183,currentEntry = null;
+S100,ArArchiveInputStream.java,192,int toRead = len;
+S101,ArArchiveInputStream.java,193,if (currentEntry != null) {
+S102,ArArchiveInputStream.java,194,final long entryEnd = entryOffset + currentEntry.getLength();
+S103,ArArchiveInputStream.java,195,if (len > 0 && entryEnd > offset) {
+S104,ArArchiveInputStream.java,196,"toRead = (int) Math.min(len, entryEnd - offset);"
+S105,ArArchiveInputStream.java,198,return -1;
+S106,ArArchiveInputStream.java,201,"final int ret = this.input.read(b, off, toRead);"
+S107,ArArchiveInputStream.java,202,count(ret);
+S108,ArArchiveInputStream.java,203,offset += (ret > 0 ? ret : 0);
+S109,ArArchiveInputStream.java,204,return ret;
+S110,ArArchiveInputStream.java,220,if (length < 8) {
+S111,ArArchiveInputStream.java,223,if (signature[0] != 0x21) {
+S112,ArArchiveInputStream.java,224,return false;
+S113,ArArchiveInputStream.java,226,if (signature[1] != 0x3c) {
+S114,ArArchiveInputStream.java,229,if (signature[2] != 0x61) {
+S115,ArArchiveInputStream.java,232,if (signature[3] != 0x72) {
+S116,ArArchiveInputStream.java,235,if (signature[4] != 0x63) {
+S117,ArArchiveInputStream.java,238,if (signature[5] != 0x68) {
+S118,ArArchiveInputStream.java,241,if (signature[6] != 0x3e) {
+S119,ArArchiveInputStream.java,244,if (signature[7] != 0x0a) {
+S120,ArArchiveInputStream.java,248,return true;
+S121,ArArchiveOutputStream.java,37,private long archiveOffset = 0;
+S122,ArArchiveOutputStream.java,38,private long entryOffset = 0;
+S123,ArArchiveOutputStream.java,40,private boolean haveUnclosedEntry = false;
+S124,ArArchiveOutputStream.java,43,private boolean finished = false;
+S125,ArArchiveOutputStream.java,45,public ArArchiveOutputStream( final OutputStream pOut ) {
+S126,ArArchiveOutputStream.java,46,this.out = pOut;
+S127,ArArchiveOutputStream.java,50,byte [] header = ArchiveUtils.toAsciiBytes(ArArchiveEntry.HEADER);
+S128,ArArchiveOutputStream.java,51,out.write(header);
+S129,ArArchiveOutputStream.java,52,return header.length;
+S130,ArArchiveOutputStream.java,56,if(finished) {
+S131,ArArchiveOutputStream.java,59,if (prevEntry == null || !haveUnclosedEntry){
+S132,ArArchiveOutputStream.java,60,"throw new IOException(""No current entry to close"");"
+S133,ArArchiveOutputStream.java,62,if ((entryOffset % 2) != 0) {
+S134,ArArchiveOutputStream.java,63,out.write('\n'); // Pad byte
+S135,ArArchiveOutputStream.java,64,archiveOffset++;
+S136,ArArchiveOutputStream.java,66,haveUnclosedEntry = false;
+S137,ArArchiveOutputStream.java,70,if(finished) {
+S138,ArArchiveOutputStream.java,74,ArArchiveEntry pArEntry = (ArArchiveEntry)pEntry;
+S139,ArArchiveOutputStream.java,75,if (prevEntry == null) {
+S140,ArArchiveOutputStream.java,76,archiveOffset += writeArchiveHeader();
+S141,ArArchiveOutputStream.java,78,if (prevEntry.getLength() != entryOffset) {
+S142,ArArchiveOutputStream.java,82,if (haveUnclosedEntry) {
+S143,ArArchiveOutputStream.java,87,prevEntry = pArEntry;
+S144,ArArchiveOutputStream.java,89,archiveOffset += writeEntryHeader(pArEntry);
+S145,ArArchiveOutputStream.java,91,entryOffset = 0;
+S146,ArArchiveOutputStream.java,92,haveUnclosedEntry = true;
+S147,ArArchiveOutputStream.java,96,final long diff = pNewOffset - pOffset;
+S148,ArArchiveOutputStream.java,98,if (diff > 0) {
+S149,ArArchiveOutputStream.java,99,for (int i = 0; i < diff; i++) {
+S150,ArArchiveOutputStream.java,100,write(pFill);
+S151,ArArchiveOutputStream.java,104,return pNewOffset;
+S152,ArArchiveOutputStream.java,108,"final byte[] bytes = data.getBytes(""ascii"");"
+S153,ArArchiveOutputStream.java,109,write(bytes);
+S154,ArArchiveOutputStream.java,110,return bytes.length;
+S155,ArArchiveOutputStream.java,115,long offset = 0;
+S156,ArArchiveOutputStream.java,117,final String n = pEntry.getName();
+S157,ArArchiveOutputStream.java,118,if (n.length() > 16) {
+S158,ArArchiveOutputStream.java,121,offset += write(n);
+S159,ArArchiveOutputStream.java,123,"offset = fill(offset, 16, ' ');"
+S160,ArArchiveOutputStream.java,124,"final String m = """" + (pEntry.getLastModified());"
+S161,ArArchiveOutputStream.java,125,if (m.length() > 12) {
+S162,ArArchiveOutputStream.java,128,offset += write(m);
+S163,ArArchiveOutputStream.java,130,"offset = fill(offset, 28, ' ');"
+S164,ArArchiveOutputStream.java,131,"final String u = """" + pEntry.getUserId();"
+S165,ArArchiveOutputStream.java,132,if (u.length() > 6) {
+S166,ArArchiveOutputStream.java,135,offset += write(u);
+S167,ArArchiveOutputStream.java,137,"offset = fill(offset, 34, ' ');"
+S168,ArArchiveOutputStream.java,138,"final String g = """" + pEntry.getGroupId();"
+S169,ArArchiveOutputStream.java,139,if (g.length() > 6) {
+S170,ArArchiveOutputStream.java,142,offset += write(g);
+S171,ArArchiveOutputStream.java,144,"offset = fill(offset, 40, ' ');"
+S172,ArArchiveOutputStream.java,145,"final String fm = """" + Integer.toString(pEntry.getMode(), 8);"
+S173,ArArchiveOutputStream.java,146,if (fm.length() > 8) {
+S174,ArArchiveOutputStream.java,149,offset += write(fm);
+S175,ArArchiveOutputStream.java,151,"offset = fill(offset, 48, ' ');"
+S176,ArArchiveOutputStream.java,152,"final String s = """" + pEntry.getLength();"
+S177,ArArchiveOutputStream.java,153,if (s.length() > 10) {
+S178,ArArchiveOutputStream.java,156,offset += write(s);
+S179,ArArchiveOutputStream.java,158,"offset = fill(offset, 58, ' ');"
+S180,ArArchiveOutputStream.java,160,offset += write(ArArchiveEntry.TRAILER);
+S181,ArArchiveOutputStream.java,162,return offset;
+S182,ArArchiveOutputStream.java,166,"out.write(b, off, len);"
+S183,ArArchiveOutputStream.java,167,count(len);
+S184,ArArchiveOutputStream.java,168,entryOffset += len;
+S185,ArArchiveOutputStream.java,172,if(!finished) {
+S186,ArArchiveOutputStream.java,173,finish();
+S187,ArArchiveOutputStream.java,175,out.close();
+S188,ArArchiveOutputStream.java,176,prevEntry = null;
+S189,ArArchiveOutputStream.java,181,if(finished) {
+S190,ArArchiveOutputStream.java,184,"return new ArArchiveEntry(inputFile, entryName);"
+S191,ArArchiveOutputStream.java,191,if(haveUnclosedEntry) {
+S192,ArArchiveOutputStream.java,192,"throw new IOException(""This archive contains unclosed entries."");"
+S193,ArArchiveOutputStream.java,193,} else if(finished) {
+S194,ArArchiveOutputStream.java,194,"throw new IOException(""This archive has already been finished"");"
+S195,ArArchiveOutputStream.java,196,finished = true;
+S196,ArchiveInputStream.java,40,public abstract class ArchiveInputStream extends InputStream {
+S197,ArchiveInputStream.java,42,private byte[] SINGLE = new byte[1];
+S198,ArchiveInputStream.java,46,private int bytesRead = 0;
+S199,ArchiveInputStream.java,81,"int num = read(SINGLE, 0, 1);"
+S200,ArchiveInputStream.java,82,return num == -1 ? -1 : SINGLE[0] & BYTE_MASK;
+S201,ArchiveInputStream.java,92,if(read != -1) {
+S202,ArchiveInputStream.java,93,bytesRead = bytesRead + read;
+S203,ArchiveOutputStream.java,49,public abstract class ArchiveOutputStream extends OutputStream {
+S204,ArchiveOutputStream.java,52,private final byte[] oneByte = new byte[1];
+S205,ArchiveOutputStream.java,56,private int bytesRead = 0;
+S206,ArchiveOutputStream.java,111,oneByte[0] = (byte) (b & BYTE_MASK);
+S207,ArchiveOutputStream.java,112,"write(oneByte, 0, 1);"
+S208,ArchiveOutputStream.java,122,if(read != -1) {
+S209,ArchiveOutputStream.java,123,bytesRead = bytesRead + read;
+S210,ArchiveStreamFactory.java,72,public class ArchiveStreamFactory {
+S211,ArchiveStreamFactory.java,86,if (archiverName == null || in == null) {
+S212,ArchiveStreamFactory.java,90,"if (""ar"".equalsIgnoreCase(archiverName)) {"
+S213,ArchiveStreamFactory.java,91,return new ArArchiveInputStream(in);
+S214,ArchiveStreamFactory.java,92,"} else if (""zip"".equalsIgnoreCase(archiverName)) {"
+S215,ArchiveStreamFactory.java,93,return new ZipArchiveInputStream(in);
+S216,ArchiveStreamFactory.java,94,"} else if (""tar"".equalsIgnoreCase(archiverName)) {"
+S217,ArchiveStreamFactory.java,95,return new TarArchiveInputStream(in);
+S218,ArchiveStreamFactory.java,96,"} else if (""jar"".equalsIgnoreCase(archiverName)) {"
+S219,ArchiveStreamFactory.java,97,return new JarArchiveInputStream(in);
+S220,ArchiveStreamFactory.java,98,"} else if (""cpio"".equalsIgnoreCase(archiverName)) {"
+S221,ArchiveStreamFactory.java,99,return new CpioArchiveInputStream(in);
+S222,ArchiveStreamFactory.java,116,if (archiverName == null || out == null) {
+S223,ArchiveStreamFactory.java,121,"if (""ar"".equalsIgnoreCase(archiverName)) {"
+S224,ArchiveStreamFactory.java,122,return new ArArchiveOutputStream(out);
+S225,ArchiveStreamFactory.java,123,"} else if (""zip"".equalsIgnoreCase(archiverName)) {"
+S226,ArchiveStreamFactory.java,124,return new ZipArchiveOutputStream(out);
+S227,ArchiveStreamFactory.java,125,"} else if (""tar"".equalsIgnoreCase(archiverName)) {"
+S228,ArchiveStreamFactory.java,126,return new TarArchiveOutputStream(out);
+S229,ArchiveStreamFactory.java,127,"} else if (""jar"".equalsIgnoreCase(archiverName)) {"
+S230,ArchiveStreamFactory.java,128,return new JarArchiveOutputStream(out);
+S231,ArchiveStreamFactory.java,129,"} else if (""cpio"".equalsIgnoreCase(archiverName)) {"
+S232,ArchiveStreamFactory.java,130,return new CpioArchiveOutputStream(out);
+S233,ArchiveStreamFactory.java,147,if (in == null) {
+S234,ArchiveStreamFactory.java,151,if (!in.markSupported()) {
+S235,ArchiveStreamFactory.java,155,final byte[] signature = new byte[12];
+S236,ArchiveStreamFactory.java,156,in.mark(signature.length);
+S237,ArchiveStreamFactory.java,158,int signatureLength = in.read(signature);
+S238,ArchiveStreamFactory.java,159,in.reset();
+S239,ArchiveStreamFactory.java,160,"if (ZipArchiveInputStream.matches(signature, signatureLength)) {"
+S240,ArchiveStreamFactory.java,161,return new ZipArchiveInputStream(in);
+S241,ArchiveStreamFactory.java,162,"} else if (JarArchiveInputStream.matches(signature, signatureLength)) {"
+S242,ArchiveStreamFactory.java,164,"} else if (ArArchiveInputStream.matches(signature, signatureLength)) {"
+S243,ArchiveStreamFactory.java,165,return new ArArchiveInputStream(in);
+S244,ArchiveStreamFactory.java,166,"} else if (CpioArchiveInputStream.matches(signature, signatureLength)) {"
+S245,ArchiveStreamFactory.java,167,return new CpioArchiveInputStream(in);
+S246,ArchiveStreamFactory.java,170,final byte[] tarheader = new byte[512];
+S247,ArchiveStreamFactory.java,171,in.mark(tarheader.length);
+S248,ArchiveStreamFactory.java,172,signatureLength = in.read(tarheader);
+S249,ArchiveStreamFactory.java,173,in.reset();
+S250,ArchiveStreamFactory.java,174,"if (TarArchiveInputStream.matches(tarheader, signatureLength)) {"
+S251,ArchiveStreamFactory.java,175,return new TarArchiveInputStream(in);
+S252,ArchiveUtils.java,70,"buffer1 = expected.getBytes(""ASCII"");"
+S253,ArchiveUtils.java,74,"return isEqual(buffer1, 0, buffer1.length, buffer, offset, length, false);"
+S254,ArchiveUtils.java,97,"return inputString.getBytes(""ASCII"");"
+S255,ArchiveUtils.java,111,"return new String(inputBytes, ""ASCII"");"
+S256,ArchiveUtils.java,133,int minLen=length1 < length2 ? length1 : length2;
+S257,ArchiveUtils.java,134,for (int i=0; i < minLen; i++){
+S258,ArchiveUtils.java,135,if (buffer1[offset1+i] != buffer2[offset2+i]){
+S259,ArchiveUtils.java,136,return false;
+S260,ArchiveUtils.java,139,if (length1 == length2){
+S261,ArchiveUtils.java,140,return true;
+S262,AsiExtraField.java,55,private static final ZipShort HEADER_ID = new ZipShort(0x756E);
+S263,AsiExtraField.java,60,private int mode = 0;
+S264,AsiExtraField.java,64,private int uid = 0;
+S265,AsiExtraField.java,68,private int gid = 0;
+S266,AsiExtraField.java,74,"private String link = """";"
+S267,AsiExtraField.java,78,private boolean dirFlag = false;
+S268,AsiExtraField.java,83,private CRC32 crc = new CRC32();
+S269,AsiExtraField.java,86,public AsiExtraField() {
+S270,AsiExtraField.java,94,return HEADER_ID;
+S271,AsiExtraField.java,103,return new ZipShort(WORD         // CRC
+S272,AsiExtraField.java,127,byte[] data = new byte[getLocalFileDataLength().getValue() - WORD];
+S273,AsiExtraField.java,128,"System.arraycopy(ZipShort.getBytes(getMode()), 0, data, 0, 2);"
+S274,AsiExtraField.java,130,byte[] linkArray = getLinkedFile().getBytes(); // Uses default charset - see class Javadoc
+S275,AsiExtraField.java,132,"System.arraycopy(ZipLong.getBytes(linkArray.length),"
+S276,AsiExtraField.java,135,"System.arraycopy(ZipShort.getBytes(getUserId()),"
+S277,AsiExtraField.java,137,"System.arraycopy(ZipShort.getBytes(getGroupId()),"
+S278,AsiExtraField.java,140,"System.arraycopy(linkArray, 0, data, 10, linkArray.length);"
+S279,AsiExtraField.java,143,crc.reset();
+S280,AsiExtraField.java,144,crc.update(data);
+S281,AsiExtraField.java,145,long checksum = crc.getValue();
+S282,AsiExtraField.java,147,byte[] result = new byte[data.length + WORD];
+S283,AsiExtraField.java,148,"System.arraycopy(ZipLong.getBytes(checksum), 0, result, 0, WORD);"
+S284,AsiExtraField.java,149,"System.arraycopy(data, 0, result, WORD, data.length);"
+S285,AsiExtraField.java,150,return result;
+S286,AsiExtraField.java,174,return uid;
+S287,AsiExtraField.java,190,return gid;
+S288,AsiExtraField.java,211,return link;
+S289,AsiExtraField.java,219,return getLinkedFile().length() != 0;
+S290,AsiExtraField.java,227,this.mode = getMode(mode);
+S291,AsiExtraField.java,235,return mode;
+S292,AsiExtraField.java,243,this.dirFlag = dirFlag;
+S293,AsiExtraField.java,244,mode = getMode(mode);
+S294,AsiExtraField.java,252,return dirFlag && !isLink();
+S295,AsiExtraField.java,311,int type = FILE_FLAG;
+S296,AsiExtraField.java,312,if (isLink()) {
+S297,AsiExtraField.java,314,} else if (isDirectory()) {
+S298,AsiExtraField.java,315,type = DIR_FLAG;
+S299,AsiExtraField.java,317,return type | (mode & PERM_MASK);
+S300,Change.java,49,"Change(final String pFilename, int type) {"
+S301,Change.java,50,if(pFilename == null) {
+S302,Change.java,53,this.targetFile = pFilename;
+S303,Change.java,54,this.type = type;
+S304,Change.java,55,this.input = null;
+S305,Change.java,56,this.entry = null;
+S306,Change.java,57,this.replaceMode = true;
+S307,Change.java,66,"Change(final ArchiveEntry pEntry, final InputStream pInput, boolean replace) {"
+S308,Change.java,67,if(pEntry == null || pInput == null) {
+S309,Change.java,70,this.entry = pEntry;
+S310,Change.java,71,this.input = pInput;
+S311,Change.java,72,type = TYPE_ADD;
+S312,Change.java,73,targetFile = null;
+S313,Change.java,74,this.replaceMode = replace;
+S314,Change.java,78,return entry;
+S315,Change.java,82,return input;
+S316,Change.java,86,return targetFile;
+S317,Change.java,90,return type;
+S318,Change.java,94,return replaceMode;
+S319,ChangeSet.java,35,public final class ChangeSet {
+S320,ChangeSet.java,37,private final Set changes = new LinkedHashSet();
+S321,ChangeSet.java,46,"addDeletion(new Change(filename, Change.TYPE_DELETE));"
+S322,ChangeSet.java,56,"addDeletion(new Change(dirName, Change.TYPE_DELETE_DIR));"
+S323,ChangeSet.java,68,"this.add(pEntry, pInput, true);"
+S324,ChangeSet.java,84,"addAddition(new Change(pEntry, pInput, replace));"
+S325,ChangeSet.java,94,if (Change.TYPE_ADD != pChange.type() ||
+S326,ChangeSet.java,99,if (!changes.isEmpty()) {
+S327,ChangeSet.java,100,for (Iterator it = changes.iterator(); it.hasNext();) {
+S328,ChangeSet.java,101,Change change = (Change) it.next();
+S329,ChangeSet.java,102,if (change.type() == Change.TYPE_ADD
+S330,ChangeSet.java,104,ArchiveEntry entry = change.getEntry();
+S331,ChangeSet.java,106,if(entry.equals(pChange.getEntry())) {
+S332,ChangeSet.java,107,if(pChange.isReplaceMode()) {
+S333,ChangeSet.java,108,it.remove();
+S334,ChangeSet.java,109,changes.add(pChange);
+S335,ChangeSet.java,110,return;
+S336,ChangeSet.java,113,return;
+S337,ChangeSet.java,119,changes.add(pChange);
+S338,ChangeSet.java,129,if ((Change.TYPE_DELETE != pChange.type() &&
+S339,ChangeSet.java,134,String source = pChange.targetFile();
+S340,ChangeSet.java,136,if (!changes.isEmpty()) {
+S341,ChangeSet.java,137,for (Iterator it = changes.iterator(); it.hasNext();) {
+S342,ChangeSet.java,138,Change change = (Change) it.next();
+S343,ChangeSet.java,139,if (change.type() == Change.TYPE_ADD
+S344,ChangeSet.java,141,String target = change.getEntry().getName();
+S345,ChangeSet.java,143,if (Change.TYPE_DELETE == pChange.type() && source.equals(target)) {
+S346,ChangeSet.java,145,} else if (Change.TYPE_DELETE_DIR == pChange.type() &&
+S347,ChangeSet.java,147,it.remove();
+S348,ChangeSet.java,152,changes.add(pChange);
+S349,ChangeSet.java,161,return new LinkedHashSet(changes);
+S350,ChangeSetPerformer.java,48,public ChangeSetPerformer(final ChangeSet changeSet) {
+S351,ChangeSetPerformer.java,49,changes = changeSet.getChanges();
+S352,ChangeSetPerformer.java,69,ChangeSetResults results = new ChangeSetResults();
+S353,ChangeSetPerformer.java,71,Set workingSet = new LinkedHashSet(changes);
+S354,ChangeSetPerformer.java,73,for (Iterator it = workingSet.iterator(); it.hasNext();) {
+S355,ChangeSetPerformer.java,74,Change change = (Change) it.next();
+S356,ChangeSetPerformer.java,76,if (change.type() == Change.TYPE_ADD && change.isReplaceMode()) {
+S357,ChangeSetPerformer.java,77,"copyStream(change.getInput(), out, change.getEntry());"
+S358,ChangeSetPerformer.java,78,it.remove();
+S359,ChangeSetPerformer.java,79,results.addedFromChangeSet(change.getEntry().getName());
+S360,ChangeSetPerformer.java,83,ArchiveEntry entry = null;
+S361,ChangeSetPerformer.java,84,while ((entry = in.getNextEntry()) != null) {
+S362,ChangeSetPerformer.java,85,boolean copy = true;
+S363,ChangeSetPerformer.java,87,for (Iterator it = workingSet.iterator(); it.hasNext();) {
+S364,ChangeSetPerformer.java,88,Change change = (Change) it.next();
+S365,ChangeSetPerformer.java,90,final int type = change.type();
+S366,ChangeSetPerformer.java,91,final String name = entry.getName();
+S367,ChangeSetPerformer.java,92,if (type == Change.TYPE_DELETE && name != null) {
+S368,ChangeSetPerformer.java,93,if (name.equals(change.targetFile())) {
+S369,ChangeSetPerformer.java,94,copy = false;
+S370,ChangeSetPerformer.java,95,it.remove();
+S371,ChangeSetPerformer.java,96,results.deleted(name);
+S372,ChangeSetPerformer.java,97,break;
+S373,ChangeSetPerformer.java,99,} else if(type == Change.TYPE_DELETE_DIR && name != null) {
+S374,ChangeSetPerformer.java,100,"if (name.startsWith(change.targetFile() + ""/"")) {"
+S375,ChangeSetPerformer.java,101,copy = false;
+S376,ChangeSetPerformer.java,102,results.deleted(name);
+S377,ChangeSetPerformer.java,103,break;
+S378,ChangeSetPerformer.java,108,if (copy) {
+S379,ChangeSetPerformer.java,109,"if (!isDeletedLater(workingSet, entry) && !results.hasBeenAdded(entry.getName())) {"
+S380,ChangeSetPerformer.java,110,"copyStream(in, out, entry);"
+S381,ChangeSetPerformer.java,111,results.addedFromStream(entry.getName());
+S382,ChangeSetPerformer.java,117,for (Iterator it = workingSet.iterator(); it.hasNext();) {
+S383,ChangeSetPerformer.java,118,Change change = (Change) it.next();
+S384,ChangeSetPerformer.java,120,if (change.type() == Change.TYPE_ADD &&
+S385,ChangeSetPerformer.java,128,out.finish();
+S386,ChangeSetPerformer.java,129,return results;
+S387,ChangeSetPerformer.java,142,String source = entry.getName();
+S388,ChangeSetPerformer.java,144,if (!workingSet.isEmpty()) {
+S389,ChangeSetPerformer.java,145,for (Iterator it = workingSet.iterator(); it.hasNext();) {
+S390,ChangeSetPerformer.java,146,Change change = (Change) it.next();
+S391,ChangeSetPerformer.java,147,final int type = change.type();
+S392,ChangeSetPerformer.java,148,String target = change.targetFile();
+S393,ChangeSetPerformer.java,149,if (type == Change.TYPE_DELETE && source.equals(target)) {
+S394,ChangeSetPerformer.java,153,"if (type == Change.TYPE_DELETE_DIR && source.startsWith(target + ""/"")){"
+S395,ChangeSetPerformer.java,158,return false;
+S396,ChangeSetPerformer.java,175,out.putArchiveEntry(entry);
+S397,ChangeSetPerformer.java,176,"IOUtils.copy(in, out);"
+S398,ChangeSetPerformer.java,177,out.closeArchiveEntry();
+S399,ChangeSetResults.java,27,public class ChangeSetResults {
+S400,ChangeSetResults.java,28,private final List addedFromChangeSet = new ArrayList();
+S401,ChangeSetResults.java,29,private final List addedFromStream = new ArrayList();
+S402,ChangeSetResults.java,30,private final List deleted = new ArrayList();
+S403,ChangeSetResults.java,37,deleted.add(fileName);
+S404,ChangeSetResults.java,46,addedFromStream.add(fileName);
+S405,ChangeSetResults.java,55,addedFromChangeSet.add(fileName);
+S406,ChangeSetResults.java,63,return addedFromChangeSet;
+S407,ChangeSetResults.java,71,return addedFromStream;
+S408,ChangeSetResults.java,79,return deleted;
+S409,ChangeSetResults.java,88,if(addedFromChangeSet.contains(filename) || addedFromStream.contains(filename)) {
+S410,ChangeSetResults.java,89,return true;
+S411,ChangeSetResults.java,91,return false;
+S412,CpioArchiveEntry.java,163,private long chksum = 0;
+S413,CpioArchiveEntry.java,166,private long filesize = 0;
+S414,CpioArchiveEntry.java,168,private long gid = 0;
+S415,CpioArchiveEntry.java,170,private long inode = 0;
+S416,CpioArchiveEntry.java,172,private long maj = 0;
+S417,CpioArchiveEntry.java,174,private long min = 0;
+S418,CpioArchiveEntry.java,176,private long mode = 0;
+S419,CpioArchiveEntry.java,178,private long mtime = 0;
+S420,CpioArchiveEntry.java,182,private long nlink = 0;
+S421,CpioArchiveEntry.java,184,private long rmaj = 0;
+S422,CpioArchiveEntry.java,186,private long rmin = 0;
+S423,CpioArchiveEntry.java,188,private long uid = 0;
+S424,CpioArchiveEntry.java,204,public CpioArchiveEntry(final short format) {
+S425,CpioArchiveEntry.java,205,switch (format) {
+S426,CpioArchiveEntry.java,207,this.headerSize = 110;
+S427,CpioArchiveEntry.java,208,this.alignmentBoundary = 4;
+S428,CpioArchiveEntry.java,209,break;
+S429,CpioArchiveEntry.java,225,this.fileFormat = format;
+S430,CpioArchiveEntry.java,236,this(FORMAT_NEW);
+S431,CpioArchiveEntry.java,237,this.name = name;
+S432,CpioArchiveEntry.java,250,this(FORMAT_NEW);
+S433,CpioArchiveEntry.java,251,this.name = name;
+S434,CpioArchiveEntry.java,252,this.setSize(size);
+S435,CpioArchiveEntry.java,256,"this(entryName, inputFile.isFile() ? inputFile.length() : 0);"
+S436,CpioArchiveEntry.java,257,long mode=0;
+S437,CpioArchiveEntry.java,258,if (inputFile.isDirectory()){
+S438,CpioArchiveEntry.java,260,} else if (inputFile.isFile()){
+S439,CpioArchiveEntry.java,261,mode |= C_ISREG;
+S440,CpioArchiveEntry.java,266,setMode(mode);
+S441,CpioArchiveEntry.java,267,setTime(inputFile.lastModified() / 1000);
+S442,CpioArchiveEntry.java,274,if ((this.fileFormat & FORMAT_NEW_MASK) == 0) {
+S443,CpioArchiveEntry.java,296,checkNewFormat();
+S444,CpioArchiveEntry.java,297,return this.chksum;
+S445,CpioArchiveEntry.java,322,checkNewFormat();
+S446,CpioArchiveEntry.java,323,return this.maj;
+S447,CpioArchiveEntry.java,333,checkNewFormat();
+S448,CpioArchiveEntry.java,334,return this.min;
+S449,CpioArchiveEntry.java,344,return this.filesize;
+S450,CpioArchiveEntry.java,353,return this.fileFormat;
+S451,CpioArchiveEntry.java,362,return this.gid;
+S452,CpioArchiveEntry.java,389,if (this.alignmentBoundary == 0) return 0;
+S453,CpioArchiveEntry.java,390,int size = this.headerSize+this.name.length()+1; // Name has terminating null
+S454,CpioArchiveEntry.java,391,int remain = size % this.alignmentBoundary;
+S455,CpioArchiveEntry.java,392,if (remain > 0){
+S456,CpioArchiveEntry.java,393,return this.alignmentBoundary - remain;
+S457,CpioArchiveEntry.java,395,return 0;
+S458,CpioArchiveEntry.java,404,if (this.alignmentBoundary == 0) return 0;
+S459,CpioArchiveEntry.java,405,long size = this.filesize;
+S460,CpioArchiveEntry.java,406,int remain = (int) (size % this.alignmentBoundary);
+S461,CpioArchiveEntry.java,407,if (remain > 0){
+S462,CpioArchiveEntry.java,408,return this.alignmentBoundary - remain;
+S463,CpioArchiveEntry.java,410,return 0;
+S464,CpioArchiveEntry.java,419,return this.inode;
+S465,CpioArchiveEntry.java,428,return this.mode;
+S466,CpioArchiveEntry.java,437,return this.name;
+S467,CpioArchiveEntry.java,446,return this.nlink;
+S468,CpioArchiveEntry.java,471,checkNewFormat();
+S469,CpioArchiveEntry.java,472,return this.rmaj;
+S470,CpioArchiveEntry.java,484,checkNewFormat();
+S471,CpioArchiveEntry.java,485,return this.rmin;
+S472,CpioArchiveEntry.java,494,return this.mtime;
+S473,CpioArchiveEntry.java,508,return this.uid;
+S474,CpioArchiveEntry.java,591,checkNewFormat();
+S475,CpioArchiveEntry.java,592,this.chksum = chksum;
+S476,CpioArchiveEntry.java,616,checkNewFormat();
+S477,CpioArchiveEntry.java,617,this.maj = maj;
+S478,CpioArchiveEntry.java,627,checkNewFormat();
+S479,CpioArchiveEntry.java,628,this.min = min;
+S480,CpioArchiveEntry.java,638,if (size < 0 || size > 0xFFFFFFFFL) {
+S481,CpioArchiveEntry.java,642,this.filesize = size;
+S482,CpioArchiveEntry.java,652,this.gid = gid;
+S483,CpioArchiveEntry.java,662,this.inode = inode;
+S484,CpioArchiveEntry.java,672,final long maskedMode = mode & S_IFMT;
+S485,CpioArchiveEntry.java,673,switch ((int) maskedMode) {
+S486,CpioArchiveEntry.java,682,break;
+S487,CpioArchiveEntry.java,690,this.mode = mode;
+S488,CpioArchiveEntry.java,700,this.name = name;
+S489,CpioArchiveEntry.java,710,this.nlink = nlink;
+S490,CpioArchiveEntry.java,737,checkNewFormat();
+S491,CpioArchiveEntry.java,738,this.rmaj = rmaj;
+S492,CpioArchiveEntry.java,751,checkNewFormat();
+S493,CpioArchiveEntry.java,752,this.rmin = rmin;
+S494,CpioArchiveEntry.java,762,this.mtime = time;
+S495,CpioArchiveEntry.java,772,this.uid = uid;
+S496,CpioArchiveInputStream.java,66,private boolean closed = false;
+S497,CpioArchiveInputStream.java,70,private long entryBytesRead = 0;
+S498,CpioArchiveInputStream.java,72,private boolean entryEOF = false;
+S499,CpioArchiveInputStream.java,74,private final byte tmpbuf[] = new byte[4096];
+S500,CpioArchiveInputStream.java,76,private long crc = 0;
+S501,CpioArchiveInputStream.java,86,public CpioArchiveInputStream(final InputStream in) {
+S502,CpioArchiveInputStream.java,87,this.in = in;
+S503,CpioArchiveInputStream.java,117,if (!this.closed) {
+S504,CpioArchiveInputStream.java,118,in.close();
+S505,CpioArchiveInputStream.java,119,this.closed = true;
+S506,CpioArchiveInputStream.java,132,ensureOpen();
+S507,CpioArchiveInputStream.java,133,"while (read(this.tmpbuf, 0, this.tmpbuf.length) != -1) {"
+S508,CpioArchiveInputStream.java,137,this.entryEOF = true;
+S509,CpioArchiveInputStream.java,147,if (this.closed) {
+S510,CpioArchiveInputStream.java,162,ensureOpen();
+S511,CpioArchiveInputStream.java,163,if (this.entry != null) {
+S512,CpioArchiveInputStream.java,164,closeEntry();
+S513,CpioArchiveInputStream.java,166,byte magic[] = new byte[2];
+S514,CpioArchiveInputStream.java,167,"readFully(magic, 0, magic.length);"
+S515,CpioArchiveInputStream.java,168,"if (CpioUtil.byteArray2long(magic, false) == MAGIC_OLD_BINARY) {"
+S516,CpioArchiveInputStream.java,170,"} else if (CpioUtil.byteArray2long(magic, true) == MAGIC_OLD_BINARY) {"
+S517,CpioArchiveInputStream.java,173,byte more_magic[] = new byte[4];
+S518,CpioArchiveInputStream.java,174,"readFully(more_magic, 0, more_magic.length);"
+S519,CpioArchiveInputStream.java,175,byte tmp[] = new byte[6];
+S520,CpioArchiveInputStream.java,176,"System.arraycopy(magic, 0, tmp, 0, magic.length);"
+S521,CpioArchiveInputStream.java,177,"System.arraycopy(more_magic, 0, tmp, magic.length,"
+S522,CpioArchiveInputStream.java,179,String magicString = ArchiveUtils.toAsciiString(tmp);
+S523,CpioArchiveInputStream.java,180,if (magicString.equals(MAGIC_NEW)) {
+S524,CpioArchiveInputStream.java,181,this.entry = readNewEntry(false);
+S525,CpioArchiveInputStream.java,191,this.entryBytesRead = 0;
+S526,CpioArchiveInputStream.java,192,this.entryEOF = false;
+S527,CpioArchiveInputStream.java,193,this.crc = 0;
+S528,CpioArchiveInputStream.java,195,if (this.entry.getName().equals(CPIO_TRAILER)) {
+S529,CpioArchiveInputStream.java,196,this.entryEOF = true;
+S530,CpioArchiveInputStream.java,197,return null;
+S531,CpioArchiveInputStream.java,199,return this.entry;
+S532,CpioArchiveInputStream.java,203,final byte[] buff = new byte[4]; // Cannot be more than 3 bytes
+S533,CpioArchiveInputStream.java,204,if (bytes > 0) {
+S534,CpioArchiveInputStream.java,205,"readFully(buff, 0, bytes);"
+S535,CpioArchiveInputStream.java,227,ensureOpen();
+S536,CpioArchiveInputStream.java,228,if (off < 0 || len < 0 || off > b.length - len) {
+S537,CpioArchiveInputStream.java,230,} else if (len == 0) {
+S538,CpioArchiveInputStream.java,234,if (this.entry == null || this.entryEOF) {
+S539,CpioArchiveInputStream.java,235,return -1;
+S540,CpioArchiveInputStream.java,237,if (this.entryBytesRead == this.entry.getSize()) {
+S541,CpioArchiveInputStream.java,238,skip(entry.getDataPadCount());
+S542,CpioArchiveInputStream.java,239,this.entryEOF = true;
+S543,CpioArchiveInputStream.java,240,if (this.entry.getFormat() == FORMAT_NEW_CRC) {
+S544,CpioArchiveInputStream.java,245,return -1; // EOF for this entry
+S545,CpioArchiveInputStream.java,247,"int tmplength = (int) Math.min(len, this.entry.getSize()"
+S546,CpioArchiveInputStream.java,249,if (tmplength < 0) {
+S547,CpioArchiveInputStream.java,253,"int tmpread = readFully(b, off, tmplength);"
+S548,CpioArchiveInputStream.java,254,if (this.entry.getFormat() == FORMAT_NEW_CRC) {
+S549,CpioArchiveInputStream.java,259,this.entryBytesRead += tmpread;
+S550,CpioArchiveInputStream.java,261,return tmpread;
+S551,CpioArchiveInputStream.java,266,if (len < 0) {
+S552,CpioArchiveInputStream.java,269,int n = 0;
+S553,CpioArchiveInputStream.java,270,while (n < len) {
+S554,CpioArchiveInputStream.java,271,"int count = this.in.read(b, off + n, len - n);"
+S555,CpioArchiveInputStream.java,272,count(count);
+S556,CpioArchiveInputStream.java,273,if (count < 0) {
+S557,CpioArchiveInputStream.java,276,n += count;
+S558,CpioArchiveInputStream.java,278,return n;
+S559,CpioArchiveInputStream.java,290,byte tmpBuffer[] = new byte[length];
+S560,CpioArchiveInputStream.java,291,"readFully(tmpBuffer, 0, tmpBuffer.length);"
+S561,CpioArchiveInputStream.java,292,"return Long.parseLong(ArchiveUtils.toAsciiString(tmpBuffer), radix);"
+S562,CpioArchiveInputStream.java,298,if (hasCrc) {
+S563,CpioArchiveInputStream.java,301,ret = new CpioArchiveEntry(FORMAT_NEW);
+S564,CpioArchiveInputStream.java,304,"ret.setInode(readAsciiLong(8, 16));"
+S565,CpioArchiveInputStream.java,305,"long mode = readAsciiLong(8, 16);"
+S566,CpioArchiveInputStream.java,306,if (mode != 0){ // mode is initialised to 0
+S567,CpioArchiveInputStream.java,307,ret.setMode(mode);
+S568,CpioArchiveInputStream.java,309,"ret.setUID(readAsciiLong(8, 16));"
+S569,CpioArchiveInputStream.java,310,"ret.setGID(readAsciiLong(8, 16));"
+S570,CpioArchiveInputStream.java,311,"ret.setNumberOfLinks(readAsciiLong(8, 16));"
+S571,CpioArchiveInputStream.java,312,"ret.setTime(readAsciiLong(8, 16));"
+S572,CpioArchiveInputStream.java,313,"ret.setSize(readAsciiLong(8, 16));"
+S573,CpioArchiveInputStream.java,314,"ret.setDeviceMaj(readAsciiLong(8, 16));"
+S574,CpioArchiveInputStream.java,315,"ret.setDeviceMin(readAsciiLong(8, 16));"
+S575,CpioArchiveInputStream.java,316,"ret.setRemoteDeviceMaj(readAsciiLong(8, 16));"
+S576,CpioArchiveInputStream.java,317,"ret.setRemoteDeviceMin(readAsciiLong(8, 16));"
+S577,CpioArchiveInputStream.java,318,"long namesize = readAsciiLong(8, 16);"
+S578,CpioArchiveInputStream.java,319,"ret.setChksum(readAsciiLong(8, 16));"
+S579,CpioArchiveInputStream.java,320,String name = readCString((int) namesize);
+S580,CpioArchiveInputStream.java,321,ret.setName(name);
+S581,CpioArchiveInputStream.java,322,if (mode == 0 && !name.equals(CPIO_TRAILER)){
+S582,CpioArchiveInputStream.java,325,skip(ret.getHeaderPadCount());
+S583,CpioArchiveInputStream.java,327,return ret;
+S584,CpioArchiveInputStream.java,383,byte tmpBuffer[] = new byte[length];
+S585,CpioArchiveInputStream.java,384,"readFully(tmpBuffer, 0, tmpBuffer.length);"
+S586,CpioArchiveInputStream.java,385,"return new String(tmpBuffer, 0, tmpBuffer.length - 1);"
+S587,CpioArchiveInputStream.java,423,return getNextCPIOEntry();
+S588,CpioArchiveInputStream.java,440,if (length < 6) {
+S589,CpioArchiveInputStream.java,445,if (signature[0] == 0x71 && (signature[1] & 0xFF) == 0xc7) {
+S590,CpioArchiveInputStream.java,448,if (signature[1] == 0x71 && (signature[0] & 0xFF) == 0xc7) {
+S591,CpioArchiveInputStream.java,454,if (signature[0] != 0x30) {
+S592,CpioArchiveInputStream.java,455,return false;
+S593,CpioArchiveInputStream.java,457,if (signature[1] != 0x37) {
+S594,CpioArchiveInputStream.java,460,if (signature[2] != 0x30) {
+S595,CpioArchiveInputStream.java,463,if (signature[3] != 0x37) {
+S596,CpioArchiveInputStream.java,466,if (signature[4] != 0x30) {
+S597,CpioArchiveInputStream.java,470,if (signature[5] == 0x31) {
+S598,CpioArchiveInputStream.java,471,return true;
+S599,CpioArchiveOutputStream.java,67,private boolean closed = false;
+S600,CpioArchiveOutputStream.java,77,private final HashMap names = new HashMap();
+S601,CpioArchiveOutputStream.java,79,private long crc = 0;
+S602,CpioArchiveOutputStream.java,93,"public CpioArchiveOutputStream(final OutputStream out, final short format) {"
+S603,CpioArchiveOutputStream.java,94,this.out = new FilterOutputStream(out);
+S604,CpioArchiveOutputStream.java,95,switch (format) {
+S605,CpioArchiveOutputStream.java,100,break;
+S606,CpioArchiveOutputStream.java,105,this.entryFormat = format;
+S607,CpioArchiveOutputStream.java,116,"this(out, FORMAT_NEW);"
+S608,CpioArchiveOutputStream.java,126,if (this.closed) {
+S609,CpioArchiveOutputStream.java,127,"throw new IOException(""Stream closed"");"
+S610,CpioArchiveOutputStream.java,146,if(finished) {
+S611,CpioArchiveOutputStream.java,150,CpioArchiveEntry e = (CpioArchiveEntry) entry;
+S612,CpioArchiveOutputStream.java,151,ensureOpen();
+S613,CpioArchiveOutputStream.java,152,if (this.entry != null) {
+S614,CpioArchiveOutputStream.java,155,if (e.getTime() == -1) {
+S615,CpioArchiveOutputStream.java,159,final short format = e.getFormat();
+S616,CpioArchiveOutputStream.java,160,if (format != this.entryFormat){
+S617,CpioArchiveOutputStream.java,164,"if (this.names.put(e.getName(), e) != null) {"
+S618,CpioArchiveOutputStream.java,168,writeHeader(e);
+S619,CpioArchiveOutputStream.java,169,this.entry = e;
+S620,CpioArchiveOutputStream.java,170,this.written = 0;
+S621,CpioArchiveOutputStream.java,174,switch (e.getFormat()) {
+S622,CpioArchiveOutputStream.java,176,out.write(ArchiveUtils.toAsciiBytes(MAGIC_NEW));
+S623,CpioArchiveOutputStream.java,177,writeNewEntry(e);
+S624,CpioArchiveOutputStream.java,178,break;
+S625,CpioArchiveOutputStream.java,196,"writeAsciiLong(entry.getInode(), 8, 16);"
+S626,CpioArchiveOutputStream.java,197,"writeAsciiLong(entry.getMode(), 8, 16);"
+S627,CpioArchiveOutputStream.java,198,"writeAsciiLong(entry.getUID(), 8, 16);"
+S628,CpioArchiveOutputStream.java,199,"writeAsciiLong(entry.getGID(), 8, 16);"
+S629,CpioArchiveOutputStream.java,200,"writeAsciiLong(entry.getNumberOfLinks(), 8, 16);"
+S630,CpioArchiveOutputStream.java,201,"writeAsciiLong(entry.getTime(), 8, 16);"
+S631,CpioArchiveOutputStream.java,202,"writeAsciiLong(entry.getSize(), 8, 16);"
+S632,CpioArchiveOutputStream.java,203,"writeAsciiLong(entry.getDeviceMaj(), 8, 16);"
+S633,CpioArchiveOutputStream.java,204,"writeAsciiLong(entry.getDeviceMin(), 8, 16);"
+S634,CpioArchiveOutputStream.java,205,"writeAsciiLong(entry.getRemoteDeviceMaj(), 8, 16);"
+S635,CpioArchiveOutputStream.java,206,"writeAsciiLong(entry.getRemoteDeviceMin(), 8, 16);"
+S636,CpioArchiveOutputStream.java,207,"writeAsciiLong(entry.getName().length() + 1, 8, 16);"
+S637,CpioArchiveOutputStream.java,208,"writeAsciiLong(entry.getChksum(), 8, 16);"
+S638,CpioArchiveOutputStream.java,209,writeCString(entry.getName());
+S639,CpioArchiveOutputStream.java,210,pad(entry.getHeaderPadCount());
+S640,CpioArchiveOutputStream.java,251,if(finished) {
+S641,CpioArchiveOutputStream.java,255,ensureOpen();
+S642,CpioArchiveOutputStream.java,257,if (entry == null) {
+S643,CpioArchiveOutputStream.java,258,"throw new IOException(""Trying to close non-existent entry"");"
+S644,CpioArchiveOutputStream.java,261,if (this.entry.getSize() != this.written) {
+S645,CpioArchiveOutputStream.java,266,pad(this.entry.getDataPadCount());
+S646,CpioArchiveOutputStream.java,267,if (this.entry.getFormat() == FORMAT_NEW_CRC) {
+S647,CpioArchiveOutputStream.java,272,this.entry = null;
+S648,CpioArchiveOutputStream.java,273,this.crc = 0;
+S649,CpioArchiveOutputStream.java,274,this.written = 0;
+S650,CpioArchiveOutputStream.java,293,ensureOpen();
+S651,CpioArchiveOutputStream.java,294,if (off < 0 || len < 0 || off > b.length - len) {
+S652,CpioArchiveOutputStream.java,296,} else if (len == 0) {
+S653,CpioArchiveOutputStream.java,300,if (this.entry == null) {
+S654,CpioArchiveOutputStream.java,303,if (this.written + len > this.entry.getSize()) {
+S655,CpioArchiveOutputStream.java,306,"out.write(b, off, len);"
+S656,CpioArchiveOutputStream.java,307,this.written += len;
+S657,CpioArchiveOutputStream.java,308,if (this.entry.getFormat() == FORMAT_NEW_CRC) {
+S658,CpioArchiveOutputStream.java,313,count(len);
+S659,CpioArchiveOutputStream.java,326,ensureOpen();
+S660,CpioArchiveOutputStream.java,327,if (finished) {
+S661,CpioArchiveOutputStream.java,331,if (this.entry != null) {
+S662,CpioArchiveOutputStream.java,332,"throw new IOException(""This archive contains unclosed entries."");"
+S663,CpioArchiveOutputStream.java,334,this.entry = new CpioArchiveEntry(this.entryFormat);
+S664,CpioArchiveOutputStream.java,335,this.entry.setName(CPIO_TRAILER);
+S665,CpioArchiveOutputStream.java,336,this.entry.setNumberOfLinks(1);
+S666,CpioArchiveOutputStream.java,337,writeHeader(this.entry);
+S667,CpioArchiveOutputStream.java,338,closeArchiveEntry();
+S668,CpioArchiveOutputStream.java,340,finished = true;
+S669,CpioArchiveOutputStream.java,351,if(!finished) {
+S670,CpioArchiveOutputStream.java,352,finish();
+S671,CpioArchiveOutputStream.java,355,if (!this.closed) {
+S672,CpioArchiveOutputStream.java,356,out.close();
+S673,CpioArchiveOutputStream.java,357,this.closed = true;
+S674,CpioArchiveOutputStream.java,362,if (count > 0){
+S675,CpioArchiveOutputStream.java,363,byte buff[] = new byte[count];
+S676,CpioArchiveOutputStream.java,364,out.write(buff);
+S677,CpioArchiveOutputStream.java,376,StringBuffer tmp = new StringBuffer();
+S678,CpioArchiveOutputStream.java,378,if (radix == 16) {
+S679,CpioArchiveOutputStream.java,379,tmp.append(Long.toHexString(number));
+S680,CpioArchiveOutputStream.java,386,if (tmp.length() <= length) {
+S681,CpioArchiveOutputStream.java,387,long insertLength = length - tmp.length();
+S682,CpioArchiveOutputStream.java,388,for (int pos = 0; pos < insertLength; pos++) {
+S683,CpioArchiveOutputStream.java,389,"tmp.insert(0, ""0"");"
+S684,CpioArchiveOutputStream.java,391,tmpStr = tmp.toString();
+S685,CpioArchiveOutputStream.java,392,} else {
+S686,CpioArchiveOutputStream.java,395,out.write(ArchiveUtils.toAsciiBytes(tmpStr));
+S687,CpioArchiveOutputStream.java,404,out.write(ArchiveUtils.toAsciiBytes(str));
+S688,CpioArchiveOutputStream.java,405,out.write('\0');
+S689,CpioArchiveOutputStream.java,415,if(finished) {
+S690,CpioArchiveOutputStream.java,418,"return new CpioArchiveEntry(inputFile, entryName);"
+S691,CpioUtil.java,39,if (number.length % 2 != 0) {
+S692,CpioUtil.java,43,long ret = 0;
+S693,CpioUtil.java,44,int pos = 0;
+S694,CpioUtil.java,45,byte tmp_number[] = new byte[number.length];
+S695,CpioUtil.java,46,"System.arraycopy(number, 0, tmp_number, 0, number.length);"
+S696,CpioUtil.java,48,if (!swapHalfWord) {
+S697,CpioUtil.java,49,byte tmp = 0;
+S698,CpioUtil.java,50,for (pos = 0; pos < tmp_number.length; pos++) {
+S699,CpioUtil.java,51,tmp = tmp_number[pos];
+S700,CpioUtil.java,52,tmp_number[pos++] = tmp_number[pos];
+S701,CpioUtil.java,53,tmp_number[pos] = tmp;
+S702,CpioUtil.java,57,ret = tmp_number[0] & 0xFF;
+S703,CpioUtil.java,58,for (pos = 1; pos < tmp_number.length; pos++) {
+S704,CpioUtil.java,59,ret <<= 8;
+S705,CpioUtil.java,60,ret |= tmp_number[pos] & 0xFF;
+S706,CpioUtil.java,62,return ret;
+S707,ExtraFieldUtils.java,41,implementations = new HashMap();
+S708,ExtraFieldUtils.java,42,register(AsiExtraField.class);
+S709,ExtraFieldUtils.java,43,register(JarMarker.class);
+S710,ExtraFieldUtils.java,44,register(UnicodePathExtraField.class);
+S711,ExtraFieldUtils.java,45,register(UnicodeCommentExtraField.class);
+S712,ExtraFieldUtils.java,57,ZipExtraField ze = (ZipExtraField) c.newInstance();
+S713,ExtraFieldUtils.java,58,"implementations.put(ze.getHeaderId(), c);"
+S714,ExtraFieldUtils.java,78,Class c = (Class) implementations.get(headerId);
+S715,ExtraFieldUtils.java,79,if (c != null) {
+S716,ExtraFieldUtils.java,80,return (ZipExtraField) c.newInstance();
+S717,ExtraFieldUtils.java,82,UnrecognizedExtraField u = new UnrecognizedExtraField();
+S718,ExtraFieldUtils.java,83,u.setHeaderId(headerId);
+S719,ExtraFieldUtils.java,84,return u;
+S720,ExtraFieldUtils.java,95,"return parse(data, true);"
+S721,ExtraFieldUtils.java,109,List v = new ArrayList();
+S722,ExtraFieldUtils.java,110,int start = 0;
+S723,ExtraFieldUtils.java,111,while (start <= data.length - WORD) {
+S724,ExtraFieldUtils.java,112,"ZipShort headerId = new ZipShort(data, start);"
+S725,ExtraFieldUtils.java,113,"int length = (new ZipShort(data, start + 2)).getValue();"
+S726,ExtraFieldUtils.java,114,if (start + WORD + length > data.length) {
+S727,ExtraFieldUtils.java,119,ZipExtraField ze = createExtraField(headerId);
+S728,ExtraFieldUtils.java,120,if (local) {
+S729,ExtraFieldUtils.java,121,"ze.parseFromLocalFileData(data, start + WORD, length);"
+S730,ExtraFieldUtils.java,123,"ze.parseFromCentralDirectoryData(data, start + WORD,"
+S731,ExtraFieldUtils.java,126,v.add(ze);
+S732,ExtraFieldUtils.java,132,start += (length + WORD);
+S733,ExtraFieldUtils.java,135,ZipExtraField[] result = new ZipExtraField[v.size()];
+S734,ExtraFieldUtils.java,136,return (ZipExtraField[]) v.toArray(result);
+S735,ExtraFieldUtils.java,145,int sum = WORD * data.length;
+S736,ExtraFieldUtils.java,146,for (int i = 0; i < data.length; i++) {
+S737,ExtraFieldUtils.java,147,sum += data[i].getLocalFileDataLength().getValue();
+S738,ExtraFieldUtils.java,149,byte[] result = new byte[sum];
+S739,ExtraFieldUtils.java,150,int start = 0;
+S740,ExtraFieldUtils.java,151,for (int i = 0; i < data.length; i++) {
+S741,ExtraFieldUtils.java,152,"System.arraycopy(data[i].getHeaderId().getBytes(),"
+S742,ExtraFieldUtils.java,154,"System.arraycopy(data[i].getLocalFileDataLength().getBytes(),"
+S743,ExtraFieldUtils.java,156,byte[] local = data[i].getLocalFileDataData();
+S744,ExtraFieldUtils.java,157,"System.arraycopy(local, 0, result, start + WORD, local.length);"
+S745,ExtraFieldUtils.java,158,start += (local.length + WORD);
+S746,ExtraFieldUtils.java,160,return result;
+S747,ExtraFieldUtils.java,169,int sum = WORD * data.length;
+S748,ExtraFieldUtils.java,170,for (int i = 0; i < data.length; i++) {
+S749,ExtraFieldUtils.java,171,sum += data[i].getCentralDirectoryLength().getValue();
+S750,ExtraFieldUtils.java,173,byte[] result = new byte[sum];
+S751,ExtraFieldUtils.java,174,int start = 0;
+S752,ExtraFieldUtils.java,175,for (int i = 0; i < data.length; i++) {
+S753,ExtraFieldUtils.java,176,"System.arraycopy(data[i].getHeaderId().getBytes(),"
+S754,ExtraFieldUtils.java,178,"System.arraycopy(data[i].getCentralDirectoryLength().getBytes(),"
+S755,ExtraFieldUtils.java,180,byte[] local = data[i].getCentralDirectoryData();
+S756,ExtraFieldUtils.java,181,"System.arraycopy(local, 0, result, start + WORD, local.length);"
+S757,ExtraFieldUtils.java,182,start += (local.length + WORD);
+S758,ExtraFieldUtils.java,184,return result;
+S759,FallbackZipEncoding.java,60,public FallbackZipEncoding(String charset) {
+S760,FallbackZipEncoding.java,61,this.charset = charset;
+S761,FallbackZipEncoding.java,69,return true;
+S762,FallbackZipEncoding.java,77,"if (this.charset == null) { // i.e. use default charset, see no-args constructor"
+S763,FallbackZipEncoding.java,80,return ByteBuffer.wrap(name.getBytes(this.charset));
+S764,FallbackZipEncoding.java,89,"if (this.charset == null) { // i.e. use default charset, see no-args constructor"
+S765,FallbackZipEncoding.java,92,"return new String(data,this.charset);"
+S766,IOUtils.java,47,"return copy(input, output, 8024);"
+S767,IOUtils.java,63,final byte[] buffer = new byte[buffersize];
+S768,IOUtils.java,64,int n = 0;
+S769,IOUtils.java,65,long count=0;
+S770,IOUtils.java,66,while (-1 != (n = input.read(buffer))) {
+S771,IOUtils.java,67,"output.write(buffer, 0, n);"
+S772,IOUtils.java,68,count += n;
+S773,IOUtils.java,70,return count;
+S774,JarArchiveEntry.java,36,private Attributes manifestAttributes = null;
+S775,JarArchiveEntry.java,37,private Certificate[] certificates = null;
+S776,JarArchiveEntry.java,44,super(name);
+S777,JarArchiveEntry.java,48,super(entry);
+S778,JarArchiveEntry.java,80,return super.hashCode();
+S779,JarArchiveInputStream.java,36,super(inputStream);
+S780,JarArchiveInputStream.java,40,ZipArchiveEntry entry = getNextZipEntry();
+S781,JarArchiveInputStream.java,41,return entry == null ? null : new JarArchiveEntry(entry);
+S782,JarArchiveInputStream.java,45,return getNextJarEntry();
+S783,JarArchiveInputStream.java,49,"return ZipArchiveInputStream.matches(signature, length);"
+S784,JarArchiveOutputStream.java,38,private boolean jarMarkerAdded = false;
+S785,JarArchiveOutputStream.java,41,super(out);
+S786,JarArchiveOutputStream.java,46,if (!jarMarkerAdded) {
+S787,JarArchiveOutputStream.java,47,((ZipArchiveEntry)ze).addAsFirstExtraField(JarMarker.getInstance());
+S788,JarArchiveOutputStream.java,48,jarMarkerAdded = true;
+S789,JarArchiveOutputStream.java,50,super.putArchiveEntry(ze);
+S790,JarMarker.java,29,private static final ZipShort ID = new ZipShort(0xCAFE);
+S791,JarMarker.java,30,private static final ZipShort NULL = new ZipShort(0);
+S792,JarMarker.java,31,private static final byte[] NO_BYTES = new byte[0];
+S793,JarMarker.java,32,private static final JarMarker DEFAULT = new JarMarker();
+S794,JarMarker.java,35,public JarMarker() {
+S795,JarMarker.java,44,return DEFAULT;
+S796,JarMarker.java,52,return ID;
+S797,JarMarker.java,61,return NULL;
+S798,JarMarker.java,70,return NULL;
+S799,JarMarker.java,79,return NO_BYTES;
+S800,JarMarker.java,88,return NO_BYTES;
+S801,JarMarker.java,101,if (length != 0) {
+S802,JarMarker.java,113,"parseFromLocalFileData(buffer, offset, length);"
+S803,NioZipEncoding.java,50,public NioZipEncoding(Charset charset) {
+S804,NioZipEncoding.java,51,this.charset = charset;
+S805,NioZipEncoding.java,59,CharsetEncoder enc = this.charset.newEncoder();
+S806,NioZipEncoding.java,60,enc.onMalformedInput(CodingErrorAction.REPORT);
+S807,NioZipEncoding.java,61,enc.onUnmappableCharacter(CodingErrorAction.REPORT);
+S808,NioZipEncoding.java,63,return enc.canEncode(name);
+S809,NioZipEncoding.java,71,CharsetEncoder enc = this.charset.newEncoder();
+S810,NioZipEncoding.java,73,enc.onMalformedInput(CodingErrorAction.REPORT);
+S811,NioZipEncoding.java,74,enc.onUnmappableCharacter(CodingErrorAction.REPORT);
+S812,NioZipEncoding.java,76,CharBuffer cb = CharBuffer.wrap(name);
+S813,NioZipEncoding.java,77,ByteBuffer out = ByteBuffer.allocate(name.length()
+S814,NioZipEncoding.java,80,while (cb.remaining() > 0) {
+S815,NioZipEncoding.java,81,"CoderResult res = enc.encode(cb, out,true);"
+S816,NioZipEncoding.java,83,if (res.isUnmappable() || res.isMalformed()) {
+S817,NioZipEncoding.java,87,if (res.length() * 6 > out.remaining()) {
+S818,NioZipEncoding.java,92,for (int i=0; i<res.length(); ++i) {
+S819,NioZipEncoding.java,93,"ZipEncodingHelper.appendSurrogate(out,cb.get());"
+S820,NioZipEncoding.java,96,} else if (res.isOverflow()) {
+S821,NioZipEncoding.java,98,"out = ZipEncodingHelper.growBuffer(out, 0);"
+S822,NioZipEncoding.java,100,} else if (res.isUnderflow()) {
+S823,NioZipEncoding.java,102,enc.flush(out);
+S824,NioZipEncoding.java,103,break;
+S825,NioZipEncoding.java,108,out.limit(out.position());
+S826,NioZipEncoding.java,109,out.rewind();
+S827,NioZipEncoding.java,110,return out;
+S828,NioZipEncoding.java,118,return this.charset.newDecoder()
+S829,Simple8BitZipEncoding.java,57,"Simple8BitChar(byte code, char unicode) {"
+S830,Simple8BitZipEncoding.java,58,this.code = code;
+S831,Simple8BitZipEncoding.java,59,this.unicode = unicode;
+S832,Simple8BitZipEncoding.java,63,Simple8BitChar a = (Simple8BitChar) o;
+S833,Simple8BitZipEncoding.java,65,return this.unicode - a.unicode;
+S834,Simple8BitZipEncoding.java,91,public Simple8BitZipEncoding(char[] highChars) {
+S835,Simple8BitZipEncoding.java,92,this.highChars = (char[]) highChars.clone();
+S836,Simple8BitZipEncoding.java,93,List temp = new ArrayList(this.highChars.length);
+S837,Simple8BitZipEncoding.java,95,byte code = 127;
+S838,Simple8BitZipEncoding.java,97,for (int i = 0; i < this.highChars.length; ++i) {
+S839,Simple8BitZipEncoding.java,98,"temp.add(new Simple8BitChar(++code, this.highChars[i]));"
+S840,Simple8BitZipEncoding.java,101,Collections.sort(temp);
+S841,Simple8BitZipEncoding.java,102,this.reverseMapping = Collections.unmodifiableList(temp);
+S842,Simple8BitZipEncoding.java,113,if (b >= 0) {
+S843,Simple8BitZipEncoding.java,114,return (char) b;
+S844,Simple8BitZipEncoding.java,118,return this.highChars[128 + b];
+S845,Simple8BitZipEncoding.java,127,if (c >= 0 && c < 128) {
+S846,Simple8BitZipEncoding.java,128,return true;
+S847,Simple8BitZipEncoding.java,131,Simple8BitChar r = this.encodeHighChar(c);
+S848,Simple8BitZipEncoding.java,132,return r != null;
+S849,Simple8BitZipEncoding.java,146,if (c >= 0 && c < 128) {
+S850,Simple8BitZipEncoding.java,147,bb.put((byte) c);
+S851,Simple8BitZipEncoding.java,148,return true;
+S852,Simple8BitZipEncoding.java,151,Simple8BitChar r = this.encodeHighChar(c);
+S853,Simple8BitZipEncoding.java,152,if (r == null) {
+S854,Simple8BitZipEncoding.java,153,return false;
+S855,Simple8BitZipEncoding.java,155,bb.put(r.code);
+S856,Simple8BitZipEncoding.java,156,return true;
+S857,Simple8BitZipEncoding.java,168,int i0 = 0;
+S858,Simple8BitZipEncoding.java,169,int i1 = this.reverseMapping.size();
+S859,Simple8BitZipEncoding.java,171,while (i1 > i0) {
+S860,Simple8BitZipEncoding.java,173,int i = i0 + (i1 - i0) / 2;
+S861,Simple8BitZipEncoding.java,175,Simple8BitChar m = (Simple8BitChar) this.reverseMapping.get(i);
+S862,Simple8BitZipEncoding.java,177,if (m.unicode == c) {
+S863,Simple8BitZipEncoding.java,178,return m;
+S864,Simple8BitZipEncoding.java,181,if (m.unicode < c) {
+S865,Simple8BitZipEncoding.java,182,i0 = i + 1;
+S866,Simple8BitZipEncoding.java,184,i1 = i;
+S867,Simple8BitZipEncoding.java,188,if (i0 >= this.reverseMapping.size()) {
+S868,Simple8BitZipEncoding.java,192,Simple8BitChar r = (Simple8BitChar) this.reverseMapping.get(i0);
+S869,Simple8BitZipEncoding.java,194,if (r.unicode != c) {
+S870,Simple8BitZipEncoding.java,195,return null;
+S871,Simple8BitZipEncoding.java,207,for (int i=0;i<name.length();++i) {
+S872,Simple8BitZipEncoding.java,209,char c = name.charAt(i);
+S873,Simple8BitZipEncoding.java,211,if (!this.canEncodeChar(c)) {
+S874,Simple8BitZipEncoding.java,212,return false;
+S875,Simple8BitZipEncoding.java,216,return true;
+S876,Simple8BitZipEncoding.java,224,ByteBuffer out = ByteBuffer.allocate(name.length()
+S877,Simple8BitZipEncoding.java,227,for (int i=0;i<name.length();++i) {
+S878,Simple8BitZipEncoding.java,229,char c = name.charAt(i);
+S879,Simple8BitZipEncoding.java,231,if (out.remaining() < 6) {
+S880,Simple8BitZipEncoding.java,235,"if (!this.pushEncodedChar(out,c)) {"
+S881,Simple8BitZipEncoding.java,237,"ZipEncodingHelper.appendSurrogate(out,c);"
+S882,Simple8BitZipEncoding.java,241,out.limit(out.position());
+S883,Simple8BitZipEncoding.java,242,out.rewind();
+S884,Simple8BitZipEncoding.java,243,return out;
+S885,Simple8BitZipEncoding.java,251,char [] ret = new char[data.length];
+S886,Simple8BitZipEncoding.java,253,for (int i=0;i<data.length;++i) {
+S887,Simple8BitZipEncoding.java,254,ret[i] = this.decodeByte(data[i]);
+S888,Simple8BitZipEncoding.java,257,return new String(ret);
+S889,TarArchiveEntry.java,144,private TarArchiveEntry () {
+S890,TarArchiveEntry.java,145,this.magic = MAGIC_POSIX;
+S891,TarArchiveEntry.java,146,this.version = VERSION_POSIX;
+S892,TarArchiveEntry.java,147,"this.name = """";"
+S893,TarArchiveEntry.java,148,"this.linkName = """";"
+S894,TarArchiveEntry.java,150,"String user = System.getProperty(""user.name"", """");"
+S895,TarArchiveEntry.java,152,if (user.length() > MAX_NAMELEN) {
+S896,TarArchiveEntry.java,156,this.userId = 0;
+S897,TarArchiveEntry.java,157,this.groupId = 0;
+S898,TarArchiveEntry.java,158,this.userName = user;
+S899,TarArchiveEntry.java,159,"this.groupName = """";"
+S900,TarArchiveEntry.java,160,this.file = null;
+S901,TarArchiveEntry.java,170,"this(name, false);"
+S902,TarArchiveEntry.java,182,this();
+S903,TarArchiveEntry.java,184,"name = normalizeFileName(name, preserveLeadingSlashes);"
+S904,TarArchiveEntry.java,185,"boolean isDir = name.endsWith(""/"");"
+S905,TarArchiveEntry.java,187,this.devMajor = 0;
+S906,TarArchiveEntry.java,188,this.devMinor = 0;
+S907,TarArchiveEntry.java,189,this.name = name;
+S908,TarArchiveEntry.java,190,this.mode = isDir ? DEFAULT_DIR_MODE : DEFAULT_FILE_MODE;
+S909,TarArchiveEntry.java,191,this.linkFlag = isDir ? LF_DIR : LF_NORMAL;
+S910,TarArchiveEntry.java,192,this.userId = 0;
+S911,TarArchiveEntry.java,193,this.groupId = 0;
+S912,TarArchiveEntry.java,194,this.size = 0;
+S913,TarArchiveEntry.java,195,this.modTime = (new Date()).getTime() / MILLIS_PER_SECOND;
+S914,TarArchiveEntry.java,196,"this.linkName = """";"
+S915,TarArchiveEntry.java,197,"this.userName = """";"
+S916,TarArchiveEntry.java,198,"this.groupName = """";"
+S917,TarArchiveEntry.java,199,this.devMajor = 0;
+S918,TarArchiveEntry.java,200,this.devMinor = 0;
+S919,TarArchiveEntry.java,238,this();
+S920,TarArchiveEntry.java,240,this.file = file;
+S921,TarArchiveEntry.java,242,"this.linkName = """";"
+S922,TarArchiveEntry.java,244,if (file.isDirectory()) {
+S923,TarArchiveEntry.java,256,this.mode = DEFAULT_FILE_MODE;
+S924,TarArchiveEntry.java,257,this.linkFlag = LF_NORMAL;
+S925,TarArchiveEntry.java,258,this.size = file.length();
+S926,TarArchiveEntry.java,259,this.name = fileName;
+S927,TarArchiveEntry.java,262,this.modTime = file.lastModified() / MILLIS_PER_SECOND;
+S928,TarArchiveEntry.java,263,this.devMajor = 0;
+S929,TarArchiveEntry.java,264,this.devMinor = 0;
+S930,TarArchiveEntry.java,274,this();
+S931,TarArchiveEntry.java,275,parseTarHeader(headerBuf);
+S932,TarArchiveEntry.java,330,return name.toString();
+S933,TarArchiveEntry.java,348,this.mode = mode;
+S934,TarArchiveEntry.java,375,this.userId = userId;
+S935,TarArchiveEntry.java,393,this.groupId = groupId;
+S936,TarArchiveEntry.java,411,this.userName = userName;
+S937,TarArchiveEntry.java,429,this.groupName = groupName;
+S938,TarArchiveEntry.java,461,modTime = time / MILLIS_PER_SECOND;
+S939,TarArchiveEntry.java,511,return size;
+S940,TarArchiveEntry.java,522,if (size > MAXSIZE || size < 0){
+S941,TarArchiveEntry.java,525,this.size = size;
+S942,TarArchiveEntry.java,535,return linkFlag == LF_GNUTYPE_LONGNAME
+S943,TarArchiveEntry.java,545,if (file != null) {
+S944,TarArchiveEntry.java,546,return file.isDirectory();
+S945,TarArchiveEntry.java,549,if (linkFlag == LF_DIR) {
+S946,TarArchiveEntry.java,553,"if (getName().endsWith(""/"")) {"
+S947,TarArchiveEntry.java,557,return false;
+S948,TarArchiveEntry.java,587,int offset = 0;
+S949,TarArchiveEntry.java,589,"offset = TarUtils.formatNameBytes(name, outbuf, offset, NAMELEN);"
+S950,TarArchiveEntry.java,590,"offset = TarUtils.formatOctalBytes(mode, outbuf, offset, MODELEN);"
+S951,TarArchiveEntry.java,591,"offset = TarUtils.formatOctalBytes(userId, outbuf, offset, UIDLEN);"
+S952,TarArchiveEntry.java,592,"offset = TarUtils.formatOctalBytes(groupId, outbuf, offset, GIDLEN);"
+S953,TarArchiveEntry.java,593,"offset = TarUtils.formatLongOctalBytes(size, outbuf, offset, SIZELEN);"
+S954,TarArchiveEntry.java,594,"offset = TarUtils.formatLongOctalBytes(modTime, outbuf, offset, MODTIMELEN);"
+S955,TarArchiveEntry.java,596,int csOffset = offset;
+S956,TarArchiveEntry.java,598,for (int c = 0; c < CHKSUMLEN; ++c) {
+S957,TarArchiveEntry.java,599,outbuf[offset++] = (byte) ' ';
+S958,TarArchiveEntry.java,602,outbuf[offset++] = linkFlag;
+S959,TarArchiveEntry.java,603,"offset = TarUtils.formatNameBytes(linkName, outbuf, offset, NAMELEN);"
+S960,TarArchiveEntry.java,604,"offset = TarUtils.formatNameBytes(magic, outbuf, offset, MAGICLEN);"
+S961,TarArchiveEntry.java,605,"offset = TarUtils.formatNameBytes(version, outbuf, offset, VERSIONLEN);"
+S962,TarArchiveEntry.java,606,"offset = TarUtils.formatNameBytes(userName, outbuf, offset, UNAMELEN);"
+S963,TarArchiveEntry.java,607,"offset = TarUtils.formatNameBytes(groupName, outbuf, offset, GNAMELEN);"
+S964,TarArchiveEntry.java,608,"offset = TarUtils.formatOctalBytes(devMajor, outbuf, offset, DEVLEN);"
+S965,TarArchiveEntry.java,609,"offset = TarUtils.formatOctalBytes(devMinor, outbuf, offset, DEVLEN);"
+S966,TarArchiveEntry.java,611,while (offset < outbuf.length) {
+S967,TarArchiveEntry.java,612,outbuf[offset++] = 0;
+S968,TarArchiveEntry.java,615,long chk = TarUtils.computeCheckSum(outbuf);
+S969,TarArchiveEntry.java,617,"TarUtils.formatCheckSumOctalBytes(chk, outbuf, csOffset, CHKSUMLEN);"
+S970,TarArchiveEntry.java,626,int offset = 0;
+S971,TarArchiveEntry.java,628,"name = TarUtils.parseName(header, offset, NAMELEN);"
+S972,TarArchiveEntry.java,629,offset += NAMELEN;
+S973,TarArchiveEntry.java,630,"mode = (int) TarUtils.parseOctal(header, offset, MODELEN);"
+S974,TarArchiveEntry.java,631,offset += MODELEN;
+S975,TarArchiveEntry.java,632,"userId = (int) TarUtils.parseOctal(header, offset, UIDLEN);"
+S976,TarArchiveEntry.java,633,offset += UIDLEN;
+S977,TarArchiveEntry.java,634,"groupId = (int) TarUtils.parseOctal(header, offset, GIDLEN);"
+S978,TarArchiveEntry.java,635,offset += GIDLEN;
+S979,TarArchiveEntry.java,636,"size = TarUtils.parseOctal(header, offset, SIZELEN);"
+S980,TarArchiveEntry.java,637,offset += SIZELEN;
+S981,TarArchiveEntry.java,638,"modTime = TarUtils.parseOctal(header, offset, MODTIMELEN);"
+S982,TarArchiveEntry.java,639,offset += MODTIMELEN;
+S983,TarArchiveEntry.java,640,offset += CHKSUMLEN;
+S984,TarArchiveEntry.java,641,linkFlag = header[offset++];
+S985,TarArchiveEntry.java,642,"linkName = TarUtils.parseName(header, offset, NAMELEN);"
+S986,TarArchiveEntry.java,643,offset += NAMELEN;
+S987,TarArchiveEntry.java,644,"magic = TarUtils.parseName(header, offset, MAGICLEN);"
+S988,TarArchiveEntry.java,645,offset += MAGICLEN;
+S989,TarArchiveEntry.java,646,"version = TarUtils.parseName(header, offset, VERSIONLEN);"
+S990,TarArchiveEntry.java,647,offset += VERSIONLEN;
+S991,TarArchiveEntry.java,648,"userName = TarUtils.parseName(header, offset, UNAMELEN);"
+S992,TarArchiveEntry.java,649,offset += UNAMELEN;
+S993,TarArchiveEntry.java,650,"groupName = TarUtils.parseName(header, offset, GNAMELEN);"
+S994,TarArchiveEntry.java,651,offset += GNAMELEN;
+S995,TarArchiveEntry.java,652,"devMajor = (int) TarUtils.parseOctal(header, offset, DEVLEN);"
+S996,TarArchiveEntry.java,653,offset += DEVLEN;
+S997,TarArchiveEntry.java,654,"devMinor = (int) TarUtils.parseOctal(header, offset, DEVLEN);"
+S998,TarArchiveEntry.java,663,"String osname = System.getProperty(""os.name"").toLowerCase(Locale.US);"
+S999,TarArchiveEntry.java,665,if (osname != null) {
+S1000,TarArchiveEntry.java,670,"if (osname.startsWith(""windows"")) {"
+S1001,TarArchiveEntry.java,681,"} else if (osname.indexOf(""netware"") > -1) {"
+S1002,TarArchiveEntry.java,689,"fileName = fileName.replace(File.separatorChar, '/');"
+S1003,TarArchiveEntry.java,694,"while (!preserveLeadingSlashes && fileName.startsWith(""/"")) {"
+S1004,TarArchiveEntry.java,697,return fileName;
+S1005,TarArchiveInputStream.java,55,"this(is, TarBuffer.DEFAULT_BLKSIZE, TarBuffer.DEFAULT_RCDSIZE);"
+S1006,TarArchiveInputStream.java,73,"public TarArchiveInputStream(InputStream is, int blockSize, int recordSize) {"
+S1007,TarArchiveInputStream.java,74,"this.buffer = new TarBuffer(is, blockSize, recordSize);"
+S1008,TarArchiveInputStream.java,75,this.readBuf = null;
+S1009,TarArchiveInputStream.java,76,this.hasHitEOF = false;
+S1010,TarArchiveInputStream.java,84,buffer.close();
+S1011,TarArchiveInputStream.java,130,byte[] skipBuf = new byte[BUFFER_SIZE];
+S1012,TarArchiveInputStream.java,131,long skip = numToSkip;
+S1013,TarArchiveInputStream.java,132,while (skip > 0) {
+S1014,TarArchiveInputStream.java,133,int realSkip = (int) (skip > skipBuf.length ? skipBuf.length : skip);
+S1015,TarArchiveInputStream.java,134,"int numRead = read(skipBuf, 0, realSkip);"
+S1016,TarArchiveInputStream.java,135,if (numRead == -1) {
+S1017,TarArchiveInputStream.java,138,skip -= numRead;
+S1018,TarArchiveInputStream.java,140,return (numToSkip - skip);
+S1019,TarArchiveInputStream.java,163,if (hasHitEOF) {
+S1020,TarArchiveInputStream.java,167,if (currEntry != null) {
+S1021,TarArchiveInputStream.java,168,long numToSkip = entrySize - entryOffset;
+S1022,TarArchiveInputStream.java,170,while (numToSkip > 0) {
+S1023,TarArchiveInputStream.java,171,long skipped = skip(numToSkip);
+S1024,TarArchiveInputStream.java,172,if (skipped <= 0) {
+S1025,TarArchiveInputStream.java,175,numToSkip -= skipped;
+S1026,TarArchiveInputStream.java,178,readBuf = null;
+S1027,TarArchiveInputStream.java,181,byte[] headerBuf = buffer.readRecord();
+S1028,TarArchiveInputStream.java,183,if (headerBuf == null) {
+S1029,TarArchiveInputStream.java,185,} else if (buffer.isEOFRecord(headerBuf)) {
+S1030,TarArchiveInputStream.java,186,hasHitEOF = true;
+S1031,TarArchiveInputStream.java,189,if (hasHitEOF) {
+S1032,TarArchiveInputStream.java,190,currEntry = null;
+S1033,TarArchiveInputStream.java,192,currEntry = new TarArchiveEntry(headerBuf);
+S1034,TarArchiveInputStream.java,193,entryOffset = 0;
+S1035,TarArchiveInputStream.java,194,entrySize = currEntry.getSize();
+S1036,TarArchiveInputStream.java,197,if (currEntry != null && currEntry.isGNULongNameEntry()) {
+S1037,TarArchiveInputStream.java,219,return currEntry;
+S1038,TarArchiveInputStream.java,223,return getNextTarEntry();
+S1039,TarArchiveInputStream.java,240,int totalRead = 0;
+S1040,TarArchiveInputStream.java,242,if (entryOffset >= entrySize) {
+S1041,TarArchiveInputStream.java,243,return -1;
+S1042,TarArchiveInputStream.java,246,if ((numToRead + entryOffset) > entrySize) {
+S1043,TarArchiveInputStream.java,247,numToRead = (int) (entrySize - entryOffset);
+S1044,TarArchiveInputStream.java,250,if (readBuf != null) {
+S1045,TarArchiveInputStream.java,251,int sz = (numToRead > readBuf.length) ? readBuf.length
+S1046,TarArchiveInputStream.java,254,"System.arraycopy(readBuf, 0, buf, offset, sz);"
+S1047,TarArchiveInputStream.java,256,if (sz >= readBuf.length) {
+S1048,TarArchiveInputStream.java,259,int newLen = readBuf.length - sz;
+S1049,TarArchiveInputStream.java,260,byte[] newBuf = new byte[newLen];
+S1050,TarArchiveInputStream.java,262,"System.arraycopy(readBuf, sz, newBuf, 0, newLen);"
+S1051,TarArchiveInputStream.java,264,readBuf = newBuf;
+S1052,TarArchiveInputStream.java,267,totalRead += sz;
+S1053,TarArchiveInputStream.java,268,numToRead -= sz;
+S1054,TarArchiveInputStream.java,269,offset += sz;
+S1055,TarArchiveInputStream.java,272,while (numToRead > 0) {
+S1056,TarArchiveInputStream.java,273,byte[] rec = buffer.readRecord();
+S1057,TarArchiveInputStream.java,275,if (rec == null) {
+S1058,TarArchiveInputStream.java,280,count(rec.length);
+S1059,TarArchiveInputStream.java,281,int sz = numToRead;
+S1060,TarArchiveInputStream.java,282,int recLen = rec.length;
+S1061,TarArchiveInputStream.java,284,if (recLen > sz) {
+S1062,TarArchiveInputStream.java,285,"System.arraycopy(rec, 0, buf, offset, sz);"
+S1063,TarArchiveInputStream.java,287,readBuf = new byte[recLen - sz];
+S1064,TarArchiveInputStream.java,289,"System.arraycopy(rec, sz, readBuf, 0, recLen - sz);"
+S1065,TarArchiveInputStream.java,291,sz = recLen;
+S1066,TarArchiveInputStream.java,293,"System.arraycopy(rec, 0, buf, offset, recLen);"
+S1067,TarArchiveInputStream.java,296,totalRead += sz;
+S1068,TarArchiveInputStream.java,297,numToRead -= sz;
+S1069,TarArchiveInputStream.java,298,offset += sz;
+S1070,TarArchiveInputStream.java,301,entryOffset += totalRead;
+S1071,TarArchiveInputStream.java,303,return totalRead;
+S1072,TarArchiveInputStream.java,325,if (length < TarConstants.VERSION_OFFSET+TarConstants.VERSIONLEN) {
+S1073,TarArchiveInputStream.java,329,"if (ArchiveUtils.matchAsciiBuffer(TarConstants.MAGIC_POSIX,"
+S1074,TarArchiveInputStream.java,337,"if (ArchiveUtils.matchAsciiBuffer(TarConstants.MAGIC_GNU,"
+S1075,TarArchiveInputStream.java,348,return true;
+S1076,TarArchiveOutputStream.java,51,private int       longFileMode = LONGFILE_ERROR;
+S1077,TarArchiveOutputStream.java,53,private boolean closed = false;
+S1078,TarArchiveOutputStream.java,56,private boolean haveUnclosedEntry = false;
+S1079,TarArchiveOutputStream.java,59,private boolean finished = false;
+S1080,TarArchiveOutputStream.java,68,"this(os, TarBuffer.DEFAULT_BLKSIZE, TarBuffer.DEFAULT_RCDSIZE);"
+S1081,TarArchiveOutputStream.java,86,"public TarArchiveOutputStream(OutputStream os, int blockSize, int recordSize) {"
+S1082,TarArchiveOutputStream.java,87,out = os;
+S1083,TarArchiveOutputStream.java,89,"this.buffer = new TarBuffer(os, blockSize, recordSize);"
+S1084,TarArchiveOutputStream.java,90,this.assemLen = 0;
+S1085,TarArchiveOutputStream.java,91,this.assemBuf = new byte[recordSize];
+S1086,TarArchiveOutputStream.java,92,this.recordBuf = new byte[recordSize];
+S1087,TarArchiveOutputStream.java,117,if (finished) {
+S1088,TarArchiveOutputStream.java,118,"throw new IOException(""This archive has already been finished"");"
+S1089,TarArchiveOutputStream.java,121,if(haveUnclosedEntry) {
+S1090,TarArchiveOutputStream.java,122,"throw new IOException(""This archives contains unclosed entries."");"
+S1091,TarArchiveOutputStream.java,124,writeEOFRecord();
+S1092,TarArchiveOutputStream.java,125,writeEOFRecord();
+S1093,TarArchiveOutputStream.java,126,finished = true;
+S1094,TarArchiveOutputStream.java,134,if(!finished) {
+S1095,TarArchiveOutputStream.java,135,finish();
+S1096,TarArchiveOutputStream.java,138,if (!closed) {
+S1097,TarArchiveOutputStream.java,139,buffer.close();
+S1098,TarArchiveOutputStream.java,140,out.close();
+S1099,TarArchiveOutputStream.java,141,closed = true;
+S1100,TarArchiveOutputStream.java,168,if(finished) {
+S1101,TarArchiveOutputStream.java,171,TarArchiveEntry entry = (TarArchiveEntry) archiveEntry;
+S1102,TarArchiveOutputStream.java,172,if (entry.getName().length() >= TarConstants.NAMELEN) {
+S1103,TarArchiveOutputStream.java,193,entry.writeEntryHeader(recordBuf);
+S1104,TarArchiveOutputStream.java,194,buffer.writeRecord(recordBuf);
+S1105,TarArchiveOutputStream.java,196,currBytes = 0;
+S1106,TarArchiveOutputStream.java,198,if (entry.isDirectory()) {
+S1107,TarArchiveOutputStream.java,201,currSize = entry.getSize();
+S1108,TarArchiveOutputStream.java,203,currName = entry.getName();
+S1109,TarArchiveOutputStream.java,204,haveUnclosedEntry = true;
+S1110,TarArchiveOutputStream.java,218,if(finished) {
+S1111,TarArchiveOutputStream.java,221,if (!haveUnclosedEntry){
+S1112,TarArchiveOutputStream.java,222,"throw new IOException(""No current entry to close"");"
+S1113,TarArchiveOutputStream.java,224,if (assemLen > 0) {
+S1114,TarArchiveOutputStream.java,225,for (int i = assemLen; i < assemBuf.length; ++i) {
+S1115,TarArchiveOutputStream.java,226,assemBuf[i] = 0;
+S1116,TarArchiveOutputStream.java,229,buffer.writeRecord(assemBuf);
+S1117,TarArchiveOutputStream.java,231,currBytes += assemLen;
+S1118,TarArchiveOutputStream.java,232,assemLen = 0;
+S1119,TarArchiveOutputStream.java,235,if (currBytes < currSize) {
+S1120,TarArchiveOutputStream.java,241,haveUnclosedEntry = false;
+S1121,TarArchiveOutputStream.java,259,if ((currBytes + numToWrite) > currSize) {
+S1122,TarArchiveOutputStream.java,274,if (assemLen > 0) {
+S1123,TarArchiveOutputStream.java,275,if ((assemLen + numToWrite) >= recordBuf.length) {
+S1124,TarArchiveOutputStream.java,289,"System.arraycopy(wBuf, wOffset, assemBuf, assemLen,"
+S1125,TarArchiveOutputStream.java,292,wOffset += numToWrite;
+S1126,TarArchiveOutputStream.java,293,assemLen += numToWrite;
+S1127,TarArchiveOutputStream.java,294,numToWrite = 0;
+S1128,TarArchiveOutputStream.java,303,while (numToWrite > 0) {
+S1129,TarArchiveOutputStream.java,304,if (numToWrite < recordBuf.length) {
+S1130,TarArchiveOutputStream.java,305,"System.arraycopy(wBuf, wOffset, assemBuf, assemLen,"
+S1131,TarArchiveOutputStream.java,308,assemLen += numToWrite;
+S1132,TarArchiveOutputStream.java,310,break;
+S1133,TarArchiveOutputStream.java,313,"buffer.writeRecord(wBuf, wOffset);"
+S1134,TarArchiveOutputStream.java,315,int num = recordBuf.length;
+S1135,TarArchiveOutputStream.java,317,currBytes += num;
+S1136,TarArchiveOutputStream.java,318,numToWrite -= num;
+S1137,TarArchiveOutputStream.java,319,wOffset += num;
+S1138,TarArchiveOutputStream.java,322,count(numToWrite);
+S1139,TarArchiveOutputStream.java,330,for (int i = 0; i < recordBuf.length; ++i) {
+S1140,TarArchiveOutputStream.java,331,recordBuf[i] = 0;
+S1141,TarArchiveOutputStream.java,334,buffer.writeRecord(recordBuf);
+S1142,TarArchiveOutputStream.java,344,if(finished) {
+S1143,TarArchiveOutputStream.java,347,"return new TarArchiveEntry(inputFile, entryName);"
+S1144,TarBuffer.java,79,"public TarBuffer(InputStream inStream, int blockSize, int recordSize) {"
+S1145,TarBuffer.java,80,this.inStream = inStream;
+S1146,TarBuffer.java,81,this.outStream = null;
+S1147,TarBuffer.java,83,"this.initialize(blockSize, recordSize);"
+S1148,TarBuffer.java,109,"public TarBuffer(OutputStream outStream, int blockSize, int recordSize) {"
+S1149,TarBuffer.java,110,this.inStream = null;
+S1150,TarBuffer.java,111,this.outStream = outStream;
+S1151,TarBuffer.java,113,"this.initialize(blockSize, recordSize);"
+S1152,TarBuffer.java,120,this.blockSize = blockSize;
+S1153,TarBuffer.java,121,this.recordSize = recordSize;
+S1154,TarBuffer.java,122,this.recsPerBlock = (this.blockSize / this.recordSize);
+S1155,TarBuffer.java,123,this.blockBuffer = new byte[this.blockSize];
+S1156,TarBuffer.java,125,if (this.inStream != null) {
+S1157,TarBuffer.java,126,this.currBlkIdx = -1;
+S1158,TarBuffer.java,127,this.currRecIdx = this.recsPerBlock;
+S1159,TarBuffer.java,129,this.currBlkIdx = 0;
+S1160,TarBuffer.java,130,this.currRecIdx = 0;
+S1161,TarBuffer.java,147,return this.recordSize;
+S1162,TarBuffer.java,158,"for (int i = 0, sz = getRecordSize(); i < sz; ++i) {"
+S1163,TarBuffer.java,159,if (record[i] != 0) {
+S1164,TarBuffer.java,160,return false;
+S1165,TarBuffer.java,164,return true;
+S1166,TarBuffer.java,192,if (inStream == null) {
+S1167,TarBuffer.java,199,if (currRecIdx >= recsPerBlock) {
+S1168,TarBuffer.java,200,if (!readBlock()) {
+S1169,TarBuffer.java,205,byte[] result = new byte[recordSize];
+S1170,TarBuffer.java,207,"System.arraycopy(blockBuffer,"
+S1171,TarBuffer.java,211,currRecIdx++;
+S1172,TarBuffer.java,213,return result;
+S1173,TarBuffer.java,220,if (inStream == null) {
+S1174,TarBuffer.java,224,currRecIdx = 0;
+S1175,TarBuffer.java,226,int offset = 0;
+S1176,TarBuffer.java,227,int bytesNeeded = blockSize;
+S1177,TarBuffer.java,229,while (bytesNeeded > 0) {
+S1178,TarBuffer.java,230,"long numBytes = inStream.read(blockBuffer, offset,"
+S1179,TarBuffer.java,246,if (numBytes == -1) {
+S1180,TarBuffer.java,264,offset += numBytes;
+S1181,TarBuffer.java,265,bytesNeeded -= numBytes;
+S1182,TarBuffer.java,267,if (numBytes != blockSize) {
+S1183,TarBuffer.java,272,currBlkIdx++;
+S1184,TarBuffer.java,274,return true;
+S1185,TarBuffer.java,303,if (outStream == null) {
+S1186,TarBuffer.java,310,if (record.length != recordSize) {
+S1187,TarBuffer.java,317,if (currRecIdx >= recsPerBlock) {
+S1188,TarBuffer.java,321,"System.arraycopy(record, 0, blockBuffer,"
+S1189,TarBuffer.java,325,currRecIdx++;
+S1190,TarBuffer.java,338,if (outStream == null) {
+S1191,TarBuffer.java,345,if ((offset + recordSize) > buf.length) {
+S1192,TarBuffer.java,352,if (currRecIdx >= recsPerBlock) {
+S1193,TarBuffer.java,356,"System.arraycopy(buf, offset, blockBuffer,"
+S1194,TarBuffer.java,360,currRecIdx++;
+S1195,TarBuffer.java,367,if (outStream == null) {
+S1196,TarBuffer.java,371,"outStream.write(blockBuffer, 0, blockSize);"
+S1197,TarBuffer.java,372,outStream.flush();
+S1198,TarBuffer.java,374,currRecIdx = 0;
+S1199,TarBuffer.java,375,currBlkIdx++;
+S1200,TarBuffer.java,376,"Arrays.fill(blockBuffer, (byte) 0);"
+S1201,TarBuffer.java,383,if (outStream == null) {
+S1202,TarBuffer.java,387,if (currRecIdx > 0) {
+S1203,TarBuffer.java,388,writeBlock();
+S1204,TarBuffer.java,398,if (outStream != null) {
+S1205,TarBuffer.java,399,flushBlock();
+S1206,TarBuffer.java,401,if (outStream != System.out
+S1207,TarBuffer.java,403,outStream.close();
+S1208,TarBuffer.java,405,outStream = null;
+S1209,TarBuffer.java,407,} else if (inStream != null) {
+S1210,TarBuffer.java,408,if (inStream != System.in) {
+S1211,TarBuffer.java,409,inStream.close();
+S1212,TarBuffer.java,411,inStream = null;
+S1213,TarUtils.java,49,long    result = 0;
+S1214,TarUtils.java,50,boolean stillPadding = true;
+S1215,TarUtils.java,51,int     end = offset + length;
+S1216,TarUtils.java,53,for (int i = offset; i < end; ++i) {
+S1217,TarUtils.java,54,final byte currentByte = buffer[i];
+S1218,TarUtils.java,55,if (currentByte == 0) { // Found trailing null
+S1219,TarUtils.java,56,break;
+S1220,TarUtils.java,60,if (currentByte == (byte) ' ' || currentByte == '0') {
+S1221,TarUtils.java,61,if (stillPadding) {
+S1222,TarUtils.java,62,continue;
+S1223,TarUtils.java,65,if (currentByte == (byte) ' ') { // Found trailing space
+S1224,TarUtils.java,66,break;
+S1225,TarUtils.java,70,stillPadding = false;
+S1226,TarUtils.java,72,if (currentByte < '0' || currentByte > '7'){
+S1227,TarUtils.java,76,result = (result << 3) + (currentByte - '0');// TODO needs to reject invalid bytes
+S1228,TarUtils.java,80,return result;
+S1229,TarUtils.java,94,StringBuffer result = new StringBuffer(length);
+S1230,TarUtils.java,95,int          end = offset + length;
+S1231,TarUtils.java,97,for (int i = offset; i < end; ++i) {
+S1232,TarUtils.java,98,if (buffer[i] == 0) { // Trailing null
+S1233,TarUtils.java,99,break;
+S1234,TarUtils.java,102,result.append((char) buffer[i]);
+S1235,TarUtils.java,105,return result.toString();
+S1236,TarUtils.java,127,for (i = 0; i < length && i < name.length(); ++i) {
+S1237,TarUtils.java,128,buf[offset + i] = (byte) name.charAt(i);
+S1238,TarUtils.java,132,for (; i < length; ++i) {
+S1239,TarUtils.java,133,buf[offset + i] = 0;
+S1240,TarUtils.java,136,return offset + length;
+S1241,TarUtils.java,150,int remaining = length;
+S1242,TarUtils.java,151,remaining--;
+S1243,TarUtils.java,152,if (value == 0) {
+S1244,TarUtils.java,153,buffer[offset + remaining--] = (byte) '0';
+S1245,TarUtils.java,155,long val = value;
+S1246,TarUtils.java,156,for (; remaining >= 0 && val != 0; --remaining) {
+S1247,TarUtils.java,158,buffer[offset + remaining] = (byte) ((byte) '0' + (byte) (val & 7));
+S1248,TarUtils.java,159,val = val >>> 3;
+S1249,TarUtils.java,162,if (val != 0){
+S1250,TarUtils.java,168,for (; remaining >= 0; --remaining) { // leading zeros
+S1251,TarUtils.java,169,buffer[offset + remaining] = (byte) '0';
+S1252,TarUtils.java,189,int idx=length-2; // For space and trailing null
+S1253,TarUtils.java,190,"formatUnsignedOctalString(value, buf, offset, idx);"
+S1254,TarUtils.java,192,buf[offset + idx++] = (byte) ' '; // Trailing space
+S1255,TarUtils.java,193,buf[offset + idx]   = 0; // Trailing null
+S1256,TarUtils.java,195,return offset + length;
+S1257,TarUtils.java,214,int idx=length-1; // For space
+S1258,TarUtils.java,216,"formatUnsignedOctalString(value, buf, offset, idx);"
+S1259,TarUtils.java,217,buf[offset + idx] = (byte) ' '; // Trailing space
+S1260,TarUtils.java,219,return offset + length;
+S1261,TarUtils.java,238,int idx=length-2; // for NUL and space
+S1262,TarUtils.java,239,"formatUnsignedOctalString(value, buf, offset, idx);"
+S1263,TarUtils.java,241,buf[offset + idx++]   = 0; // Trailing null
+S1264,TarUtils.java,242,buf[offset + idx]     = (byte) ' '; // Trailing space
+S1265,TarUtils.java,244,return offset + length;
+S1266,TarUtils.java,254,long sum = 0;
+S1267,TarUtils.java,256,for (int i = 0; i < buf.length; ++i) {
+S1268,TarUtils.java,257,sum += BYTE_MASK & buf[i];
+S1269,TarUtils.java,260,return sum;
+S1270,UnicodeCommentExtraField.java,40,public static final ZipShort UCOM_ID = new ZipShort(0x6375);
+S1271,UnicodeCommentExtraField.java,42,public UnicodeCommentExtraField () {
+S1272,UnicodeCommentExtraField.java,72,return UCOM_ID;
+S1273,UnicodePathExtraField.java,40,public static final ZipShort UPATH_ID = new ZipShort(0x7075);
+S1274,UnicodePathExtraField.java,42,public UnicodePathExtraField () {
+S1275,UnicodePathExtraField.java,56,"super(text, bytes, off, len);"
+S1276,UnicodePathExtraField.java,71,return UPATH_ID;
+S1277,UnrecognizedExtraField.java,29,public class UnrecognizedExtraField implements ZipExtraField {
+S1278,UnrecognizedExtraField.java,41,this.headerId = headerId;
+S1279,UnrecognizedExtraField.java,49,return headerId;
+S1280,UnrecognizedExtraField.java,64,localData = copy(data);
+S1281,UnrecognizedExtraField.java,72,return new ZipShort(localData.length);
+S1282,UnrecognizedExtraField.java,80,return copy(localData);
+S1283,UnrecognizedExtraField.java,94,centralData = copy(data);
+S1284,UnrecognizedExtraField.java,103,if (centralData != null) {
+S1285,UnrecognizedExtraField.java,104,return new ZipShort(centralData.length);
+S1286,UnrecognizedExtraField.java,106,return getLocalFileDataLength();
+S1287,UnrecognizedExtraField.java,114,if (centralData != null) {
+S1288,UnrecognizedExtraField.java,115,return copy(centralData);
+S1289,UnrecognizedExtraField.java,117,return getLocalFileDataData();
+S1290,UnrecognizedExtraField.java,127,byte[] tmp = new byte[length];
+S1291,UnrecognizedExtraField.java,128,"System.arraycopy(data, offset, tmp, 0, length);"
+S1292,UnrecognizedExtraField.java,129,setLocalFileDataData(tmp);
+S1293,UnrecognizedExtraField.java,140,byte[] tmp = new byte[length];
+S1294,UnrecognizedExtraField.java,141,"System.arraycopy(data, offset, tmp, 0, length);"
+S1295,UnrecognizedExtraField.java,142,setCentralDirectoryData(tmp);
+S1296,UnrecognizedExtraField.java,143,if (localData == null) {
+S1297,UnrecognizedExtraField.java,144,setLocalFileDataData(tmp);
+S1298,UnrecognizedExtraField.java,149,if (from != null) {
+S1299,UnrecognizedExtraField.java,150,byte[] to = new byte[from.length];
+S1300,UnrecognizedExtraField.java,151,"System.arraycopy(from, 0, to, 0, to.length);"
+S1301,UnrecognizedExtraField.java,152,return to;
+S1302,ZipArchiveEntry.java,50,private int method = -1;
+S1303,ZipArchiveEntry.java,52,private int internalAttributes = 0;
+S1304,ZipArchiveEntry.java,53,private int platform = PLATFORM_FAT;
+S1305,ZipArchiveEntry.java,54,private long externalAttributes = 0;
+S1306,ZipArchiveEntry.java,55,"private LinkedHashMap/*<ZipShort, ZipExtraField>*/ extraFields = null;"
+S1307,ZipArchiveEntry.java,56,private String name = null;
+S1308,ZipArchiveEntry.java,63,super(name);
+S1309,ZipArchiveEntry.java,72,super(entry);
+S1310,ZipArchiveEntry.java,73,setName(entry.getName());
+S1311,ZipArchiveEntry.java,74,byte[] extra = entry.getExtra();
+S1312,ZipArchiveEntry.java,75,if (extra != null) {
+S1313,ZipArchiveEntry.java,76,setExtraFields(ExtraFieldUtils.parse(extra));
+S1314,ZipArchiveEntry.java,81,setMethod(entry.getMethod());
+S1315,ZipArchiveEntry.java,90,this((java.util.zip.ZipEntry) entry);
+S1316,ZipArchiveEntry.java,91,setInternalAttributes(entry.getInternalAttributes());
+S1317,ZipArchiveEntry.java,92,setExternalAttributes(entry.getExternalAttributes());
+S1318,ZipArchiveEntry.java,93,setExtraFields(entry.getExtraFields());
+S1319,ZipArchiveEntry.java,99,"this("""");"
+S1320,ZipArchiveEntry.java,103,"this(inputFile.isDirectory() && !entryName.endsWith(""/"") ?"
+S1321,ZipArchiveEntry.java,105,if (inputFile.isFile()){
+S1322,ZipArchiveEntry.java,106,setSize(inputFile.length());
+S1323,ZipArchiveEntry.java,108,setTime(inputFile.lastModified());
+S1324,ZipArchiveEntry.java,137,return method == STORED || method == DEFLATED;
+S1325,ZipArchiveEntry.java,147,return method;
+S1326,ZipArchiveEntry.java,156,if (method < 0) {
+S1327,ZipArchiveEntry.java,160,this.method = method;
+S1328,ZipArchiveEntry.java,169,return internalAttributes;
+S1329,ZipArchiveEntry.java,177,internalAttributes = value;
+S1330,ZipArchiveEntry.java,185,return externalAttributes;
+S1331,ZipArchiveEntry.java,193,externalAttributes = value;
+S1332,ZipArchiveEntry.java,203,setExternalAttributes((mode << SHORT_SHIFT)
+S1333,ZipArchiveEntry.java,209,platform = PLATFORM_UNIX;
+S1334,ZipArchiveEntry.java,229,return platform;
+S1335,ZipArchiveEntry.java,237,this.platform = platform;
+S1336,ZipArchiveEntry.java,245,extraFields = new LinkedHashMap();
+S1337,ZipArchiveEntry.java,246,for (int i = 0; i < fields.length; i++) {
+S1338,ZipArchiveEntry.java,247,"extraFields.put(fields[i].getHeaderId(), fields[i]);"
+S1339,ZipArchiveEntry.java,249,setExtra();
+S1340,ZipArchiveEntry.java,257,if (extraFields == null) {
+S1341,ZipArchiveEntry.java,258,return new ZipExtraField[0];
+S1342,ZipArchiveEntry.java,260,ZipExtraField[] result = new ZipExtraField[extraFields.size()];
+S1343,ZipArchiveEntry.java,261,return (ZipExtraField[]) extraFields.values().toArray(result);
+S1344,ZipArchiveEntry.java,273,if (extraFields == null) {
+S1345,ZipArchiveEntry.java,274,extraFields = new LinkedHashMap();
+S1346,ZipArchiveEntry.java,276,"extraFields.put(ze.getHeaderId(), ze);"
+S1347,ZipArchiveEntry.java,277,setExtra();
+S1348,ZipArchiveEntry.java,288,LinkedHashMap copy = extraFields;
+S1349,ZipArchiveEntry.java,289,extraFields = new LinkedHashMap();
+S1350,ZipArchiveEntry.java,290,"extraFields.put(ze.getHeaderId(), ze);"
+S1351,ZipArchiveEntry.java,291,if (copy != null) {
+S1352,ZipArchiveEntry.java,292,copy.remove(ze.getHeaderId());
+S1353,ZipArchiveEntry.java,293,extraFields.putAll(copy);
+S1354,ZipArchiveEntry.java,295,setExtra();
+S1355,ZipArchiveEntry.java,303,if (extraFields == null) {
+S1356,ZipArchiveEntry.java,306,if (extraFields.remove(type) == null) {
+S1357,ZipArchiveEntry.java,307,throw new java.util.NoSuchElementException();
+S1358,ZipArchiveEntry.java,309,setExtra();
+S1359,ZipArchiveEntry.java,318,if (extraFields != null) {
+S1360,ZipArchiveEntry.java,319,return (ZipExtraField) extraFields.get(type);
+S1361,ZipArchiveEntry.java,332,"ZipExtraField[] local = ExtraFieldUtils.parse(extra, true);"
+S1362,ZipArchiveEntry.java,333,"mergeExtraFields(local, true);"
+S1363,ZipArchiveEntry.java,346,super.setExtra(ExtraFieldUtils.mergeLocalFileDataData(getExtraFields()));
+S1364,ZipArchiveEntry.java,354,"ZipExtraField[] central = ExtraFieldUtils.parse(b, false);"
+S1365,ZipArchiveEntry.java,355,"mergeExtraFields(central, false);"
+S1366,ZipArchiveEntry.java,366,byte[] extra = getExtra();
+S1367,ZipArchiveEntry.java,367,return extra != null ? extra : new byte[0];
+S1368,ZipArchiveEntry.java,375,return ExtraFieldUtils.mergeCentralDirectoryData(getExtraFields());
+S1369,ZipArchiveEntry.java,383,return name == null ? super.getName() : name;
+S1370,ZipArchiveEntry.java,391,"return getName().endsWith(""/"");"
+S1371,ZipArchiveEntry.java,399,this.name = name;
+S1372,ZipArchiveEntry.java,412,return getName().hashCode();
+S1373,ZipArchiveEntry.java,425,if (extraFields == null) {
+S1374,ZipArchiveEntry.java,426,setExtraFields(f);
+S1375,ZipArchiveEntry.java,428,for (int i = 0; i < f.length; i++) {
+S1376,ZipArchiveEntry.java,429,ZipExtraField existing = getExtraField(f[i].getHeaderId());
+S1377,ZipArchiveEntry.java,430,if (existing == null) {
+S1378,ZipArchiveEntry.java,431,addExtraField(f[i]);
+S1379,ZipArchiveEntry.java,433,if (local) {
+S1380,ZipArchiveEntry.java,434,byte[] b = f[i].getLocalFileDataData();
+S1381,ZipArchiveEntry.java,435,"existing.parseFromLocalFileData(b, 0, b.length);"
+S1382,ZipArchiveEntry.java,436,} else {
+S1383,ZipArchiveEntry.java,437,byte[] b = f[i].getCentralDirectoryData();
+S1384,ZipArchiveEntry.java,438,"existing.parseFromCentralDirectoryData(b, 0, b.length);"
+S1385,ZipArchiveEntry.java,442,setExtra();
+S1386,ZipArchiveEntry.java,448,return new Date(getTime());
+S1387,ZipArchiveEntry.java,455,if (this == obj) {
+S1388,ZipArchiveEntry.java,458,if (obj == null || getClass() != obj.getClass()) {
+S1389,ZipArchiveEntry.java,461,ZipArchiveEntry other = (ZipArchiveEntry) obj;
+S1390,ZipArchiveEntry.java,462,if (name == null) {
+S1391,ZipArchiveEntry.java,463,if (other.name != null) {
+S1392,ZipArchiveEntry.java,469,return true;
+S1393,ZipArchiveInputStream.java,61,private final Inflater inf = new Inflater(true);
+S1394,ZipArchiveInputStream.java,62,private final CRC32 crc = new CRC32();
+S1395,ZipArchiveInputStream.java,64,private final byte[] buf = new byte[ZipArchiveOutputStream.BUFFER_SIZE];
+S1396,ZipArchiveInputStream.java,66,private ZipArchiveEntry current = null;
+S1397,ZipArchiveInputStream.java,67,private boolean closed = false;
+S1398,ZipArchiveInputStream.java,68,private boolean hitCentralDirectory = false;
+S1399,ZipArchiveInputStream.java,69,"private int readBytesOfEntry = 0, offsetInBuffer = 0;"
+S1400,ZipArchiveInputStream.java,70,private int bytesReadFromStream = 0;
+S1401,ZipArchiveInputStream.java,71,private int lengthOfLastRead = 0;
+S1402,ZipArchiveInputStream.java,72,private boolean hasDataDescriptor = false;
+S1403,ZipArchiveInputStream.java,90,"this(inputStream, ZipEncodingHelper.UTF8, true);"
+S1404,ZipArchiveInputStream.java,101,boolean useUnicodeExtraFields) {
+S1405,ZipArchiveInputStream.java,102,zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+S1406,ZipArchiveInputStream.java,103,this.useUnicodeExtraFields = useUnicodeExtraFields;
+S1407,ZipArchiveInputStream.java,104,"in = new PushbackInputStream(inputStream, buf.length);"
+S1408,ZipArchiveInputStream.java,108,if (closed || hitCentralDirectory) {
+S1409,ZipArchiveInputStream.java,111,if (current != null) {
+S1410,ZipArchiveInputStream.java,112,closeEntry();
+S1411,ZipArchiveInputStream.java,114,byte[] lfh = new byte[LFH_LEN];
+S1412,ZipArchiveInputStream.java,116,readFully(lfh);
+S1413,ZipArchiveInputStream.java,117,} catch (EOFException e) {
+S1414,ZipArchiveInputStream.java,118,return null;
+S1415,ZipArchiveInputStream.java,120,ZipLong sig = new ZipLong(lfh);
+S1416,ZipArchiveInputStream.java,121,if (sig.equals(ZipLong.CFH_SIG)) {
+S1417,ZipArchiveInputStream.java,122,hitCentralDirectory = true;
+S1418,ZipArchiveInputStream.java,123,return null;
+S1419,ZipArchiveInputStream.java,125,if (!sig.equals(ZipLong.LFH_SIG)) {
+S1420,ZipArchiveInputStream.java,126,return null;
+S1421,ZipArchiveInputStream.java,129,int off = WORD;
+S1422,ZipArchiveInputStream.java,130,current = new ZipArchiveEntry();
+S1423,ZipArchiveInputStream.java,132,"int versionMadeBy = ZipShort.getValue(lfh, off);"
+S1424,ZipArchiveInputStream.java,133,off += SHORT;
+S1425,ZipArchiveInputStream.java,134,current.setPlatform((versionMadeBy >> ZipFile.BYTE_SHIFT)
+S1426,ZipArchiveInputStream.java,137,"final int generalPurposeFlag = ZipShort.getValue(lfh, off);"
+S1427,ZipArchiveInputStream.java,138,final boolean hasEFS =
+S1428,ZipArchiveInputStream.java,140,final ZipEncoding entryEncoding =
+S1429,ZipArchiveInputStream.java,142,hasDataDescriptor = (generalPurposeFlag & 8) != 0;
+S1430,ZipArchiveInputStream.java,144,off += SHORT;
+S1431,ZipArchiveInputStream.java,146,"current.setMethod(ZipShort.getValue(lfh, off));"
+S1432,ZipArchiveInputStream.java,147,off += SHORT;
+S1433,ZipArchiveInputStream.java,149,"long time = ZipUtil.dosToJavaTime(ZipLong.getValue(lfh, off));"
+S1434,ZipArchiveInputStream.java,150,current.setTime(time);
+S1435,ZipArchiveInputStream.java,151,off += WORD;
+S1436,ZipArchiveInputStream.java,153,if (!hasDataDescriptor) {
+S1437,ZipArchiveInputStream.java,154,"current.setCrc(ZipLong.getValue(lfh, off));"
+S1438,ZipArchiveInputStream.java,155,off += WORD;
+S1439,ZipArchiveInputStream.java,157,"current.setCompressedSize(ZipLong.getValue(lfh, off));"
+S1440,ZipArchiveInputStream.java,158,off += WORD;
+S1441,ZipArchiveInputStream.java,160,"current.setSize(ZipLong.getValue(lfh, off));"
+S1442,ZipArchiveInputStream.java,161,off += WORD;
+S1443,ZipArchiveInputStream.java,163,off += 3 * WORD;
+S1444,ZipArchiveInputStream.java,166,"int fileNameLen = ZipShort.getValue(lfh, off);"
+S1445,ZipArchiveInputStream.java,168,off += SHORT;
+S1446,ZipArchiveInputStream.java,170,"int extraLen = ZipShort.getValue(lfh, off);"
+S1447,ZipArchiveInputStream.java,171,off += SHORT;
+S1448,ZipArchiveInputStream.java,173,byte[] fileName = new byte[fileNameLen];
+S1449,ZipArchiveInputStream.java,174,readFully(fileName);
+S1450,ZipArchiveInputStream.java,175,current.setName(entryEncoding.decode(fileName));
+S1451,ZipArchiveInputStream.java,177,byte[] extraData = new byte[extraLen];
+S1452,ZipArchiveInputStream.java,178,readFully(extraData);
+S1453,ZipArchiveInputStream.java,179,current.setExtra(extraData);
+S1454,ZipArchiveInputStream.java,181,if (!hasEFS && useUnicodeExtraFields) {
+S1455,ZipArchiveInputStream.java,182,"ZipUtil.setNameAndCommentFromExtraFields(current, fileName, null);"
+S1456,ZipArchiveInputStream.java,184,return current;
+S1457,ZipArchiveInputStream.java,188,return getNextZipEntry();
+S1458,ZipArchiveInputStream.java,192,if (closed) {
+S1459,ZipArchiveInputStream.java,195,if (inf.finished() || current == null) {
+S1460,ZipArchiveInputStream.java,196,return -1;
+S1461,ZipArchiveInputStream.java,200,if (start <= buffer.length && length >= 0 && start >= 0
+S1462,ZipArchiveInputStream.java,202,if (!current.isSupportedCompressionMethod()) {
+S1463,ZipArchiveInputStream.java,208,if (current.getMethod() == ZipArchiveOutputStream.STORED) {
+S1464,ZipArchiveInputStream.java,234,if (inf.needsInput()) {
+S1465,ZipArchiveInputStream.java,235,fill();
+S1466,ZipArchiveInputStream.java,236,if (lengthOfLastRead > 0) {
+S1467,ZipArchiveInputStream.java,237,bytesReadFromStream += lengthOfLastRead;
+S1468,ZipArchiveInputStream.java,240,int read = 0;
+S1469,ZipArchiveInputStream.java,242,"read = inf.inflate(buffer, start, length);"
+S1470,ZipArchiveInputStream.java,246,if (read == 0) {
+S1471,ZipArchiveInputStream.java,247,if (inf.finished()) {
+S1472,ZipArchiveInputStream.java,249,} else if (lengthOfLastRead == -1) {
+S1473,ZipArchiveInputStream.java,250,"throw new IOException(""Truncated ZIP file"");"
+S1474,ZipArchiveInputStream.java,253,"crc.update(buffer, start, read);"
+S1475,ZipArchiveInputStream.java,254,return read;
+S1476,ZipArchiveInputStream.java,260,if (!closed) {
+S1477,ZipArchiveInputStream.java,261,closed = true;
+S1478,ZipArchiveInputStream.java,262,in.close();
+S1479,ZipArchiveInputStream.java,267,if (value >= 0) {
+S1480,ZipArchiveInputStream.java,268,long skipped = 0;
+S1481,ZipArchiveInputStream.java,269,byte[] b = new byte[1024];
+S1482,ZipArchiveInputStream.java,270,while (skipped != value) {
+S1483,ZipArchiveInputStream.java,271,long rem = value - skipped;
+S1484,ZipArchiveInputStream.java,272,"int x = read(b, 0, (int) (b.length > rem ? rem : b.length));"
+S1485,ZipArchiveInputStream.java,273,if (x == -1) {
+S1486,ZipArchiveInputStream.java,274,return skipped;
+S1487,ZipArchiveInputStream.java,276,skipped += x;
+S1488,ZipArchiveInputStream.java,288,if (length < ZipArchiveOutputStream.LFH_SIG.length) {
+S1489,ZipArchiveInputStream.java,292,"return checksig(signature, ZipArchiveOutputStream.LFH_SIG) // normal file"
+S1490,ZipArchiveInputStream.java,297,for (int i = 0; i < expected.length; i++) {
+S1491,ZipArchiveInputStream.java,298,if (signature[i] != expected[i]) {
+S1492,ZipArchiveInputStream.java,299,return false;
+S1493,ZipArchiveInputStream.java,302,return true;
+S1494,ZipArchiveInputStream.java,324,if (closed) {
+S1495,ZipArchiveInputStream.java,327,if (current == null) {
+S1496,ZipArchiveInputStream.java,332,if (bytesReadFromStream <= current.getCompressedSize()
+S1497,ZipArchiveInputStream.java,334,long remaining = current.getCompressedSize() - bytesReadFromStream;
+S1498,ZipArchiveInputStream.java,335,while (remaining > 0) {
+S1499,ZipArchiveInputStream.java,336,"long n = in.read(buf, 0, (int) Math.min(buf.length, remaining));"
+S1500,ZipArchiveInputStream.java,337,if (n < 0) {
+S1501,ZipArchiveInputStream.java,338,throw new EOFException(
+S1502,ZipArchiveInputStream.java,341,remaining -= n;
+S1503,ZipArchiveInputStream.java,344,} else {
+S1504,ZipArchiveInputStream.java,345,skip(Long.MAX_VALUE);
+S1505,ZipArchiveInputStream.java,348,if (current.getMethod() == ZipArchiveOutputStream.DEFLATED) {
+S1506,ZipArchiveInputStream.java,349,inB = inf.getTotalIn();
+S1507,ZipArchiveInputStream.java,353,int diff = 0;
+S1508,ZipArchiveInputStream.java,356,if ((diff = bytesReadFromStream - inB) != 0) {
+S1509,ZipArchiveInputStream.java,357,((PushbackInputStream) in).unread(
+S1510,ZipArchiveInputStream.java,362,if (hasDataDescriptor) {
+S1511,ZipArchiveInputStream.java,363,readFully(new byte[4 * WORD]);
+S1512,ZipArchiveInputStream.java,366,inf.reset();
+S1513,ZipArchiveInputStream.java,367,readBytesOfEntry = offsetInBuffer = bytesReadFromStream =
+S1514,ZipArchiveInputStream.java,369,crc.reset();
+S1515,ZipArchiveInputStream.java,370,current = null;
+S1516,ZipArchiveInputStream.java,374,if (closed) {
+S1517,ZipArchiveInputStream.java,377,if ((lengthOfLastRead = in.read(buf)) > 0) {
+S1518,ZipArchiveInputStream.java,378,"inf.setInput(buf, 0, lengthOfLastRead);"
+S1519,ZipArchiveInputStream.java,383,"int count = 0, x = 0;"
+S1520,ZipArchiveInputStream.java,384,while (count != b.length) {
+S1521,ZipArchiveInputStream.java,385,"count += x = in.read(b, count, b.length - count);"
+S1522,ZipArchiveInputStream.java,386,if (x == -1) {
+S1523,ZipArchiveInputStream.java,387,throw new EOFException();
+S1524,ZipArchiveOutputStream.java,66,protected boolean finished = false;
+S1525,ZipArchiveOutputStream.java,111,"private String comment = """";"
+S1526,ZipArchiveOutputStream.java,116,private int level = DEFAULT_COMPRESSION;
+S1527,ZipArchiveOutputStream.java,122,private boolean hasCompressionLevelChanged = false;
+S1528,ZipArchiveOutputStream.java,127,private int method = java.util.zip.ZipEntry.DEFLATED;
+S1529,ZipArchiveOutputStream.java,132,private final List entries = new LinkedList();
+S1530,ZipArchiveOutputStream.java,137,private final CRC32 crc = new CRC32();
+S1531,ZipArchiveOutputStream.java,142,private long written = 0;
+S1532,ZipArchiveOutputStream.java,147,private long dataStart = 0;
+S1533,ZipArchiveOutputStream.java,153,private long localDataStart = 0;
+S1534,ZipArchiveOutputStream.java,158,private long cdOffset = 0;
+S1535,ZipArchiveOutputStream.java,163,private long cdLength = 0;
+S1536,ZipArchiveOutputStream.java,168,"private static final byte[] ZERO = {0, 0};"
+S1537,ZipArchiveOutputStream.java,173,"private static final byte[] LZERO = {0, 0, 0, 0};"
+S1538,ZipArchiveOutputStream.java,178,private final Map offsets = new HashMap();
+S1539,ZipArchiveOutputStream.java,187,private String encoding = DEFAULT_ENCODING;
+S1540,ZipArchiveOutputStream.java,195,private ZipEncoding zipEncoding =
+S1541,ZipArchiveOutputStream.java,202,"protected final Deflater def = new Deflater(level, true);"
+S1542,ZipArchiveOutputStream.java,208,private final byte[] buf = new byte[BUFFER_SIZE];
+S1543,ZipArchiveOutputStream.java,220,private boolean useEFS = true;
+S1544,ZipArchiveOutputStream.java,225,private boolean fallbackToUTF8 = false;
+S1545,ZipArchiveOutputStream.java,230,private UnicodeExtraFieldPolicy createUnicodeExtraFields = UnicodeExtraFieldPolicy.NEVER;
+S1546,ZipArchiveOutputStream.java,236,public ZipArchiveOutputStream(OutputStream out) {
+S1547,ZipArchiveOutputStream.java,237,this.out = out;
+S1548,ZipArchiveOutputStream.java,238,this.raf = null;
+S1549,ZipArchiveOutputStream.java,247,public ZipArchiveOutputStream(File file) throws IOException {
+S1550,ZipArchiveOutputStream.java,248,OutputStream o = null;
+S1551,ZipArchiveOutputStream.java,249,RandomAccessFile _raf = null;
+S1552,ZipArchiveOutputStream.java,251,"_raf = new RandomAccessFile(file, ""rw"");"
+S1553,ZipArchiveOutputStream.java,252,_raf.setLength(0);
+S1554,ZipArchiveOutputStream.java,264,out = o;
+S1555,ZipArchiveOutputStream.java,265,raf = _raf;
+S1556,ZipArchiveOutputStream.java,291,this.encoding = encoding;
+S1557,ZipArchiveOutputStream.java,292,this.zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+S1558,ZipArchiveOutputStream.java,293,useEFS &= ZipEncodingHelper.isUTF8(encoding);
+S1559,ZipArchiveOutputStream.java,312,useEFS = b && ZipEncodingHelper.isUTF8(encoding);
+S1560,ZipArchiveOutputStream.java,321,createUnicodeExtraFields = b;
+S1561,ZipArchiveOutputStream.java,338,if (finished) {
+S1562,ZipArchiveOutputStream.java,339,"throw new IOException(""This archive has already been finished"");"
+S1563,ZipArchiveOutputStream.java,342,if(entry != null) {
+S1564,ZipArchiveOutputStream.java,343,"throw new IOException(""This archives contains unclosed entries."");"
+S1565,ZipArchiveOutputStream.java,346,cdOffset = written;
+S1566,ZipArchiveOutputStream.java,347,for (Iterator i = entries.iterator(); i.hasNext(); ) {
+S1567,ZipArchiveOutputStream.java,348,writeCentralFileHeader((ZipArchiveEntry) i.next());
+S1568,ZipArchiveOutputStream.java,350,cdLength = written - cdOffset;
+S1569,ZipArchiveOutputStream.java,351,writeCentralDirectoryEnd();
+S1570,ZipArchiveOutputStream.java,352,offsets.clear();
+S1571,ZipArchiveOutputStream.java,353,entries.clear();
+S1572,ZipArchiveOutputStream.java,354,finished = true;
+S1573,ZipArchiveOutputStream.java,362,if(finished) {
+S1574,ZipArchiveOutputStream.java,366,if (entry == null) {
+S1575,ZipArchiveOutputStream.java,367,"throw new IOException(""No current entry to close"");"
+S1576,ZipArchiveOutputStream.java,370,long realCrc = crc.getValue();
+S1577,ZipArchiveOutputStream.java,371,crc.reset();
+S1578,ZipArchiveOutputStream.java,373,if (entry.getMethod() == DEFLATED) {
+S1579,ZipArchiveOutputStream.java,374,def.finish();
+S1580,ZipArchiveOutputStream.java,375,while (!def.finished()) {
+S1581,ZipArchiveOutputStream.java,376,deflate();
+S1582,ZipArchiveOutputStream.java,379,entry.setSize(ZipUtil.adjustToLong(def.getTotalIn()));
+S1583,ZipArchiveOutputStream.java,380,entry.setCompressedSize(ZipUtil.adjustToLong(def.getTotalOut()));
+S1584,ZipArchiveOutputStream.java,381,entry.setCrc(realCrc);
+S1585,ZipArchiveOutputStream.java,383,def.reset();
+S1586,ZipArchiveOutputStream.java,385,written += entry.getCompressedSize();
+S1587,ZipArchiveOutputStream.java,412,if (raf != null) {
+S1588,ZipArchiveOutputStream.java,413,long save = raf.getFilePointer();
+S1589,ZipArchiveOutputStream.java,415,raf.seek(localDataStart);
+S1590,ZipArchiveOutputStream.java,416,writeOut(ZipLong.getBytes(entry.getCrc()));
+S1591,ZipArchiveOutputStream.java,417,writeOut(ZipLong.getBytes(entry.getCompressedSize()));
+S1592,ZipArchiveOutputStream.java,418,writeOut(ZipLong.getBytes(entry.getSize()));
+S1593,ZipArchiveOutputStream.java,419,raf.seek(save);
+S1594,ZipArchiveOutputStream.java,422,writeDataDescriptor(entry);
+S1595,ZipArchiveOutputStream.java,423,entry = null;
+S1596,ZipArchiveOutputStream.java,429,if(finished) {
+S1597,ZipArchiveOutputStream.java,433,if (entry != null) {
+S1598,ZipArchiveOutputStream.java,437,entry = ((ZipArchiveEntry) archiveEntry);
+S1599,ZipArchiveOutputStream.java,438,entries.add(entry);
+S1600,ZipArchiveOutputStream.java,440,if (entry.getMethod() == -1) { // not specified
+S1601,ZipArchiveOutputStream.java,441,entry.setMethod(method);
+S1602,ZipArchiveOutputStream.java,444,if (entry.getTime() == -1) { // not specified
+S1603,ZipArchiveOutputStream.java,445,entry.setTime(System.currentTimeMillis());
+S1604,ZipArchiveOutputStream.java,449,if (entry.getMethod() == STORED && raf == null) {
+S1605,ZipArchiveOutputStream.java,462,if (entry.getMethod() == DEFLATED && hasCompressionLevelChanged) {
+S1606,ZipArchiveOutputStream.java,466,writeLocalFileHeader(entry);
+S1607,ZipArchiveOutputStream.java,513,if (!entry.isSupportedCompressionMethod()) {
+S1608,ZipArchiveOutputStream.java,517,} else if (entry.getMethod() == DEFLATED) {
+S1609,ZipArchiveOutputStream.java,518,if (length > 0) {
+S1610,ZipArchiveOutputStream.java,519,if (!def.finished()) {
+S1611,ZipArchiveOutputStream.java,520,if (length <= DEFLATER_BLOCK_SIZE) {
+S1612,ZipArchiveOutputStream.java,521,"def.setInput(b, offset, length);"
+S1613,ZipArchiveOutputStream.java,522,deflateUntilInputIsNeeded();
+S1614,ZipArchiveOutputStream.java,542,"crc.update(b, offset, length);"
+S1615,ZipArchiveOutputStream.java,543,count(length);
+S1616,ZipArchiveOutputStream.java,553,if(!finished) {
+S1617,ZipArchiveOutputStream.java,554,finish();
+S1618,ZipArchiveOutputStream.java,557,if (raf != null) {
+S1619,ZipArchiveOutputStream.java,558,raf.close();
+S1620,ZipArchiveOutputStream.java,560,if (out != null) {
+S1621,ZipArchiveOutputStream.java,561,out.close();
+S1622,ZipArchiveOutputStream.java,583,static final byte[] LFH_SIG = ZipLong.LFH_SIG.getBytes();
+S1623,ZipArchiveOutputStream.java,587,static final byte[] DD_SIG = ZipLong.getBytes(0X08074B50L);
+S1624,ZipArchiveOutputStream.java,591,static final byte[] CFH_SIG = ZipLong.CFH_SIG.getBytes();
+S1625,ZipArchiveOutputStream.java,595,static final byte[] EOCD_SIG = ZipLong.getBytes(0X06054B50L);
+S1626,ZipArchiveOutputStream.java,602,"int len = def.deflate(buf, 0, buf.length);"
+S1627,ZipArchiveOutputStream.java,603,if (len > 0) {
+S1628,ZipArchiveOutputStream.java,604,"writeOut(buf, 0, len);"
+S1629,ZipArchiveOutputStream.java,615,boolean encodable = zipEncoding.canEncode(ze.getName());
+S1630,ZipArchiveOutputStream.java,619,if (!encodable && fallbackToUTF8) {
+S1631,ZipArchiveOutputStream.java,622,entryEncoding = zipEncoding;
+S1632,ZipArchiveOutputStream.java,625,ByteBuffer name = entryEncoding.encode(ze.getName());
+S1633,ZipArchiveOutputStream.java,627,if (createUnicodeExtraFields != UnicodeExtraFieldPolicy.NEVER) {
+S1634,ZipArchiveOutputStream.java,629,if (createUnicodeExtraFields == UnicodeExtraFieldPolicy.ALWAYS
+S1635,ZipArchiveOutputStream.java,631,"ze.addExtraField(new UnicodePathExtraField(ze.getName(),"
+S1636,ZipArchiveOutputStream.java,637,String comm = ze.getComment();
+S1637,ZipArchiveOutputStream.java,638,"if (comm != null && !"""".equals(comm)) {"
+S1638,ZipArchiveOutputStream.java,654,"offsets.put(ze, ZipLong.getBytes(written));"
+S1639,ZipArchiveOutputStream.java,656,writeOut(LFH_SIG);
+S1640,ZipArchiveOutputStream.java,657,written += WORD;
+S1641,ZipArchiveOutputStream.java,660,final int zipMethod = ze.getMethod();
+S1642,ZipArchiveOutputStream.java,662,"writeVersionNeededToExtractAndGeneralPurposeBits(zipMethod,"
+S1643,ZipArchiveOutputStream.java,665,written += WORD;
+S1644,ZipArchiveOutputStream.java,668,writeOut(ZipShort.getBytes(zipMethod));
+S1645,ZipArchiveOutputStream.java,669,written += SHORT;
+S1646,ZipArchiveOutputStream.java,672,writeOut(ZipUtil.toDosTime(ze.getTime()));
+S1647,ZipArchiveOutputStream.java,673,written += WORD;
+S1648,ZipArchiveOutputStream.java,678,localDataStart = written;
+S1649,ZipArchiveOutputStream.java,679,if (zipMethod == DEFLATED || raf != null) {
+S1650,ZipArchiveOutputStream.java,680,writeOut(LZERO);
+S1651,ZipArchiveOutputStream.java,681,writeOut(LZERO);
+S1652,ZipArchiveOutputStream.java,682,writeOut(LZERO);
+S1653,ZipArchiveOutputStream.java,689,written += 12;
+S1654,ZipArchiveOutputStream.java,693,writeOut(ZipShort.getBytes(name.limit()));
+S1655,ZipArchiveOutputStream.java,694,written += SHORT;
+S1656,ZipArchiveOutputStream.java,697,byte[] extra = ze.getLocalFileDataExtra();
+S1657,ZipArchiveOutputStream.java,698,writeOut(ZipShort.getBytes(extra.length));
+S1658,ZipArchiveOutputStream.java,699,written += SHORT;
+S1659,ZipArchiveOutputStream.java,702,"writeOut(name.array(), name.arrayOffset(), name.limit());"
+S1660,ZipArchiveOutputStream.java,703,written += name.limit();
+S1661,ZipArchiveOutputStream.java,706,writeOut(extra);
+S1662,ZipArchiveOutputStream.java,707,written += extra.length;
+S1663,ZipArchiveOutputStream.java,709,dataStart = written;
+S1664,ZipArchiveOutputStream.java,718,if (ze.getMethod() != DEFLATED || raf != null) {
+S1665,ZipArchiveOutputStream.java,719,return;
+S1666,ZipArchiveOutputStream.java,721,writeOut(DD_SIG);
+S1667,ZipArchiveOutputStream.java,722,writeOut(ZipLong.getBytes(entry.getCrc()));
+S1668,ZipArchiveOutputStream.java,723,writeOut(ZipLong.getBytes(entry.getCompressedSize()));
+S1669,ZipArchiveOutputStream.java,724,writeOut(ZipLong.getBytes(entry.getSize()));
+S1670,ZipArchiveOutputStream.java,726,written += 16;
+S1671,ZipArchiveOutputStream.java,736,writeOut(CFH_SIG);
+S1672,ZipArchiveOutputStream.java,737,written += WORD;
+S1673,ZipArchiveOutputStream.java,741,writeOut(ZipShort.getBytes((ze.getPlatform() << 8) | 20));
+S1674,ZipArchiveOutputStream.java,742,written += SHORT;
+S1675,ZipArchiveOutputStream.java,744,final int zipMethod = ze.getMethod();
+S1676,ZipArchiveOutputStream.java,745,final boolean encodable = zipEncoding.canEncode(ze.getName());
+S1677,ZipArchiveOutputStream.java,746,"writeVersionNeededToExtractAndGeneralPurposeBits(zipMethod,"
+S1678,ZipArchiveOutputStream.java,749,written += WORD;
+S1679,ZipArchiveOutputStream.java,752,writeOut(ZipShort.getBytes(zipMethod));
+S1680,ZipArchiveOutputStream.java,753,written += SHORT;
+S1681,ZipArchiveOutputStream.java,756,writeOut(ZipUtil.toDosTime(ze.getTime()));
+S1682,ZipArchiveOutputStream.java,757,written += WORD;
+S1683,ZipArchiveOutputStream.java,762,writeOut(ZipLong.getBytes(ze.getCrc()));
+S1684,ZipArchiveOutputStream.java,763,writeOut(ZipLong.getBytes(ze.getCompressedSize()));
+S1685,ZipArchiveOutputStream.java,764,writeOut(ZipLong.getBytes(ze.getSize()));
+S1686,ZipArchiveOutputStream.java,766,written += 12;
+S1687,ZipArchiveOutputStream.java,772,if (!encodable && fallbackToUTF8) {
+S1688,ZipArchiveOutputStream.java,775,entryEncoding = zipEncoding;
+S1689,ZipArchiveOutputStream.java,778,ByteBuffer name = entryEncoding.encode(ze.getName());
+S1690,ZipArchiveOutputStream.java,780,writeOut(ZipShort.getBytes(name.limit()));
+S1691,ZipArchiveOutputStream.java,781,written += SHORT;
+S1692,ZipArchiveOutputStream.java,784,byte[] extra = ze.getCentralDirectoryExtra();
+S1693,ZipArchiveOutputStream.java,785,writeOut(ZipShort.getBytes(extra.length));
+S1694,ZipArchiveOutputStream.java,786,written += SHORT;
+S1695,ZipArchiveOutputStream.java,789,String comm = ze.getComment();
+S1696,ZipArchiveOutputStream.java,790,if (comm == null) {
+S1697,ZipArchiveOutputStream.java,791,"comm = """";"
+S1698,ZipArchiveOutputStream.java,794,ByteBuffer commentB = entryEncoding.encode(comm);
+S1699,ZipArchiveOutputStream.java,796,writeOut(ZipShort.getBytes(commentB.limit()));
+S1700,ZipArchiveOutputStream.java,797,written += SHORT;
+S1701,ZipArchiveOutputStream.java,800,writeOut(ZERO);
+S1702,ZipArchiveOutputStream.java,801,written += SHORT;
+S1703,ZipArchiveOutputStream.java,804,writeOut(ZipShort.getBytes(ze.getInternalAttributes()));
+S1704,ZipArchiveOutputStream.java,805,written += SHORT;
+S1705,ZipArchiveOutputStream.java,808,writeOut(ZipLong.getBytes(ze.getExternalAttributes()));
+S1706,ZipArchiveOutputStream.java,809,written += WORD;
+S1707,ZipArchiveOutputStream.java,812,writeOut((byte[]) offsets.get(ze));
+S1708,ZipArchiveOutputStream.java,813,written += WORD;
+S1709,ZipArchiveOutputStream.java,816,"writeOut(name.array(), name.arrayOffset(), name.limit());"
+S1710,ZipArchiveOutputStream.java,817,written += name.limit();
+S1711,ZipArchiveOutputStream.java,820,writeOut(extra);
+S1712,ZipArchiveOutputStream.java,821,written += extra.length;
+S1713,ZipArchiveOutputStream.java,824,"writeOut(commentB.array(), commentB.arrayOffset(), commentB.limit());"
+S1714,ZipArchiveOutputStream.java,825,written += commentB.limit();
+S1715,ZipArchiveOutputStream.java,833,writeOut(EOCD_SIG);
+S1716,ZipArchiveOutputStream.java,836,writeOut(ZERO);
+S1717,ZipArchiveOutputStream.java,837,writeOut(ZERO);
+S1718,ZipArchiveOutputStream.java,840,byte[] num = ZipShort.getBytes(entries.size());
+S1719,ZipArchiveOutputStream.java,841,writeOut(num);
+S1720,ZipArchiveOutputStream.java,842,writeOut(num);
+S1721,ZipArchiveOutputStream.java,845,writeOut(ZipLong.getBytes(cdLength));
+S1722,ZipArchiveOutputStream.java,846,writeOut(ZipLong.getBytes(cdOffset));
+S1723,ZipArchiveOutputStream.java,849,ByteBuffer data = this.zipEncoding.encode(comment);
+S1724,ZipArchiveOutputStream.java,850,writeOut(ZipShort.getBytes(data.limit()));
+S1725,ZipArchiveOutputStream.java,851,"writeOut(data.array(), data.arrayOffset(), data.limit());"
+S1726,ZipArchiveOutputStream.java,860,"writeOut(data, 0, data.length);"
+S1727,ZipArchiveOutputStream.java,872,if (raf != null) {
+S1728,ZipArchiveOutputStream.java,873,"raf.write(data, offset, length);"
+S1729,ZipArchiveOutputStream.java,875,"out.write(data, offset, length);"
+S1730,ZipArchiveOutputStream.java,880,while (!def.needsInput()) {
+S1731,ZipArchiveOutputStream.java,881,deflate();
+S1732,ZipArchiveOutputStream.java,892,int versionNeededToExtract = 10;
+S1733,ZipArchiveOutputStream.java,893,int generalPurposeFlag = (useEFS || utfFallback) ? EFS_FLAG : 0;
+S1734,ZipArchiveOutputStream.java,894,if (zipMethod == DEFLATED && raf == null) {
+S1735,ZipArchiveOutputStream.java,897,versionNeededToExtract =  20;
+S1736,ZipArchiveOutputStream.java,899,generalPurposeFlag |= 8;
+S1737,ZipArchiveOutputStream.java,904,writeOut(ZipShort.getBytes(versionNeededToExtract));
+S1738,ZipArchiveOutputStream.java,906,writeOut(ZipShort.getBytes(generalPurposeFlag));
+S1739,ZipArchiveOutputStream.java,917,"public static final UnicodeExtraFieldPolicy ALWAYS = new UnicodeExtraFieldPolicy(""always"");"
+S1740,ZipArchiveOutputStream.java,921,"public static final UnicodeExtraFieldPolicy NEVER = new UnicodeExtraFieldPolicy(""never"");"
+S1741,ZipArchiveOutputStream.java,926,public static final UnicodeExtraFieldPolicy NOT_ENCODEABLE =
+S1742,ZipArchiveOutputStream.java,930,private UnicodeExtraFieldPolicy(String n) {
+S1743,ZipArchiveOutputStream.java,931,name = n;
+S1744,ZipArchiveOutputStream.java,940,if(finished) {
+S1745,ZipArchiveOutputStream.java,943,"return new ZipArchiveEntry(inputFile, entryName);"
+S1746,ZipEncodingHelper.java,49,SimpleEncodingHolder(char [] highChars) {
+S1747,ZipEncodingHelper.java,50,this.highChars = highChars;
+S1748,ZipEncodingHelper.java,58,if (this.encoding == null) {
+S1749,ZipEncodingHelper.java,59,this.encoding = new Simple8BitZipEncoding(this.highChars);
+S1750,ZipEncodingHelper.java,61,return this.encoding;
+S1751,ZipEncodingHelper.java,68,simpleEncodings = new HashMap();
+S1752,ZipEncodingHelper.java,70,char[] cp437_high_chars =
+S1753,ZipEncodingHelper.java,94,SimpleEncodingHolder cp437 = new SimpleEncodingHolder(cp437_high_chars);
+S1754,ZipEncodingHelper.java,96,"simpleEncodings.put(""CP437"",cp437);"
+S1755,ZipEncodingHelper.java,97,"simpleEncodings.put(""Cp437"",cp437);"
+S1756,ZipEncodingHelper.java,98,"simpleEncodings.put(""cp437"",cp437);"
+S1757,ZipEncodingHelper.java,99,"simpleEncodings.put(""IBM437"",cp437);"
+S1758,ZipEncodingHelper.java,100,"simpleEncodings.put(""ibm437"",cp437);"
+S1759,ZipEncodingHelper.java,102,char[] cp850_high_chars =
+S1760,ZipEncodingHelper.java,126,SimpleEncodingHolder cp850 = new SimpleEncodingHolder(cp850_high_chars);
+S1761,ZipEncodingHelper.java,128,"simpleEncodings.put(""CP850"",cp850);"
+S1762,ZipEncodingHelper.java,129,"simpleEncodings.put(""Cp850"",cp850);"
+S1763,ZipEncodingHelper.java,130,"simpleEncodings.put(""cp850"",cp850);"
+S1764,ZipEncodingHelper.java,131,"simpleEncodings.put(""IBM850"",cp850);"
+S1765,ZipEncodingHelper.java,132,"simpleEncodings.put(""ibm850"",cp850);"
+S1766,ZipEncodingHelper.java,148,b.limit(b.position());
+S1767,ZipEncodingHelper.java,149,b.rewind();
+S1768,ZipEncodingHelper.java,151,int c2 = b.capacity() * 2;
+S1769,ZipEncodingHelper.java,152,ByteBuffer on = ByteBuffer.allocate(c2 < newCapacity ? newCapacity : c2);
+S1770,ZipEncodingHelper.java,154,on.put(b);
+S1771,ZipEncodingHelper.java,155,return on;
+S1772,ZipEncodingHelper.java,163,private static final byte[] HEX_DIGITS =
+S1773,ZipEncodingHelper.java,178,bb.put((byte) '%');
+S1774,ZipEncodingHelper.java,179,bb.put((byte) 'U');
+S1775,ZipEncodingHelper.java,181,bb.put(HEX_DIGITS[(c >> 12)&0x0f]);
+S1776,ZipEncodingHelper.java,182,bb.put(HEX_DIGITS[(c >> 8)&0x0f]);
+S1777,ZipEncodingHelper.java,183,bb.put(HEX_DIGITS[(c >> 4)&0x0f]);
+S1778,ZipEncodingHelper.java,184,bb.put(HEX_DIGITS[c & 0x0f]);
+S1779,ZipEncodingHelper.java,196,static final ZipEncoding UTF8_ZIP_ENCODING = new FallbackZipEncoding(UTF8);
+S1780,ZipEncodingHelper.java,208,if (isUTF8(name)) {
+S1781,ZipEncodingHelper.java,209,return UTF8_ZIP_ENCODING;
+S1782,ZipEncodingHelper.java,212,if (name == null) {
+S1783,ZipEncodingHelper.java,216,SimpleEncodingHolder h =
+S1784,ZipEncodingHelper.java,219,if (h!=null) {
+S1785,ZipEncodingHelper.java,220,return h.getEncoding();
+S1786,ZipEncodingHelper.java,225,Charset cs = Charset.forName(name);
+S1787,ZipEncodingHelper.java,226,return new NioZipEncoding(cs);
+S1788,ZipEncodingHelper.java,238,if (encoding == null) {
+S1789,ZipEncodingHelper.java,240,"encoding = System.getProperty(""file.encoding"");"
+S1790,ZipEncodingHelper.java,242,return UTF8.equalsIgnoreCase(encoding)
+S1791,ZipFile.java,75,private final Map entries = new HashMap(HASH_SIZE);
+S1792,ZipFile.java,80,private final Map nameMap = new HashMap(HASH_SIZE);
+S1793,ZipFile.java,82,private static final class OffsetEntry {
+S1794,ZipFile.java,83,private long headerOffset = -1;
+S1795,ZipFile.java,84,private long dataOffset = -1;
+S1796,ZipFile.java,119,"this(f, ZipEncodingHelper.UTF8);"
+S1797,ZipFile.java,158,"this(f, encoding, true);"
+S1798,ZipFile.java,174,throws IOException {
+S1799,ZipFile.java,175,this.encoding = encoding;
+S1800,ZipFile.java,176,this.zipEncoding = ZipEncodingHelper.getZipEncoding(encoding);
+S1801,ZipFile.java,177,this.useUnicodeExtraFields = useUnicodeExtraFields;
+S1802,ZipFile.java,178,"archive = new RandomAccessFile(f, ""r"");"
+S1803,ZipFile.java,179,boolean success = false;
+S1804,ZipFile.java,181,Map entriesWithoutEFS = populateFromCentralDirectory();
+S1805,ZipFile.java,182,resolveLocalFileHeaderData(entriesWithoutEFS);
+S1806,ZipFile.java,183,success = true;
+S1807,ZipFile.java,185,if (!success) {
+S1808,ZipFile.java,187,archive.close();
+S1809,ZipFile.java,209,archive.close();
+S1810,ZipFile.java,218,if (zipfile != null) {
+S1811,ZipFile.java,220,zipfile.close();
+S1812,ZipFile.java,232,return Collections.enumeration(entries.keySet());
+S1813,ZipFile.java,243,return (ZipArchiveEntry) nameMap.get(name);
+S1814,ZipFile.java,307,HashMap noEFS = new HashMap();
+S1815,ZipFile.java,309,positionAtCentralDirectory();
+S1816,ZipFile.java,311,byte[] cfh = new byte[CFH_LEN];
+S1817,ZipFile.java,313,byte[] signatureBytes = new byte[WORD];
+S1818,ZipFile.java,314,archive.readFully(signatureBytes);
+S1819,ZipFile.java,315,long sig = ZipLong.getValue(signatureBytes);
+S1820,ZipFile.java,316,final long cfhSig = ZipLong.getValue(ZipArchiveOutputStream.CFH_SIG);
+S1821,ZipFile.java,317,if (sig != cfhSig && startsWithLocalFileHeader()) {
+S1822,ZipFile.java,321,while (sig == cfhSig) {
+S1823,ZipFile.java,322,archive.readFully(cfh);
+S1824,ZipFile.java,323,int off = 0;
+S1825,ZipFile.java,324,ZipArchiveEntry ze = new ZipArchiveEntry();
+S1826,ZipFile.java,326,"int versionMadeBy = ZipShort.getValue(cfh, off);"
+S1827,ZipFile.java,327,off += SHORT;
+S1828,ZipFile.java,328,ze.setPlatform((versionMadeBy >> BYTE_SHIFT) & NIBLET_MASK);
+S1829,ZipFile.java,330,off += SHORT; // skip version info
+S1830,ZipFile.java,332,"final int generalPurposeFlag = ZipShort.getValue(cfh, off);"
+S1831,ZipFile.java,333,final boolean hasEFS =
+S1832,ZipFile.java,335,final ZipEncoding entryEncoding =
+S1833,ZipFile.java,338,off += SHORT;
+S1834,ZipFile.java,340,"ze.setMethod(ZipShort.getValue(cfh, off));"
+S1835,ZipFile.java,341,off += SHORT;
+S1836,ZipFile.java,346,"long time = ZipUtil.dosToJavaTime(ZipLong.getValue(cfh, off));"
+S1837,ZipFile.java,347,ze.setTime(time);
+S1838,ZipFile.java,348,off += WORD;
+S1839,ZipFile.java,350,"ze.setCrc(ZipLong.getValue(cfh, off));"
+S1840,ZipFile.java,351,off += WORD;
+S1841,ZipFile.java,353,"ze.setCompressedSize(ZipLong.getValue(cfh, off));"
+S1842,ZipFile.java,354,off += WORD;
+S1843,ZipFile.java,356,"ze.setSize(ZipLong.getValue(cfh, off));"
+S1844,ZipFile.java,357,off += WORD;
+S1845,ZipFile.java,359,"int fileNameLen = ZipShort.getValue(cfh, off);"
+S1846,ZipFile.java,360,off += SHORT;
+S1847,ZipFile.java,362,"int extraLen = ZipShort.getValue(cfh, off);"
+S1848,ZipFile.java,363,off += SHORT;
+S1849,ZipFile.java,365,"int commentLen = ZipShort.getValue(cfh, off);"
+S1850,ZipFile.java,366,off += SHORT;
+S1851,ZipFile.java,368,off += SHORT; // disk number
+S1852,ZipFile.java,370,"ze.setInternalAttributes(ZipShort.getValue(cfh, off));"
+S1853,ZipFile.java,371,off += SHORT;
+S1854,ZipFile.java,373,"ze.setExternalAttributes(ZipLong.getValue(cfh, off));"
+S1855,ZipFile.java,374,off += WORD;
+S1856,ZipFile.java,376,byte[] fileName = new byte[fileNameLen];
+S1857,ZipFile.java,377,archive.readFully(fileName);
+S1858,ZipFile.java,378,ze.setName(entryEncoding.decode(fileName));
+S1859,ZipFile.java,381,OffsetEntry offset = new OffsetEntry();
+S1860,ZipFile.java,382,"offset.headerOffset = ZipLong.getValue(cfh, off);"
+S1861,ZipFile.java,384,"entries.put(ze, offset);"
+S1862,ZipFile.java,386,"nameMap.put(ze.getName(), ze);"
+S1863,ZipFile.java,388,byte[] cdExtraData = new byte[extraLen];
+S1864,ZipFile.java,389,archive.readFully(cdExtraData);
+S1865,ZipFile.java,390,ze.setCentralDirectoryExtra(cdExtraData);
+S1866,ZipFile.java,392,byte[] comment = new byte[commentLen];
+S1867,ZipFile.java,393,archive.readFully(comment);
+S1868,ZipFile.java,394,ze.setComment(entryEncoding.decode(comment));
+S1869,ZipFile.java,396,archive.readFully(signatureBytes);
+S1870,ZipFile.java,397,sig = ZipLong.getValue(signatureBytes);
+S1871,ZipFile.java,399,if (!hasEFS && useUnicodeExtraFields) {
+S1872,ZipFile.java,400,"noEFS.put(ze, new NameAndComment(fileName, comment));"
+S1873,ZipFile.java,403,return noEFS;
+S1874,ZipFile.java,442,boolean found = false;
+S1875,ZipFile.java,443,long off = archive.length() - MIN_EOCD_SIZE;
+S1876,ZipFile.java,444,"long stopSearching = Math.max(0L, archive.length() - MAX_EOCD_SIZE);"
+S1877,ZipFile.java,445,if (off >= 0) {
+S1878,ZipFile.java,446,archive.seek(off);
+S1879,ZipFile.java,447,byte[] sig = ZipArchiveOutputStream.EOCD_SIG;
+S1880,ZipFile.java,448,int curr = archive.read();
+S1881,ZipFile.java,449,while (off >= stopSearching && curr != -1) {
+S1882,ZipFile.java,450,if (curr == sig[POS_0]) {
+S1883,ZipFile.java,451,curr = archive.read();
+S1884,ZipFile.java,452,if (curr == sig[POS_1]) {
+S1885,ZipFile.java,453,curr = archive.read();
+S1886,ZipFile.java,454,if (curr == sig[POS_2]) {
+S1887,ZipFile.java,455,curr = archive.read();
+S1888,ZipFile.java,456,if (curr == sig[POS_3]) {
+S1889,ZipFile.java,457,found = true;
+S1890,ZipFile.java,458,break;
+S1891,ZipFile.java,463,archive.seek(--off);
+S1892,ZipFile.java,464,curr = archive.read();
+S1893,ZipFile.java,467,if (!found) {
+S1894,ZipFile.java,470,archive.seek(off + CFD_LOCATOR_OFFSET);
+S1895,ZipFile.java,471,byte[] cfdOffset = new byte[WORD];
+S1896,ZipFile.java,472,archive.readFully(cfdOffset);
+S1897,ZipFile.java,473,archive.seek(ZipLong.getValue(cfdOffset));
+S1898,ZipFile.java,500,Enumeration e = getEntries();
+S1899,ZipFile.java,501,while (e.hasMoreElements()) {
+S1900,ZipFile.java,502,ZipArchiveEntry ze = (ZipArchiveEntry) e.nextElement();
+S1901,ZipFile.java,503,OffsetEntry offsetEntry = (OffsetEntry) entries.get(ze);
+S1902,ZipFile.java,504,long offset = offsetEntry.headerOffset;
+S1903,ZipFile.java,505,archive.seek(offset + LFH_OFFSET_FOR_FILENAME_LENGTH);
+S1904,ZipFile.java,506,byte[] b = new byte[SHORT];
+S1905,ZipFile.java,507,archive.readFully(b);
+S1906,ZipFile.java,508,int fileNameLen = ZipShort.getValue(b);
+S1907,ZipFile.java,509,archive.readFully(b);
+S1908,ZipFile.java,510,int extraFieldLen = ZipShort.getValue(b);
+S1909,ZipFile.java,511,int lenToSkip = fileNameLen;
+S1910,ZipFile.java,512,while (lenToSkip > 0) {
+S1911,ZipFile.java,513,int skipped = archive.skipBytes(lenToSkip);
+S1912,ZipFile.java,514,if (skipped <= 0) {
+S1913,ZipFile.java,518,lenToSkip -= skipped;
+S1914,ZipFile.java,520,byte[] localExtraData = new byte[extraFieldLen];
+S1915,ZipFile.java,521,archive.readFully(localExtraData);
+S1916,ZipFile.java,522,ze.setExtra(localExtraData);
+S1917,ZipFile.java,527,offsetEntry.dataOffset = offset + LFH_OFFSET_FOR_FILENAME_LENGTH
+S1918,ZipFile.java,530,if (entriesWithoutEFS.containsKey(ze)) {
+S1919,ZipFile.java,531,String orig = ze.getName();
+S1920,ZipFile.java,532,NameAndComment nc = (NameAndComment) entriesWithoutEFS.get(ze);
+S1921,ZipFile.java,533,"ZipUtil.setNameAndCommentFromExtraFields(ze, nc.name,"
+S1922,ZipFile.java,535,if (!orig.equals(ze.getName())) {
+S1923,ZipFile.java,536,nameMap.remove(orig);
+S1924,ZipFile.java,537,"nameMap.put(ze.getName(), ze);"
+S1925,ZipFile.java,626,private static final class NameAndComment {
+S1926,ZipFile.java,629,"private NameAndComment(byte[] name, byte[] comment) {"
+S1927,ZipFile.java,630,this.name = name;
+S1928,ZipFile.java,631,this.comment = comment;
+S1929,ZipLong.java,46,public static final ZipLong CFH_SIG = new ZipLong(0X02014B50L);
+S1930,ZipLong.java,49,public static final ZipLong LFH_SIG = new ZipLong(0X04034B50L);
+S1931,ZipLong.java,55,public ZipLong(long value) {
+S1932,ZipLong.java,56,this.value = value;
+S1933,ZipLong.java,64,"this(bytes, 0);"
+S1934,ZipLong.java,72,"public ZipLong (byte[] bytes, int offset) {"
+S1935,ZipLong.java,73,"value = ZipLong.getValue(bytes, offset);"
+S1936,ZipLong.java,81,return ZipLong.getBytes(value);
+S1937,ZipLong.java,89,return value;
+S1938,ZipLong.java,98,byte[] result = new byte[WORD];
+S1939,ZipLong.java,99,result[0] = (byte) ((value & BYTE_MASK));
+S1940,ZipLong.java,100,result[BYTE_1] = (byte) ((value & BYTE_1_MASK) >> BYTE_1_SHIFT);
+S1941,ZipLong.java,101,result[BYTE_2] = (byte) ((value & BYTE_2_MASK) >> BYTE_2_SHIFT);
+S1942,ZipLong.java,102,result[BYTE_3] = (byte) ((value & BYTE_3_MASK) >> BYTE_3_SHIFT);
+S1943,ZipLong.java,103,return result;
+S1944,ZipLong.java,113,long value = (bytes[offset + BYTE_3] << BYTE_3_SHIFT) & BYTE_3_MASK;
+S1945,ZipLong.java,114,value += (bytes[offset + BYTE_2] << BYTE_2_SHIFT) & BYTE_2_MASK;
+S1946,ZipLong.java,115,value += (bytes[offset + BYTE_1] << BYTE_1_SHIFT) & BYTE_1_MASK;
+S1947,ZipLong.java,116,value += (bytes[offset] & BYTE_MASK);
+S1948,ZipLong.java,117,return value;
+S1949,ZipLong.java,126,"return getValue(bytes, 0);"
+S1950,ZipLong.java,135,if (o == null || !(o instanceof ZipLong)) {
+S1951,ZipLong.java,138,return value == ((ZipLong) o).getValue();
+S1952,ZipShort.java,36,public ZipShort (int value) {
+S1953,ZipShort.java,37,this.value = value;
+S1954,ZipShort.java,53,"public ZipShort (byte[] bytes, int offset) {"
+S1955,ZipShort.java,54,"value = ZipShort.getValue(bytes, offset);"
+S1956,ZipShort.java,62,byte[] result = new byte[2];
+S1957,ZipShort.java,63,result[0] = (byte) (value & BYTE_MASK);
+S1958,ZipShort.java,64,result[1] = (byte) ((value & BYTE_1_MASK) >> BYTE_1_SHIFT);
+S1959,ZipShort.java,65,return result;
+S1960,ZipShort.java,73,return value;
+S1961,ZipShort.java,82,byte[] result = new byte[2];
+S1962,ZipShort.java,83,result[0] = (byte) (value & BYTE_MASK);
+S1963,ZipShort.java,84,result[1] = (byte) ((value & BYTE_1_MASK) >> BYTE_1_SHIFT);
+S1964,ZipShort.java,85,return result;
+S1965,ZipShort.java,95,int value = (bytes[offset + 1] << BYTE_1_SHIFT) & BYTE_1_MASK;
+S1966,ZipShort.java,96,value += (bytes[offset] & BYTE_MASK);
+S1967,ZipShort.java,97,return value;
+S1968,ZipShort.java,106,"return getValue(bytes, 0);"
+S1969,ZipShort.java,115,if (o == null || !(o instanceof ZipShort)) {
+S1970,ZipShort.java,118,return value == ((ZipShort) o).getValue();
+S1971,ZipShort.java,126,return value;
+S1972,ZipUtil.java,33,private static final byte[] DOS_TIME_MIN = ZipLong.getBytes(0x00002100L);
+S1973,ZipUtil.java,52,Calendar c = Calendar.getInstance();
+S1974,ZipUtil.java,53,c.setTimeInMillis(t);
+S1975,ZipUtil.java,55,int year = c.get(Calendar.YEAR);
+S1976,ZipUtil.java,56,if (year < 1980) {
+S1977,ZipUtil.java,59,int month = c.get(Calendar.MONTH) + 1;
+S1978,ZipUtil.java,60,long value =  ((year - 1980) << 25)
+S1979,ZipUtil.java,66,return ZipLong.getBytes(value);
+S1980,ZipUtil.java,76,if (i < 0) {
+S1981,ZipUtil.java,79,return i;
+S1982,ZipUtil.java,99,Calendar cal = Calendar.getInstance();
+S1983,ZipUtil.java,101,"cal.set(Calendar.YEAR, (int) ((dosTime >> 25) & 0x7f) + 1980);"
+S1984,ZipUtil.java,102,"cal.set(Calendar.MONTH, (int) ((dosTime >> 21) & 0x0f) - 1);"
+S1985,ZipUtil.java,103,"cal.set(Calendar.DATE, (int) (dosTime >> 16) & 0x1f);"
+S1986,ZipUtil.java,104,"cal.set(Calendar.HOUR_OF_DAY, (int) (dosTime >> 11) & 0x1f);"
+S1987,ZipUtil.java,105,"cal.set(Calendar.MINUTE, (int) (dosTime >> 5) & 0x3f);"
+S1988,ZipUtil.java,106,"cal.set(Calendar.SECOND, (int) (dosTime << 1) & 0x3e);"
+S1989,ZipUtil.java,108,return cal.getTime().getTime();
+S1990,ZipUtil.java,119,UnicodePathExtraField name = (UnicodePathExtraField)
+S1991,ZipUtil.java,121,String originalName = ze.getName();
+S1992,ZipUtil.java,122,"String newName = getUnicodeStringIfOriginalMatches(name,"
+S1993,ZipUtil.java,124,if (newName != null && !originalName.equals(newName)) {
+S1994,ZipUtil.java,125,ze.setName(newName);
+S1995,ZipUtil.java,128,if (commentBytes != null && commentBytes.length > 0) {
+S1996,ZipUtil.java,149,if (f != null) {
+S1997,ZipUtil.java,150,CRC32 crc32 = new CRC32();
+S1998,ZipUtil.java,151,crc32.update(orig);
+S1999,ZipUtil.java,152,long origCRC32 = crc32.getValue();
+S2000,ZipUtil.java,154,if (origCRC32 == f.getNameCRC32()) {
+S2001,ZipUtil.java,156,return ZipEncodingHelper
+S2002,ZipUtil.java,167,return null;

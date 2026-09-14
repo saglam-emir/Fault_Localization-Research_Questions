@@ -1,0 +1,58 @@
+statement_id,file,line,code
+S1,TarArchiveEntry.java,331,"parseTarHeader(headerBuf, encoding);"
+S2,TarArchiveEntry.java,938,"parseTarHeader(header, encoding, false);"
+S3,TarArchiveEntry.java,951,"userId = (int) TarUtils.parseOctalOrBinary(header, offset, UIDLEN);"
+S4,TarArchiveInputStream.java,64,"this(is, TarBuffer.DEFAULT_BLKSIZE, TarBuffer.DEFAULT_RCDSIZE);"
+S5,TarArchiveInputStream.java,105,"this(is, blockSize, recordSize, null);"
+S6,TarArchiveInputStream.java,118,"this.buffer = new TarBuffer(is, blockSize, recordSize);"
+S7,TarArchiveInputStream.java,120,this.hasHitEOF = false;
+S8,TarArchiveInputStream.java,212,if (hasHitEOF) {
+S9,TarArchiveInputStream.java,216,if (currEntry != null) {
+S10,TarArchiveInputStream.java,231,byte[] headerBuf = getRecord();
+S11,TarArchiveInputStream.java,233,if (hasHitEOF) {
+S12,TarArchiveInputStream.java,239,"currEntry = new TarArchiveEntry(headerBuf, encoding);"
+S13,TarArchiveInputStream.java,241,"IOException ioe = new IOException(""Error detected parsing the header"");"
+S14,TarArchiveInputStream.java,242,ioe.initCause(e);
+S15,TarArchiveInputStream.java,243,throw ioe;
+S16,TarArchiveInputStream.java,299,if (hasHitEOF) {
+S17,TarArchiveInputStream.java,303,byte[] headerBuf = buffer.readRecord();
+S18,TarArchiveInputStream.java,311,return hasHitEOF ? null : headerBuf;
+S19,TarBuffer.java,82,"this(inStream, null, blockSize, recordSize);"
+S20,TarBuffer.java,116,this.inStream = inStream;
+S21,TarBuffer.java,118,this.blockSize = blockSize;
+S22,TarBuffer.java,119,this.recordSize = recordSize;
+S23,TarBuffer.java,120,this.recsPerBlock = (this.blockSize / this.recordSize);
+S24,TarBuffer.java,121,this.blockBuffer = new byte[this.blockSize];
+S25,TarBuffer.java,123,if (this.inStream != null) {
+S26,TarBuffer.java,125,this.currRecIdx = this.recsPerBlock;
+S27,TarBuffer.java,195,if (currRecIdx >= recsPerBlock && !readBlock()) {
+S28,TarBuffer.java,199,byte[] result = new byte[recordSize];
+S29,TarBuffer.java,201,"System.arraycopy(blockBuffer,"
+S30,TarBuffer.java,207,return result;
+S31,TarBuffer.java,218,currRecIdx = 0;
+S32,TarBuffer.java,220,int offset = 0;
+S33,TarBuffer.java,221,int bytesNeeded = blockSize;
+S34,TarBuffer.java,223,while (bytesNeeded > 0) {
+S35,TarBuffer.java,224,"long numBytes = inStream.read(blockBuffer, offset,"
+S36,TarBuffer.java,259,bytesNeeded -= numBytes;
+S37,TarBuffer.java,268,return true;
+S38,TarUtils.java,104,int     end = offset + length;
+S39,TarUtils.java,105,int     start = offset;
+S40,TarUtils.java,111,if (buffer[start] == 0) {
+S41,TarUtils.java,116,while (start < end){
+S42,TarUtils.java,117,if (buffer[start] == ' '){
+S43,TarUtils.java,118,start++;
+S44,TarUtils.java,128,end--;
+S45,TarUtils.java,134,trailer = buffer[end - 1];
+S46,TarUtils.java,135,if (trailer == 0 || trailer == ' '){
+S47,TarUtils.java,136,end--;
+S48,TarUtils.java,139,for ( ;start < end; start++) {
+S49,TarUtils.java,140,final byte currentByte = buffer[start];
+S50,TarUtils.java,142,if (currentByte < '0' || currentByte > '7'){
+S51,TarUtils.java,143,throw new IllegalArgumentException(
+S52,TarUtils.java,173,if ((buffer[offset] & 0x80) == 0) {
+S53,TarUtils.java,174,"return parseOctal(buffer, offset, length);"
+S54,TarUtils.java,241,"String string = new String(buffer, offset, length); // TODO default charset?"
+S55,TarUtils.java,242,"string=string.replaceAll(""\0"", ""{NUL}""); // Replace NULs to allow string to be printed"
+S56,TarUtils.java,243,"final String s = ""Invalid byte ""+currentByte+"" at offset ""+(current-offset)+"" in '""+string+""' len=""+length;"
+S57,TarUtils.java,244,return s;
