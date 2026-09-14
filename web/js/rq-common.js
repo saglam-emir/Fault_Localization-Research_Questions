@@ -3,6 +3,7 @@
 
 const RQ = (() => {
   const fmt = new Intl.NumberFormat('en-US');
+  const pct = v => `${(v * 100).toFixed(1)}%`;
 
   // ---- segmented control (tabs) -------------------------------------
   // options: [{value, label}]. Re-renders on every call; caller re-invokes
@@ -18,21 +19,23 @@ const RQ = (() => {
 
   // ---- simple side-by-side comparison bars (Overall scope) ----------
   // items: [{label, value, color}]
-  function renderComparisonBars(el, items) {
+  function renderComparisonBars(el, items, { formatValue = fmt.format } = {}) {
     const max = Math.max(...items.map(i => i.value), 1);
     el.innerHTML = items.map(i => `
       <div class="bar-row">
         <div class="cat-label">${i.label}</div>
         <div class="bar-track">
           <div class="bar-seg" style="width:${(i.value / max * 100).toFixed(2)}%;background:${i.color};height:20px"></div>
-          <span class="bar-value">${fmt.format(i.value)}</span>
+          <span class="bar-value">${formatValue(i.value)}</span>
         </div>
       </div>`).join('');
   }
 
   // ---- stacked horizontal bars (composition, e.g. Pass+Fail) --------
-  // categories: string[]; series: [{name, color, values: number[]}]
-  function renderStackedBarList(el, { categories, series, onCategoryClick, keys }) {
+  // categories: string[]; series: [{name, color, values: number[]}].
+  // With a single series this is just a plain (non-stacked) bar list -
+  // used for single-value comparisons like per-project reduction ratio.
+  function renderStackedBarList(el, { categories, series, onCategoryClick, keys, formatValue = fmt.format, extra }) {
     const totals = categories.map((_, i) => series.reduce((s, ser) => s + ser.values[i], 0));
     const max = Math.max(...totals, 1);
     const legend = series.length > 1
@@ -44,10 +47,11 @@ const RQ = (() => {
         return `<div class="bar-seg" style="width:${w}%;background:${s.color}"></div>`;
       }).join('');
       const clickable = onCategoryClick ? 'clickable' : '';
+      const extraLabel = extra ? ` · ${extra(cat, i)}` : '';
       return `
         <div class="bar-row ${clickable}" data-key="${keys ? keys[i] : cat}">
           <div class="cat-label" title="${cat}">${cat}</div>
-          <div class="bar-track">${segs}<span class="bar-value">${fmt.format(totals[i])}</span></div>
+          <div class="bar-track">${segs}<span class="bar-value">${formatValue(totals[i])}${extraLabel}</span></div>
         </div>`;
     }).join('');
     el.innerHTML = `${legend}<div class="bar-chart-scroll">${rows}</div>`;
@@ -60,8 +64,12 @@ const RQ = (() => {
 
   // ---- grouped bars: one compact block per category, one thin bar ---
   // per series (used when series are NOT a composition/partition, e.g.
-  // Failure Analysis's Fail_TC / Fail_Assert / Uncaught_Exception).
-  function renderGroupedBarList(el, { categories, series, onCategoryClick, keys }) {
+  // Failure Analysis's Fail_TC / Fail_Assert / Uncaught_Exception, or
+  // RQ2's Full Execution vs. Slice Size which are a before/after pair,
+  // not parts of one whole).
+  // extra(cat, i): optional function returning a short label appended
+  // next to the category heading (e.g. a computed reduction %).
+  function renderGroupedBarList(el, { categories, series, onCategoryClick, keys, formatValue = fmt.format, extra }) {
     const max = Math.max(...series.flatMap(s => s.values), 1);
     const legend = `<div class="bar-legend">${series.map(s => `<span class="item"><span class="swatch" style="background:${s.color}"></span>${s.name}</span>`).join('')}</div>`;
     const groups = categories.map((cat, i) => {
@@ -70,13 +78,14 @@ const RQ = (() => {
           <div class="cat-label mono" style="font-size:10.5px">${s.name}</div>
           <div class="bar-track">
             <div class="bar-seg" style="width:${(s.values[i] / max * 100).toFixed(2)}%;background:${s.color};height:12px"></div>
-            <span class="bar-value">${fmt.format(s.values[i])}</span>
+            <span class="bar-value">${formatValue(s.values[i])}</span>
           </div>
         </div>`).join('');
       const clickable = onCategoryClick ? 'clickable' : '';
+      const extraLabel = extra ? `<span style="color:var(--ink-faint);font-family:var(--font-mono);font-size:11px"> · ${extra(cat, i)}</span>` : '';
       return `
         <div class="bar-group-block ${clickable}" data-key="${keys ? keys[i] : cat}" style="margin-bottom:16px">
-          <div style="font-family:var(--font-mono);font-size:12.5px;color:var(--ink);margin-bottom:6px;${onCategoryClick ? 'cursor:pointer' : ''}">${cat}</div>
+          <div style="font-family:var(--font-mono);font-size:12.5px;color:var(--ink);margin-bottom:6px;${onCategoryClick ? 'cursor:pointer' : ''}">${cat}${extraLabel}</div>
           ${seriesRows}
         </div>`;
     }).join('');
@@ -151,7 +160,11 @@ const RQ = (() => {
       const pageRows = data.slice(page * pageSize, (page + 1) * pageSize);
 
       tbody.innerHTML = pageRows.map(r => `
-        <tr>${columns.map(c => `<td class="${c.numeric ? 'num' : ''}">${c.numeric ? fmt.format(r[c.key]) : r[c.key]}</td>`).join('')}</tr>
+        <tr>${columns.map(c => {
+          const raw = r[c.key];
+          const text = c.format ? c.format(raw) : (c.numeric ? fmt.format(raw) : raw);
+          return `<td class="${c.numeric ? 'num' : ''}">${text}</td>`;
+        }).join('')}</tr>
       `).join('') || `<tr><td colspan="${columns.length}" style="text-align:center;color:var(--ink-faint);padding:24px">No matching rows.</td></tr>`;
 
       pagEl.innerHTML = totalPages > 1 ? `
@@ -169,5 +182,5 @@ const RQ = (() => {
     return { refresh: render };
   }
 
-  return { fmt, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, createDataTable };
+  return { fmt, pct, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, createDataTable };
 })();
