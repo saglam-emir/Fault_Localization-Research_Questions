@@ -165,6 +165,31 @@ const RQ = (() => {
     `;
   }
 
+  // ---- line chart (e.g. success rate across a relaxing tolerance) ----
+  // series: [{name, color, values: number[]}]; xLabels: string[] (same length as values)
+  function renderLineChart(el, { series, xLabels, formatY = fmt.format }) {
+    const width = 640, height = 260, pad = { l: 54, r: 16, t: 16, b: 32 };
+    const yMax = Math.max(...series.flatMap(s => s.values), 0.0001);
+    const xScale = i => pad.l + (i / Math.max(1, xLabels.length - 1)) * (width - pad.l - pad.r);
+    const yScale = v => height - pad.b - (v / yMax) * (height - pad.t - pad.b);
+    const fracs = [0, 0.25, 0.5, 0.75, 1];
+    const gridlines = fracs.map(f => `<line x1="${pad.l}" x2="${width - pad.r}" y1="${yScale(f * yMax).toFixed(1)}" y2="${yScale(f * yMax).toFixed(1)}" stroke="var(--border)"/>`).join('');
+    const yLabels = fracs.map(f => `<text x="${pad.l - 8}" y="${(yScale(f * yMax) + 3).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="var(--font-mono)">${formatY(f * yMax)}</text>`).join('');
+    const xTickLabels = xLabels.map((lab, i) => `<text x="${xScale(i).toFixed(1)}" y="${height - pad.b + 18}" text-anchor="middle" font-size="10" fill="var(--ink-faint)" font-family="var(--font-mono)">${lab}</text>`).join('');
+    const lines = series.map(s => {
+      const pts = s.values.map((v, i) => `${xScale(i).toFixed(1)},${yScale(v).toFixed(1)}`).join(' ');
+      const dots = s.values.map((v, i) => `<circle cx="${xScale(i).toFixed(1)}" cy="${yScale(v).toFixed(1)}" r="3.5" fill="${s.color}"><title>${s.name} @ ${xLabels[i]}: ${formatY(v)}</title></circle>`).join('');
+      return `<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="2"/>${dots}`;
+    }).join('');
+    const legend = `<div class="bar-legend">${series.map(s => `<span class="item"><span class="swatch" style="background:${s.color}"></span>${s.name}</span>`).join('')}</div>`;
+    el.innerHTML = `${legend}<svg viewBox="0 0 ${width} ${height}" style="width:100%;height:auto;display:block">
+      ${gridlines}
+      <line x1="${pad.l}" x2="${pad.l}" y1="${pad.t}" y2="${height - pad.b}" stroke="var(--border)"/>
+      <line x1="${pad.l}" x2="${width - pad.r}" y1="${height - pad.b}" y2="${height - pad.b}" stroke="var(--border)"/>
+      ${yLabels}${xTickLabels}${lines}
+    </svg>`;
+  }
+
   // ---- generic sortable / searchable / paginated data table ---------
   // columns: [{key, label, numeric}]. rows: array of plain objects.
   function createDataTable(root, { columns, rows, searchKeys, filterKey, pageSize = 25, onRowClick, rowKey }) {
@@ -253,5 +278,5 @@ const RQ = (() => {
     return { refresh: render };
   }
 
-  return { fmt, pct, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, renderMatrix2x2, createDataTable };
+  return { fmt, pct, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, renderMatrix2x2, renderLineChart, createDataTable };
 })();

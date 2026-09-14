@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RQ5 — Fault Localization Ranking · resQ</title>
+<meta name="description" content="RQ5: how well does trace-based and slice-based ranking actually locate the faulty statement, and how does the answer change as the definition of a hit is progressively relaxed?">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">resQ<span class="dot">.</span><small>fault localization</small></a>
+    <button class="nav-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">☰</button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <details class="nav-rq-dropdown" open>
+        <summary>Research Questions ▾</summary>
+        <div class="nav-rq-menu">
+          <a href="rq1.html">RQ1 <span>Test Suite Characteristics</span></a>
+          <a href="rq2.html">RQ2 <span>Search-Space Reduction</span></a>
+          <a href="rq3.html">RQ3 <span>Performance &amp; Cost</span></a>
+          <a href="rq4.html">RQ4 <span>Fault Inclusion</span></a>
+          <a href="rq5.html" class="active">RQ5 <span>Fault Localization Ranking</span></a>
+        </div>
+      </details>
+      <a href="projects.html">Projects</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="references.html">References</a>
+      <a class="nav-gh js-gh-link" href="#" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <header class="rq-page-header">
+    <span class="rq-badge">RQ5</span>
+    <h1>Fault Localization Ranking</h1>
+    <p class="rq-question-text">When a fault is reachable at all, how well does the trace-based and slice-based
+      ranking actually locate it — and how does the answer change as the definition of "found it" is progressively
+      relaxed from an exact line match to a small line-distance tolerance?</p>
+  </header>
+
+  <section class="rq-purpose">
+    <p class="label">Purpose</p>
+    <p>This research question measures ranking accuracy at the level of the individual ground-truth fault line, and
+      quantifies near-misses rather than treating every non-exact hit as an undifferentiated failure. Per the
+      project's data definitions: <strong>diff = 0</strong> is an exact fault-line match; <strong>diff = 1</strong>
+      relaxes success to an exact match <em>or</em> a one-line distance; <strong>diff = 2</strong> and
+      <strong>diff = 3</strong> extend that tolerance further. A fault line already flagged structurally
+      unanswerable (dead code, or never executed by this run's own test suite) is excluded from the default view -
+      no technique could ever find it, and scoring it as a miss would penalize the technique for a limitation of the
+      benchmark, not of the ranking.</p>
+  </section>
+
+  <div class="rq-cards" id="rq5-cards"></div>
+
+  <!-- ===================================== DIFF TOLERANCE EXPLORER === -->
+  <section class="section tight">
+    <div class="section-head">
+      <p class="eyebrow">Interactive Analysis</p>
+      <h2>Diff Tolerance Explorer</h2>
+      <p>Relax the definition of a "hit" and watch the Trace vs. Slice success rate respond.</p>
+    </div>
+
+    <div class="rq-controls">
+      <div class="seg-group"><span class="seg-label">Tolerance</span><div class="seg" id="tolerance-seg"></div></div>
+      <div class="seg-group"><span class="seg-label">Fault Set</span><div class="seg" id="faultset-seg"></div></div>
+      <div class="seg-group"><span class="seg-label">Scope</span><div class="seg" id="scope-seg"></div></div>
+    </div>
+
+    <div class="rq-chart-panel">
+      <div id="rq5-chart"></div>
+    </div>
+    <div class="rq-note" id="rq5-tolerance-note">
+      <span class="ic">ⓘ</span>
+      <span id="rq5-tolerance-note-text"></span>
+    </div>
+
+    <div class="section-head" style="margin-top:36px">
+      <p class="eyebrow">The Curve</p>
+      <h2>Success Rate as Tolerance Relaxes</h2>
+      <p>Overall (not scope-filtered) - the marginal gain from each extra line of tolerance.</p>
+    </div>
+    <div class="rq-chart-panel"><div id="rq5-curve"></div></div>
+  </section>
+
+  <!-- ==================================== UNANSWERABLE BREAKDOWN === -->
+  <section class="section tight">
+    <div class="section-head">
+      <p class="eyebrow">Answerability</p>
+      <h2>Why a Fault Line Is Unanswerable</h2>
+      <p>Structurally unanswerable fault lines, by reason - excluded from the success rates above by default.</p>
+    </div>
+    <div class="rq-chart-panel"><div id="rq5-unanswerable-chart"></div></div>
+  </section>
+
+  <!-- ========================================== DETAILED RESULTS === -->
+  <section class="rq-table-section">
+    <div class="section-head">
+      <p class="eyebrow">Detailed Results</p>
+      <h2>rq5.csv — Per Fault Line</h2>
+      <p>One row per ground-truth fault line (not per bug). Search, filter, and sort every ranking diagnostic.</p>
+    </div>
+    <div id="rq5-table"></div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>resQ — Fault Localization Research · © 2026</p>
+    <div class="footer-links">
+      <a href="methodology.html">Methodology</a>
+      <a href="references.html">References</a>
+      <a class="js-gh-link" href="#" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/rq-common.js"></script>
+<script src="js/rq5.js"></script>
+</body>
+</html>
