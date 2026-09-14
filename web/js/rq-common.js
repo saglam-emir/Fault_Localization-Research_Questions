@@ -135,9 +135,39 @@ const RQ = (() => {
     }
   }
 
+  // ---- 2x2 matrix / heatmap (e.g. Trace inclusion x Slice inclusion) --
+  // cells: [{row, col, count, total, emphasize}] in reading order
+  // (row-major: [rowA-colA, rowA-colB, rowB-colA, rowB-colB]).
+  // rowLabels/colLabels: [labelA, labelB].
+  function renderMatrix2x2(el, { rowLabels, colLabels, cells, rowAxis = '', colAxis = '' }) {
+    const max = Math.max(...cells.map(c => c.count), 1);
+    const cellHtml = c => {
+      const pct = c.total ? (c.count / c.total * 100) : 0;
+      const intensity = 0.12 + (c.count / max) * 0.5;
+      return `
+        <div class="matrix-cell ${c.emphasize ? 'emphasize' : ''}" style="--fill-alpha:${intensity.toFixed(2)}">
+          ${c.emphasize ? '<div class="matrix-cell-tag">BEST CASE</div>' : ''}
+          <div class="matrix-cell-n">${fmt.format(c.count)}</div>
+          <div class="matrix-cell-pct">${pct.toFixed(1)}%</div>
+        </div>`;
+    };
+    el.innerHTML = `
+      <div class="matrix-2x2">
+        <div class="matrix-corner"></div>
+        <div class="matrix-col-label">${colLabels[0]}</div>
+        <div class="matrix-col-label">${colLabels[1]}</div>
+        <div class="matrix-row-label">${rowLabels[0]}</div>
+        ${cellHtml(cells[0])}${cellHtml(cells[1])}
+        <div class="matrix-row-label">${rowLabels[1]}</div>
+        ${cellHtml(cells[2])}${cellHtml(cells[3])}
+      </div>
+      ${(rowAxis || colAxis) ? `<div class="matrix-axis-labels"><span>↓ ${rowAxis}</span><span>${colAxis} →</span></div>` : ''}
+    `;
+  }
+
   // ---- generic sortable / searchable / paginated data table ---------
   // columns: [{key, label, numeric}]. rows: array of plain objects.
-  function createDataTable(root, { columns, rows, searchKeys, filterKey, pageSize = 25 }) {
+  function createDataTable(root, { columns, rows, searchKeys, filterKey, pageSize = 25, onRowClick, rowKey }) {
     let sortKey = null, sortDir = 1, query = '', filterValue = '', page = 0;
 
     root.innerHTML = `
@@ -198,12 +228,15 @@ const RQ = (() => {
       const pageRows = data.slice(page * pageSize, (page + 1) * pageSize);
 
       tbody.innerHTML = pageRows.map(r => `
-        <tr>${columns.map(c => {
+        <tr ${onRowClick ? `class="clickable-row" data-key="${rowKey ? rowKey(r) : ''}"` : ''}>${columns.map(c => {
           const raw = r[c.key];
           const text = c.format ? c.format(raw) : (c.numeric ? fmt.format(raw) : raw);
           return `<td class="${c.numeric ? 'num' : ''}">${text}</td>`;
         }).join('')}</tr>
       `).join('') || `<tr><td colspan="${columns.length}" style="text-align:center;color:var(--ink-faint);padding:24px">No matching rows.</td></tr>`;
+      if (onRowClick) {
+        tbody.querySelectorAll('tr.clickable-row').forEach(tr => tr.addEventListener('click', () => onRowClick(tr.dataset.key)));
+      }
 
       pagEl.innerHTML = totalPages > 1 ? `
         <button data-act="prev" ${page === 0 ? 'disabled' : ''}>← Prev</button>
@@ -220,5 +253,5 @@ const RQ = (() => {
     return { refresh: render };
   }
 
-  return { fmt, pct, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, createDataTable };
+  return { fmt, pct, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, renderMatrix2x2, createDataTable };
 })();

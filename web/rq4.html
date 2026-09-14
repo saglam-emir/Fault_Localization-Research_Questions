@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RQ4 — Fault Inclusion · resQ</title>
+<meta name="description" content="RQ4: are the actual faulty statements preserved in the execution trace and the generated dynamic slice — and how often are they preserved by both (best case)?">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">resQ<span class="dot">.</span><small>fault localization</small></a>
+    <button class="nav-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">☰</button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <details class="nav-rq-dropdown" open>
+        <summary>Research Questions ▾</summary>
+        <div class="nav-rq-menu">
+          <a href="rq1.html">RQ1 <span>Test Suite Characteristics</span></a>
+          <a href="rq2.html">RQ2 <span>Search-Space Reduction</span></a>
+          <a href="rq3.html">RQ3 <span>Performance &amp; Cost</span></a>
+          <a href="rq4.html" class="active">RQ4 <span>Fault Inclusion</span></a>
+          <a href="rq5.html">RQ5 <span>Fault Localization Ranking</span></a>
+        </div>
+      </details>
+      <a href="projects.html">Projects</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="references.html">References</a>
+      <a class="nav-gh js-gh-link" href="#" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <header class="rq-page-header">
+    <span class="rq-badge">RQ4</span>
+    <h1>Fault Inclusion</h1>
+    <p class="rq-question-text">Are the actual faulty statements preserved in the classical execution trace and in
+      the generated dynamic slice — and how often are they preserved by <strong>both</strong>, the best-case outcome
+      for the hybrid approach?</p>
+  </header>
+
+  <section class="rq-purpose">
+    <p class="label">Purpose</p>
+    <p>This research question evaluates whether fault statements survive into the information each approach
+      actually ranks over. <code>rq4.trace.csv</code> and <code>rq4_slice.csv</code> are analyzed together, joined
+      by project and bug ID, to compare the classical trace-based approach against the slicing-based approach and
+      identify buggy versions where the fault is preserved by both — the necessary precondition for either ranking
+      to have any chance of success in RQ5.</p>
+  </section>
+
+  <div class="rq-cards" id="rq4-cards"></div>
+  <div class="rq-note" style="margin-top:6px">
+    <span class="ic">ⓘ</span>
+    <span>rq4.trace.csv/rq4_slice.csv report <em>bug-level</em> inclusion (at least one fault statement present in
+      that ranking's statement universe), not which individual fault line - the cards and matrix below are computed
+      at buggy-version granularity accordingly.</span>
+  </div>
+
+  <!-- =============================================== SCOPE + MATRIX === -->
+  <section class="section tight">
+    <div class="section-head">
+      <p class="eyebrow">Main Analysis</p>
+      <h2>Trace × Slice Inclusion</h2>
+    </div>
+
+    <div class="rq-controls">
+      <div class="seg-group"><span class="seg-label">Scope</span><div class="seg" id="scope-seg"></div></div>
+      <div class="seg-group" id="sort-wrap" hidden>
+        <span class="seg-label">Sort By</span><div class="seg" id="sortby-seg"></div>
+      </div>
+      <div class="seg-group" id="sort-dir-wrap" hidden>
+        <span class="seg-label">Direction</span><div class="seg" id="sortdir-seg"></div>
+      </div>
+      <div class="seg-group" id="project-select-wrap" hidden>
+        <span class="seg-label">Project</span><select class="seg-select"></select>
+      </div>
+    </div>
+
+    <div class="rq-chart-panel">
+      <div id="rq4-matrix"></div>
+      <div id="rq4-chart"></div>
+      <div class="bug-detail-panel" id="bug-detail" hidden>
+        <h4></h4>
+        <div class="bug-detail-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================== TRACE VS SLICE COMPARE === -->
+  <section class="section tight">
+    <div class="section-head">
+      <p class="eyebrow">Trace vs. Slice Comparison</p>
+      <h2>Per-Project Comparison</h2>
+      <p>Does the slice preserve faults at a similar, lower, or higher rate than the full trace? Also doubles as the
+        fault-level vs. faulty-statement-level analysis.</p>
+    </div>
+    <div class="rq-controls">
+      <div class="seg-group"><span class="seg-label">Metric</span><div class="seg" id="compare-metric-seg"></div></div>
+    </div>
+    <div class="rq-chart-panel"><div id="rq4-compare-chart"></div></div>
+  </section>
+
+  <!-- ========================================== DETAILED RESULTS === -->
+  <section class="rq-table-section">
+    <div class="section-head">
+      <p class="eyebrow">Detailed Results</p>
+      <h2>rq4.trace.csv + rq4_slice.csv — Per Buggy Version</h2>
+      <p>Joined by Project + Bug ID. Category is computed from each file's own inclusion boolean.</p>
+    </div>
+    <div id="rq4-table"></div>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>resQ — Fault Localization Research · © 2026</p>
+    <div class="footer-links">
+      <a href="methodology.html">Methodology</a>
+      <a href="references.html">References</a>
+      <a class="js-gh-link" href="#" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/rq-common.js"></script>
+<script src="js/rq4.js"></script>
+</body>
+</html>
