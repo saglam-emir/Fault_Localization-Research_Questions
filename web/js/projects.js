@@ -1,18 +1,21 @@
 // projects.js - Projects & Buggy Versions explorer.
-// Project -> Buggy Version -> Test/Execution Data -> Matrix Construction ->
-// Ochiai Scores -> Suspiciousness Ranking. Simple, descriptive, data-focused
-// (per the design brief) - minimal charting, mostly structured info panels.
+// Projects -> Buggy Version -> [Overview | Matrix | Ochiai Ranking].
+// Simple, descriptive, data-focused (per the design brief) - status values
+// are only ever "Completed" (pipeline reached this stage, status OK) or
+// "Not Available" (status FAIL - nothing further to distinguish honestly,
+// no per-stage success tracking exists in the data).
 
 let SUMMARY = null;
 let PROJECT_ROWS = [];
-const state = { level: 'projects', project: null, bugKey: null };
+const state = { level: 'projects', project: null, bugKey: null, detailTab: 'overview', matrixApproach: 'trace', matrixZoom: 'md', ochiaiApproach: 'trace', ochiaiTopN: 10 };
+let CURRENT_DETAIL = null; // cached bug JSON for the open detail view
+let CURRENT_MATRIX = null; // cached matrix JSON for the open detail view
 
-function fmtNum(v) {
-  if (v == null || v === '' || v === 'None') return '—';
-  const n = Number(v);
-  return Number.isFinite(n) ? RQ.fmt.format(n) : v;
-}
+function fmtNum(v) { return (v == null || v === '' || v === 'None') ? '—' : (Number.isFinite(Number(v)) ? RQ.fmt.format(Number(v)) : v); }
 function fmtRaw(v) { return (v == null || v === '' || v === 'None') ? '—' : v; }
+function stageStatus(row) { return row && row.status === 'OK' ? 'Completed' : 'Not Available'; }
+function badge(label) { return `<span class="cat-badge ${label === 'Completed' ? 'completed' : 'notavailable'}">${label}</span>`; }
+function colors() { const cs = getComputedStyle(document.documentElement); return { accent: cs.getPropertyValue('--accent').trim(), ok: cs.getPropertyValue('--ok').trim(), fail: cs.getPropertyValue('--fail').trim() }; }
 
 function showView(name) {
   document.getElementById('view-projects').hidden = name !== 'projects';
@@ -35,8 +38,31 @@ function renderBreadcrumb() {
 function goToProjects() { state.level = 'projects'; state.project = null; state.bugKey = null; renderBreadcrumb(); showView('projects'); }
 function goToBugs(project) { state.level = 'bugs'; state.project = project; state.bugKey = null; renderBreadcrumb(); showView('bugs'); renderBugsView(); }
 function goToDetail(project, bugId) {
-  state.level = 'detail'; state.project = project; state.bugKey = `${project}_${bugId}`;
+  state.level = 'detail'; state.project = project; state.bugKey = `${project}_${bugId}`; state.detailTab = 'overview';
   renderBreadcrumb(); showView('detail'); renderDetailView();
+}
+
+// ==================================================== PROJECTS OVERVIEW
+function renderOverviewSummary() {
+  const completed = PROJECT_ROWS.filter(r => r.status === 'OK').length;
+  const cards = [
+    { n: SUMMARY.total_projects, l: 'Total Projects' },
+    { n: PROJECT_ROWS.length, l: 'Total Buggy Versions' },
+    { n: completed, l: 'Completed Buggy Versions' },
+    { n: PROJECT_ROWS.length - completed, l: 'Failed / Incomplete' },
+  ];
+  document.getElementById('projects-summary-cards').innerHTML = cards.map(c => `
+    <div class="rq-card-stat"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
+}
+
+function renderProjectBarChart() {
+  const c = colors();
+  const sorted = [...SUMMARY.projects].sort((a, b) => b.buggy_versions - a.buggy_versions);
+  RQ.renderStackedBarList(document.getElementById('project-bar-chart'), {
+    categories: sorted.map(p => p.project),
+    series: [{ name: 'Buggy Versions', color: c.accent, values: sorted.map(p => p.buggy_versions) }],
+    onCategoryClick: goToBugs,
+  });
 }
 
 function renderProjectGrid() {
@@ -53,28 +79,27 @@ function renderProjectGrid() {
   el.querySelectorAll('.project-card').forEach(card => card.addEventListener('click', () => goToBugs(card.dataset.project)));
 }
 
+// ========================================================== BUGS TABLE
 function renderBugsView() {
   const rows = PROJECT_ROWS.filter(r => r.project === state.project);
   const ok = rows.filter(r => r.status === 'OK').length;
   const totalFaultLines = rows.reduce((s, r) => s + (r.total_fault_lines || 0), 0);
   document.getElementById('bugs-summary-cards').innerHTML = [
-    { n: rows.length, l: 'Buggy Versions' },
-    { n: ok, l: 'OK' },
-    { n: rows.length - ok, l: 'FAIL' },
+    { n: rows.length, l: 'Buggy Versions' }, { n: ok, l: 'Completed' }, { n: rows.length - ok, l: 'Not Available' },
     { n: totalFaultLines, l: 'Ground-Truth Fault Lines' },
   ].map(c => `<div class="rq-card-stat"><div class="n">${c.n}</div><div class="l">${c.l}</div></div>`).join('');
 
   RQ.createDataTable(document.getElementById('bugs-table'), {
     columns: [
       { key: 'bug_id', label: 'Bug ID' },
-      { key: 'status', label: 'Status', format: v => `<span class="cat-badge ${v === 'OK' ? 'best' : 'neither'}">${v}</span>` },
-      { key: 'pass_tc', label: 'Pass TC', numeric: true, format: fmtNum },
-      { key: 'fail_tc', label: 'Fail TC', numeric: true, format: fmtNum },
-      { key: 'total_fault_lines', label: 'Fault Lines', numeric: true },
-      { key: 'answerable_fault_lines', label: 'Answerable', numeric: true },
-      { key: 'elapsed_s', label: 'Runtime (s)', numeric: true, format: fmtNum },
+      { key: 'tests', label: 'Tests', numeric: true },
+      { key: 'pass_tc', label: 'Passing', numeric: true, format: fmtNum },
+      { key: 'fail_tc', label: 'Failing', numeric: true, format: fmtNum },
+      { key: 'executed_statements', label: 'Executed Statements', numeric: true, format: fmtNum },
+      { key: 'matrix_status', label: 'Matrix Status', format: badge },
+      { key: 'ochiai_status', label: 'Ochiai Status', format: badge },
     ],
-    rows,
+    rows: rows.map(r => ({ ...r, tests: (r.pass_tc || 0) + (r.fail_tc || 0), matrix_status: stageStatus(r), ochiai_status: stageStatus(r) })),
     searchKeys: ['bug_id'],
     pageSize: 25,
     onRowClick: bugId => goToDetail(state.project, bugId),
@@ -82,95 +107,216 @@ function renderBugsView() {
   });
 }
 
-function kv(items) {
-  return `<div class="kv-grid">${items.map(([k, v]) => `<div class="kv-item"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('')}</div>`;
-}
-
-function rankingTable(rows) {
-  if (!rows || rows.length < 2) return `<p class="muted" style="font-size:13px">Not available for this buggy version.</p>`;
-  const [header, ...body] = rows;
-  return `<div class="ranking-table-scroll"><table class="ranking-table">
-    <thead><tr>${header.map(h => `<th>${h}</th>`).join('')}</tr></thead>
-    <tbody>${body.map(row => `<tr>${row.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
-  </table></div>`;
-}
-
+// =========================================================== DETAIL
 async function renderDetailView() {
   const el = document.getElementById('detail-content');
   el.innerHTML = `<p class="skeleton">Loading…</p>`;
-  let d;
+  const row = PROJECT_ROWS.find(r => r.project === state.project && `${r.project}_${r.bug_id}` === state.bugKey);
+
+  let d = null, m = null;
+  try { d = await fetch(`data/bugs/${state.bugKey}.json`).then(r => r.json()); } catch (e) { /* ignore */ }
   try {
-    d = await fetch(`data/bugs/${state.bugKey}.json`).then(r => r.json());
-  } catch (err) {
-    el.innerHTML = `<p class="skeleton">Could not load this buggy version's data.</p>`;
-    return;
-  }
+    const res = await fetch(`data/matrix/${state.bugKey}.json`);
+    if (res.ok) m = await res.json();
+  } catch (e) { /* ignore - not available for FAILed bugs */ }
+  CURRENT_DETAIL = d; CURRENT_MATRIX = m;
 
-  const sections = [];
+  if (!d) { el.innerHTML = `<p class="skeleton">Could not load this buggy version's data.</p>`; return; }
 
-  sections.push(`
-    <div class="detail-section">
-      <h1 style="font-family:var(--font-display);font-size:26px;margin-bottom:6px">${d.project} / ${d.bug_id}</h1>
-    </div>`);
-
-  if (d.rq1) {
-    sections.push(`<div class="detail-section"><span class="eyebrow-sm">Step 1 — Test Execution (RQ1)</span>${kv([
-      ['Pass TC', fmtNum(d.rq1.Pass_TC)], ['Fail TC', fmtNum(d.rq1.Fail_TC)],
-      ['Pass Assert', fmtNum(d.rq1.Pass_Assert)], ['Fail Assert', fmtNum(d.rq1.Fail_Assert)],
-      ['Uncaught Exception', fmtNum(d.rq1.Uncaught_Exception)],
-    ])}</div>`);
-  }
-
-  if (d.rq2) {
-    const ratio = parseFloat(d.rq2.all_reduction_ratio);
-    sections.push(`<div class="detail-section"><span class="eyebrow-sm">Step 2 — Slicing / Search-Space Reduction (RQ2)</span>${kv([
-      ['Full Execution Size', fmtNum(d.rq2.full_execution_size)],
-      ['Union All Slice', fmtNum(d.rq2.union_all_slice)],
-      ['Union Passing Slice', fmtNum(d.rq2.union_passing_slice)],
-      ['Union Failing Slice', fmtNum(d.rq2.union_failing_slice)],
-      ['Reduction Ratio', Number.isFinite(ratio) ? RQ.pct(ratio) : '—'],
-    ])}</div>`);
-  }
-
-  if (d.rq3) {
-    sections.push(`<div class="detail-section"><span class="eyebrow-sm">Cost — Timing &amp; Memory (RQ3)</span>${kv([
-      ['Baseline Time', fmtNum(d.rq3['Baseline_Time_(s)']) + 's'], ['SBFL Time', fmtNum(d.rq3['SBFL_Time_(s)']) + 's'],
-      ['Hybrid Time', fmtNum(d.rq3['Hybrid_Time_(s)']) + 's'], ['Avg Slice Time', fmtNum(d.rq3['Avg_Slice_Time_(s)']) + 's'],
-      ['Peak Memory', fmtNum((parseFloat(d.rq3['Peak_Memory_(KB)']) / 1024).toFixed(1)) + ' MB'],
-    ])}</div>`);
-  }
-
-  if (d.rq4_trace || d.rq4_slice) {
-    const items = [];
-    if (d.rq4_trace) items.push(['Trace: Included / Total', `${fmtNum(d.rq4_trace.Included_In_Slice)} / ${fmtNum(d.rq4_trace.Total_Faults)}`], ['Trace: Any Fault Found', d.rq4_trace.Faulty_Stmts_In_Slice]);
-    if (d.rq4_slice) items.push(['Slice: Included / Total', `${fmtNum(d.rq4_slice.Included_In_Slice)} / ${fmtNum(d.rq4_slice.Total_Faults)}`], ['Slice: Any Fault Found', d.rq4_slice.Faulty_Stmts_In_Slice]);
-    sections.push(`<div class="detail-section"><span class="eyebrow-sm">Fault Inclusion (RQ4)</span>${kv(items)}</div>`);
-  }
-
-  if (d.fault_lines && d.fault_lines.length) {
-    sections.push(`<div class="detail-section"><span class="eyebrow-sm">Fault Localization Ranking (RQ5)</span>
-      <div class="ranking-table-scroll"><table class="ranking-table">
-        <thead><tr><th>File</th><th>Line</th><th>Rank (Trace)</th><th>Diff (Trace)</th><th>Rank (Slice)</th><th>Diff (Slice)</th><th>Unanswerable</th></tr></thead>
-        <tbody>${d.fault_lines.map(f => `<tr>
-          <td>${f.file_name}</td><td>${f.line_no}</td>
-          <td>${fmtRaw(f.rank_best_trace)}</td><td>${fmtRaw(f.nearest_line_diff_trace)}</td>
-          <td>${fmtRaw(f.rank_best_slice)}</td><td>${fmtRaw(f.nearest_line_diff_slice)}</td>
-          <td>${fmtRaw(f.unanswerable_reason)}</td>
-        </tr>`).join('')}</tbody>
-      </table></div>
-    </div>`);
-  }
-
-  sections.push(`<div class="detail-section"><span class="eyebrow-sm">Step 3 — Trace Statement Matrix / Ochiai Ranking (Top 15)</span>${rankingTable(d.trace_ranking_top)}</div>`);
-  sections.push(`<div class="detail-section"><span class="eyebrow-sm">Step 3 — Slice Statement Matrix / Ochiai Ranking (Top 15)</span>${rankingTable(d.slice_ranking_top)}</div>`);
-
-  if (d.ranking_summary_md) {
-    sections.push(`<div class="detail-section"><span class="eyebrow-sm">Step 4 — Ranking Summary</span><div class="md-block">${d.ranking_summary_md.replace(/</g, '&lt;')}</div></div>`);
-  }
-
-  el.innerHTML = sections.join('');
+  el.innerHTML = `
+    <h1 style="font-family:var(--font-display);font-size:26px;margin-bottom:18px">${d.project} / ${d.bug_id}</h1>
+    <div class="pipeline" id="pipeline-cards" style="margin-bottom:26px"></div>
+    <div class="detail-tabs" id="detail-tabs"></div>
+    <div id="detail-tab-content"></div>
+  `;
+  renderPipelineCards(d, row, m);
+  RQ.renderSegmented(document.getElementById('detail-tabs'), [
+    { value: 'overview', label: 'Overview' }, { value: 'matrix', label: 'Matrix' }, { value: 'ochiai', label: 'Ochiai Ranking' },
+  ], state.detailTab, v => { state.detailTab = v; renderDetailTabContent(); });
+  document.getElementById('detail-tabs').className = 'detail-tabs';
+  document.querySelectorAll('#detail-tabs button').forEach(b => b.className = b.classList.contains('active') ? 'active' : '');
+  renderDetailTabContent();
 }
 
+function renderPipelineCards(d, row, m) {
+  const bestTrace = d.trace_ranking_top?.[1]; // [0] is header
+  const stages = [
+    { t: 'Test Execution', v: d.rq1 ? `${fmtNum(d.rq1.Pass_TC)} pass / ${fmtNum(d.rq1.Fail_TC)} fail` : '—' },
+    { t: 'Execution Data', v: d.rq2 ? `${fmtNum(d.rq2.full_execution_size)} statements` : '—' },
+    { t: 'Matrix Construction', v: m?.trace ? `${fmtNum(m.trace.total_rows)} × ${fmtNum(m.trace.total_cols)}` : 'Not available' },
+    { t: 'Ochiai Calculation', v: (d.trace_ranking_top?.length > 1) ? `${d.trace_ranking_top.length - 1}+ statements ranked` : 'Not available' },
+    { t: 'Suspiciousness Ranking', v: bestTrace ? `top score ${parseFloat(bestTrace[5]).toFixed(3)}` : 'Not available' },
+  ];
+  document.getElementById('pipeline-cards').innerHTML = stages.map((s, i) => `
+    <div class="pipe-step"><div class="idx">0${i + 1}</div><h4>${s.t}</h4><p>${s.v}</p></div>
+    ${i < stages.length - 1 ? '<div class="pipe-arrow">→</div>' : ''}`).join('');
+}
+
+function renderDetailTabContent() {
+  const el = document.getElementById('detail-tab-content');
+  document.querySelectorAll('#detail-tabs button').forEach(b => b.classList.toggle('active', b.dataset.value === state.detailTab));
+  if (state.detailTab === 'overview') return renderOverviewTab(el);
+  if (state.detailTab === 'matrix') return renderMatrixTab(el);
+  return renderOchiaiTab(el);
+}
+
+// ---------------------------------------------------------- Overview tab
+function renderOverviewTab(el) {
+  const d = CURRENT_DETAIL;
+  const c = colors();
+  const rq1 = d.rq1, rq2 = d.rq2;
+  el.innerHTML = `
+    <div class="rq-cards" style="margin-top:0">
+      <div class="rq-card-stat"><div class="n">${rq1 ? fmtNum(Number(rq1.Pass_TC) + Number(rq1.Fail_TC)) : '—'}</div><div class="l">Total Test Cases</div></div>
+      <div class="rq-card-stat"><div class="n">${rq1 ? fmtNum(rq1.Pass_TC) : '—'}</div><div class="l">Passing Test Cases</div></div>
+      <div class="rq-card-stat"><div class="n">${rq1 ? fmtNum(rq1.Fail_TC) : '—'}</div><div class="l">Failing Test Cases</div></div>
+      <div class="rq-card-stat"><div class="n">${rq2 ? fmtNum(rq2.full_execution_size) : '—'}</div><div class="l">Executed Statements</div></div>
+    </div>
+    <div class="rq-chart-panel" style="margin-top:24px"><div id="overview-pf-chart"></div></div>
+  `;
+  if (rq1) {
+    RQ.renderComparisonBars(document.getElementById('overview-pf-chart'), [
+      { label: 'Passing Tests', value: Number(rq1.Pass_TC), color: c.ok },
+      { label: 'Failing Tests', value: Number(rq1.Fail_TC), color: c.fail },
+    ]);
+  } else {
+    document.getElementById('overview-pf-chart').innerHTML = `<p class="muted" style="font-size:13px">Not available - this buggy version's pipeline run did not complete.</p>`;
+  }
+}
+
+// ------------------------------------------------------------ Matrix tab
+function renderMatrixTab(el) {
+  const m = CURRENT_MATRIX;
+  if (!m) {
+    el.innerHTML = `<p class="skeleton">Matrix not available for this buggy version (pipeline did not reach this stage).</p>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="rq-controls" style="margin-top:0">
+      <div class="seg-group"><span class="seg-label">Approach</span><div class="seg" id="matrix-approach-seg"></div></div>
+    </div>
+    <div class="kv-grid" id="matrix-dims" style="margin:18px 0"></div>
+    <div id="heatmap-container"></div>
+  `;
+  RQ.renderSegmented(document.getElementById('matrix-approach-seg'), [
+    { value: 'trace', label: 'Trace' }, { value: 'slice', label: 'Slice' },
+  ], state.matrixApproach, v => { state.matrixApproach = v; renderMatrixTab(el); });
+
+  const md = m[state.matrixApproach];
+  if (!md) {
+    document.getElementById('matrix-dims').innerHTML = `<div class="kv-item"><div class="k">Status</div><div class="v">Not available</div></div>`;
+    document.getElementById('heatmap-container').innerHTML = '';
+    return;
+  }
+  document.getElementById('matrix-dims').innerHTML = [
+    ['Matrix Rows (tests)', RQ.fmt.format(md.total_rows)],
+    ['Matrix Columns (statements)', RQ.fmt.format(md.total_cols)],
+    ['Preview Density', RQ.pct(md.preview_density)],
+  ].map(([k, v]) => `<div class="kv-item"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+  renderHeatmap(document.getElementById('heatmap-container'), md);
+}
+
+function renderHeatmap(el, md) {
+  const truncated = md.total_rows > md.preview_row_count || md.total_cols > md.preview_col_count;
+  const header = `<tr><th></th>${md.stmt_labels.map(s => `<th>${s}</th>`).join('')}</tr>`;
+  const body = md.rows.map(r => `<tr><th title="${r.test}">${r.test}</th>${r.cells.map(c => `<td class="heatmap-cell ${c ? 'on' : 'off'}" title="${r.test} = ${c}"></td>`).join('')}</tr>`).join('');
+  el.innerHTML = `
+    <div class="heatmap-toolbar">
+      <span class="heatmap-note">${truncated
+        ? `Showing ${md.preview_row_count}×${md.preview_col_count} of ${RQ.fmt.format(md.total_rows)}×${RQ.fmt.format(md.total_cols)} cells - too large to render fully in-browser.`
+        : `Full matrix - ${md.total_rows}×${md.total_cols} cells.`}</span>
+      <div class="seg" id="zoom-seg"></div>
+    </div>
+    <div class="heatmap-wrap"><table class="heatmap-table zoom-${state.matrixZoom}"><thead>${header}</thead><tbody>${body}</tbody></table></div>
+  `;
+  RQ.renderSegmented(document.getElementById('zoom-seg'), [
+    { value: 'sm', label: '−' }, { value: 'md', label: '•' }, { value: 'lg', label: '+' },
+  ], state.matrixZoom, v => { state.matrixZoom = v; document.querySelector('.heatmap-table').className = `heatmap-table zoom-${v}`; document.querySelectorAll('#zoom-seg button').forEach(b => b.classList.toggle('active', b.dataset.value === v)); });
+}
+
+// ------------------------------------------------------------ Ochiai tab
+function parseRankingRows(top) {
+  if (!top || top.length < 2) return [];
+  const [header, ...body] = top;
+  const idx = k => header.indexOf(k);
+  return body.map(row => ({
+    rank: parseInt(row[idx('rank')], 10),
+    statement_id: row[idx('statement_id')],
+    file: row[idx('file')],
+    line: parseInt(row[idx('line')], 10),
+    code: row[idx('code')],
+    ochiai_score: parseFloat(row[idx('ochiai_score')]),
+    tie_size: parseInt(row[idx('tie_size')], 10),
+  }));
+}
+
+function renderOchiaiTab(el) {
+  const d = CURRENT_DETAIL;
+  el.innerHTML = `
+    <div class="rq-controls" style="margin-top:0">
+      <div class="seg-group"><span class="seg-label">Approach</span><div class="seg" id="ochiai-approach-seg"></div></div>
+      <div class="seg-group"><span class="seg-label">Top</span><div class="seg" id="ochiai-topn-seg"></div></div>
+    </div>
+    <div class="section-head" style="margin-top:24px">
+      <h2 style="font-size:18px">Ochiai Suspiciousness Ranking</h2>
+    </div>
+    <div class="rq-chart-panel"><div id="ochiai-chart"></div></div>
+    <div class="rq-table-section"><div id="ochiai-table"></div></div>
+  `;
+  RQ.renderSegmented(document.getElementById('ochiai-approach-seg'), [
+    { value: 'trace', label: 'Trace' }, { value: 'slice', label: 'Slice' },
+  ], state.ochiaiApproach, v => { state.ochiaiApproach = v; renderOchiaiTab(el); });
+  RQ.renderSegmented(document.getElementById('ochiai-topn-seg'), [
+    { value: 10, label: 'Top 10' }, { value: 20, label: 'Top 20' }, { value: 50, label: 'Top 50' }, { value: 999, label: 'All' },
+  ].map(o => ({ ...o, value: String(o.value) })), String(state.ochiaiTopN), v => { state.ochiaiTopN = parseInt(v, 10); renderOchiaiTab(el); });
+
+  const raw = state.ochiaiApproach === 'trace' ? d.trace_ranking_top : d.slice_ranking_top;
+  const allRows = parseRankingRows(raw);
+  const faultySet = new Set((d.fault_lines || []).map(f => `${f.file_name}:${f.line_no}`));
+  const rows = allRows.slice(0, Math.min(state.ochiaiTopN, allRows.length));
+
+  if (!rows.length) {
+    document.getElementById('ochiai-chart').innerHTML = `<p class="skeleton">Not available for this approach.</p>`;
+    document.getElementById('ochiai-table').innerHTML = '';
+    return;
+  }
+  if (allRows.length >= 50 && state.ochiaiTopN > allRows.length) {
+    document.getElementById('ochiai-chart').insertAdjacentHTML('beforebegin', `<p class="muted" style="font-size:12px;margin-bottom:8px">Showing all ${allRows.length} statements available in this preview (the underlying ranking may contain more).</p>`);
+  }
+  renderOchiaiBars(document.getElementById('ochiai-chart'), rows, faultySet);
+
+  RQ.createDataTable(document.getElementById('ochiai-table'), {
+    columns: [
+      { key: 'rank', label: 'Rank', numeric: true },
+      { key: 'file', label: 'File' },
+      { key: 'line', label: 'Line', numeric: true },
+      { key: 'ochiai_score', label: 'Ochiai Score', numeric: true, format: v => v.toFixed(4) },
+      { key: 'faulty', label: 'Faulty Line', format: v => v ? '★' : '' },
+    ],
+    rows: allRows.map(r => ({ ...r, faulty: faultySet.has(`${r.file}:${r.line}`) })),
+    searchKeys: ['file'],
+    pageSize: 20,
+  });
+}
+
+function renderOchiaiBars(el, rows, faultySet) {
+  const c = colors();
+  const max = Math.max(...rows.map(r => r.ochiai_score), 0.0001);
+  el.innerHTML = `<div class="bar-chart-scroll">` + rows.map(r => {
+    const key = `${r.file}:${r.line}`;
+    const isFaulty = faultySet.has(key);
+    return `<div class="bar-row ${isFaulty ? 'faulty' : ''}">
+      <div class="cat-label" title="${key}">${r.file}:${r.line}</div>
+      <div class="bar-track">
+        <div class="bar-seg" style="width:${(r.ochiai_score / max * 100).toFixed(1)}%;background:${c.accent};height:16px"></div>
+        <span class="bar-value">${r.ochiai_score.toFixed(3)}</span>
+        ${isFaulty ? '<span class="faulty-marker">← Faulty Line</span>' : ''}
+      </div>
+    </div>`;
+  }).join('') + `</div>`;
+}
+
+// =============================================================== init
 async function init() {
   try {
     [SUMMARY, PROJECT_ROWS] = await Promise.all([
@@ -178,6 +324,8 @@ async function init() {
       fetch('data/projects.json').then(r => r.json()),
     ]);
     renderBreadcrumb();
+    renderOverviewSummary();
+    renderProjectBarChart();
     renderProjectGrid();
   } catch (err) {
     console.error('Projects verisi yüklenemedi:', err);
