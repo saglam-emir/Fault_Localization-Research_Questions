@@ -1,20 +1,224 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>resQ — Fault Localization Research</title>
-<style>
-  body { font-family: system-ui, sans-serif; background: #11151c; color: #e7ebf0; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-  main { text-align: center; padding: 24px; }
-  h1 { font-weight: 600; }
-  p { color: #97a2b1; }
-</style>
+<title>resQ — Fault Localization with Program Slicing</title>
+<meta name="description" content="An experimental evaluation of spectrum-based fault localization combined with dynamic program slicing, on real-world Java bugs from Defects4J.">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<main>
-  <h1>resQ — Fault Localization Research</h1>
-  <p>Site tasarımı hazırlanıyor.</p>
-</main>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">resQ<span class="dot">.</span><small>fault localization</small></a>
+
+    <button class="nav-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">☰</button>
+
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+
+      <details class="nav-rq-dropdown">
+        <summary>Research Questions ▾</summary>
+        <div class="nav-rq-menu">
+          <a href="rq1.html">RQ1 <span>Test Suite Characteristics</span></a>
+          <a href="rq2.html">RQ2 <span>Search-Space Reduction</span></a>
+          <a href="rq3.html">RQ3 <span>Performance &amp; Cost</span></a>
+          <a href="rq4.html">RQ4 <span>Fault Inclusion</span></a>
+          <a href="rq5.html">RQ5 <span>Fault Localization Ranking</span></a>
+        </div>
+      </details>
+
+      <a href="projects.html">Projects</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="references.html">References</a>
+      <a class="nav-gh js-gh-link" href="#" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================ HERO === -->
+<header class="hero">
+  <div class="container">
+    <p class="kicker">Software Engineering Research · Defects4J</p>
+    <h1>Fault Localization with Program Slicing</h1>
+    <p class="subtitle">An experimental evaluation of hybrid spectrum-based fault localization on real-world Java bugs from Defects4J.</p>
+    <p class="lede">This research investigates whether dynamic program slicing can reduce the statement search space
+      of spectrum-based fault localization (SBFL) while preserving — or improving — its ability to rank the true
+      faulty statement. Every result on this site is generated directly from the project's pipeline output.</p>
+    <div class="hero-actions">
+      <a href="#research-questions" class="btn btn-primary">Explore Research Questions</a>
+      <a href="projects.html" class="btn btn-secondary">Explore Projects</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================================================== KEY STATISTICS === -->
+<section class="section tight" id="overview">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Experimental Scale</p>
+      <h2>Overview</h2>
+      <p>Aggregated directly from the pipeline's result files — nothing on this page is hand-entered.</p>
+    </div>
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card"><div class="skeleton">loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================== RESEARCH INFO === -->
+<section class="section tight">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">About</p>
+      <h2>Research Information</h2>
+    </div>
+    <div class="info-panel" id="info-panel">
+      <div class="info-item"><div class="skeleton">loading…</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================= RESEARCH PURPOSE === -->
+<section class="section tight">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Motivation</p>
+      <h2>Research Purpose</h2>
+    </div>
+    <div class="prose">
+      <p><strong>Spectrum-based fault localization (SBFL)</strong> ranks program statements by their statistical
+      correlation with test failures, using nothing more than pass/fail coverage. It is cheap to compute, but its
+      ranking is diluted by every statement that happens to run alongside the fault, whether or not it is actually
+      relevant.</p>
+      <p>This project evaluates a <strong>hybrid approach</strong>: instead of ranking every statement a failing
+      test touches, it first computes the <strong>dynamic backward slice</strong> of each failing assertion, and
+      restricts the suspiciousness ranking to that much smaller set of statements. The goal is not simply
+      to report a raw hit rate across every fault, but specifically to measure the technique's <strong>success rate
+      on the fault detections it could theoretically succeed at</strong> — and to characterize, systematically,
+      why it fails on the rest: a structurally undetectable fault (dead code, or a line no test in the suite ever
+      executes) is a fundamentally different failure mode from a genuine ranking miss on a line that was reachable
+      all along.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================== METHODOLOGY === -->
+<section class="section tight" id="methodology">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Pipeline</p>
+      <h2>Methodology Overview</h2>
+      <p>Every buggy version runs through this pipeline exactly once. See the full <a href="methodology.html" style="color:var(--accent)">Methodology</a> page for details.</p>
+    </div>
+    <div class="pipeline">
+      <div class="pipe-step"><div class="idx">01</div><h4>Defects4J</h4><p>Select a real, reproducible bug from a Defects4J project.</p></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="idx">02</div><h4>Buggy Version</h4><p>Check out the buggy source tree and its test suite.</p></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="idx">03</div><h4>Test Execution</h4><p>Run every test, recording pass/fail outcome and assertion sites.</p></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="idx">04</div><h4>Program Slicing</h4><p>Compute the dynamic backward slice of each failing assertion.</p></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="idx">05</div><h4>Trace / Slice Matrices</h4><p>Build observation matrices and Ochiai suspiciousness scores for both.</p></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="idx">06</div><h4>Fault Localization</h4><p>Rank statements by suspiciousness, trace-based and slice-based.</p></div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step"><div class="idx">07</div><h4>RQ1–RQ5</h4><p>Evaluate the ranking's ability to locate the true faulty statement.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================== RESEARCH QUESTIONS === -->
+<section class="section" id="research-questions">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Explore</p>
+      <h2>Research Questions</h2>
+      <p>Each RQ has its own page with the full dataset, filters and visualizations.</p>
+    </div>
+    <div class="rq-grid">
+      <a class="rq-card" href="rq1.html">
+        <span class="tag">RQ1</span>
+        <h3>Test Suite Characteristics</h3>
+        <p>How large is each buggy version's test suite, and how many assertions and failures does it contain?</p>
+        <span class="go">Explore →</span>
+      </a>
+      <a class="rq-card" href="rq2.html">
+        <span class="tag">RQ2</span>
+        <h3>Search-Space Reduction</h3>
+        <p>How much does dynamic slicing shrink the statement search space compared to the full test-suite trace?</p>
+        <span class="go">Explore →</span>
+      </a>
+      <a class="rq-card" href="rq3.html">
+        <span class="tag">RQ3</span>
+        <h3>Performance &amp; Cost</h3>
+        <p>What timing and memory overhead does the hybrid, slicing-based approach add over baseline SBFL?</p>
+        <span class="go">Explore →</span>
+      </a>
+      <a class="rq-card" href="rq4.html">
+        <span class="tag">RQ4</span>
+        <h3>Fault Inclusion</h3>
+        <p>Does the dynamic slice — or the full trace — even contain the ground-truth faulty statement at all?</p>
+        <span class="go">Explore →</span>
+      </a>
+      <a class="rq-card" href="rq5.html">
+        <span class="tag">RQ5</span>
+        <h3>Fault Localization Ranking</h3>
+        <p>When the fault is reachable, how well does each ranking actually locate it — and why does it fail on the rest?</p>
+        <span class="go">Explore →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================== PROJECTS === -->
+<section class="section tight">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Dataset</p>
+      <h2>Explore Projects</h2>
+      <p>Explore the evaluated Defects4J projects, and navigate from a project down to its individual buggy versions and experiment results.</p>
+    </div>
+    <div class="projects-panel">
+      <div>
+        <div class="mini-stats">
+          <div><div class="n" id="proj-count">–</div><div class="l">Projects</div></div>
+          <div><div class="n" id="bug-count">–</div><div class="l">Buggy Versions</div></div>
+        </div>
+        <a href="projects.html" class="btn btn-primary">Explore Projects →</a>
+      </div>
+      <div class="dist-chart" id="dist-chart"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================== REFERENCES === -->
+<section class="section tight" id="references">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Related Work</p>
+      <h2>References</h2>
+    </div>
+    <div class="ref-grid" id="ref-grid">
+      <div class="skeleton">loading…</div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>resQ — Fault Localization Research · © 2026</p>
+    <div class="footer-links">
+      <a href="methodology.html">Methodology</a>
+      <a href="references.html">References</a>
+      <a class="js-gh-link" href="#" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/home.js"></script>
 </body>
 </html>
