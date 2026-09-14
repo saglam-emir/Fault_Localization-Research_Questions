@@ -97,6 +97,44 @@ const RQ = (() => {
     }
   }
 
+  // ---- scatter plot (SVG, no library) --------------------------------
+  // points: [{x, y, label, key}]. formatX/formatY format axis ticks and
+  // tooltip values. onPointClick(key) is optional.
+  function renderScatter(el, { points, xLabel, yLabel, formatX = fmt.format, formatY = fmt.format, color, onPointClick }) {
+    const width = 720, height = 380, pad = { l: 64, r: 20, t: 16, b: 44 };
+    const xMax = Math.max(...points.map(p => p.x), 1);
+    const yMax = Math.max(...points.map(p => p.y), 1);
+    const xScale = x => pad.l + (x / xMax) * (width - pad.l - pad.r);
+    const yScale = y => height - pad.b - (y / yMax) * (height - pad.t - pad.b);
+    const tickFracs = [0, 0.25, 0.5, 0.75, 1];
+
+    const gridlines = tickFracs.map(f => `<line x1="${pad.l}" x2="${width - pad.r}" y1="${yScale(f * yMax).toFixed(1)}" y2="${yScale(f * yMax).toFixed(1)}" stroke="var(--border)" stroke-width="1"/>`).join('');
+    const yTickLabels = tickFracs.map(f => `<text x="${pad.l - 8}" y="${(yScale(f * yMax) + 3).toFixed(1)}" text-anchor="end" font-size="10" fill="var(--ink-faint)" font-family="var(--font-mono)">${formatY(f * yMax)}</text>`).join('');
+    const xTickLabels = tickFracs.map(f => `<text x="${xScale(f * xMax).toFixed(1)}" y="${height - pad.b + 18}" text-anchor="middle" font-size="10" fill="var(--ink-faint)" font-family="var(--font-mono)">${formatX(f * xMax)}</text>`).join('');
+    const dots = points.map(p => `
+      <circle class="${onPointClick ? 'scatter-pt-clickable' : ''}" data-key="${p.key ?? ''}"
+        cx="${xScale(p.x).toFixed(1)}" cy="${yScale(p.y).toFixed(1)}" r="4.5"
+        fill="${color}" fill-opacity="0.62" stroke="${color}" stroke-width="1.2">
+        <title>${p.label}\n${xLabel}: ${formatX(p.x)}\n${yLabel}: ${formatY(p.y)}</title>
+      </circle>`).join('');
+
+    el.innerHTML = `<svg viewBox="0 0 ${width} ${height}" style="width:100%;height:auto;display:block">
+      ${gridlines}
+      <line x1="${pad.l}" x2="${pad.l}" y1="${pad.t}" y2="${height - pad.b}" stroke="var(--border)"/>
+      <line x1="${pad.l}" x2="${width - pad.r}" y1="${height - pad.b}" y2="${height - pad.b}" stroke="var(--border)"/>
+      ${yTickLabels}${xTickLabels}
+      ${dots}
+      <text x="${(pad.l + width - pad.r) / 2}" y="${height - 4}" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--font-mono)">${xLabel}</text>
+      <text x="14" y="${(pad.t + height - pad.b) / 2}" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--font-mono)" transform="rotate(-90 14 ${(pad.t + height - pad.b) / 2})">${yLabel}</text>
+    </svg>`;
+    if (onPointClick) {
+      el.querySelectorAll('.scatter-pt-clickable').forEach(pt => {
+        pt.style.cursor = 'pointer';
+        pt.addEventListener('click', () => onPointClick(pt.dataset.key));
+      });
+    }
+  }
+
   // ---- generic sortable / searchable / paginated data table ---------
   // columns: [{key, label, numeric}]. rows: array of plain objects.
   function createDataTable(root, { columns, rows, searchKeys, filterKey, pageSize = 25 }) {
@@ -182,5 +220,5 @@ const RQ = (() => {
     return { refresh: render };
   }
 
-  return { fmt, pct, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, createDataTable };
+  return { fmt, pct, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, createDataTable };
 })();
