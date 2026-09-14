@@ -17,22 +17,35 @@ async function loadJSON(path) {
   return res.json();
 }
 
+// Sayı sayaç animasyonu - 0'dan hedef degere ~1.1s'de, ease-out ile sayar.
+function animateCount(el, target, { decimals = 0, duration = 1100 } = {}) {
+  const start = performance.now();
+  const easeOut = t => 1 - Math.pow(1 - t, 3);
+  function tick(now) {
+    const p = Math.min(1, (now - start) / duration);
+    const value = target * easeOut(p);
+    el.textContent = decimals > 0 ? value.toFixed(decimals) : fmt.format(Math.round(value));
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = decimals > 0 ? target.toFixed(decimals) : fmt.format(target);
+  }
+  requestAnimationFrame(tick);
+}
+
 function renderStats(summary) {
-  const el = document.getElementById('stats-grid');
-  const days = secondsToMachineDays(summary.total_elapsed_seconds);
-  const cards = [
-    { n: summary.total_projects, l: 'Defects4J Projects' },
-    { n: fmt.format(summary.total_buggy_versions), l: 'Buggy Versions' },
-    { n: fmt.format(summary.total_test_cases), l: 'Test Cases' },
-    { n: fmt.format(summary.total_fail_tc), l: 'Failing Test Cases' },
-    { n: `${days}`, l: 'Machine-Days Runtime', sub: `${fmt.format(summary.total_elapsed_seconds)}s · ~${secondsToHours(summary.total_elapsed_seconds)}h` },
-  ];
-  el.innerHTML = cards.map(c => `
-    <div class="stat-card">
-      <div class="n">${c.n}</div>
-      <div class="l">${c.l}</div>
-      ${c.sub ? `<div class="sub" title="raw elapsed_s sum across all runs">${c.sub}</div>` : ''}
-    </div>`).join('');
+  const days = parseFloat(secondsToMachineDays(summary.total_elapsed_seconds));
+  const values = {
+    total_projects: summary.total_projects,
+    total_buggy_versions: summary.total_buggy_versions,
+    total_test_cases: summary.total_test_cases,
+    machine_days: days,
+  };
+  document.querySelectorAll('[data-stat]').forEach(el => {
+    const key = el.dataset.stat;
+    const decimals = parseInt(el.dataset.decimals || '0', 10);
+    animateCount(el, values[key], { decimals });
+  });
+  const sub = document.getElementById('stat-runtime-sub');
+  if (sub) sub.textContent = `${fmt.format(summary.total_elapsed_seconds)}s · ~${secondsToHours(summary.total_elapsed_seconds)}h`;
 }
 
 function renderInfo(meta) {
@@ -94,8 +107,8 @@ async function init() {
     }
   } catch (err) {
     console.error('Veri yüklenemedi:', err);
-    document.getElementById('stats-grid').innerHTML =
-      `<div class="skeleton" style="padding:20px">Veri yüklenirken bir sorun oluştu.</div>`;
+    const sub = document.getElementById('stat-runtime-sub');
+    if (sub) sub.textContent = 'Veri yüklenirken bir sorun oluştu.';
   }
 }
 
