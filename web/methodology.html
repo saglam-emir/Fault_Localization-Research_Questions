@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology · resQ</title>
+<meta name="description" content="How every buggy version's data was produced: the four-stage pipeline, the Ochiai suspiciousness formula, and the line-tolerance and answerability methodology behind RQ4/RQ5.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand">resQ<span class="dot">.</span><small>fault localization</small></a>
+    <button class="nav-toggle" aria-label="Menüyü aç/kapat" aria-expanded="false">☰</button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <details class="nav-rq-dropdown">
+        <summary>Research Questions ▾</summary>
+        <div class="nav-rq-menu">
+          <a href="rq1.html">RQ1 <span>Test Suite Characteristics</span></a>
+          <a href="rq2.html">RQ2 <span>Search-Space Reduction</span></a>
+          <a href="rq3.html">RQ3 <span>Performance &amp; Cost</span></a>
+          <a href="rq4.html">RQ4 <span>Fault Inclusion</span></a>
+          <a href="rq5.html">RQ5 <span>Fault Localization Ranking</span></a>
+        </div>
+      </details>
+      <a href="projects.html">Projects</a>
+      <a href="methodology.html" class="active">Methodology</a>
+      <a href="references.html">References</a>
+      <a class="nav-gh js-gh-link" href="#" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+
+  <header class="rq-page-header">
+    <h1>Methodology</h1>
+    <p class="rq-question-text">How every number on this site was produced: the four-stage pipeline each buggy
+      version runs through exactly once, the suspiciousness formula shared by both rankings, and the line-tolerance
+      and answerability methodology that separates a genuine ranking miss from a fault no technique could ever have
+      found.</p>
+    <nav class="toc-pills" aria-label="On this page">
+      <a href="#pipeline">Pipeline</a>
+      <a href="#approaches">Trace vs. Slice</a>
+      <a href="#ochiai">Ochiai Formula</a>
+      <a href="#research-questions">Research Questions</a>
+      <a href="#tolerance">Tolerance &amp; Answerability</a>
+      <a href="#provenance">Data Provenance</a>
+      <a href="#limitations">Known Limitations</a>
+      <a href="#glossary">Glossary</a>
+    </nav>
+  </header>
+
+  <div class="rq-cards" id="scope-cards" style="margin-top:24px"></div>
+
+  <!-- ===================================================== PIPELINE === -->
+  <section class="section tight" id="pipeline">
+    <div class="section-head">
+      <p class="eyebrow">How The Data Is Produced</p>
+      <h2>The Four-Stage Pipeline</h2>
+      <p>Each buggy version is checked out once and run through this pipeline exactly once. Every RQ on this site is
+        derived from these four stages' own output — nothing is measured twice with different code.</p>
+    </div>
+
+    <div class="method-stages">
+      <div class="method-stage">
+        <div class="method-stage-head">
+          <span class="idx">01</span>
+          <h3>Test Execution &amp; Target Pool</h3>
+          <span class="feeds">feeds RQ1, RQ3</span>
+        </div>
+        <p>The full relevant test suite runs once, uninstrumented, as the ground truth for which tests fail and as
+          the baseline timing cost. Every relevant test is then re-run individually to get a clean per-test
+          pass/fail spectrum and, for tests that fail in isolation, that test's own stack trace.</p>
+        <ul>
+          <li><strong>Target Pool construction</strong> — for every test that fails in isolation, its assertions are
+            walked top-to-bottom up to the exact line its own stack trace names as the failure site. Every assertion
+            reached before that line is labelled <code>Correct</code> (it held); the assertion at the failure line is
+            <code>Incorrect</code>. Anything after it never executed and is ignored.</li>
+          <li><strong>Uncaught_Exception tracking</strong> — a failing test whose failure site is not an assertion
+            call at all (it crashed before reaching one) is counted separately, rather than forced into the
+            assertion walk.</li>
+        </ul>
+      </div>
+
+      <div class="method-stage">
+        <div class="method-stage-head">
+          <span class="idx">02</span>
+          <h3>Dynamic Slicing</h3>
+          <span class="feeds">feeds RQ2, RQ3</span>
+        </div>
+        <p>Every Target Pool row seeds one targeted dynamic backward slice, run from the exact variable, line and
+          test that produced it. Slicing every passing test as well would be prohibitively expensive, so passing
+          tests are handled selectively instead.</p>
+        <ul>
+          <li><strong>Failing-test criteria</strong> — each Target Pool row is sliced directly: a
+            <code>Correct</code> row becomes a <em>Virtual_Pass</em> column, an <code>Incorrect</code> row becomes a
+            <em>Virtual_Fail</em> column.</li>
+          <li><strong>Passing-test criteria (selective)</strong> — every passing test's own assertions are scanned
+            statically, and only the ones whose output variable already appears somewhere in the Target Pool are
+            sliced. These always become <em>Virtual_Pass</em> columns.</li>
+          <li>Each resulting slice becomes one <strong>virtual test column</strong>. Anything the slice reaches
+            outside the project's own source classes — dependency-chain noise from inside the test method itself —
+            is discarded before it can become a matrix row.</li>
+        </ul>
+      </div>
+
+      <div class="method-stage">
+        <div class="method-stage-head">
+          <span class="idx">03</span>
+          <h3>Matrix Construction &amp; Ochiai Scoring</h3>
+          <span class="feeds">feeds RQ4</span>
+        </div>
+        <p>Two independent observation matrices are built from the same buggy version, then scored with one shared
+          Ochiai formula — see <a href="#approaches">Trace vs. Slice</a> below for what each matrix actually
+          contains.</p>
+        <ul>
+          <li><strong>Trace matrix</strong> — one row per real test case, via per-test coverage instrumentation
+            across the whole project's source, not just the file the bug happens to touch.</li>
+          <li><strong>Slice matrix</strong> — one row per virtual test column from Stage 2; columns are the union of
+            every statement any virtual column's slice touched.</li>
+          <li>Both matrices are scored with the identical <a href="#ochiai">Ochiai formula</a>, so any difference
+            between the two rankings comes from what each matrix contains, never from two different scoring
+            implementations.</li>
+        </ul>
+      </div>
+
+      <div class="method-stage">
+        <div class="method-stage-head">
+          <span class="idx">04</span>
+          <h3>Suspiciousness Ranking</h3>
+          <span class="feeds">feeds RQ5</span>
+        </div>
+        <p>Statements are ranked by Ochiai score, independently for the trace matrix and the slice matrix, producing
+          two rankings per buggy version that RQ4 and RQ5 then evaluate against the ground-truth fault line(s).</p>
+        <ul>
+          <li>Ranking uses standard <strong>competition ranking (1-2-2-4)</strong>: statements tied on Ochiai score
+            all receive the same rank, the top position of that tied group.</li>
+          <li>Every ranked row also carries a <code>tie_size</code>, so the group's worst position,
+            <code>r_worst = rank + tie_size − 1</code>, is always derivable without re-scanning the ranking.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== APPROACHES === -->
+  <section class="section tight" id="approaches">
+    <div class="section-head">
+      <p class="eyebrow">Stage 3, In Detail</p>
+      <h2>Trace vs. Slice: Two Approaches Compared</h2>
+      <p>Every buggy version is scored twice, by two matrices built from the same test run — the difference between
+        them is exactly what this project measures.</p>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-card">
+        <p class="compare-label">Baseline</p>
+        <h4>Trace — Traditional SBFL</h4>
+        <ul>
+          <li>Rows: every real test case in the suite.</li>
+          <li>Columns: every statement in the project's own source classes, from per-test coverage instrumentation.</li>
+          <li>Coverage is measured per whole test, independent of which assertion it makes or whether that
+            assertion is even related to the fault.</li>
+          <li>This is what a conventional spectrum-based fault localization tool computes on its own.</li>
+        </ul>
+      </div>
+      <div class="compare-card">
+        <p class="compare-label">Proposed</p>
+        <h4>Slice — Hybrid, Slicing-Based</h4>
+        <ul>
+          <li>Rows: virtual test columns — one per sliced assertion, from both failing-test and selective
+            passing-test criteria.</li>
+          <li>Columns: the union of statements that actually appear in one of those dynamic backward slices.</li>
+          <li>A statement only appears at all if some assertion's dependency chain actually reaches it.</li>
+          <li>This is the reduced search space RQ2 measures, and what RQ4/RQ5 evaluate as the hybrid approach.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================== OCHIAI === -->
+  <section class="section tight" id="ochiai">
+    <div class="section-head">
+      <p class="eyebrow">Stage 3, In Detail</p>
+      <h2>The Ochiai Suspiciousness Formula</h2>
+      <p>One formula, applied identically to both matrices — an "observation" is a real test case for the trace
+        matrix, or a virtual test column for the slice matrix.</p>
+    </div>
+    <div class="formula-box">
+      <div class="eq">ochiai(s) &nbsp;=&nbsp; e<sub>f</sub> &nbsp;/&nbsp; √&#8203;( (e<sub>f</sub> + n<sub>f</sub>) · (e<sub>f</sub> + e<sub>p</sub>) )</div>
+      <div class="formula-legend">
+        <span class="term"><b>e_f</b> — failing observations that covered statement s</span>
+        <span class="term"><b>n_f</b> — failing observations that did not cover s</span>
+        <span class="term"><b>e_p</b> — passing observations that covered s</span>
+      </div>
+    </div>
+    <p class="rq-note" style="margin-top:16px">
+      <span class="ic">ⓘ</span>
+      <span>Scores fall in [0, 1]; a statement covered by every failing observation and no passing observation
+        scores 1.0. When the denominator is 0 (no failing observation covers the statement at all), the score is
+        defined as 0. Ties are broken only by the competition-ranking rule in <a href="#pipeline">Stage 4</a>, never
+        by a secondary metric.</span>
+    </p>
+  </section>
+
+  <!-- ============================================== RESEARCH QUESTIONS === -->
+  <section class="section tight" id="research-questions">
+    <div class="section-head">
+      <p class="eyebrow">From Pipeline To Findings</p>
+      <h2>Research Questions</h2>
+      <p>Each RQ reads directly off one or more pipeline stages above — none of them re-derive their own copy of the
+        underlying data.</p>
+    </div>
+    <div class="rq-grid">
+      <a class="rq-card" href="rq1.html">
+        <span class="tag">RQ1</span>
+        <h3>Test Suite Characteristics</h3>
+        <p>Stage 1's per-test outcomes and assertion walk, aggregated: how large is each buggy version's test suite,
+          and how does it split into passing, assertion-failing and uncaught-exception failures?</p>
+        <span class="go">Explore →</span>
+      </a>
+      <a class="rq-card" href="rq2.html">
+        <span class="tag">RQ2</span>
+        <h3>Search-Space Reduction</h3>
+        <p>Stage 2's virtual test columns, sized against Stage 3's trace matrix: how much smaller is the sliced
+          statement universe than the full-trace one, for the same buggy version?</p>
+        <span class="go">Explore →</span>
+      </a>
+      <a class="rq-card" href="rq3.html">
+        <span class="tag">RQ3</span>
+        <h3>Performance &amp; Cost</h3>
+        <p>Stage 1 and Stage 2's own timing and memory instrumentation: what does dynamic slicing cost, over and
+          above what a baseline SBFL tool already has to pay for test execution?</p>
+        <span class="go">Explore →</span>
+      </a>
+      <a class="rq-card" href="rq4.html">
+        <span class="tag">RQ4</span>
+        <h3>Fault Inclusion</h3>
+        <p>Stage 3's two matrices, checked against ground truth: does the trace matrix — or the slice matrix — even
+          contain the true faulty statement as a column at all?</p>
+        <span class="go">Explore →</span>
+      </a>
+      <a class="rq-card" href="rq5.html">
+        <span class="tag">RQ5</span>
+        <h3>Fault Localization Ranking</h3>
+        <p>Stage 4's two rankings, scored with the tolerance and answerability methodology below: when the fault is
+          reachable, how well does each ranking actually locate it?</p>
+        <span class="go">Explore →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- =============================================== TOLERANCE / ANSWERABILITY === -->
+  <section class="section tight" id="tolerance">
+    <div class="section-head">
+      <p class="eyebrow">Stage 5, Evaluation</p>
+      <h2>Line Tolerance &amp; Answerability</h2>
+      <p>The guiding question is not a raw hit rate across every ground-truth fault line — it is the ranking's
+        success rate specifically on the fault detections it could theoretically succeed at, and a systematic
+        account of why it misses the rest.</p>
+    </div>
+
+    <div class="prose">
+      <p>A ranking's result for one ground-truth fault line is evaluated two ways. First, an <strong>exact
+        match</strong>: does the true fault line itself carry a rank in this ranking at all? Second, a
+        <strong>tolerant match</strong>: if not exact, is the ranking's nearest same-file candidate within a small
+        number of lines of the true fault line? Both are always computed and stored — the DIFF control on the
+        <a href="rq5.html">RQ5 page</a> only changes which of them counts as a "hit" for a given view; DIFF=0 (exact
+        line only) is the strict, primary result, and DIFF&gt;0 is a deliberate relaxation for understanding
+        near-misses, not a claim that an off-by-N-lines hit is functionally equivalent to an exact one.</p>
+    </div>
+
+    <div class="tol-vis" aria-hidden="true">
+      <div class="tol-range" style="left:16.7%;width:33.3%"></div>
+      <div class="tol-range" style="left:50%;width:33.3%"></div>
+      <div class="tol-tick" style="left:0%"><div class="tol-dot"></div><div class="tol-tick-label">−3</div></div>
+      <div class="tol-tick in-range" style="left:16.7%"><div class="tol-dot"></div><div class="tol-tick-label">−2</div></div>
+      <div class="tol-tick in-range" style="left:33.3%"><div class="tol-dot"></div><div class="tol-tick-label">−1</div></div>
+      <div class="tol-tick in-range zero" style="left:50%"><div class="tol-dot"></div><div class="tol-tick-label">Fault Line</div></div>
+      <div class="tol-tick in-range" style="left:66.7%"><div class="tol-dot"></div><div class="tol-tick-label">+1</div></div>
+      <div class="tol-tick in-range" style="left:83.3%"><div class="tol-dot"></div><div class="tol-tick-label">+2</div></div>
+      <div class="tol-tick" style="left:100%"><div class="tol-dot"></div><div class="tol-tick-label">+3</div></div>
+    </div>
+    <p class="rq-note" style="margin-top:2px">
+      <span class="ic">ⓘ</span>
+      <span>Example shown at DIFF=2: the shaded range is what counts as a hit. The nearest-candidate search only
+        ever looks at the same file as the true fault line.</span>
+    </p>
+
+    <h3 style="font-size:16px;margin-top:36px">Why A Miss Happens</h3>
+    <p style="font-size:14px;color:var(--ink-muted);max-width:74ch;margin-top:6px">Every non-hit is classified into
+      exactly one of three reasons, read directly from the pipeline's own recorded fields — never re-derived or
+      newly invented after the fact.</p>
+    <div class="status-boxes-row" style="margin-top:16px">
+      <div class="status-boxes">
+        <div class="status-box success">
+          <div class="lbl">SUCCESS</div>
+          <p>An exact match, or a same-file candidate within the selected tolerance.</p>
+        </div>
+        <div class="status-box gap">
+          <div class="lbl">PIPELINE GAP</div>
+          <p>The fault line was structurally reachable, but this specific ranking never produced a same-file
+            candidate to measure against — most often the slice ranking simply never touched that file.</p>
+        </div>
+        <div class="status-box project">
+          <div class="lbl">PROJECT-CAUSED</div>
+          <p>The fault line itself is flagged unanswerable — see below. No technique could find it with this run's
+            own data, regardless of ranking quality.</p>
+        </div>
+        <div class="status-box other">
+          <div class="lbl">OTHER MISS</div>
+          <p>A same-file candidate does exist, but falls outside the currently selected tolerance — would count as
+            SUCCESS at a wider DIFF, not visible at a stricter one.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:16px;margin-top:36px">Answerability</h3>
+    <p style="font-size:14px;color:var(--ink-muted);max-width:74ch;margin-top:6px">Before any ranking is judged, each
+      ground-truth fault line is checked for whether this run's own checkout and test suite could ever have found it
+      at all. A line flagged unanswerable is excluded from both the numerator and denominator of any success-rate
+      statistic — scoring it as a miss would unfairly penalize the technique for something no technique could ever
+      do with this run's own data.</p>
+    <div class="glossary-grid" style="margin-top:14px">
+      <div class="glossary-item">
+        <dt>dead_code_never_executed</dt>
+        <dd>The fix is a pure deletion — the "buggy" line does not exist in the buggy build's checked-out source at
+          all, so no execution could ever reach it.</dd>
+      </div>
+      <div class="glossary-item">
+        <dt>live_line_never_executed</dt>
+        <dd>The line exists and could run, but no test in this run's own suite ever exercised it — a genuine gap in
+          the project's test suite, not a limitation of either ranking technique.</dd>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================== PROVENANCE === -->
+  <section class="section tight" id="provenance">
+    <div class="section-head">
+      <p class="eyebrow">Where The Numbers Come From</p>
+      <h2>Data Provenance</h2>
+    </div>
+    <div class="info-panel" id="provenance-info">
+      <div class="skeleton">loading…</div>
+    </div>
+    <div class="prose" style="margin-top:22px">
+      <p>The dataset behind this site was collected by running the identical pipeline code, unmodified, across
+        multiple parallel compute environments and consolidating the results afterward. Every buggy version's
+        status is exactly one of two values: <strong>completed</strong> (the pipeline ran to completion and produced
+        a full set of rankings) or <strong>not available</strong> (a target that could not finish — most often a
+        Defects4J checkout or build failure). There is no silent partial-success state: a status is never inferred,
+        backfilled, or estimated.</p>
+      <p>Every figure, table and chart on this site is generated by <code>resQ_scripts/build_site_data.py</code>
+        reading directly from the pipeline's own output files. Nothing here is hand-entered.</p>
+    </div>
+  </section>
+
+  <!-- =================================================== LIMITATIONS === -->
+  <section class="section tight" id="limitations">
+    <div class="section-head">
+      <p class="eyebrow">Honesty Notes</p>
+      <h2>Known Limitations</h2>
+    </div>
+    <div class="rq-note" style="max-width:none">
+      <span class="ic">ⓘ</span>
+      <span><strong>Commented-out test methods.</strong> A handful of targets across the dataset contain test
+        classes with commented-out test methods (a common convention in some Defects4J-era codebases for
+        manual/network-dependent tests). The pipeline's static test-method scan can occasionally pick one of these
+        up as if it were real, inflating that specific target's failing-test count. This is a known, tracked issue
+        in test-suite bookkeeping — it does not affect which statement is scored as faulty or how either ranking is
+        computed.</span>
+    </div>
+    <div class="rq-note" style="max-width:none;margin-top:12px">
+      <span class="ic">ⓘ</span>
+      <span><strong>Line tolerance is a proximity measure, not equivalence.</strong> A hit recorded at DIFF&gt;0
+        means the ranking's best same-file candidate landed close to the true fault line, not on it. Any statistic
+        that reports a DIFF&gt;0 rate alongside a DIFF=0 rate should be read as two different, clearly labelled
+        questions, never averaged together into one number.</span>
+    </div>
+  </section>
+
+  <!-- ====================================================== GLOSSARY === -->
+  <section class="section tight" id="glossary">
+    <div class="section-head">
+      <p class="eyebrow">Reference</p>
+      <h2>Glossary</h2>
+    </div>
+    <dl class="glossary-grid">
+      <div class="glossary-item"><dt>Target Pool</dt>
+        <dd>The set of (test, variable, line, Correct/Incorrect) rows harvested from every failing test's own
+          isolated run — the raw slicing criteria for Stage 2.</dd></div>
+      <div class="glossary-item"><dt>Virtual Test Column</dt>
+        <dd>One dynamic backward slice's worth of statements, treated as one observation in the slice matrix. Not a
+          real JUnit test — a derived slicing criterion.</dd></div>
+      <div class="glossary-item"><dt>Statement</dt>
+        <dd>One non-bracket source line inside the project's own source classes — the unit both matrices' rows are
+          scored over. Test code is never a statement.</dd></div>
+      <div class="glossary-item"><dt>Ochiai Score</dt>
+        <dd>The [0, 1] suspiciousness score from Stage 3's shared formula — how strongly a statement's coverage
+          correlates with failure.</dd></div>
+      <div class="glossary-item"><dt>rank / tie_size / r_worst</dt>
+        <dd>Competition ranking (1-2-2-4): tied statements share the same <code>rank</code>; <code>tie_size</code>
+          records the width of that tie; <code>r_worst = rank + tie_size − 1</code>.</dd></div>
+      <div class="glossary-item"><dt>DIFF (Line Tolerance)</dt>
+        <dd>How many lines away from the true fault line a same-file candidate may fall and still count as a hit.
+          0 means exact line only.</dd></div>
+      <div class="glossary-item"><dt>Answerable / Unanswerable</dt>
+        <dd>Whether a fault line could, in principle, ever be found with this run's own checkout and test suite —
+          independent of either ranking technique's quality.</dd></div>
+      <div class="glossary-item"><dt>diff_reason</dt>
+        <dd>The pipeline's own recorded explanation for a miss — <code>succeed</code>, <code>project_test_scenario</code>
+          or <code>pipeline_gap</code> — that the SUCCESS / PROJECT-CAUSED / PIPELINE GAP / OTHER MISS classification
+          above is read from directly.</dd></div>
+    </dl>
+  </section>
+
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>resQ — Fault Localization Research · © 2026</p>
+    <div class="footer-links">
+      <a href="methodology.html">Methodology</a>
+      <a href="references.html">References</a>
+      <a class="js-gh-link" href="#" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nav.js"></script>
+<script src="js/methodology.js"></script>
+</body>
+</html>
