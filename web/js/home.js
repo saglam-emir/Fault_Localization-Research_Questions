@@ -102,9 +102,7 @@ async function init() {
     renderInfo(meta);
     renderProjectsPanel(summary);
     renderReferences(refs);
-    if (meta.github_url) {
-      document.querySelectorAll('.js-gh-link').forEach(a => a.href = meta.github_url);
-    }
+    // .js-gh-link hrefs are populated by nav.js (shared across every page)
   } catch (err) {
     console.error('Veri yüklenemedi:', err);
     const sub = document.getElementById('stat-runtime-sub');

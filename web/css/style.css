@@ -346,6 +346,138 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
   color: var(--ink-faint); font-size: 13.5px;
 }
 
+/* ==========================================================================
+   RQ pages (shared shell for RQ1-RQ5 - keep this generic, RQ-specific
+   chart/control markup lives in each page's own <section>)
+   ========================================================================== */
+
+.rq-page-header { padding-block: 36px 8px; }
+.rq-badge {
+  display: inline-flex; align-items: center; font-family: var(--font-mono); font-weight: 600;
+  font-size: 13px; color: var(--accent); background: var(--accent-soft);
+  padding: 4px 11px; border-radius: 100px; margin-bottom: 14px;
+}
+.rq-page-header h1 { font-size: clamp(24px, 3.4vw, 32px); }
+.rq-question-text { font-size: 15px; color: var(--ink-muted); margin-top: 10px; max-width: 68ch; }
+
+.rq-purpose {
+  background: var(--surface); border-radius: 12px; padding: 20px 24px; margin-top: 24px;
+}
+.rq-purpose .label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-faint); margin-bottom: 8px;
+}
+.rq-purpose p { font-size: 14.5px; color: var(--ink); line-height: 1.65; max-width: 72ch; }
+
+.rq-cards {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;
+  margin-top: 24px;
+}
+.rq-card-stat { background: var(--surface); border-radius: 12px; padding: 16px 18px; }
+.rq-card-stat .n {
+  font-family: var(--font-display); font-weight: 600; font-size: 24px; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.rq-card-stat .l { font-size: 11.5px; color: var(--ink-muted); margin-top: 3px; }
+
+/* --------------------------------------------------------- rq controls --- */
+.rq-controls {
+  display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end;
+  background: var(--surface); border-radius: 12px; padding: 16px 20px; margin-top: 28px;
+}
+.seg-group { display: flex; flex-direction: column; gap: 8px; }
+.seg-group .seg-label {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.seg { display: inline-flex; background: var(--surface-2); border-radius: 8px; padding: 3px; gap: 2px; }
+.seg button {
+  font-family: var(--font-body); font-size: 13px; font-weight: 500; color: var(--ink-muted);
+  background: transparent; border: none; border-radius: 6px; padding: 7px 14px; cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.seg button:hover { color: var(--ink); }
+.seg button.active { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(30,31,34,.1); }
+
+.seg-select {
+  font-family: var(--font-body); font-size: 13px; color: var(--ink); background: var(--surface-2);
+  border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer;
+}
+
+/* ----------------------------------------------------------- chart panel --- */
+.rq-chart-panel {
+  background: var(--surface); border-radius: 12px; padding: 24px; margin-top: 16px;
+  min-height: 260px;
+}
+.rq-note {
+  display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; color: var(--ink-muted);
+  background: var(--surface-2); border-radius: 8px; padding: 10px 14px; margin-top: 16px; max-width: 68ch;
+}
+.rq-note .ic { color: var(--ink-faint); flex-shrink: 0; }
+
+.bar-chart-scroll { max-height: 520px; overflow-y: auto; padding-right: 4px; }
+.bar-row { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 12px; padding: 5px 0; }
+.bar-row .cat-label {
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); text-align: right;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: default;
+}
+.bar-row.clickable .cat-label { cursor: pointer; color: var(--ink); }
+.bar-row.clickable:hover { background: var(--surface-2); border-radius: 6px; }
+.bar-track { position: relative; height: 22px; display: flex; align-items: center; }
+.bar-seg { height: 16px; border-radius: 3px; }
+.bar-seg + .bar-seg { margin-left: 2px; }
+.bar-value {
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); margin-left: 8px; white-space: nowrap;
+}
+.bar-legend { display: flex; gap: 18px; margin-bottom: 18px; flex-wrap: wrap; }
+.bar-legend .item { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--ink-muted); }
+.bar-legend .swatch { width: 10px; height: 10px; border-radius: 3px; }
+
+.bug-detail-panel {
+  margin-top: 18px; background: var(--surface-2); border-radius: 10px; padding: 18px 20px;
+}
+.bug-detail-panel h4 { font-size: 15px; margin-bottom: 12px; }
+.bug-detail-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px;
+}
+.bug-detail-grid .k { font-size: 11px; color: var(--ink-faint); margin-bottom: 2px; }
+.bug-detail-grid .v { font-family: var(--font-mono); font-size: 16px; font-weight: 600; color: var(--ink); }
+
+/* ------------------------------------------------------------- rq table --- */
+.rq-table-section { margin-top: 44px; }
+.table-toolbar {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px;
+}
+.table-search, .table-filter {
+  font-family: var(--font-body); font-size: 13.5px; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px;
+}
+.table-search { flex: 1 1 220px; min-width: 160px; }
+.table-count { font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); margin-left: auto; }
+
+.table-scroll { overflow-x: auto; background: var(--surface); border-radius: 12px; }
+.data-table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+.data-table thead th {
+  text-align: left; font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-faint); padding: 12px 16px; border-bottom: 1px solid var(--border); white-space: nowrap; cursor: pointer;
+  user-select: none;
+}
+.data-table thead th:hover { color: var(--ink); }
+.data-table thead th .arrow { opacity: .5; margin-left: 4px; }
+.data-table tbody td { padding: 9px 16px; border-bottom: 1px solid var(--border); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody tr:hover { background: var(--surface-2); }
+.data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+
+.table-pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 16px; }
+.table-pagination button {
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-muted); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 6px; padding: 6px 11px; cursor: pointer;
+}
+.table-pagination button:hover:not(:disabled) { color: var(--ink); border-color: var(--accent); }
+.table-pagination button:disabled { opacity: .4; cursor: default; }
+.table-pagination .page-info { font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); padding: 0 6px; }
+
 /* ----------------------------------------------------------------- footer --- */
 .site-footer { border-top: 1px solid var(--border); padding-block: 32px; margin-top: 24px; }
 .site-footer .container {
