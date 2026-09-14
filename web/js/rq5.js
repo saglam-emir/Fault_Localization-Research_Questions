@@ -75,7 +75,17 @@ function renderBreadcrumb() {
     if (a.dataset.level === 'overall') { state.level = 'overall'; state.project = null; state.bug = null; }
     else if (a.dataset.level === 'project') { state.level = 'project'; state.bug = null; }
     renderAll();
+    RQ.pushNav(navSnapshot());
   }));
+}
+
+// The level/project/bug "place" - not the DIFF/approach filters, which
+// stay out of history so Back undoes drill-down, not every control click.
+function navSnapshot() { return { level: state.level, project: state.project, bug: state.bug }; }
+function restoreNav(s) {
+  const snap = s || { level: 'overall', project: null, bug: null };
+  state.level = snap.level; state.project = snap.project; state.bug = snap.bug;
+  renderAll();
 }
 
 // -------------------------------------------------------- summary cards --
@@ -151,8 +161,8 @@ function renderMainChart() {
   }
 }
 
-function goToProject(p) { if (p === 'Overall') return; state.level = 'project'; state.project = p; state.bug = null; renderAll(); }
-function goToBug(p, b) { state.level = 'bug'; state.project = p; state.bug = b; renderAll(); }
+function goToProject(p) { if (p === 'Overall') return; state.level = 'project'; state.project = p; state.bug = null; renderAll(); RQ.pushNav(navSnapshot()); }
+function goToBug(p, b) { state.level = 'bug'; state.project = p; state.bug = b; renderAll(); RQ.pushNav(navSnapshot()); }
 
 // --------------------------------------------------------- diff progression
 function renderCurve() {
@@ -286,6 +296,7 @@ async function init() {
     ALL_ROWS = await fetch('data/rq5.json').then(r => r.json());
     renderApproachControl();
     renderAll();
+    RQ.initNavHistory(navSnapshot, restoreNav);
   } catch (err) {
     console.error('RQ5 verisi yüklenemedi:', err);
     document.getElementById('rq5-main-chart').innerHTML = `<p class="skeleton">Veri yüklenirken bir sorun oluştu.</p>`;

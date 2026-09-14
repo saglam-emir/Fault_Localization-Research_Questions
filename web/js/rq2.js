@@ -75,12 +75,25 @@ function goToBugScope(project) {
   update();
 }
 
-function showBugDetail(key) {
+// Which bug's detail panel is open, if any - the one "place" this page has
+// (Metric/Slice Type/Scope stay filters, not navigation - see navSnapshot).
+let currentBugKey = null;
+
+function navSnapshot() { return { bugKey: currentBugKey }; }
+function restoreNav(s) {
+  const key = s && s.bugKey;
+  if (key) { showBugDetail(key, false); return; }
+  currentBugKey = null;
+  document.getElementById('bug-detail').hidden = true;
+}
+
+function showBugDetail(key, push = true) {
   const [project, bugId] = splitKey(key);
   const row = ALL_ROWS.find(r => r.project === project && r.bug_id === bugId);
   const panel = document.getElementById('bug-detail');
-  if (!row) { panel.hidden = true; return; }
+  if (!row) { panel.hidden = true; currentBugKey = null; return; }
   panel.hidden = false;
+  currentBugKey = key;
   panel.querySelector('h4').textContent = `${row.project} / ${row.bug_id}`;
   panel.querySelector('.bug-detail-grid').innerHTML = `
     <div><div class="k">Full Execution Size</div><div class="v">${RQ.fmt.format(row.full_execution_size)}</div></div>
@@ -89,6 +102,7 @@ function showBugDetail(key) {
     <div><div class="k">All Slice</div><div class="v">${RQ.fmt.format(row.union_all_slice)}</div></div>
     <div><div class="k">Reduction Ratio</div><div class="v">${RQ.pct(row.all_reduction_ratio)}</div></div>
   `;
+  if (push) RQ.pushNav(navSnapshot());
 }
 function splitKey(key) {
   const idx = key.lastIndexOf('_');
@@ -107,6 +121,7 @@ function update() {
   document.getElementById('slice-type-wrap').hidden = state.metric !== 'space';
   document.getElementById('project-select-wrap').hidden = state.scope !== 'bug';
   document.getElementById('bug-detail').hidden = true;
+  currentBugKey = null;
   if (state.scope === 'bug') renderProjectSelect();
 
   const c = colors();
@@ -248,6 +263,7 @@ async function init() {
       .addEventListener('change', e => { state.project = e.target.value; update(); });
     update();
     renderTable();
+    RQ.initNavHistory(navSnapshot, restoreNav);
   } catch (err) {
     console.error('RQ2 verisi yüklenemedi:', err);
     document.getElementById('rq2-chart').innerHTML = `<p class="skeleton">Veri yüklenirken bir sorun oluştu.</p>`;

@@ -90,12 +90,25 @@ function renderProjectSelect() {
 
 function goToBugScope(project) { state.scope = 'bug'; state.project = project; update(); }
 
-function showBugDetail(key) {
+// Which bug's detail panel is open, if any - the one "place" this page has
+// (Metric/Approach/Scope stay filters, not navigation - see navSnapshot).
+let currentBugKey = null;
+
+function navSnapshot() { return { bugKey: currentBugKey }; }
+function restoreNav(s) {
+  const key = s && s.bugKey;
+  if (key) { showBugDetail(key, false); return; }
+  currentBugKey = null;
+  document.getElementById('bug-detail').hidden = true;
+}
+
+function showBugDetail(key, push = true) {
   const [project, bugId] = splitKey(key);
   const row = ALL_ROWS.find(r => r.project === project && r.bug_id === bugId);
   const panel = document.getElementById('bug-detail');
-  if (!row) { panel.hidden = true; return; }
+  if (!row) { panel.hidden = true; currentBugKey = null; return; }
   panel.hidden = false;
+  currentBugKey = key;
   panel.querySelector('h4').textContent = `${row.project} / ${row.bug_id}`;
   panel.querySelector('.bug-detail-grid').innerHTML = `
     <div><div class="k">Baseline Time</div><div class="v">${formatSeconds(row.baseline_time)}</div></div>
@@ -111,6 +124,7 @@ function showBugDetail(key) {
     (overheadPct !== null ? ` (<strong>${overheadPct >= 0 ? '+' : ''}${overheadPct.toFixed(0)}%</strong> overhead)` : '') +
     `</span>`;
   panel.scrollIntoView?.({ behavior: 'smooth', block: 'nearest' });
+  if (push) RQ.pushNav(navSnapshot());
 }
 
 function update() {
@@ -119,6 +133,7 @@ function update() {
   document.getElementById('sort-dir-wrap').hidden = state.scope !== 'project';
   document.getElementById('project-select-wrap').hidden = state.scope !== 'bug';
   document.getElementById('bug-detail').hidden = true;
+  currentBugKey = null;
   document.getElementById('rq3-note').hidden = true;
   if (state.scope === 'bug') renderProjectSelect();
 
@@ -301,6 +316,7 @@ async function init() {
     renderTopN();
     renderScatterSection();
     renderTable();
+    RQ.initNavHistory(navSnapshot, restoreNav);
   } catch (err) {
     console.error('RQ3 verisi yüklenemedi:', err);
     document.getElementById('rq3-chart').innerHTML = `<p class="skeleton">Veri yüklenirken bir sorun oluştu.</p>`;

@@ -78,11 +78,24 @@ function goToBugScope(project) {
   update();
 }
 
-function showBugDetail(name) {
+// Which bug's detail panel is open, if any - the one "place" this page has
+// (Metric/Scope stay filters, not navigation - see navSnapshot below).
+let currentBugKey = null;
+
+function navSnapshot() { return { bugKey: currentBugKey }; }
+function restoreNav(s) {
+  const key = s && s.bugKey;
+  if (key) { showBugDetail(key, false); return; }
+  currentBugKey = null;
+  document.getElementById('bug-detail').hidden = true;
+}
+
+function showBugDetail(name, push = true) {
   const row = ALL_ROWS.find(r => `${r.project}_${r.bug_id}` === name);
   const panel = document.getElementById('bug-detail');
-  if (!row) { panel.hidden = true; return; }
+  if (!row) { panel.hidden = true; currentBugKey = null; return; }
   panel.hidden = false;
+  currentBugKey = name;
   panel.querySelector('h4').textContent = `${row.project} / ${row.bug_id}`;
   panel.querySelector('.bug-detail-grid').innerHTML = `
     <div><div class="k">Passing Tests</div><div class="v">${row.pass_tc}</div></div>
@@ -91,12 +104,14 @@ function showBugDetail(name) {
     <div><div class="k">Failing Assertions</div><div class="v">${row.fail_assert}</div></div>
     <div><div class="k">Uncaught Exceptions</div><div class="v">${row.uncaught_exception}</div></div>
   `;
+  if (push) RQ.pushNav(navSnapshot());
 }
 
 function update() {
   renderControls(); // re-render so segmented "active" state reflects programmatic changes (e.g. drill-down clicks)
   document.getElementById('project-select-wrap').hidden = state.scope !== 'bug';
   document.getElementById('bug-detail').hidden = true;
+  currentBugKey = null;
   document.getElementById('rq1-note').hidden = state.metric !== 'failure';
 
   if (state.scope === 'bug') renderProjectSelect();
@@ -165,6 +180,7 @@ async function init() {
       .addEventListener('change', e => { state.project = e.target.value; update(); });
     update();
     renderTable();
+    RQ.initNavHistory(navSnapshot, restoreNav);
   } catch (err) {
     console.error('RQ1 verisi yüklenemedi:', err);
     document.getElementById('rq1-chart').innerHTML =

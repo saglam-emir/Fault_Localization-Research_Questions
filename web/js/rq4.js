@@ -70,12 +70,25 @@ function renderProjectSelect() {
 
 function goToBugScope(project) { state.scope = 'bug'; state.project = project; update(); }
 
-function showBugDetail(key) {
+// Which bug's detail panel is open, if any - the one "place" this page has
+// (Scope/sort controls stay filters, not navigation - see navSnapshot).
+let currentBugKey = null;
+
+function navSnapshot() { return { bugKey: currentBugKey }; }
+function restoreNav(s) {
+  const key = s && s.bugKey;
+  if (key) { showBugDetail(key, false); return; }
+  currentBugKey = null;
+  document.getElementById('bug-detail').hidden = true;
+}
+
+function showBugDetail(key, push = true) {
   const [project, bugId] = splitKey(key);
   const row = ALL_ROWS.find(r => r.project === project && r.bug_id === bugId);
   const panel = document.getElementById('bug-detail');
-  if (!row) { panel.hidden = true; return; }
+  if (!row) { panel.hidden = true; currentBugKey = null; return; }
   panel.hidden = false;
+  currentBugKey = key;
   panel.querySelector('h4').innerHTML = `${row.project} / ${row.bug_id} ${badge(category(row))}`;
   panel.querySelector('.bug-detail-grid').innerHTML = `
     <div><div class="k">Total Faults</div><div class="v">${row.total_faults}</div></div>
@@ -85,6 +98,7 @@ function showBugDetail(key) {
     <div><div class="k">Slice Inclusion Rate</div><div class="v">${row.slice_inclusion_rate != null ? RQ.pct(row.slice_inclusion_rate) : '—'}</div></div>
   `;
   panel.scrollIntoView?.({ behavior: 'smooth', block: 'nearest' });
+  if (push) RQ.pushNav(navSnapshot());
 }
 
 function update() {
@@ -94,6 +108,7 @@ function update() {
   document.getElementById('sort-dir-wrap').hidden = !isProject;
   document.getElementById('project-select-wrap').hidden = state.scope !== 'bug';
   document.getElementById('bug-detail').hidden = true;
+  currentBugKey = null;
   document.getElementById('rq4-matrix').innerHTML = '';
   document.getElementById('rq4-chart').innerHTML = '';
   if (state.scope === 'bug') renderProjectSelect();
@@ -212,6 +227,7 @@ async function init() {
     renderCompareControls();
     renderCompare();
     renderTable();
+    RQ.initNavHistory(navSnapshot, restoreNav);
   } catch (err) {
     console.error('RQ4 verisi yüklenemedi:', err);
     document.getElementById('rq4-matrix').innerHTML = `<p class="skeleton">Veri yüklenirken bir sorun oluştu.</p>`;

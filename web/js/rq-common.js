@@ -54,6 +54,30 @@ const RQ = (() => {
     });
   }
 
+  // ---- browser-history integration for in-page drill-down navigation --
+  // Fixes the Back button leaving a page entirely on its very first press
+  // whenever a page has its own internal navigation (Projects, RQ5) - by
+  // default, moving between in-page "places" never adds a history entry,
+  // so one Back press skips past all of them straight to whatever page
+  // was open before this one (e.g. Home).
+  //
+  // Call RQ.initNavHistory(capture, restore) once, right after the page's
+  // first render: `capture()` returns the current "place" as a small
+  // JSON-safe object (which drill level, which project/bug - NOT filter
+  // state like a scope toggle or DIFF value), and `restore(state)`
+  // re-renders the page for a state object captured earlier. Every
+  // in-page navigation function should then call RQ.pushNav(capture())
+  // right after it renders a new place - never on a filter/control change,
+  // only on an actual change of place, or Back ends up stepping through
+  // noise instead of real navigation.
+  function initNavHistory(capture, restore) {
+    history.replaceState(capture(), '');
+    window.addEventListener('popstate', e => restore(e.state || capture()));
+  }
+  function pushNav(stateSnapshot) {
+    history.pushState(stateSnapshot, '');
+  }
+
   // ---- segmented control (tabs) -------------------------------------
   // options: [{value, label}]. Re-renders on every call; caller re-invokes
   // after state changes rather than the control managing its own state.
@@ -327,5 +351,5 @@ const RQ = (() => {
     return { refresh: render };
   }
 
-  return { fmt, pct, animateCount, renderStatCards, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, renderMatrix2x2, renderLineChart, createDataTable };
+  return { fmt, pct, animateCount, renderStatCards, initNavHistory, pushNav, renderSegmented, renderComparisonBars, renderStackedBarList, renderGroupedBarList, renderScatter, renderMatrix2x2, renderLineChart, createDataTable };
 })();

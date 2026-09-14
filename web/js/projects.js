@@ -7,7 +7,7 @@
 
 let SUMMARY = null;
 let PROJECT_ROWS = [];
-const state = { level: 'projects', project: null, bugKey: null, detailTab: 'overview', matrixApproach: 'trace', matrixZoom: 'md', ochiaiApproach: 'trace', ochiaiTopN: 10 };
+const state = { level: 'projects', project: null, bugKey: null, bugId: null, detailTab: 'overview', matrixApproach: 'trace', matrixZoom: 'md', ochiaiApproach: 'trace', ochiaiTopN: 10 };
 let CURRENT_DETAIL = null; // cached bug JSON for the open detail view
 let CURRENT_MATRIX = null; // cached matrix JSON for the open detail view
 
@@ -35,11 +35,35 @@ function renderBreadcrumb() {
   }));
 }
 
-function goToProjects() { state.level = 'projects'; state.project = null; state.bugKey = null; renderBreadcrumb(); showView('projects'); }
-function goToBugs(project) { state.level = 'bugs'; state.project = project; state.bugKey = null; renderBreadcrumb(); showView('bugs'); renderBugsView(); }
-function goToDetail(project, bugId) {
-  state.level = 'detail'; state.project = project; state.bugKey = `${project}_${bugId}`; state.detailTab = 'overview';
+// Only these 3 fields make a "place" - detailTab/matrixApproach/etc. are
+// filters within a place, not navigation, and stay out of history so Back
+// undoes drill-down one screen at a time instead of stepping through
+// every tab/control click too.
+function navSnapshot() { return { level: state.level, project: state.project, bugId: state.bugId }; }
+
+function goToProjects(push = true) {
+  state.level = 'projects'; state.project = null; state.bugKey = null; state.bugId = null;
+  renderBreadcrumb(); showView('projects');
+  if (push) RQ.pushNav(navSnapshot());
+}
+function goToBugs(project, push = true) {
+  state.level = 'bugs'; state.project = project; state.bugKey = null; state.bugId = null;
+  renderBreadcrumb(); showView('bugs'); renderBugsView();
+  if (push) RQ.pushNav(navSnapshot());
+}
+function goToDetail(project, bugId, push = true) {
+  state.level = 'detail'; state.project = project; state.bugId = bugId; state.bugKey = `${project}_${bugId}`; state.detailTab = 'overview';
   renderBreadcrumb(); showView('detail'); renderDetailView();
+  if (push) RQ.pushNav(navSnapshot());
+}
+
+// Browser Back/Forward restores a previously-captured place without
+// re-pushing it (push=false) - re-pushing here would grow the stack
+// instead of walking it.
+function restoreNav(s) {
+  if (!s || s.level === 'projects') { goToProjects(false); return; }
+  if (s.level === 'bugs') { goToBugs(s.project, false); return; }
+  goToDetail(s.project, s.bugId, false);
 }
 
 // ==================================================== PROJECTS OVERVIEW
@@ -327,6 +351,7 @@ async function init() {
     renderOverviewSummary();
     renderProjectBarChart();
     renderProjectGrid();
+    RQ.initNavHistory(navSnapshot, restoreNav);
   } catch (err) {
     console.error('Projects verisi yüklenemedi:', err);
     document.getElementById('project-grid').innerHTML = `<p class="skeleton">Veri yüklenirken bir sorun oluştu.</p>`;
