@@ -18,7 +18,7 @@ async function loadJSON(path) {
 }
 
 // Sayı sayaç animasyonu - 0'dan hedef degere ~1.1s'de, ease-out ile sayar.
-function animateCount(el, target, { decimals = 0, duration = 1100 } = {}) {
+function animateCount(el, target, { decimals = 0, duration = 2600 } = {}) {
   const start = performance.now();
   const easeOut = t => 1 - Math.pow(1 - t, 3);
   function tick(now) {
