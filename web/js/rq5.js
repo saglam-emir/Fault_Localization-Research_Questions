@@ -28,13 +28,21 @@ function hitAt(row, kind, diff) {
 }
 
 // SUCCESS / PIPELINE GAP / PROJECT-CAUSED / OTHER MISS, from the row's own
-// diff_reason_trace/slice - not re-derived or newly invented (see
-// rq_writers.RQ5_FIELDS's own documented meaning of these three values).
+// fields - not re-derived or newly invented. unanswerable_reason is checked
+// directly (not via diff_reason_*'s "project_test_scenario") because
+// diff_reason_* reports "succeed" whenever ANY line in that file has a
+// nearby ranked candidate - true even for an unanswerable fault line, as
+// long as something else nearby in the same file got ranked (see
+// rq_writers._write_rq5's docstring: diff_reason_* only ever says
+// project_test_scenario when the file is entirely absent from that
+// ranking's universe, which is the less common case). unanswerable_reason
+// is the one field that always reflects this specific fault line's own
+// answerability, so it takes priority here.
 function classify(row, kind, diff) {
   if (hitAt(row, kind, diff)) return 'SUCCESS';
+  if (isUnanswerable(row)) return 'PROJECT-CAUSED';
   const reason = kind === 'trace' ? row.diff_reason_trace : row.diff_reason_slice;
   if (reason === 'pipeline_gap') return 'PIPELINE GAP';
-  if (reason === 'project_test_scenario') return 'PROJECT-CAUSED';
   return 'OTHER MISS';
 }
 
@@ -108,6 +116,24 @@ function renderApproachControl() {
   ], state.approach, v => { state.approach = v; renderMainChart(); renderCurve(); });
 }
 
+// A category (project or bug) with zero answerable fault lines shows a
+// flat 0.0% bar that is visually indistinguishable from "the technique
+// found nothing" - the two mean very different things (see Methodology's
+// Answerability section). This marks those bars so the difference is
+// visible instead of silently looking like a missing/failed result.
+function annotateNoAnswerable(chartEl, keys, countFn) {
+  keys.forEach(key => {
+    if (countFn(key) > 0) return;
+    const row = chartEl.querySelector(`[data-key="${key}"]`);
+    if (!row) return;
+    row.classList.add('no-answerable');
+    const valueEl = row.querySelector('.bar-value');
+    if (valueEl && !row.querySelector('.no-data-note')) {
+      valueEl.insertAdjacentHTML('afterend', '<span class="no-data-note">no answerable fault lines</span>');
+    }
+  });
+}
+
 function renderMainChart() {
   const c = colors();
   const eyebrow = document.getElementById('main-chart-eyebrow');
@@ -135,6 +161,7 @@ function renderMainChart() {
         formatValue: RQ.pct, onCategoryClick: goToProject,
       });
     }
+    annotateNoAnswerable(chartEl, cats, p => answerableRows(p).length);
   } else if (state.level === 'project') {
     eyebrow.textContent = state.project; title.textContent = 'Buggy-Version Success Rate';
     desc.textContent = 'Click a buggy version for its fault-line-level detail.';
@@ -154,11 +181,33 @@ function renderMainChart() {
         formatValue: RQ.pct, onCategoryClick: b => goToBug(state.project, b),
       });
     }
+    annotateNoAnswerable(chartEl, bugs, b => answerableFor(b).length);
   } else {
     eyebrow.textContent = `${state.project} / ${state.bug}`; title.textContent = 'Fault Lines in This Buggy Version';
     desc.textContent = 'See the full detail panel below for a per-line Trace/Slice comparison.';
     chartEl.innerHTML = `<p class="muted" style="font-size:13.5px">${currentRows().length} fault line(s) in this buggy version - see the detail panel below.</p>`;
   }
+}
+
+// Scope-level banner: when every ground-truth fault line in the CURRENT
+// drill scope is unanswerable, every rate on this page reads 0.0% for a
+// reason that has nothing to do with ranking quality - say so plainly
+// instead of leaving a bare 0.0% to be misread as "no result"/"failure".
+function renderUnanswerableNote() {
+  const el = document.getElementById('rq5-unanswerable-note');
+  const rows = currentRows();
+  const answerable = rows.filter(r => !isUnanswerable(r));
+  if (rows.length === 0 || answerable.length > 0) { el.hidden = true; return; }
+  el.hidden = false;
+  const scopeLabel = state.level === 'bug' ? `${state.project}/${state.bug}` : state.level === 'project' ? state.project : 'this scope';
+  el.innerHTML = `
+    <p class="rq-note" style="max-width:none;margin-top:16px">
+      <span class="ic">ⓘ</span>
+      <span><strong>None of the ${rows.length} ground-truth fault line(s) in ${scopeLabel} are answerable</strong> - every
+        one is flagged in <code>answerability_bySlicers.csv</code> (dead code, or a live line no test in this run's
+        suite ever executed). The 0.0% success rate shown below reflects an empty answerable set, not a ranking
+        failure - see <a href="methodology.html#tolerance" style="color:var(--accent)">Methodology → Answerability</a>.</span>
+    </p>`;
 }
 
 function goToProject(p) { if (p === 'Overall') return; state.level = 'project'; state.project = p; state.bug = null; renderAll(); RQ.pushNav(navSnapshot()); }
@@ -283,6 +332,7 @@ function renderAll() {
   renderDiffControl();
   renderBreadcrumb();
   renderSummaryCards();
+  renderUnanswerableNote();
   renderMainChart();
   renderCurve();
   renderStatusBoxes();
