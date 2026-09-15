@@ -76,32 +76,16 @@ function renderProjectsPanel(summary) {
     </div>`).join('');
 }
 
-function renderReferences(refData) {
-  const el = document.getElementById('ref-grid');
-  if (!refData.references || refData.references.length === 0) {
-    el.innerHTML = `<div class="ref-empty">References will be added here.</div>`;
-    return;
-  }
-  el.innerHTML = refData.references.map(r => `
-    <div class="ref-card">
-      <div class="cat">${r.category || ''}</div>
-      <h4>${r.title}</h4>
-      <div class="authors">${r.authors || ''}</div>
-      <div class="venue">${[r.venue, r.year].filter(Boolean).join(' · ')}</div>
-    </div>`).join('');
-}
-
 async function init() {
   try {
-    const [summary, meta, refs] = await Promise.all([
+    const [summary, meta] = await Promise.all([
       loadJSON('data/summary.json'),
       loadJSON('data/metadata.json'),
-      loadJSON('data/references.json'),
     ]);
     renderStats(summary);
     renderInfo(meta);
     renderProjectsPanel(summary);
-    renderReferences(refs);
+    // Building-on-prior-work section is static markup, not data-driven - no fetch needed.
     // .js-gh-link hrefs are populated by nav.js (shared across every page)
   } catch (err) {
     console.error('Veri yüklenemedi:', err);
